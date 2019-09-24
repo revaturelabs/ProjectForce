@@ -1,0 +1,12 @@
+<aura:component controller = "ChartController">
+
+    <!-- attributes -->
+    <aura:attribute name="data" type="Account[]"/>
+
+    <!-- handlers-->
+    <aura:handler name="init" value="{! this }" action="{! c.init }"/>
+
+	<aura:iteration var="Acc" items="{!v.data}">
+    	<p class="slds-p-horizontal--small">{!Acc.Name}-----{!Acc.Id}</p>
+    </aura:iteration>
+</aura:component>
