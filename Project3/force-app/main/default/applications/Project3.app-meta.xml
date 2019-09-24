@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomApplication xmlns="http://soap.sforce.com/2006/04/metadata">
+    <brand>
+        <headerColor>#D7B272</headerColor>
+        <shouldOverrideOrgTheme>false</shouldOverrideOrgTheme>
+    </brand>
+    <formFactors>Large</formFactors>
+    <isNavAutoTempTabsDisabled>false</isNavAutoTempTabsDisabled>
+    <isNavPersonalizationDisabled>false</isNavPersonalizationDisabled>
+    <label>Project3</label>
+    <navType>Standard</navType>
+    <tabs>Location__c</tabs>
+    <tabs>Project__c</tabs>
+    <tabs>Room__c</tabs>
+    <tabs>Track__c</tabs>
+    <tabs>Trainer__c</tabs>
+    <tabs>TrainerTrack__c</tabs>
+    <tabs>Training__c</tabs>
+    <uiType>Lightning</uiType>
+    <utilityBar>Project3_UtilityBar</utilityBar>
+</CustomApplication>
