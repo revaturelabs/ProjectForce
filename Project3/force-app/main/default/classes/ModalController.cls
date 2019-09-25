@@ -22,24 +22,24 @@ public without sharing class ModalController {
 
 
 	@AuraEnabled
-    //Replace account with actual objects
     public static List<Trainer__c> getTrainer(String locationName){
         try{
-            if (schema.SObjectType.Account.isAccessible()){
+            if (schema.SObjectType.Trainer__c.isAccessible()){
             	//list<Trainer__c> TrainerList = [SELECT name FROM Trainer__c];
                 List<Trainer__c> TrainerList = [select name, (select name, room__r.location__r.Name from trainings__r) from trainer__c];
-                Map<string, Trainer__c> trainerMap= new Map<string, Trainer__c>();
+                Map<Trainer__c, string> trainerMap= new Map<Trainer__c, string>();
+
                 for(Trainer__c t: TrainerList){
                     for(Training__c tg: t.trainings__r){
-                        trainerMap.put(tg.room__r.location__r.name,t);
+                        trainerMap.put(t,tg.room__r.location__r.name);
                     }
                 }
 
                 list<trainer__c> filterTrainerList = new list<trainer__c>();
-                for(string s : trainerMap.keyset())
+                for(trainer__c t : trainerMap.keyset())
                 {
-                    if(s==locationName){
-                        filterTrainerList.add(trainerMap.get(s));
+                    if(trainerMap.get(t)==locationName){
+                        filterTrainerList.add(t);
                     }
                 	//System.debug(t.Name + ' ' + trainerMap.get(t));
                 }
@@ -55,10 +55,42 @@ public without sharing class ModalController {
         }finally{
             //Finally logic goes in here
         }
+
+        
     } 
 
 
+	@AuraEnabled
+    public static List<Room__c> getRoom(String locationName){
+        try{
+            if (schema.SObjectType.Room__c.isAccessible()){
+            	//list<Trainer__c> TrainerList = [SELECT name FROM Trainer__c];
+                List<Room__c> RoomList = [select name, location__r.name from room__c];
 
+
+                list<Room__c> filterRoomList = new list<Room__c>();
+                for(room__c r : RoomList)
+                {
+                    if(r.location__r.name==locationName){
+                        filterRoomList.add(r);
+                    }
+                	//System.debug(t.Name + ' ' + trainerMap.get(t));
+                }
+                System.debug(filterRoomList);
+                return filterRoomList;
+            }else{
+                return null;
+            }
+        //Catch logic below
+        }catch(Exception e){
+            throw new AuraHandledException('custom message');
+            
+        }finally{
+            //Finally logic goes in here
+        }
+
+        
+    } 
 
 
 

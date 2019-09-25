@@ -40,9 +40,10 @@ public class TestDataFactory {
         list<location__c> LocList= new list<location__c>();
         list<string> location = new list<string>{'Reston','Florida','Texas'}; //Insert Locations in the location list
         integer NumOfLocations = location.size();
-        for(integer i = 0; i<numOfRecords; i++){
-            Integer randomNumber = Integer.valueof((Math.random() * NumOfLocations));
-            location__c t = new location__c(name=location[randomNumber], city__c=location[randomNumber]);
+        for(integer i = 0; i<location.size(); i++){
+            //Integer randomNumber = Integer.valueof((Math.random() * NumOfLocations));
+            //location__c t = new location__c(name=location[randomNumber], city__c=location[randomNumber]);
+            location__c t = new location__c(name=location[i], city__c=location[i]);
             LocList.add(t);
         }
         Insert LocList;
@@ -70,7 +71,8 @@ public class TestDataFactory {
         list<Room__c> RoomList= new list<Room__c>();
         list<Location__c> LocIdList = [SELECT id, name FROM location__c];
         for(integer i = 0; i<numOfRecords; i++){
-            Room__c t = new Room__c(name='Test Room '+i, location__c=LocIdList[i].id, Room_Number__c= 100+i, Capacity__c=20);
+        Integer randomNumber = Integer.valueof((Math.random() * LocIdList.size()));
+            Room__c t = new Room__c(name='Test Room '+i, location__c=LocIdList[randomNumber].id, Room_Number__c= 100+i, Capacity__c=20);
             RoomList.add(t);
         }
         Insert RoomList;
