@@ -1,12 +1,13 @@
-<aura:component controller = "ChartController">
+<aura:component controller = "ModalController">
 
     <!-- attributes -->
-    <aura:attribute name="data" type="Account[]"/>
+    <aura:attribute name="data2" type="String"/>
+    <aura:attribute name="data" type="Trainer__c[]"/>
 
     <!-- handlers-->
     <aura:handler name="init" value="{! this }" action="{! c.init }"/>
-
-	<aura:iteration var="Acc" items="{!v.data}">
-    	<p class="slds-p-horizontal--small">{!Acc.Name}-----{!Acc.Id}</p>
+    <ui:outputText value="{!v.data}" />
+	<aura:iteration var="trainer" items="{!v.data}">
+    	<p class="slds-p-horizontal--small">{!trainer.Name}-----{!trainer.Id}</p>
     </aura:iteration>
 </aura:component>

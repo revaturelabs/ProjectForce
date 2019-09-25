@@ -1,6 +1,7 @@
 ({
 	init : function(component, event, helper) {
-			var action = component.get("c.getAccount");
+			var action = component.get("c.getTrainer");
+        	action.setParams({locationName:"Texas"});
         	action.setCallback(this, function(response){
             var state = response.getState();
             if(state === "SUCCESS"){
