@@ -20,7 +20,7 @@ public without sharing class ModalController {
         }
     }
 
-
+    //Get trainers based on the location 
 	@AuraEnabled
     public static List<Trainer__c> getTrainer(String locationName){
         try{
@@ -59,7 +59,7 @@ public without sharing class ModalController {
         
     } 
 
-
+    //get rooms based on the location
 	@AuraEnabled
     public static List<Room__c> getRoom(String locationName){
         try{
@@ -89,11 +89,27 @@ public without sharing class ModalController {
             //Finally logic goes in here
         }
 
-        
     } 
 
-
-
+        //get all tracks
+        @Auraenabled
+        public static list<Track__c> getTrack(){
+            try{
+                if (schema.SObjectType.Track__c.isAccessible()){
+                    list<Track__c> trackList = [SELECT name FROM Track__c];
+                    system.debug(trackList);
+                    return trackList;
+                }else{
+                    return null;
+                }
+            //Catch logic below
+            }catch(Exception e){
+                throw new AuraHandledException('custom message');
+                
+            }finally{
+                //Finally logic goes in here
+            }
+        }
 
 
 }

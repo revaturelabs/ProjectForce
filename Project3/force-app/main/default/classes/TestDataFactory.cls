@@ -18,7 +18,7 @@ public class TestDataFactory {
         Savepoint sp = Database.setSavepoint();
 
         //change the value to the num of records you want to create, or bind a signiture value to this variable
-        integer numOfRecords=1;
+        integer numOfRecords=5;
        
         //Insert Trainer records
         list<trainer__c> TrainerList= new list<trainer__c>();
@@ -59,14 +59,6 @@ public class TestDataFactory {
         }
         Insert trainerTrackList;
 
-        //Insert Project Records
-        list<project__c> ProjectList= new list<project__c>();
-        for(integer i = 0; i<numOfRecords; i++){
-            project__c t = new project__c(name='Test Project '+i, track__c=trackIdList[i].id, Details__c='Test Detail '+i);
-            ProjectList.add(t);
-        }
-        Insert ProjectList;  
-
         //Insert Room records
         list<Room__c> RoomList= new list<Room__c>();
         list<Location__c> LocIdList = [SELECT id, name FROM location__c];
@@ -77,14 +69,28 @@ public class TestDataFactory {
         }
         Insert RoomList;
 
+        //Insert Project Records
+        list<project__c> ProjectList= new list<project__c>();
+        for(integer i = 0; i<numOfRecords; i++){
+            Integer randomDate = Integer.valueof((Math.random() * 30)+30);
+            Date day = system.today();
+            Date someDate = day.addDays(randomDate); 
+            project__c t = new project__c(name='Test Project '+i, track__c=trackIdList[i].id, Details__c='Test Detail '+i, Start_Date__c = someDate);
+            ProjectList.add(t);
+        }
+        Insert ProjectList;  
+
         //Insert Training Records
         list<Training__c> TrainingList= new list<Training__c>();
         list<Project__c> ProjectIdList= [SELECT Id, name FROM Project__c];
         list<Room__c> RoomIdList = [SELECT Id, name from Room__c];
 
         for(integer i = 0; i<numOfRecords; i++){
+            Integer randomDate = Integer.valueof((Math.random() * 30));
+            Date day = system.today();
+            Date someDate = day.addDays(randomDate); 
             Training__c t = new Training__c(name='Test Training '+i, Trainer__c=trainerIdList[i].id, Track__c=trackIdList[i].id,
-                                            Room__c=RoomIdList[i].id, Project__c=ProjectIdList[i].id, Batch_Number__c=1000+i);
+                                            Room__c=RoomIdList[i].id, Project__c=ProjectIdList[i].id, Batch_Number__c=1000+i, Start_Date__c = someDate);
             TrainingList.add(t);
         }
         Insert TrainingList; 
@@ -95,6 +101,17 @@ public class TestDataFactory {
             
         }
         return null;*/
+    }
+
+    public static Date randomDate(Date min, Date max) {
+        // Convert to DateTime values
+        DateTime mint = min, maxt = max.addDays(1);
+        // Then convert to milliseconds since Jan 1, 1970, and get difference in ms
+        Long minms = mint.getTime(), maxms = maxt.getTime(), diff = maxms - minms;
+        // Return a date between minms and maxms.
+        return DateTime.newInstance(
+            minms + Math.mod(Math.abs(Crypto.getRandomLong()), diff)
+        ).date();
     }
 
     /*public static void createTestData(){

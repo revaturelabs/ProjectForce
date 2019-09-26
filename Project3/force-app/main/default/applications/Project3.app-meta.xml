@@ -9,13 +9,6 @@
     <isNavPersonalizationDisabled>false</isNavPersonalizationDisabled>
     <label>Project3</label>
     <navType>Standard</navType>
-    <tabs>Location__c</tabs>
-    <tabs>Project__c</tabs>
-    <tabs>Room__c</tabs>
-    <tabs>Track__c</tabs>
-    <tabs>Trainer__c</tabs>
-    <tabs>TrainerTrack__c</tabs>
-    <tabs>Training__c</tabs>
     <uiType>Lightning</uiType>
     <utilityBar>Project3_UtilityBar</utilityBar>
 </CustomApplication>
