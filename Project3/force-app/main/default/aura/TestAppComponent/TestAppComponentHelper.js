@@ -3,7 +3,8 @@
 		var action = component.get("c.getTrainer");
 		var location = component.get("v.selectedLocation");
 		var track = component.get("v.selectedTrack");
-		action.setParams({locationName:location, trackName:track});
+		var startDate = component.get("v.selectedDate");
+		action.setParams({locationName:location, trackName:track, startDateName:startDate});
 		action.setCallback(this, function(response){
 		var state = response.getState();
 		if(state === "SUCCESS"){
