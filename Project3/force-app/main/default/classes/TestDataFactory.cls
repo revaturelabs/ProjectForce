@@ -2,6 +2,7 @@
 //    Test Data Factory
 //    Created by: Ying Ma, Frank Yang
 //    Created date: 9/24
+//    Instruction:
 //    Run the method createTestDate() to generate data in the org, change the integer numOfRecords at the beginning,
 //    to change the number of records to be genrated
 //
@@ -30,8 +31,10 @@ public class TestDataFactory {
 
         //Insert Track Records
         list<track__c> TrackList= new list<track__c>();
-        for(integer i = 0; i<numOfRecords; i++){
-            track__c t = new track__c(name='Test Track '+i);
+        list<string> track = new list<string>{'Salesforce','Java EE','Big Data'}; //Insert tracks in the location list
+        integer NumOfTracks = track.size();
+        for(integer i = 0; i<track.size(); i++){
+            track__c t = new track__c(name=track[i]);
             TrackList.add(t);
         }
         Insert TrackList;        
@@ -54,7 +57,8 @@ public class TestDataFactory {
         list<track__c> trackIdList = [SELECT id, name FROM track__c];
 
         for(integer i = 0; i<numOfRecords; i++){
-            trainerTrack__c t = new trainerTrack__c(name='Test Trainer Track '+i, trackTrainer__c=trackIdList[i].id, trainerTrack__c=trainerIdList[i].id);
+            Integer randomTrackNumber = Integer.valueof((Math.random() * trackIdList.size()));
+            trainerTrack__c t = new trainerTrack__c(name='Test Trainer Track '+i, trackTrainer__c=trackIdList[randomTrackNumber].id, trainerTrack__c=trainerIdList[i].id);
             trainerTrackList.add(t);
         }
         Insert trainerTrackList;
@@ -63,7 +67,7 @@ public class TestDataFactory {
         list<Room__c> RoomList= new list<Room__c>();
         list<Location__c> LocIdList = [SELECT id, name FROM location__c];
         for(integer i = 0; i<numOfRecords; i++){
-        Integer randomNumber = Integer.valueof((Math.random() * LocIdList.size()));
+            Integer randomNumber = Integer.valueof((Math.random() * LocIdList.size()));
             Room__c t = new Room__c(name='Test Room '+i, location__c=LocIdList[randomNumber].id, Room_Number__c= 100+i, Capacity__c=20);
             RoomList.add(t);
         }
@@ -72,10 +76,11 @@ public class TestDataFactory {
         //Insert Project Records
         list<project__c> ProjectList= new list<project__c>();
         for(integer i = 0; i<numOfRecords; i++){
+            Integer randomTrackNumber = Integer.valueof((Math.random() * trackIdList.size()));
             Integer randomDate = Integer.valueof((Math.random() * 30)+30);
             Date day = system.today();
             Date someDate = day.addDays(randomDate); 
-            project__c t = new project__c(name='Test Project '+i, track__c=trackIdList[i].id, Details__c='Test Detail '+i, Start_Date__c = someDate);
+            project__c t = new project__c(name='Test Project '+i, track__c=trackIdList[randomTrackNumber].id, Details__c='Test Detail '+i, Start_Date__c = someDate);
             ProjectList.add(t);
         }
         Insert ProjectList;  
@@ -86,10 +91,11 @@ public class TestDataFactory {
         list<Room__c> RoomIdList = [SELECT Id, name from Room__c];
 
         for(integer i = 0; i<numOfRecords; i++){
+            Integer randomTrackNumber = Integer.valueof((Math.random() * trackIdList.size()));
             Integer randomDate = Integer.valueof((Math.random() * 30));
             Date day = system.today();
             Date someDate = day.addDays(randomDate); 
-            Training__c t = new Training__c(name='Test Training '+i, Trainer__c=trainerIdList[i].id, Track__c=trackIdList[i].id,
+            Training__c t = new Training__c(name='Test Training '+i, Trainer__c=trainerIdList[i].id, Track__c=trackIdList[randomTrackNumber].id,
                                             Room__c=RoomIdList[i].id, Project__c=ProjectIdList[i].id, Batch_Number__c=1000+i, Start_Date__c = someDate);
             TrainingList.add(t);
         }
@@ -101,17 +107,6 @@ public class TestDataFactory {
             
         }
         return null;*/
-    }
-
-    public static Date randomDate(Date min, Date max) {
-        // Convert to DateTime values
-        DateTime mint = min, maxt = max.addDays(1);
-        // Then convert to milliseconds since Jan 1, 1970, and get difference in ms
-        Long minms = mint.getTime(), maxms = maxt.getTime(), diff = maxms - minms;
-        // Return a date between minms and maxms.
-        return DateTime.newInstance(
-            minms + Math.mod(Math.abs(Crypto.getRandomLong()), diff)
-        ).date();
     }
 
     /*public static void createTestData(){

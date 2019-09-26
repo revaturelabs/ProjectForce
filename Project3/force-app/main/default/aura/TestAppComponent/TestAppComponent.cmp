@@ -1,13 +1,46 @@
 <aura:component controller = "ModalController">
 
     <!-- attributes -->
-    <aura:attribute name="data2" type="String"/>
-    <aura:attribute name="data" type="Trainer__c[]"/>
+    <aura:attribute name="Trainer" type="Trainer__c[]"/>
+    <aura:attribute name="Loc" type="Location__c[]"/>
+    <aura:attribute name="Room" type="Room__c[]"/>
+    <aura:attribute name="Track" type="Track__c[]"/>
+    <aura:attribute name="Project" type="Project__c[]"/>
+    <aura:attribute name="selectedLocation" type="String" default="Reston"/>
+    <aura:attribute name="selectedTrack" type="String" default="Salesforce"/>
 
     <!-- handlers-->
     <aura:handler name="init" value="{! this }" action="{! c.init }"/>
-    <ui:outputText value="{!v.data}" />
-	<aura:iteration var="trainer" items="{!v.data}">
+
+    <h1>Locations:</h1>
+    <aura:iteration var="L" items="{!v.Loc}">
+    	<p class="slds-p-horizontal--small">{!L.Name}</p>
+    </aura:iteration>
+    <br/>
+
+    <h1>Filtered Trainers:</h1>
+	<aura:iteration var="trainer" items="{!v.Trainer}">
     	<p class="slds-p-horizontal--small">{!trainer.Name}-----{!trainer.Id}</p>
     </aura:iteration>
-</aura:component>
+    <br/>
+
+    <h1>Filtered Rooms:</h1>
+    <aura:iteration var="room" items="{!v.Room}">
+    	<p class="slds-p-horizontal--small">{!room.Name}</p>
+    </aura:iteration>
+    <br/>
+        
+    <h1>Tracks:</h1>
+    <aura:iteration var="track" items="{!v.Track}">
+    	<p class="slds-p-horizontal--small">{!track.Name}</p>
+    </aura:iteration>
+    <br/>
+    
+    <h1>Project:</h1>
+    <aura:iteration var="project" items="{!v.Project}">
+    	<p class="slds-p-horizontal--small">{!project.Name}</p>
+    </aura:iteration>
+    <br/>
+    
+    
+    </aura:component>
