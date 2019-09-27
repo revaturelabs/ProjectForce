@@ -23,7 +23,9 @@ public without sharing class ModalController {
     //Get trainers based on the location 
 	@AuraEnabled
     public static List<Trainer__c> getTrainer(String locationName, String trackName, Date startDateName){
-        startDateName = Date.newInstance(2019, 10, 5);//only for testing, delete!!!!
+        startDateName = Date.newInstance(2019, 10, 5);
+        locationName = 'Reston';
+        trackName='Java EE';
         try{
             if (schema.SObjectType.Trainer__c.isAccessible()){
             	//list<Trainer__c> TrainerList = [SELECT name FROM Trainer__c];
@@ -45,7 +47,6 @@ public without sharing class ModalController {
                     if(trainerLocationMap.get(t)==locationName){
                         filterTrainerList.add(t);
                     }
-                	//System.debug(t.Name + ' ' + trainerLocationMap.get(t));
                 }
 
 
@@ -60,6 +61,7 @@ public without sharing class ModalController {
                 list<trainer__c> secondFilterTrainerList = new list<trainer__c>();
                 for(trainer__c t : trainerTrackMap.keyset())
                 {
+                    System.debug(trainerTrackMap.get(t));
                     if(trainerTrackMap.get(t)==trackName){
                         secondFilterTrainerList.add(t);
                     }

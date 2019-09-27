@@ -89,13 +89,13 @@ public class TestDataFactory {
         list<Training__c> TrainingList= new list<Training__c>();
         list<Project__c> ProjectIdList= [SELECT Id, name FROM Project__c];
         list<Room__c> RoomIdList = [SELECT Id, name from Room__c];
+        list<trainerTrack__c> TrainerTrackIdList = [SELECT trackTrainer__r.name FROM trainerTrack__c];
 
         for(integer i = 0; i<numOfRecords; i++){
-            Integer randomTrackNumber = Integer.valueof((Math.random() * trackIdList.size()));
             Integer randomDate = Integer.valueof((Math.random() * 30));
             Date day = system.today();
             Date someDate = day.addDays(randomDate); 
-            Training__c t = new Training__c(name='Test Training '+i, Trainer__c=trainerIdList[i].id, Track__c=trackIdList[randomTrackNumber].id,
+            Training__c t = new Training__c(name='Test Training '+i, Trainer__c=trainerIdList[i].id, Track__c=TrainerTrackIdList[i].trackTrainer__c,
                                             Room__c=RoomIdList[i].id, Project__c=ProjectIdList[i].id, Batch_Number__c=1000+i, Start_Date__c = someDate);
             TrainingList.add(t);
         }
