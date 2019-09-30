@@ -23,9 +23,7 @@ public without sharing class ModalController {
     //Get trainers based on the location 
 	@AuraEnabled
     public static List<Trainer__c> getTrainer(String locationName, String trackName, Date startDateName){
-        startDateName = Date.newInstance(2019, 10, 5);
-        locationName = 'Reston';
-        trackName='Java EE';
+        //startDateName = Date.newInstance(2019, 10, 5);//only for testing, delete!!!!
         try{
             if (schema.SObjectType.Trainer__c.isAccessible()){
             	//list<Trainer__c> TrainerList = [SELECT name FROM Trainer__c];
@@ -59,9 +57,7 @@ public without sharing class ModalController {
                 }
 
                 list<trainer__c> secondFilterTrainerList = new list<trainer__c>();
-                for(trainer__c t : trainerTrackMap.keyset())
-                {
-                    System.debug(trainerTrackMap.get(t));
+                for(trainer__c t : trainerTrackMap.keyset()){
                     if(trainerTrackMap.get(t)==trackName){
                         secondFilterTrainerList.add(t);
                     }
@@ -77,10 +73,8 @@ public without sharing class ModalController {
 
                 //filters the trainers based on Start Date 
                 list<trainer__c> thirdFilterTrainerList = new list<trainer__c>();
-                for(trainer__c t : trainerStartDateMap.keyset())
-                {   System.debug('signaniture:'+startDateName);
-                    System.debug('trainterStartDate:' +trainerStartDatemap.get(t));
-                    if(trainerStartDateMap.get(t) >= startDateName){
+                for(trainer__c t : trainerStartDateMap.keyset()){  
+                   if(trainerStartDateMap.get(t) >= startDateName){
                         thirdFilterTrainerList.add(t);
                     }
                 }
@@ -92,7 +86,6 @@ public without sharing class ModalController {
                         finalTrainerList.add(t);
                     }
                 }
-
 
                 return finalTrainerList;
             }else{
@@ -112,7 +105,7 @@ public without sharing class ModalController {
     //get rooms based on the location
 	@AuraEnabled
     public static List<Room__c> getRoom(String locationName, Date startDateName){
-        startDateName = Date.newInstance(2019, 10, 10);//only for testing, delete!!!!
+        //startDateName = Date.newInstance(2019, 10, 10);//only for testing, delete!!!!
         try{
             if (schema.SObjectType.Room__c.isAccessible()){
             	//list<Trainer__c> TrainerList = [SELECT name FROM Trainer__c];
@@ -142,7 +135,6 @@ public without sharing class ModalController {
                     if(r.location__r.name==locationName){
                         filterRoomList.add(r);
                     }
-                	//System.debug(t.Name + ' ' + trainerMap.get(t));
                 }
 
 
@@ -154,7 +146,6 @@ public without sharing class ModalController {
                     }
                 }
 
-                System.debug(finalRoomList);
                 return finalRoomList;
             }else{
                 return null;
@@ -175,7 +166,6 @@ public without sharing class ModalController {
             try{
                 if (schema.SObjectType.Track__c.isAccessible()){
                     list<Track__c> trackList = [SELECT name FROM Track__c];
-                    system.debug(trackList);
                     return trackList;
                 }else{
                     return null;
@@ -193,7 +183,7 @@ public without sharing class ModalController {
         //get rooms based on the location
 	@AuraEnabled
     public static List<Project__c> getProject(String trackName, Date startDateName){
-        startDateName = Date.newInstance(2019, 11, 11);//only for testing, delete!!!!
+        //startDateName = Date.newInstance(2019, 11, 11);//only for testing, delete!!!!
         try{
             if (schema.SObjectType.Project__c.isAccessible()){
             	//list<Trainer__c> TrainerList = [SELECT name FROM Trainer__c];
@@ -207,7 +197,6 @@ public without sharing class ModalController {
                     }
                 	//System.debug(t.Name + ' ' + trainerMap.get(t));
                 }
-                System.debug(filterProjectList);
                 return filterProjectList;
             }else{
                 return null;
@@ -219,8 +208,5 @@ public without sharing class ModalController {
         }finally{
             //Finally logic goes in here
         }
-
     } 
-
-
 }

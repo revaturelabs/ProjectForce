@@ -66,6 +66,7 @@ public class TestDataFactory {
         //Insert Room records
         list<Room__c> RoomList= new list<Room__c>();
         list<Location__c> LocIdList = [SELECT id, name FROM location__c];
+
         for(integer i = 0; i<numOfRecords; i++){
             Integer randomNumber = Integer.valueof((Math.random() * LocIdList.size()));
             Room__c t = new Room__c(name='Test Room '+i, location__c=LocIdList[randomNumber].id, Room_Number__c= 100+i, Capacity__c=20);
@@ -75,12 +76,13 @@ public class TestDataFactory {
 
         //Insert Project Records
         list<project__c> ProjectList= new list<project__c>();
+        list<trainerTrack__c> TrainerTrackIdList = [SELECT trackTrainer__r.name FROM trainerTrack__c];
+
         for(integer i = 0; i<numOfRecords; i++){
-            Integer randomTrackNumber = Integer.valueof((Math.random() * trackIdList.size()));
             Integer randomDate = Integer.valueof((Math.random() * 30)+30);
             Date day = system.today();
             Date someDate = day.addDays(randomDate); 
-            project__c t = new project__c(name='Test Project '+i, track__c=trackIdList[randomTrackNumber].id, Details__c='Test Detail '+i, Start_Date__c = someDate);
+            project__c t = new project__c(name='Test Project '+i, track__c=TrainerTrackIdList[i].trackTrainer__c, Details__c='Test Detail '+i, Start_Date__c = someDate);
             ProjectList.add(t);
         }
         Insert ProjectList;  
@@ -89,7 +91,6 @@ public class TestDataFactory {
         list<Training__c> TrainingList= new list<Training__c>();
         list<Project__c> ProjectIdList= [SELECT Id, name FROM Project__c];
         list<Room__c> RoomIdList = [SELECT Id, name from Room__c];
-        list<trainerTrack__c> TrainerTrackIdList = [SELECT trackTrainer__r.name FROM trainerTrack__c];
 
         for(integer i = 0; i<numOfRecords; i++){
             Integer randomDate = Integer.valueof((Math.random() * 30));
@@ -109,7 +110,15 @@ public class TestDataFactory {
         return null;*/
     }
 
-    /*public static void createTestData(){
-        Database.rollback(sp);
-    }*/
+    public static void deleteTestData(){
+        List<track__c> trackList = [SELECT Id FROM track__c];
+        List<trainer__c> trainerList = [SELECT Id FROM trainer__c];
+        List<location__c> locationList = [SELECT Id FROM location__c];
+        if(trackList.size() > 0)
+            delete trackList;
+        if(trainerList.size() > 0)
+            delete trainerList;
+        if(locationList.size() > 0)
+            delete locationList;
+    }
 }

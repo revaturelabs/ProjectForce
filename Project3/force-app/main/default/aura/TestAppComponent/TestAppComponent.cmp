@@ -1,47 +1,158 @@
-<aura:component controller = "ModalController">
+<!--Server side controller is set to ModalController-->
+<aura:component controller = "ModalController"
+                implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickActionWithoutHeader" access="global" >
+  
+    
 
-    <!-- attributes -->
-    <aura:attribute name="Trainer" type="Trainer__c[]"/>
-    <aura:attribute name="Loc" type="Location__c[]"/>
-    <aura:attribute name="Room" type="Room__c[]"/>
-    <aura:attribute name="Track" type="Track__c[]"/>
-    <aura:attribute name="Project" type="Project__c[]"/>
-    <aura:attribute name="selectedLocation" type="String" default="Reston"/>
-    <aura:attribute name="selectedTrack" type="String" default="Salesforce"/>
-    <aura:attribute name="selectedDate" type="Date" default="'2019-10-5'"/>
+    <!--Attribute for the selected value-->
+    <aura:attribute name="selectedLocation" type="String"/>
+    
+     <!--Calls the Javascript controller on initialization of the page-->
+    <aura:handler name="init" value="{!this}" action="{!c.init}" />
+    
+    <!--Attribute for list of locations-->
+    <aura:attribute name="locations" type="String"/>
+    
+    <!--Date input-->
+    <aura:attribute name="selectedDate" type="Date"/>
+    
+        <!--Attribute for the selected value-->
+    <aura:attribute name="selectedTrack" type="String"/>
 
-    <!-- handlers-->
-    <aura:handler name="init" value="{! this }" action="{! c.init }"/>
+  
+     <!--Attribute for list-->
+    <aura:attribute name="tracks" type="String"/>
+    
+    
+    <!--Attribute for the selected value-->
+    <aura:attribute name="updateTrack" type="String"/>
 
-    <h1>Locations:</h1>
-    <aura:iteration var="L" items="{!v.Loc}">
-    	<p class="slds-p-horizontal--small">{!L.Name}</p>
-    </aura:iteration>
-    <br/>
+  
+    <!--Attribute for list-->
+    <aura:attribute name="updateTracks" type="String"/>
 
-    <h1>Filtered Trainers:</h1>
-	<aura:iteration var="trainer" items="{!v.Trainer}">
-    	<p class="slds-p-horizontal--small">{!trainer.Name}-----{!trainer.Id}</p>
-    </aura:iteration>
-    <br/>
+     <!--Attribute for the selected value-->
+    <aura:attribute name="updateProject" type="String"/>
 
-    <h1>Filtered Rooms:</h1>
-    <aura:iteration var="room" items="{!v.Room}">
-    	<p class="slds-p-horizontal--small">{!room.Name}</p>
-    </aura:iteration>
-    <br/>
+  
+    <!--Attribute for list-->
+    <aura:attribute name="updateProjects" type="String"/>
+
+     <!--Attribute for the selected value-->
+    <aura:attribute name="updateRoom" type="String"/>
+
+  
+    <!--Attribute for list-->
+    <aura:attribute name="updateRooms" type="String"/>    
+    
+    
+     <!--Attribute for the selected value-->
+    <aura:attribute name="updateLocation" type="String"/>
+
+  
+    <!--Attribute for list-->
+    <aura:attribute name="updateLocations" type="String"/>
+
+    
+     <!--Attribute for the selected value-->
+    <aura:attribute name="updateTrainer" type="String"/>
+
+  
+    <!--Attribute for list-->
+    <aura:attribute name="updateTrainers" type="String"/>    
+	
+<section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open slds-modal_small">
+	<!--<table>
+    <tr>
+     <td>-->
+    <div class="slds-modal__container">
+   <!--<lightning:card title="Filters:" class="filters">-->
+    <!--Location drop down-->
+    <span class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
         
-    <h1>Tracks:</h1>
-    <aura:iteration var="track" items="{!v.Track}">
-    	<p class="slds-p-horizontal--small">{!track.Name}</p>
-    </aura:iteration>
-    <br/>
+    <lightning:select   name="myLocation" label="Location" aura:id="myLocation" value="{!v.selectedLocation}" onchange="{!c.getFilter}">
+         <aura:iteration items="{!v.locations}" var="location" >
+            <option text="{!location.Name}" value="{!location.Name}" selected="{!location.selected}"/>
+        </aura:iteration>
+    </lightning:select>
     
-    <h1>Project:</h1>
-    <aura:iteration var="project" items="{!v.Project}">
-    	<p class="slds-p-horizontal--small">{!project.Name}</p>
-    </aura:iteration>
-    <br/>
+       <p>{!v.selectedLocation}</p>
     
+    <!--track drop down-->
+    <lightning:select class= "filters" name="myTrack" label="Select a Track:" aura:id="myTrack" value="{!v.selectedTrack}" onchange="{!c.getFilter}">
+         <aura:iteration items="{!v.tracks}" var="track">
+            <option text="{!track.Name}" value="{!track.Name}" selected="{!track.selected}"/>
+        </aura:iteration>
+    </lightning:select> 
     
-    </aura:component>
+       <p>{!v.selectedTrack}</p>
+
+    <lightning:input class= "filters" type="date" name="Date" label="Enter a date:" value="{!v.selectedDate}" onchange="{!c.getFilter}"/>
+    
+
+    <p>{!v.selectedDate}</p>
+        
+        </span>
+	
+    <!--Button for setting the filters
+    <lightning:button label="Set Filters" value="Filter" onclick="{!c.getFilter}"/> 
+    -->
+       
+   <!-- </lightning:card>
+        </td>
+    <td> -->    
+    <!--<lightning:card title="Selections:" class="filters">-->
+    <span class="slds-modal__content slds-p-around_medium" id="modal-content-id-2">
+    <!--Project drop down-->
+    <lightning:select name="selProject" label="Select a Project:" aura:id="selProject" value="{!v.updateProject}">
+         <aura:iteration items="{!v.updateProjects}" var="project">
+            <option text="{!project.Name}" value="{!project.Name}" selected="{!project.selected}"/>
+        </aura:iteration>
+    </lightning:select>
+    <p>{!v.updateProject}</p>
+
+    <!--Room drop down-->
+    <lightning:select name="selRoom" label="Select a Room:" aura:id="selRoom" value="{!v.updateRoom}">
+         <aura:iteration items="{!v.updateRooms}" var="room">
+            <option text="{!room.Name}" value="{!room.Name}" selected="{!room.selected}"/>
+        </aura:iteration>
+    </lightning:select> 
+    <p>{!v.updateRoom}</p>
+
+    <!--Trainer drop down-->
+    <lightning:select name="selTrainer" label="Select a Trainer:" aura:id="selTrainer" value="{!v.updateTrainer}">
+         <aura:iteration items="{!v.updateTrainers}" var="trainer">
+            <option text="{!trainer.Name}" value="{!trainer.Name}" selected="{!trainer.selected}"/>
+        </aura:iteration>
+    </lightning:select>     
+    <p>{!v.updateTrainer}</p> 
+
+    <!--Location drop down-->
+    <lightning:select name="selLocation" label="Select a Location:" aura:id="selLocation" value="{!v.updateLocation}">
+         <aura:iteration items="{!v.updateLocations}" var="location">
+            <option text="{!location.Name}" value="{!location.Name}" selected="{!location.selected}"/>
+        </aura:iteration>
+    </lightning:select>     
+    <p>{!v.updateLocation}</p>  
+    <!--Track drop down-->
+    <lightning:select name="selTrack" label="Select a Track:" aura:id="selTrack" value="{!v.updateTrack}">
+         <aura:iteration items="{!v.updateTracks}" var="track">
+            <option text="{!track.Name}" value="{!track.Name}" selected="{!track.selected}"/>
+        </aura:iteration>
+    </lightning:select>  
+    <p>{!v.updateTrack}</p> 
+        </span>
+    <!--</lightning:card>-->
+         <footer class="slds-modal__footer">
+            <button class="slds-button slds-button_neutral">Cancel</button>
+            <lightning:button class="slds-button slds-button_brand" label="Save Changes" value="Save" onclick="{!c.showToast}"/>
+          </footer>
+    </div>
+    
+    <!--<lightning:button label="Save Changes" value="Save" onclick="{!c.getFilter}"/>-->
+       <!-- </td>
+    </tr>
+    </table>-->    
+    </section>
+    <div class="slds-backdrop slds-backdrop_open"></div>
+</aura:component>
