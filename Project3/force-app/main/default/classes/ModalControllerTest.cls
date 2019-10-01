@@ -2,7 +2,7 @@
 public class ModalControllerTest {
 	@TestSetup
     static void setupData(){
-        TestDataFactory.createTestData(5);
+        TestDataFactory.createTestData(50);
     }
     
     //test returned list of locations
@@ -86,10 +86,10 @@ public class ModalControllerTest {
     //test returned list of filtered projects
     @isTest
     static void testProject(){
-        List<project__c> soqlProjectList = [SELECT name, track__r.name, start_Date__c FROM project__c];
+        List<project__c> soqlProjectList = [SELECT name, track__r.name, (SELECT projectStartDate__c FROM trainings__r ORDER BY projectStartDate__c asc LIMIT 1) FROM project__c];
         Id projectId = soqlProjectList[1].Id;
         String trackName = soqlProjectList[1].track__r.name;
-        Date startDateName = soqlProjectList[1].start_Date__c;
+        Date startDateName = soqlProjectList[1].trainings__r[0].projectStartDate__c;
         //filter the projects based on the signatures of the second queried record
         list<project__c> modalProjectList = ModalController.getProject(trackName, startDateName);
         //if getProject returns the second queried results
@@ -147,5 +147,22 @@ public class ModalControllerTest {
               list<trainer__c> userModalTrainerList = ModalController.getTrainer(locationName, trackName, startDateName);
               System.assertEquals(null, userModalTrainerList);
         }        
+    }
+
+    @isTest
+    static void testSave(){
+        Id trainingID = [SELECT Id FROM training__c WHERE name='Test Training 0' LIMIT 1].Id;
+        Training__c newTraining=[SELECT id, name, Start_Date__c, Trainer__c, Project__c, Room__c, Track__c FROM Training__c WHERE id = :trainingID LIMIT 1];
+        trainer__c newTrainer=[SELECT id, name FROM trainer__c LIMIT 1];
+        project__c newProject=[SELECT id, name FROM project__c LIMIT 1];
+        room__c newRoom=[SELECT id, name FROM room__c LIMIT 1];
+        track__c newTrack=[SELECT id, name FROM track__c LIMIT 1];
+        date newStartDate = System.today();
+        ModalController.Save(newTrainer.name, newProject.name, newRoom.name, newTrack.name, newStartDate);
+        System.assertEquals(newTrainer.Id, newTraining.trainer__c);
+        //System.assertEquals(newProject.Id, newTraining.project__c);
+        System.assertEquals(newRoom.Id, newTraining.room__c);
+        //System.assertEquals(newTrack.Id, newTraining.track__c);
+        System.assertEquals(newStartDate, newTraining.start_date__c);
     }
 }

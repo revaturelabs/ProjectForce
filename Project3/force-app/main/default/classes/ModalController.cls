@@ -8,7 +8,7 @@ public without sharing class ModalController {
     static Trainer__c ExternalTrainer = [SELECT name FROM trainer__c WHERE Name = 'External'];
     static List<Room__c> RoomList = [select name, location__r.name , (select start_date__c from trainings__r) from room__c];
     static list<Track__c> trackList = [SELECT name FROM Track__c];
-    static List<Project__c> ProjectList = [select name, track__r.name, start_Date__c from Project__c];
+    static List<Project__c> ProjectList = [select name, track__r.name ,(SELECT projectStartDate__c FROM trainings__r ORDER BY projectStartDate__c asc LIMIT 1) from Project__c];
 
 
 	@Auraenabled
@@ -195,7 +195,7 @@ public without sharing class ModalController {
                 list<Project__c> filterProjectList = new list<Project__c>();
                 //Find projects that matches all two filters and add to filterProjectList
                 for(Project__c p : ProjectList){
-                    if(p.track__r.name==trackName && p.start_Date__c>=startDateName){
+                    if(p.track__r.name==trackName && p.trainings__r[0].projectStartDate__c>=startDateName && p.trainings__r[0].projectStartDate__c!= null){
                         filterProjectList.add(p);
                     }
                 }

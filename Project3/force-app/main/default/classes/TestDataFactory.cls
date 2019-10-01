@@ -76,26 +76,61 @@ public class TestDataFactory {
         list<project__c> ProjectList= new list<project__c>();
         list<trainerTrack__c> TrainerTrackIdList = [SELECT trackTrainer__r.name FROM trainerTrack__c];
 
-        for(integer i = 0; i<numOfRecords; i++){
-            Integer randomDate = Integer.valueof((Math.random() * 30)+30);
-            Date day = system.today();
-            Date someDate = day.addDays(randomDate); 
-            project__c t = new project__c(name='Test Project '+i, track__c=TrainerTrackIdList[i].trackTrainer__c, Details__c='Test Detail '+i, Start_Date__c = someDate);
+        for(integer i = 0; i<numOfRecords/2; i++){
+            project__c t = new project__c(name='Test Project '+i, track__c=TrainerTrackIdList[i].trackTrainer__c, Details__c='Test Detail '+i);
             ProjectList.add(t);
         }
         Insert ProjectList;  
 
         //Insert Training Records
         list<Training__c> TrainingList= new list<Training__c>();
-        list<Project__c> ProjectIdList= [SELECT Id, name FROM Project__c];
+        list<Project__c> ProjectIdList= [SELECT Id, name, track__c, track__r.name FROM Project__c];
         list<Room__c> RoomIdList = [SELECT Id, name from Room__c];
 
+        //Generate three lists of projects based on tracks
+        list<project__c> SalesforceProject = new list<project__c>();
+        list<project__c> JavaEEProject = new list<project__c>();
+        list<project__c> BigDataProject = new list<project__c>();
+        for(project__c p : ProjectIDList){
+            if(p.track__r.name == 'Salesforce'){
+                SalesforceProject.add(p);
+            }else if(p.track__r.name == 'Java EE'){
+                JavaEEProject.add(p);
+            }else if(p.track__r.name == 'Big Data'){
+                BigDataProject.add(p);
+            }
+        }
+
+        //Assign the right project list based on the track
         for(integer i = 0; i<numOfRecords; i++){
-            Integer randomDate = Integer.valueof((Math.random() * 30));
+            list<project__c> ProjectIDAssign = new list<project__c>();
+            integer randomProject;
+            if(TrainerTrackIdList[i].trackTrainer__r.name == 'Salesforce'){
+                Integer randomProjectNumber = SalesforceProject.size();
+                randomProject = Integer.valueof((Math.random() * randomProjectNumber));
+                ProjectIDAssign = SalesforceProject;
+
+            }else if (TrainerTrackIdList[i].trackTrainer__r.name == 'Java EE'){
+                Integer randomProjectNumber = JavaEEProject.size();
+                randomProject = Integer.valueof((Math.random() * randomProjectNumber));
+                ProjectIDAssign = JavaEEProject;
+
+            }else if(TrainerTrackIdList[i].trackTrainer__r.name == 'Big Data'){
+                Integer randomProjectNumber = BigDataProject.size();
+                randomProject = Integer.valueof((Math.random() * randomProjectNumber));
+                ProjectIDAssign = BigDataProject;
+            }
+
+            
+
+
+            Integer randomDate = Integer.valueof((Math.random() * 60));
+            Integer batchDuration = Integer.valueof((Math.random() * 3)+10);
             Date day = system.today();
             Date someDate = day.addDays(randomDate); 
             Training__c t = new Training__c(name='Test Training '+i, Trainer__c=trainerIdList[i].id, Track__c=TrainerTrackIdList[i].trackTrainer__c,
-                                            Room__c=RoomIdList[i].id, Project__c=ProjectIdList[i].id, Batch_Number__c=1000+i, Start_Date__c = someDate);
+                                            Room__c=RoomIdList[i].id, Project__c=ProjectIDAssign[randomProject].id, Batch_Number__c=1000+i, Start_Date__c = someDate, 
+                                            BatchDuration__c=batchDuration);
             TrainingList.add(t);
         }
         Insert TrainingList; 
