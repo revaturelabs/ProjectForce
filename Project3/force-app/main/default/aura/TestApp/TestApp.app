@@ -1,3 +1,3 @@
 <aura:application extends="force:slds">
-    <c:TestAppComponent />
+    <c:ChartCalculation />
 </aura:application>
