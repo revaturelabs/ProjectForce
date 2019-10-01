@@ -2,7 +2,7 @@
 public class ModalControllerTest {
 	@TestSetup
     static void setupData(){
-        TestDataFactory.createTestData();
+        TestDataFactory.createTestData(5);
     }
     
     //test returned list of locations

@@ -50,6 +50,7 @@
         <members>Trainer__c</members>
         <members>TrainerTrack__c</members>
         <members>Training__c</members>
+        <members>Modal</members>
         <name>CustomTab</name>
     </types>
     <types>

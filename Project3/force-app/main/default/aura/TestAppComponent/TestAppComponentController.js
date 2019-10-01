@@ -1,7 +1,7 @@
 ({
     //Calls the helper to initialize the location, track and date
     init : function(component, event, helper) {
-            
+        helper.showModal(component);
         helper.location(component, event);
         helper.track(component, event);
         helper.date(component,event);
@@ -11,14 +11,25 @@
         helper.project(component, event);        
     },
     
-    showToast : function(component, event, helper) {
-     var toastEvent = $A.get("e.force:showToast");  
-     toastEvent.setParams({  
-       "title": "Success!",  
-       "message": "Here is your Success Toast Message!",  
-       "type": "success"  
-     });  
-     toastEvent.fire(); 
+    save : function(component, event, helper) {
+        
+        //helper.showToast(component, event);
+        let updateTrainer = component.get("v.updateTrainer");
+        let updateProject = component.get("v.updateProject");
+        let updateRoom = component.get("v.updateRoom");
+       // let selectedTrack = "v.selectedTrack";
+        //let selectedDate = "v.selectedDate";
+
+        //alert(updateTrainer+" "+updateProject+" "+updateRoom);
+        if(updateTrainer && updateProject && updateRoom)
+        {
+            helper.saveModal(component, event);
+            alert("works");
+        }
+        else
+        {
+            alert("Invalid");
+        }
 	},
     
     //save this for warning for the date later.....
@@ -34,5 +45,13 @@
         helper.room(component, event);
         helper.trainer(component, event);
         helper.project(component, event);
-    }
+    },
+
+    hideModal : function(component, event, helper) {
+    	helper.hideModal(component);
+    },
+
+    showModal : function(component, event, helper) {
+    	helper.showModal(component);
+    }    
 })

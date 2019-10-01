@@ -3,8 +3,8 @@
 //    Created by: Ying Ma, Frank Yang
 //    Created date: 9/24
 //    Instruction:
-//    Run the method createTestDate() to generate data in the org, change the integer numOfRecords at the beginning,
-//    to change the number of records to be genrated
+//    Run the method createTestData(integer numOfRecords) to generate data in the org
+//    Run the method deleteTestData() to delete all test data within the org.  Warning: this will also delete existing data
 //
 //    any questions, email at ma444699160@gmail.com to Ying Ma
 ////////////////////////////////////////////
@@ -14,19 +14,15 @@
 
 
 public class TestDataFactory {
-    public static void createTestData(){
-
-        Savepoint sp = Database.setSavepoint();
-
-        //change the value to the num of records you want to create, or bind a signiture value to this variable
-        integer numOfRecords=5;
+    public static void createTestData(integer numOfRecords){
        
         //Insert Trainer records
         list<trainer__c> TrainerList= new list<trainer__c>();
-        for(integer i = 0; i<numOfRecords; i++){
+        for(integer i = 0; i<numOfRecords-1; i++){
             trainer__c t = new trainer__c(name='Test Trainer '+i);
             TrainerList.add(t);
         }
+        TrainerList.add(new trainer__c(name='External'));
         Insert TrainerList;
 
         //Insert Track Records
@@ -41,7 +37,7 @@ public class TestDataFactory {
 
         //Insert location Records
         list<location__c> LocList= new list<location__c>();
-        list<string> location = new list<string>{'Reston','Florida','Texas'}; //Insert Locations in the location list
+        list<string> location = new list<string>{'Online','Reston','Florida','Texas'}; //Insert Locations in the location list
         integer NumOfLocations = location.size();
         for(integer i = 0; i<location.size(); i++){
             //Integer randomNumber = Integer.valueof((Math.random() * NumOfLocations));
@@ -67,11 +63,13 @@ public class TestDataFactory {
         list<Room__c> RoomList= new list<Room__c>();
         list<Location__c> LocIdList = [SELECT id, name FROM location__c];
 
-        for(integer i = 0; i<numOfRecords; i++){
-            Integer randomNumber = Integer.valueof((Math.random() * LocIdList.size()));
-            Room__c t = new Room__c(name='Test Room '+i, location__c=LocIdList[randomNumber].id, Room_Number__c= 100+i, Capacity__c=20);
-            RoomList.add(t);
+        for(integer i = 0; i<numOfRecords-1; i++){
+            Integer randomNumber = Integer.valueof((Math.random() * (LocIdList.size()-1))+1);
+            Room__c r = new Room__c(name='Test Room '+i, location__c=LocIdList[randomNumber].id, Room_Number__c= 100+i, Capacity__c=20);
+            RoomList.add(r);
         }
+        Room__c online = new Room__c(name='Online', location__c=LocIdList[0].id, Room_Number__c=0, Capacity__c=0);
+        RoomList.add(online);
         Insert RoomList;
 
         //Insert Project Records
@@ -101,13 +99,6 @@ public class TestDataFactory {
             TrainingList.add(t);
         }
         Insert TrainingList; 
-
-        /*try{
-            
-        }catch(Exception e){
-            
-        }
-        return null;*/
     }
 
     public static void deleteTestData(){

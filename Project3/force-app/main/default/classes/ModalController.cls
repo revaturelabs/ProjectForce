@@ -1,12 +1,22 @@
 //change without sharing to with sharing when deploying
 public without sharing class ModalController {
 
+    //All queries are done when modal is loaded 
+    static list<location__c> locList = [SELECT name FROM Location__c];
+    static List<Trainer__c> TrainerList = [select name, (select name, room__r.location__r.Name, start_Date__c from trainings__r),
+                                                (select trackTrainer__r.name from trainerTracks__r) from trainer__c WHERE name != 'External'];
+    static Trainer__c ExternalTrainer = [SELECT name FROM trainer__c WHERE Name = 'External'];
+    static List<Room__c> RoomList = [select name, location__r.name , (select start_date__c from trainings__r) from room__c];
+    static list<Track__c> trackList = [SELECT name FROM Track__c];
+    static List<Project__c> ProjectList = [select name, track__r.name, start_Date__c from Project__c];
+
+
 	@Auraenabled
     //Return a list of locations available
     public static list<location__c> getLocation(){
         try{
             if (schema.SObjectType.location__c.isAccessible()){
-                list<location__c> locList = [SELECT name FROM Location__c];
+                //list<location__c> locList = [SELECT name FROM Location__c];
                 return locList;
             }else{
                 return null;
@@ -23,12 +33,26 @@ public without sharing class ModalController {
     //Get trainers based on the location 
 	@AuraEnabled
     public static List<Trainer__c> getTrainer(String locationName, String trackName, Date startDateName){
-        //startDateName = Date.newInstance(2019, 10, 5);//only for testing, delete!!!!
         try{
             if (schema.SObjectType.Trainer__c.isAccessible()){
-            	//list<Trainer__c> TrainerList = [SELECT name FROM Trainer__c];
-                List<Trainer__c> TrainerList = [select name, (select name, room__r.location__r.Name, start_Date__c from trainings__r),
-                                                (select trackTrainer__r.name from trainerTracks__r) from trainer__c];
+                //List<Trainer__c> TrainerList = [select name, (select name, room__r.location__r.Name, start_Date__c from trainings__r),
+                //                                (select trackTrainer__r.name from trainerTracks__r) from trainer__c];
+
+                //Map the trainers with Start Date                                
+                Map<Trainer__c, date> trainerStartDateMap= new Map<Trainer__c, date>();
+                for(Trainer__c t: TrainerList){
+                    for(Training__c tg: t.trainings__r){
+                        trainerStartDateMap.put(t,tg.start_Date__c);
+                    }
+                }
+
+                //filters the trainers based on Start Date 
+                list<trainer__c> filterByDateTrainerList = new list<trainer__c>();
+                for(trainer__c t : trainerStartDateMap.keyset()){  
+                   if(trainerStartDateMap.get(t) >= startDateName){
+                        filterByDateTrainerList.add(t);
+                    }
+                }
 
                 //Map the trainers with location name                                
                 Map<Trainer__c, string> trainerLocationMap= new Map<Trainer__c, string>();
@@ -38,15 +62,14 @@ public without sharing class ModalController {
                     }
                 }
 
-                //filters the trainers based on location 
-                list<trainer__c> filterTrainerList = new list<trainer__c>();
+                //filters the trainers based on location and start date
+                list<trainer__c> filterByLocationTrainerList = new list<trainer__c>();
                 for(trainer__c t : trainerLocationMap.keyset())
                 {
-                    if(trainerLocationMap.get(t)==locationName){
-                        filterTrainerList.add(t);
+                    if(trainerLocationMap.get(t)==locationName && filterByDateTrainerList.contains(t)){
+                        filterByLocationTrainerList.add(t);
                     }
                 }
-
 
                 //Map the trainers with tracks
                 Map<Trainer__c, string> trainerTrackMap= new Map<Trainer__c, string>();
@@ -56,50 +79,39 @@ public without sharing class ModalController {
                     }
                 }
 
-                list<trainer__c> secondFilterTrainerList = new list<trainer__c>();
+                //filters the trainers based on track and start date
+                list<trainer__c> filterByTrackTrainerList = new list<trainer__c>();
                 for(trainer__c t : trainerTrackMap.keyset()){
-                    if(trainerTrackMap.get(t)==trackName){
-                        secondFilterTrainerList.add(t);
-                    }
-                }
-
-                 //Map the trainers with Start Date                                
-                Map<Trainer__c, date> trainerStartDateMap= new Map<Trainer__c, date>();
-                for(Trainer__c t: TrainerList){
-                    for(Training__c tg: t.trainings__r){
-                        trainerStartDateMap.put(t,tg.start_Date__c);
-                    }
-                }
-
-                //filters the trainers based on Start Date 
-                list<trainer__c> thirdFilterTrainerList = new list<trainer__c>();
-                for(trainer__c t : trainerStartDateMap.keyset()){  
-                   if(trainerStartDateMap.get(t) >= startDateName){
-                        thirdFilterTrainerList.add(t);
+                    if(trainerTrackMap.get(t)==trackName && filterByDateTrainerList.contains(t)){
+                        filterByTrackTrainerList.add(t);
                     }
                 }
 
                 //Find trainers that matches all three filters and add to finalTrainerList
                 list<trainer__c> finalTrainerList= new list<trainer__c>();
-                for(trainer__c t:filterTrainerList){
-                    if(secondFilterTrainerList.contains(t) && thirdFilterTrainerList.contains(t)){
+                for(trainer__c t:filterByDateTrainerList){
+                    if(filterByTrackTrainerList.contains(t) && filterByLocationTrainerList.contains(t)){
                         finalTrainerList.add(t);
                     }
                 }
 
-                return finalTrainerList;
+                //finalTrainerList.addall(ExternalTrainerList);
+                if(LocationName == 'Online'){
+                    filterByTrackTrainerList.add(ExternalTrainer);
+                    return filterByTrackTrainerList;
+                }else{
+                    finalTrainerList.add(ExternalTrainer);
+                    return finalTrainerList;
+                }
             }else{
                 return null;
             }
         //Catch logic below
         }catch(Exception e){
             throw new AuraHandledException('custom message');
-            
         }finally{
             //Finally logic goes in here
-        }
-
-        
+        }   
     } 
 
     //get rooms based on the location
@@ -108,8 +120,7 @@ public without sharing class ModalController {
         //startDateName = Date.newInstance(2019, 10, 10);//only for testing, delete!!!!
         try{
             if (schema.SObjectType.Room__c.isAccessible()){
-            	//list<Trainer__c> TrainerList = [SELECT name FROM Trainer__c];
-                List<Room__c> RoomList = [select name, location__r.name , (select start_date__c from trainings__r) from room__c];
+                //List<Room__c> RoomList = [select name, location__r.name , (select start_date__c from trainings__r) from room__c];
 
                 //Map the rooms with Training Start Date
                 Map<Room__c, date> roomStartDateMap= new Map<Room__c, date>();
@@ -121,8 +132,7 @@ public without sharing class ModalController {
 
                 //filters the rooms based on Start Date 
                 list<room__c> secondFilterRoomList = new list<room__c>();
-                for(room__c r : roomStartDateMap.keyset())
-                {
+                for(room__c r : roomStartDateMap.keyset()){
                     if(roomStartDateMap.get(r) >= startDateName){
                         secondFilterRoomList.add(r);
                     }
@@ -130,14 +140,11 @@ public without sharing class ModalController {
 
                 //filters the rooms based on location
                 list<Room__c> filterRoomList = new list<Room__c>();
-                for(room__c r : RoomList)
-                {
+                for(room__c r : RoomList){
                     if(r.location__r.name==locationName){
                         filterRoomList.add(r);
                     }
                 }
-
-
                 //Find rooms that matches all two filters and add to finalRoomList
                 list<room__c> finalRoomList= new list<room__c>();
                 for(room__c r:filterRoomList){
@@ -145,8 +152,7 @@ public without sharing class ModalController {
                         finalRoomList.add(r);
                     }
                 }
-
-                return finalRoomList;
+                return finalRoomList;                    
             }else{
                 return null;
             }
@@ -160,42 +166,38 @@ public without sharing class ModalController {
 
     } 
 
-        //get all tracks
-        @Auraenabled
-        public static list<Track__c> getTrack(){
-            try{
-                if (schema.SObjectType.Track__c.isAccessible()){
-                    list<Track__c> trackList = [SELECT name FROM Track__c];
-                    return trackList;
-                }else{
-                    return null;
-                }
-            //Catch logic below
-            }catch(Exception e){
-                throw new AuraHandledException('custom message');
-                
-            }finally{
-                //Finally logic goes in here
+    //get all tracks
+    @Auraenabled
+    public static list<Track__c> getTrack(){
+        try{
+            if (schema.SObjectType.Track__c.isAccessible()){
+                //list<Track__c> trackList = [SELECT name FROM Track__c];
+                return trackList;
+            }else{
+                return null;
             }
+        //Catch logic below
+        }catch(Exception e){
+            throw new AuraHandledException('custom message');
+                
+        }finally{
+            //Finally logic goes in here
         }
+    }
 
 
-        //get rooms based on the location
+    //get rooms based on the location
 	@AuraEnabled
     public static List<Project__c> getProject(String trackName, Date startDateName){
-        //startDateName = Date.newInstance(2019, 11, 11);//only for testing, delete!!!!
         try{
             if (schema.SObjectType.Project__c.isAccessible()){
-            	//list<Trainer__c> TrainerList = [SELECT name FROM Trainer__c];
-                List<Project__c> ProjectList = [select name, track__r.name, start_Date__c from Project__c];
-
+                //List<Project__c> ProjectList = [select name, track__r.name, start_Date__c from Project__c];
                 list<Project__c> filterProjectList = new list<Project__c>();
-                for(Project__c p : ProjectList)
-                {
+                //Find projects that matches all two filters and add to filterProjectList
+                for(Project__c p : ProjectList){
                     if(p.track__r.name==trackName && p.start_Date__c>=startDateName){
                         filterProjectList.add(p);
                     }
-                	//System.debug(t.Name + ' ' + trainerMap.get(t));
                 }
                 return filterProjectList;
             }else{
@@ -209,4 +211,32 @@ public without sharing class ModalController {
             //Finally logic goes in here
         }
     } 
+
+
+    //Saves changes to selected batch (training)
+    @auraEnabled
+    public static boolean Save(/*Id trainingId, */string newTrainerName, string newProjectName, string newRoomName, string newTrackName, date newStartDate){
+        Id trainingID = [SELECT Id FROM training__c WHERE name='Test Training 0' LIMIT 1].Id;//REMOVE THIS AFTER DEPLOYMENT!!!
+        id newTrainerId = [SELECT Id FROM Trainer__c WHERE name = :newTrainerName LIMIT 1].id;
+        Id trainerTrackID = [SELECT Id FROM trainertrack__c WHERE TrainerTrack__c =:newTrainerId LIMIT 1].Id;
+        id newProjectId = [SELECT Id FROM Project__c WHERE name = :newProjectName LIMIT 1].id;
+        id newRoomId = [SELECT Id FROM Room__c WHERE name = :newRoomName LIMIT 1].id;
+        id newTrackId = [SELECT Id FROM Track__c WHERE name = :newTrackName LIMIT 1].id;
+        Training__c newTraining=[SELECT id, name, Start_Date__c, Trainer__c, Project__c, Room__c, Track__c FROM Training__c WHERE id = :trainingID LIMIT 1];
+        trainertrack__c newTrainerTrack=[SELECT Id, TrackTrainer__c, TrackTrainer__r.name FROM trainertrack__c WHERE Id =:trainerTrackID LIMIT 1];
+
+        newTraining.Trainer__c=newTrainerId;
+        newTraining.Project__c=newProjectId;
+        newTraining.room__c=newRoomId;
+        newTraining.Track__c=newTrackId;
+        newTraining.Start_Date__c=newStartDate;
+        
+        //newTrainerTrack.TrackTrainer__c=newTrackId;
+        //update newTrainerTrack;
+        database.saveResult result = Database.update(newTraining);
+        System.debug(result.isSuccess());
+        return result.isSuccess();
+    }
+
+
 }

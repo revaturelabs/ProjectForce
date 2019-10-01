@@ -108,6 +108,10 @@
 			
 			let track = response.getReturnValue();
 
+			/*let newTrack = track;
+			newTrack.Name = "All";
+			track.unshift(newTrack);*/
+
 			if(state === "SUCCESS"){
 				
 				let trackList = component.get("v.tracks");
@@ -243,23 +247,30 @@
 	},
 
 	saveModal : function(component, event) {
-		/*
-		var action = component.get("c.getRoom");
+		
+		var action = component.get("c.Save");
+
 		//how many params do we need to pass
         action.setParams({
-            "locationName": component.get("v.selectedLocation"),
-            "startDateName": component.get("v.selectedDate")
+            "newTrainerName": component.get("v.updateTrainer"),
+			"newProjectName": component.get("v.updateProject"),
+			"newRoomName": component.get("v.updateRoom"),
+			"newTrackName": component.get("v.selectedTrack"),
+			"newStartDate": component.get("v.selectedDate")
 		});
 		
 		action.setCallback(this, function(response){
 		var state = response.getState();
-		let room = response.getReturnValue();
+
+		let saveComplete = response.getReturnValue();
+
+		//this.hide(component,event);
+		//this.showToast(component,event);
+
 		if(state === "SUCCESS"){
-			component.set("v.updateRooms", room);
-			if(room.length !=0)
-			{
-				component.set("v.updateRoom", room[0].Name);
-			}
+			
+			this.hide(component,event);
+			this.showToast(component,event);
 		}
 		else{
 			console.log("Failed with state: "+state);
@@ -267,8 +278,55 @@
 		
 		
 	});
-	$A.enqueueAction(action);*/
-	}
+
+	$A.enqueueAction(action);
+	},
+
+	//hides the modals and removes the backdrop class
+	hideModal : function(component) {
+		var modal = component.find("modalSection");
+		var backdrop = component.find("backdrop");
+		$A.util.addClass(modal, 'hideModal');
+
+		$A.util.removeClass(backdrop, 'slds-backdrop slds-backdrop_open');
+	},
+
+	//hides the modals and removes the backdrop class
+	showModal : function(component) {
+
+		var modal = component.find("modalSection");
+		var backdrop = component.find("backdrop");
+		$A.util.removeClass(modal, 'hideModal');
+
+		$A.util.addClass(backdrop, 'slds-backdrop slds-backdrop_open');
+	},
+	
+	showToast : function(component, event, helper) {
+		var toastEvent = $A.get("e.force:showToast");  
+		toastEvent.setParams({  
+		  "title": "Success!",  
+		  "message": "Here is your Success Toast Message!",  
+		  "type": "success"  
+		});  
+		toastEvent.fire(); 
+	
+	   
+	   /* let toast = this.toastCtrl.create({
+		  message: component,
+		  showCloseButton: true,
+		  closeButtonText: event,
+		  position: 'bottom'
+		});
+	   
+	   
+		toast.onDidDismiss((data) => {
+		  clearTimeout(timeoutHandler);
+		  console.log('time elapsed',data);
+			if(!data || !data.autoclose)
+			 callback()
+		});
+		toast.present();*/
+	   }
 
 
 })
