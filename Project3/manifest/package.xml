@@ -42,7 +42,7 @@
         <members>Training__c</members>
         <name>CustomObject</name>
     </types>
-    <types>
+    <!--<types>
         <members>Location__c</members>
         <members>Project__c</members>
         <members>Room__c</members>
@@ -51,6 +51,11 @@
         <members>TrainerTrack__c</members>
         <members>Training__c</members>
         <members>Modal</members>
+        <memeber>Chart</members>
+        <name>CustomTab</name>
+    </types>-->
+    <types>
+        <members>*</members>
         <name>CustomTab</name>
     </types>
     <types>
@@ -65,5 +70,6 @@
         <members>Project3_UtilityBar</members>
         <name>FlexiPage</name>
     </types>
+
     <version>47.0</version>
 </Package>

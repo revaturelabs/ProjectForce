@@ -17,6 +17,7 @@
     <tabs>Project__c</tabs>
     <tabs>Room__c</tabs>
     <tabs>Modal</tabs>
+    <tabs>Chart</tabs>
     <uiType>Lightning</uiType>
     <utilityBar>Project_3_UtilityBar</utilityBar>
 </CustomApplication>

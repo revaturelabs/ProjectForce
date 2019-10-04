@@ -1,0 +1,40 @@
+.THIS.graph_container{
+  display:block;
+  width:600px;
+}
+
+.THIS .chartmanip {
+    border-bottom: 2px solid black;
+    border-left: 2px solid black;
+    border-right: 2px solid black;
+    border-top: 10px solid #474C55; 
+    border-radius: 5px;
+    display:flex;
+    width: 80%;
+    margin-left:2.5%;
+    margin-right: 2.5%;
+    
+    font-family: Futura;
+}
+.THIS #Colors {
+    float: right;
+    width: 30%;
+    margin-left:5%;
+    margin-right: 5%;}
+
+.THIS #Sorting {
+    float: right;
+    width:30%;
+    margin-left:5%;
+    margin-right: 5%;    
+}
+
+.THIS #Filters {
+    float: left;
+    width:30%;
+    margin-left:5%;
+    margin-right: 5%;
+}
+.THIS .Chart {
+    width:90%;
+}

@@ -1,14 +1,17 @@
 ({
     //Calls the helper to initialize the location, track and date
-    init : function(component, event, helper) {
-        helper.showModal(component);
-        helper.location(component, event);
-        helper.track(component, event);
-        helper.date(component,event);
+    doInit : function(component, event, helper){
 
-        helper.room(component, event);
-        helper.trainer(component, event);
-        helper.project(component, event);        
+            helper.showModal(component);
+            helper.location(component, event);
+            helper.track(component, event);
+            helper.date(component,event);
+            helper.room(component, event);
+            helper.trainer(component, event);
+            helper.project(component, event);
+            
+           
+
     },
     
     save : function(component, event, helper) {
@@ -24,11 +27,11 @@
         if(updateTrainer && updateProject && updateRoom)
         {
             helper.saveModal(component, event);
-            alert("works");
+            //alert("works");
         }
         else
         {
-            alert("Invalid");
+            alert("Invalid drop");
         }
 	},
     
@@ -40,8 +43,8 @@
     getFilter : function(component, event, helper){
         //helper.getFilters(component, event);
         
-        helper.location(component, event);
-        helper.track(component, event);
+        //helper.location(component, event);
+        //helper.track(component, event);
         helper.room(component, event);
         helper.trainer(component, event);
         helper.project(component, event);
@@ -52,6 +55,15 @@
     },
 
     showModal : function(component, event, helper) {
-    	helper.showModal(component);
+        console.log("showModal");
+        helper.location(component, event);
+        helper.track(component, event);
+        helper.date(component,event);
+        helper.room(component, event);
+        helper.trainer(component, event);
+        helper.project(component, event);
+        helper.showModal(component);
+
+        console.log("showModal completed");
     }    
 })

@@ -1,0 +1,7 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickActionWithoutHeader" access="global">
+        
+    	<c:TestAppComponent aura:id="modalComp"/>
+        <lightning:button variant="neutral" label="New" onclick="{!c.callSaveComp}"/>
+        <c:TestAppComponent/>
+
+</aura:component>
