@@ -160,6 +160,7 @@
         //and it's been split into separate arrays, so that way it's easier to use in the Chart creation.
         var returnThis= new Chart(ctx, {    
             type: 'horizontalBar',
+            events:[],
             data: {
                 
                 labels: tracksAndProjects,
@@ -171,7 +172,6 @@
                     //This data is when the project is supposed to start
                     data: d,                   
                     backgroundColor: "rgba(63,103,126,0)",
-                    hoverBackgroundColor: "rgba(50,90,100,0)"
                     
                 },{
                     //example of how to reference something in here: chart.data.datasets[1].data[i]

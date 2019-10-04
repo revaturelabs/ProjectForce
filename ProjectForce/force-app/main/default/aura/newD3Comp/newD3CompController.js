@@ -23,7 +23,7 @@
     //    	
     //    If you have any questions, please email Geoffrey Murray @ geoffrey.murray.1995@gmail.com
     ////////////////////////////////////////////
-	myAction : function(component, event, helper) {
+    myAction : function(component, event, helper) {
         
         var yLabels = {};
         
@@ -60,7 +60,7 @@
                 } else if (i>335 && i<367) {
                     yLabels[i] = 'Dec '+ (i-335) + ' ' + year
                 }
-        	}
+            }
             //next year after a leap year, so not a leap year
             for(let i=367;i<733;i++) {
                 if(i>366 && i<398) {
@@ -117,7 +117,7 @@
                 } else if (i>334 && i<366) {
                     yLabels[i] = 'Dec '+ (i-334) + ' ' + year
                 }
-        	}
+            }
             //next year after not a leap year, checking if next year is a leap year
             if((year+1)%4==0) {
                 for(let i=366;i<732;i++) {
@@ -183,52 +183,113 @@
         }
         
         var barOptions_stacked = {
-            hover :{
-                animationDuration:10
+            
+                hover: {
+                    animationDuration:10
+                },
+            events: {
+                events: []
             },
-            scales: {
-                xAxes: [{
-                    ticks: {
-                        //beginAtZero: true,
-                        fontFamily: "'Open Sans Bold', sans-serif",
-                        fontSize:11,
-                        callback: function(value, index, values) {
-                        return yLabels[value];
-                    	}
-                    },
-                    scaleLabel:{
-                        display:true,
-                        labelString: 'Month',
-                    },
-                    gridLines: {
-                    }, 
-                    stacked: true
-                }],
-                yAxes: [{
-                    gridLines: {
-                        display:false,
-                        color: "#fff",
-                        zeroLineColor: "#fff",
-                        zeroLineWidth: 0
-                    },
-                    ticks: {
-                        fontFamily: "'Open Sans Bold', sans-serif",
-                        fontSize:11
-                    },
-                    scaleLabel:{
-                        display:true,
-                        labelString: 'Tracks',
-                    },
-                    stacked: true
-                }]
+            animation: {
+                onComplete: function () {
+                    var ctx = this.chart.ctx;
+                    var chartInstance = this.chart;
+                    ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontFamily, 'normal', Chart.defaults.global.defaultFontFamily);
+                    ctx.textAlign = 'left';
+                    ctx.fillStyle = '#FFFFFF'; // label color
+                    /*this.data.datasets.forEach(function (dataset) {
+                        for (var i = 0; i < dataset.data.length; i++) {
+                            var model = dataset._meta[Object.keys(dataset._meta)[0]].data[i]._model,
+                                left = dataset._meta[Object.keys(dataset._meta)[0]].data[i]._xScale.left;
+                            ctx.fillStyle = '#444'; // label color
+                            var label = model.label;
+                            ctx.fillText(label, left + 15, model.y + 8);
+                        }
+                    }); */ 
+                    this.data.datasets.forEach(function (dataset, i) {
+                        var meta = chartInstance.controller.getDatasetMeta(i);
+                        meta.data.forEach(function (bar, index) {
+                            var model = dataset._meta[Object.keys(dataset._meta)[0]].data[index]._model;                            
+                            var label = model.label;
+                            
+                            ctx.fillText(label, bar._model.x+2, bar._model.y);
+                            
+                        });
+                    });
+                }
             },
-            legend:{
-                display:false
-            },
-        };
+                scales: {
+                    series: [{
+                        data:[100,200,400]
+                    }],
+                    
+                    plotOptions: {
+                        bar: {
+                            horizontal: true,
+                            dataLabels: {
+                                position: 'top',
+                            },
+                            
+                        }  
+                    },
+                    
+                    dataLabels: {
+                        enabled: true,
+                        offsetX: -6,
+                        style: {
+                            
+                            colors: ['#FFFFFF']
+                        }
+                    },
+                    xAxes: [{
+                        ticks: {
+                            //beginAtZero: true,
+                            fontFamily: "'Futura', sans-serif",
+                            fontSize:11,
+                            callback: function(value, index, values) {
+                                return yLabels[value];
+                            }
+                        },
+                        scaleLabel:{
+                            display:true,
+                            labelString: 'Month',
+                        },
+                        gridLines: {
+                        }, 
+                        stacked: true
+                    }],
+                    yAxes: [{
+                        gridLines: {
+                            display:false,
+                            color: "#fff",
+                            zeroLineColor: "#fff",
+                            zeroLineWidth: 0
+                        },
+                        ticks: {
+                            fontFamily: "'Futura', sans-serif",
+                            fontSize:11,
+                            
+                            
+                        },
+                        scaleLabel:{
+                            display:false,
+                            labelString: 'Batches',
+                        },
+                        stacked: true
+                    }]
+                },
+                legend:{
+                    display:false
+                },
+            tooltips:{
+                enabled: false
+            }
+            
+                
+            };
         
         var getTrrrack = component.get("c.getTrainings");
-
+        
         getTrrrack.setCallback(this, function(response) {
             var state = response.getState();
             if (state === "SUCCESS") {
@@ -253,7 +314,7 @@
         
         $A.enqueueAction(getTrrrack);
         
-       
+        
     },
     
     runSort:function(component, event, helper)
@@ -289,12 +350,12 @@
         var newColors = helper.applyColors(allTracks, allColors, myChart, currTrainings);
         component.set('v.DisplayColors', newColors);
         helper.updateData(component);
-
+        
     },
     
     runFilter: function (component, event, helper) {
         console.log('runFilter has been entered.');
-       //Grabbing Relevant data
+        //Grabbing Relevant data
         var allTrainings = component.get('v.qTraining');
         var myChart = component.get('v.dasChart');
         var selectedTrack = component.find("TrackFilter").get("v.value");
@@ -306,5 +367,5 @@
         component.set('v.tempList', newData);
         
     }
-        
+    
 })
