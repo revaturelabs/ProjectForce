@@ -8,7 +8,7 @@ public without sharing class ModalController {
     static Trainer__c ExternalTrainer = [SELECT name FROM trainer__c WHERE Name = 'External'];
     static List<Room__c> RoomList = [select name, location__r.name , (select start_date__c from trainings__r) from room__c];
     static list<Track__c> trackList = [SELECT name FROM Track__c];
-    static List<Project__c> ProjectList = [select name, track__r.name ,(SELECT projectStartDate__c FROM trainings__r ORDER BY projectStartDate__c asc LIMIT 1) from Project__c];
+    static List<Project__c> ProjectList = [select name, track__r.name ,(SELECT projectStartDate__c FROM trainings__r ORDER BY projectStartDate__c desc LIMIT 1) from Project__c];
 
 
 	@Auraenabled
@@ -17,6 +17,39 @@ public without sharing class ModalController {
         try{
             if (schema.SObjectType.location__c.isAccessible()){
                 //list<location__c> locList = [SELECT name FROM Location__c];
+                return locList;
+            }else{
+                return null;
+            }
+        //Catch logic below
+        }catch(Exception e){
+            throw new AuraHandledException('custom message');
+            
+        }finally{
+            //Finally logic goes in here
+        }
+    }
+
+    @Auraenabled
+    //Return a list of locations with the signiture location being the defualt option
+    public static list<location__c> getLocation(string SelectedLocation){
+        try{
+            if (schema.SObjectType.location__c.isAccessible()){
+                if(locList[0].name==SelectedLocation){return locList;}
+                //list<location__c> locList = [SELECT name FROM Location__c];
+                location__c temploc = loclist[0];
+                location__c loc;
+                integer locindex;
+                for (location__c l : loclist){
+                    if(selectedLocation == l.name){
+                        locindex = loclist.indexOf(l);
+                        loc=l;
+                        
+                    }
+                }
+                loclist[0]=loc;
+                loclist.remove(locindex);
+                loclist.add(temploc);
                 return locList;
             }else{
                 return null;
@@ -171,7 +204,42 @@ public without sharing class ModalController {
     public static list<Track__c> getTrack(){
         try{
             if (schema.SObjectType.Track__c.isAccessible()){
-                //list<Track__c> trackList = [SELECT name FROM Track__c];
+                //list<Track__c> trackList = [SELECT name FROM Track__c]
+                return trackList;
+            }else{
+                return null;
+            }
+        //Catch logic below
+        }catch(Exception e){
+            throw new AuraHandledException('custom message');
+                
+        }finally{
+            //Finally logic goes in here
+        }
+    }
+
+
+    //get all tracks, put the selected track as the first item
+    @Auraenabled
+    public static list<Track__c> getTrack(string SelectedTrack){
+        try{
+            if (schema.SObjectType.Track__c.isAccessible()){
+                System.debug('track list ' + trackList);
+                if(trackList[0].name==SelectedTrack){return trackList;}
+                //list<Track__c> trackList = [SELECT name FROM Track__c]
+                track__c temptrack = tracklist[0];
+                track__c tr;
+                integer trindex;
+                for (track__c t : tracklist){
+                    if(selectedtrack == t.name){
+                        trindex = tracklist.indexOf(t);
+                        tr=t;
+                    }
+                }
+                tracklist[0]=tr;
+                tracklist.remove(trindex);
+                tracklist.add(temptrack);
+                System.debug('track list ' + trackList);
                 return trackList;
             }else{
                 return null;
@@ -195,7 +263,11 @@ public without sharing class ModalController {
                 list<Project__c> filterProjectList = new list<Project__c>();
                 //Find projects that matches all two filters and add to filterProjectList
                 for(Project__c p : ProjectList){
-                    if(p.track__r.name==trackName && p.trainings__r[0].projectStartDate__c>=startDateName && p.trainings__r[0].projectStartDate__c!= null){
+
+                        System.debug('train' + p.Trainings__r);
+                    if(p.trainings__r.size() == 0){
+                        continue;
+                    }else if(p.track__r.name==trackName && p.trainings__r[0].projectStartDate__c>=startDateName && p.trainings__r[0].projectStartDate__c!= null){
                         filterProjectList.add(p);
                     }
                 }
