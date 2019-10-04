@@ -7,6 +7,7 @@
   width:600px;
 }
 
+/*applies to the box around the manipulations*/
 .THIS .chartmanip {
     border-bottom: 2px solid #474C55;
     border-left: 2px solid #474C55;
@@ -16,11 +17,14 @@
     
     display:flex;
     width: 80%;
-    margin-left:2.5%;
-    margin-right: 2.5%;
+    margin-left:5%;
+    margin-right:5%;
     
     
 }
+/*Begin Styling for each individual box.
+	This is more so they don't stack on top of each other.*/
+
 .THIS #Colors {
     float: right;
     width: 30%;
@@ -40,10 +44,26 @@
     margin-left:5%;
     margin-right: 5%;
 }
+
+/*Styling for the Chart */
 .THIS .Chart {
     width:90%;
+    border-bottom: 2px solid #474C55;
+    border-left: 2px solid #474C55;
+    border-right: 2px solid #474C55;
+    border-top: 10px solid #474C55; 
+    border-radius: 5px;
+    margin: 2.5%;
 }
 .THIS button{
     border-radius: 5px;
-	background-color: #F26925;   
+	background-color: #F26925;
+    color: white;
+    
+    margin: 3px;
 }
+/*
+.THIS #modal-heading-01 {
+    background-color: #474C55;
+    color: #F26925;
+}*/

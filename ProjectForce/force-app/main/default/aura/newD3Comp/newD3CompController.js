@@ -1,9 +1,31 @@
 ({
+    ////////////////////////////////////////////
+    //    Gantt Chart Javascript Controller Class
+    //    Created by: William Brown, Chou Chen, Auroiah Morgan, Geoffrey Murray
+    //    First Published: 9/24
+    //    Purpose: To Provide the direct functionality for the ProjectForce Gantt Chart.
+    //    *********************Functions included:****************************
+    //    	myAction(component, event, helper)
+    //    	|	Creates the chart when the static resource finishes loading. Includes:
+    //    	|	-calling the Apex controller to get all data in org
+    //    	|	-setting initial values for filters/sortBy/colors
+    //    	|	-creating the Chart
+    //    	
+    //    	runSort(component, event, helper)
+    //    	|	when SortBy is changed, re-sorts the data displayed, and updates color fields
+    //    	
+    //    	applyColors(component, event, helper)
+    //    	|	when 'apply color' button is pressed, or data is updated, grab colors selected,
+    //    	|	and apply them to the chart
+    //    	
+    //		runFilter(component, event, helper)
+    //    	|	takes values given in the Filter section and throws them into Filter function
+    //    	
+    //    If you have any questions, please email Geoffrey Murray @ geoffrey.murray.1995@gmail.com
+    ////////////////////////////////////////////
 	myAction : function(component, event, helper) {
         
-        var yLabels = {
-            
-        }
+        var yLabels = {};
         
         var date = new Date();
         //current year and starting the for loop at the start of the current year

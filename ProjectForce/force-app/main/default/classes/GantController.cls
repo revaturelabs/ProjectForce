@@ -48,7 +48,7 @@ public with sharing class GantController {
         @AuraEnabled public String location {get;set;}
         @AuraEnabled public String trackName {get;set;}
         
-        //constructer
+        //constructor
         public SimpleTraining(String trainingID, String name, String project, Decimal room, String trainer, Date startDate, String location, String trackName){
             this.trainingId = trainingId;
             this.name = name;

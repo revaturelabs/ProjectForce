@@ -1,5 +1,9 @@
 <aura:component controller="GantController">
+    <!--This grabs the Chart.js library from the static resources, 
+		and runs the chart creation function when finished.-->
     <ltng:require scripts="{!$Resource.ChartJS}" afterScriptsLoaded="{!c.myAction}" />
+    <!--These are variables being used to store data relevant to the chart.
+		It's how we  can maintain values being passed between js functions and apex functions as well. -->
     <aura:attribute name="qTraining" type="List"/>
     <aura:attribute name="tempList" type="List"/>
     <aura:attribute name="dasChart" type = "Object"/>
@@ -13,34 +17,40 @@
     
     
     <div class = "THIS">
+        <!--This div marks where all the chart manipulation sections can be found. -->
         <div class="chartmanip" label="Chart Manipulations" >
+            <!--Start the Filter section -->
             <div  id="Filters">
+                <!--header-->
+                <header class="slds-modal__header">
+                    <h1 id="modal-heading-01" class="slds-modal__title slds-hyphenate">Filter</h1>
+                </header>
+                <!--This is a selectbox that will hold the value for the Track filter -->
                 <lightning:select name="TrackFilter" label="Select a Track:" aura:id="TrackFilter" >
-                    <aura:iteration items="{!v.Tracks}" var="option">
-                        <option text="{!option}" value="{!option}"/>
-                    </aura:iteration>
+                <!--Iterate through all the tracks attribute, and add them to the select box -->
+                <aura:iteration items="{!v.Tracks}" var="option">
+                    <option text="{!option}" value="{!option}"/>
+                </aura:iteration>
                 </lightning:select>
+                <!--Another selectbox for the Location Filter -->
                 <lightning:select name="LocationFilter" label="Select a Location:" aura:id="LocationFilter" >
+                    <!--As before but iterate through the locations attribute instead -->
                     <aura:iteration items="{!v.Locations}" var="option">
-                        
                         <option text="{!option}" value="{!option}"/>
                     </aura:iteration>
                 </lightning:select>
-                
+				<!--Allow only batches that start after this date. Set automatically to today. -->                
                 <ui:inputDate aura:id="DateFilter" label="Select a Start Date" class="field" value="{!v.today}" displayDatePicker="true" />
-                
+               	<!--Press to run the runFilter function in the controller. -->
                 <button label="Run Filters" title="Run Filters" onclick="{!c.runFilter}" >Run Filters</button>
             </div>
-            <div id="Colors">
-                <aura:iteration items="{!v.Tracks}" var="option" indexVar = "index">
-                    <aura:if isTrue="{! index != 0 }"> 
-                        {!option} Color:
-                        <lightning:input id="{!option}" type="color" name="color" value="#EEEEEE" aura:id="colors" />
-                    </aura:if>
-                </aura:iteration>
-                <button label="Apply Colors" title="Apply Colors" onclick="{!c.applyColors}" >Apply Colors</button>
-            </div>
+            <!--Beginning of the Sorting section -->
             <div id="Sorting">
+                <!--Header -->
+                <header class="slds-modal__header">
+                    <h1 id="modal-heading-01" class="slds-modal__title slds-hyphenate">Sort</h1>
+                </header>
+                <!--Select what to sort by, and when it changes, run the runSort function in the controller. -->
                 <lightning:select aura:id="select" name="select" label="Sort By: "  onchange="{!c.runSort}">
                     <option value="">choose one...</option>
                     <option value="Track"  >Batch</option>
@@ -49,9 +59,27 @@
                     <option value="Trainer">Trainer</option>
                 </lightning:select>
             </div>
+            <!--Beginning of the Colors section -->
+            <div id="Colors">
+                <!--Header -->
+                <header class="slds-modal__header">
+                    <h1 id="modal-heading-01" class="slds-modal__title slds-hyphenate">Colors</h1>
+                </header>              
+                <!--Iterate through the Tracks attribute and for each track, add another color picker
+         			w/ distinct ID's -->
+                <aura:iteration items="{!v.Tracks}" var="option" indexVar = "index">
+                <aura:if isTrue="{! index != 0 }"> 
+                    {!option} Color:
+                    <lightning:input id="{!option}" type="color" name="color" value="#EEEEEE" aura:id="colors" />
+                </aura:if>
+                </aura:iteration>
+                <button label="Apply Colors" title="Apply Colors" onclick="{!c.applyColors}" >Apply Colors</button>
+            </div>
+            
         </div>
-    <div class="Chart">
-        <canvas aura:id="myChart"></canvas>
+        <!--Holds the Chart -->
+        <div class="Chart">
+            <canvas aura:id="myChart"></canvas>
+        </div>
     </div>
-        </div>
 </aura:component>
