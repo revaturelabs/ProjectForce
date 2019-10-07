@@ -1,0 +1,15 @@
+<aura:component Controller="ChartCalculationController">
+	<aura:attribute name="trainingsWithProjects" type="Integer"/>
+	<aura:attribute name="overlappedProjects" type="Integer"/>
+	<aura:attribute name="numberOfProjects" type="Integer"/>
+	<aura:handler name="init" value="{!this}" action="{!c.init}" />
+	<div class="slds-p-vertical_x-large">
+	<div class="slds-align_absolute-center" style="justify-content:space-around">
+	<!--<lightning:card title=" " >-->
+        <span class="slds-text-heading_medium">Trainings With Projects: {!v.trainingsWithProjects}</span>
+		<span class="slds-text-heading_medium">Overlapped Projects: {!v.overlappedProjects}</span>
+		<span class="slds-text-heading_medium">Total Number of Active Projects: {!v.numberOfProjects}</span>
+        
+	<!--</lightning:card>-->
+	</div></div>
+</aura:component>
