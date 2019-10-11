@@ -59,7 +59,7 @@
                 <!--Select what to sort by, and when it changes, run the runSort function in the controller. -->
                 <lightning:select aura:id="select" name="select" label="Sort By: "  onchange="{!c.runSort}">
                     <option value="">choose one...</option>
-                    <option value="Track"  >Batch</option>
+                    <option value="Track"  >Track</option>
                     <option value="Project">Project</option>
                     <option value="Date">Date</option>
                     <option value="Trainer">Trainer</option>
@@ -86,8 +86,9 @@
         <!--Holds the Chart -->
         <div class="Chart">
             <canvas aura:id="myChart" onclick= "{!c.showmodal}"></canvas>
+            <c:ChartCalculation />
         </div>
     </div>
-        <c:ChartCalculation />
+       
 
 </aura:component>

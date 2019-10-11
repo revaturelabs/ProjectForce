@@ -37,7 +37,7 @@
     ////////////////////////////////////////////
     
     //Bubble Sort based on Sort By Filter
-    sortArray:function(sortThis, sortBy)
+    sortArray:function(sortThis, sortColors, sortBy)
     {
         //Bubble sort each item in the array
         for(var currItem = 0; currItem < sortThis.length; currItem++)
@@ -48,12 +48,16 @@
                 {
                         
                     case 'Track':
-                        if (JSON.stringify(sortThis[j].name) > JSON.stringify(sortThis[j+1].name) )
+                        if (JSON.stringify(sortThis[j].trackName) > JSON.stringify(sortThis[j+1].trackName) )
                         { 
                             // swap arr[j+1] and arr[i] 
                             var temp = sortThis[j]; 
                             sortThis[j] = sortThis[j+1]; 
-                            sortThis[j+1] = temp; 
+                            sortThis[j+1] = temp;
+                            var tempColor = sortColors[j]; 
+                            sortColors[j] = sortColors[j+1]; 
+                            sortColors[j+1] = tempColor;
+
                         }
                         break;
                     case 'Project':
@@ -62,7 +66,10 @@
                             // swap arr[j+1] and arr[i] 
                             var temp = sortThis[j]; 
                             sortThis[j] = sortThis[j+1]; 
-                            sortThis[j+1] = temp; 
+                            sortThis[j+1] = temp;
+                            var tempColor = sortColors[j]; 
+                            sortColors[j] = sortColors[j+1]; 
+                            sortColors[j+1] = tempColor;
                         }
                         break;
                     case 'Date':
@@ -71,7 +78,10 @@
                             // swap arr[j+1] and arr[i] 
                             var temp = sortThis[j]; 
                             sortThis[j] = sortThis[j+1]; 
-                            sortThis[j+1] = temp; 
+                            sortThis[j+1] = temp;
+                            var tempColor = sortColors[j]; 
+                            sortColors[j] = sortColors[j+1]; 
+                            sortColors[j+1] = tempColor; 
                         }
                         break;
                     case 'Trainer':
@@ -80,7 +90,10 @@
                             // swap arr[j+1] and arr[i] 
                             var temp = sortThis[j]; 
                             sortThis[j] = sortThis[j+1]; 
-                            sortThis[j+1] = temp; 
+                            sortThis[j+1] = temp;
+                            var tempColor = sortColors[j]; 
+                            sortColors[j] = sortColors[j+1]; 
+                            sortColors[j+1] = tempColor;
                         }
                         break;
                 }
@@ -525,22 +538,14 @@
         //Creating Location List
         var LocationSet = new Set();
         LocationSet.add("All");
-        
-        
-        //Creating Colors
-        var UserColors = [];
-        
+
         for(var i=0; i<allTrainings.length; i++)
         {
             
             LocationSet.add(JSON.stringify(allTrainings[i].location));
             
             
-            TrackSet.add(JSON.stringify(allTrainings[i].trackName));
-            
-            
-            UserColors[i] = '#F26925';
-            
+            TrackSet.add(JSON.stringify(allTrainings[i].trackName));   
         }
         var LocationList = [];
         var LocationListCounter = 0;
@@ -551,20 +556,36 @@
         }
         var TrackList = [];
         var TrackListCounter = 0;
+        console.log('The current length of TrackSet is: '+ TrackSet.size);
         for(let currTrack of TrackSet)
         {
+
             TrackList[TrackListCounter]=currTrack;
             TrackListCounter++;
         }
-        
+
+        //Creating Colors
+        var UserColors = [];
+        var PresetColors = ['#F26925', '#474C55', '#72A4C2', '#FCB414', '#B9B9BA'];
+        var currColors = [];
+        console.log('The current length of TrackSet is: '+ TrackSet.size);
+        for(var i=0; i<TrackSet.size; i++)
+        {
+            let colorSelector = (PresetColors.length)%i;
+
+            currColors[i] = PresetColors[colorSelector];
+        }
+
         //console.log('here is LocationList:')
         //console.log(LocationList);
         //console.log('here is the length of the UserColor array: ')
         //console.log(UserColors.length);
         component.set('v.Locations', LocationList);
         component.set('v.Tracks', TrackList);
-        component.set('v.UserColors', UserColors);
-        component.set('v.DisplayColors', UserColors);
+        
+        var allColors = this.applyColors(TrackList, currColors, allTrainings);
+        component.set('v.UserColors', allColors);
+        component.set('v.DisplayColors', allColors);
         component.set('v.tempList', allTrainings);
         
         //Setting Today's Date
@@ -574,7 +595,7 @@
         
     },
     
-    applyColors: function(tracks, colors, chart, allBatches)
+    applyColors: function(tracks, colors, allBatches)
     {
         
         var colorsApplied = [];

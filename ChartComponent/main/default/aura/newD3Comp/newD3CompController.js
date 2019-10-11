@@ -359,8 +359,9 @@ runSort:function(component, event, helper)
     var sortBy= component.find('select').get('v.value');
     var allTrainings = component.get('v.tempList');
     var myChart = component.get('v.dasChart');
+    var getColors = component.get('v.DisplayColors');
     console.log('here\'s the length of the array before sort:' + allTrainings.length);
-    helper.sortArray(allTrainings, sortBy);
+    helper.sortArray(allTrainings, getColors, sortBy);
     console.log('here\'s the length of the array after sort: '+allTrainings.length);
     helper.updateData(component);
     console.log('here\s the length of the array after updateData: '+allTrainings.length);
@@ -384,7 +385,7 @@ applyColors:function(component, event, helper)
         allTracks[i] = colorElements[i].get('v.id');
         allColors[i] = colorElements[i].get('v.value');
     }
-    var newColors = helper.applyColors(allTracks, allColors, myChart, currTrainings);
+    var newColors = helper.applyColors(allTracks, allColors, currTrainings);
     component.set('v.DisplayColors', newColors);
     helper.updateData(component);
     
