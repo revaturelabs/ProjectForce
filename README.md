@@ -1,4 +1,4 @@
-# Salesforce App
+# ProjectForce Packages
 
 ##Steps to install the packages. 
 1. Create a fresh dev hub.
