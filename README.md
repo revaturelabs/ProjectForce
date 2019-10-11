@@ -1,6 +1,6 @@
 # ProjectForce Packages
 
-##Steps to install the packages. 
+## Steps to install the packages. 
 1. Create a fresh dev hub.
 2. Install the BaseObject Package
 3. Install ModalComponent Package
