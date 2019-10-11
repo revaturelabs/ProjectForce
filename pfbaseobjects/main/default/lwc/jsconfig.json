@@ -1,8 +1,8 @@
 {
     "compilerOptions": {
-        "experimentalDecorators": true,
         "baseUrl": ".",
-        "paths": {}
+        "paths": {},
+        "experimentalDecorators": true
     },
     "include": [
         "**/*",
