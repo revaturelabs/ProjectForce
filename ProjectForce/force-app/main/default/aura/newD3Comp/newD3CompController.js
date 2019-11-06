@@ -27,7 +27,7 @@ myAction : function(component, event, helper) {
     
     //creating a variable.
     var yLabels = {};
-    
+    var trackLabels = ['JavaEE', 'Big Data', 'Salesforce'];
     //This gets the current date.
     var date = new Date();
     //only the current year
@@ -224,6 +224,8 @@ myAction : function(component, event, helper) {
         
             hover: {
                 animationDuration:10
+                // events: ['onHover']
+
             },
             events: {
                 events: ['onClick']
@@ -308,7 +310,10 @@ myAction : function(component, event, helper) {
                     ticks: {
                         fontFamily: "'Futura', sans-serif",
                         fontSize:11,
-                        display: false
+                        display: true,
+                        callback: function(value, index, values) {
+                            return trackLabels[index++];
+                        }
                         
                         
                     },

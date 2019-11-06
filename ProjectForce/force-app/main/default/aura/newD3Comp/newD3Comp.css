@@ -62,12 +62,13 @@
     border-radius: 5px;
     margin: 2.5%;
     background-color: white;
+    overflow: auto;
+    cursor:pointer;
 }
 .THIS button{
     border-radius: 5px;
 	background-color: #F26925;
     color: white;
-    
     margin: 3px;
 }
 /*
