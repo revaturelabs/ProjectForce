@@ -198,18 +198,18 @@ myAction : function(component, event, helper) {
         if(activePoints.length > 0 ){
             var currIndex = activePoints[0]._index;                
             var currSimpleTraining = component.get('v.tempList')[currIndex];
-            console.log('here is the current simple training: ');
-            console.log(currSimpleTraining.trainingId);
+            //console.log('here is the current simple training: ');
+            //console.log(currSimpleTraining.trainingId);
 
             var childCmp = component.find("modalComp")
 
             let location = currSimpleTraining.location;
             JSON.stringify(location);
-            console.log("location:"+location);
+            //console.log("location:"+location);
 
             let track = currSimpleTraining.trackName;
             JSON.stringify(track);
-            console.log("track:"+track); 
+            //console.log("track:"+track); 
 
             //let newLocation = location.replace(/"/location,"");
             //console.log(newLocation);
@@ -260,7 +260,7 @@ myAction : function(component, event, helper) {
         },
             scales: {
                 series: [{
-                    data:[100,200,400]
+                    data:[100,200,0]
                 }],
                 
                 plotOptions: {
@@ -335,10 +335,10 @@ myAction : function(component, event, helper) {
             
         };
     
-    //calls the apex controller and runs the method getTrainings then saves the return of the method into getTrrrack
-    var getTrrrack = component.get("c.getTrainings");
+    //calls the apex controller and runs the method getTrainings then saves the return of the method into getTracks
+    var getTracks = component.get("c.getTrainings");
     //run a callback
-    getTrrrack.setCallback(this, function(response) {
+    getTracks.setCallback(this, function(response) {
         //gets the response state; fail,success
         var state = response.getState();
         if (state === "SUCCESS") {
@@ -348,15 +348,20 @@ myAction : function(component, event, helper) {
             helper.setInitFilterValues(component, event);
             //pass the results to the chart creator.
             var ctx = component.find("myChart").getElement();
-            var newChart = helper.createChart(ctx, barOptions_stacked, response.getReturnValue(),
-                                                component.get('v.UserColors'),  component.find('select').get('v.value'));
+            var newChart = helper.createChart(
+                ctx, 
+                barOptions_stacked, 
+                response.getReturnValue(),
+                component.get('v.UserColors'),  
+                component.find('select').get('v.value')
+            );
             component.set("v.dasChart", newChart);
         }
         else {
             console.log("Failed with state: " + state);
         }
     });
-    $A.enqueueAction(getTrrrack);   
+    $A.enqueueAction(getTracks);   
 },
 
 runSort:function(component, event, helper)
