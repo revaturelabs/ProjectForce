@@ -131,15 +131,15 @@
         var maxDate = days[0];
         for(var i = 0; i < days.length - 1; i++) {
             if(days[i] >= maxDate) {
-                maxDate = days[i] + 25;
+                maxDate = days[i];
             }
             if(days[i] <= minDate) {
-                minDate = days[i] -1;
+                minDate = days[i];
             }
         }
+        maxDate += defaultDuration;
            
         //Set the keys in the options Javascript Object equal to the values just generated
-        options.scales.xAxes[0].ticks.beginAtZero = false;
         options.scales.xAxes[0].ticks.max = maxDate;
         options.scales.xAxes[0].ticks.min = minDate;
         options.scales.xAxes[0].offset = false;
@@ -162,7 +162,7 @@
                         //example of how to reference something in here: chart.data.datasets[0].data[i]
                         //This data is when the project is supposed to start
                         data: days,
-                        backgroundColor: "rgba(63,103,126,0)" 
+                        //backgroundColor: "rgba(63,103,126,0)" 
                         }, {
                         //example of how to reference something in here: chart.data.datasets[1].data[i]
                         //Data here is the duration of the project
