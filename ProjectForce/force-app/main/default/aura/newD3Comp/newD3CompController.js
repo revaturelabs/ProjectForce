@@ -222,11 +222,15 @@ myAction : function(component, event, helper) {
     //the charts options such as x-axis, y-axis, if hover/no hover
     var barOptions_stacked = {
         
-            hover: {
-                animationDuration:10
-                // events: ['onHover']
-
-            },
+        hover: {
+            animationDuration:10,
+            onHover: function (e, element) {
+                if (e.length) {
+                    const data = e[0]._chart.config.data.datasets[0].data[e[0]._index];
+                    console.log(e, data);
+                }
+            }
+        },
             events: {
                 events: ['onClick']
             },
@@ -237,15 +241,7 @@ myAction : function(component, event, helper) {
                 ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontFamily, 'normal', Chart.defaults.global.defaultFontFamily);
                 ctx.textAlign = 'left';
                 ctx.fillStyle = '#FFFFFF'; // label color
-                /*this.data.datasets.forEach(function (dataset) {
-                    for (var i = 0; i < dataset.data.length; i++) {
-                        var model = dataset._meta[Object.keys(dataset._meta)[0]].data[i]._model,
-                            left = dataset._meta[Object.keys(dataset._meta)[0]].data[i]._xScale.left;
-                        ctx.fillStyle = '#444'; // label color
-                        var label = model.label;
-                        ctx.fillText(label, left + 15, model.y + 8);
-                    }
-                }); */ 
+              
                 this.data.datasets.forEach(function (dataset, i) {
                     var meta = chartInstance.controller.getDatasetMeta(i);
                     meta.data.forEach(function (bar, index) {
