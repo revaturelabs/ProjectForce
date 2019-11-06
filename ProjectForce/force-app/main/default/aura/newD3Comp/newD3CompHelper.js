@@ -162,7 +162,7 @@
                         //example of how to reference something in here: chart.data.datasets[0].data[i]
                         //This data is when the project is supposed to start
                         data: days,
-                        //backgroundColor: "rgba(63,103,126,0)" 
+                        backgroundColor: "rgba(63,103,126,0)" 
                         }, {
                         //example of how to reference something in here: chart.data.datasets[1].data[i]
                         //Data here is the duration of the project
