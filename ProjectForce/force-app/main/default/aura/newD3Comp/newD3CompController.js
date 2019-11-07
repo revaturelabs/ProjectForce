@@ -219,14 +219,21 @@ myAction : function(component, event, helper) {
         }           
     };       
     
-    //the charts options such as x-axis, y-axis, if hover/no hover
-    var barOptions_stacked = {
-        
+        // This variable is needed for the hover event.
+        var myChartComponent = component.find("myChart").getElement();
+        //the charts options such as x-axis, y-axis, if hover/no hover
+        var barOptions_stacked = {
+
             hover: {
-                animationDuration:10
-            },
-            events: {
-                events: ['onClick']
+                animationDuration:10,
+                // Documentation for this onHover function is in Chart.js
+                // https://www.chartjs.org/docs/latest/general/interactions/events.html
+                onHover: function (e, element) {
+                    // inline if statement. If we aren't hovering over the timeline elements
+                    // then we have the default pointer, otherwise we use the pointing pointer
+                    // for the mouse to display on the browser window.
+                    myChartComponent.style.cursor = e[0] ? "pointer" : "default";
+                }
             },
         animation: {
             onComplete: function () {
