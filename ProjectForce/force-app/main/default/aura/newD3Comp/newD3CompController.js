@@ -191,7 +191,10 @@ myAction : function(component, event, helper) {
     //Once you click on the chart, you're able to modify and save/update the modifications
     component.find("myChart").getElement().onclick = function(evt){
         var activePoints = component.get('v.dasChart').getElementsAtEvent(evt);
+        var activePoint = component.get('v.dasChart').getElementAtEvent(evt)[0]; //WIP
         if(activePoints.length > 0 ){ 
+            if (activePoints[0]._datasetIndex === 0) console.log('hi');
+            if (activePoint._datasetIndex === 0) return;
             var currIndex = activePoints[0]._index;
             var currSimpleTraining = component.get('v.tempList')[currIndex];
 
