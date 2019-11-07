@@ -37,7 +37,7 @@
     ////////////////////////////////////////////
     
     //Bubble Sort based on Sort By Filter
-    sortArray:function(sortThis, sortColors, sortBy) {
+    sortArray:function(sortThis, sortColors, sortBy) { 
         //Bubble sort each item in the array
         for(var currItem = 0; currItem < sortThis.length; currItem++) {
             for (var j = 0; j < sortThis.length-1; j++) 
@@ -213,8 +213,8 @@
         chart.data.datasets[0].data = this.convertDate(startDates);
         chart.data.labels = holdLabels;
 
-        //update. Until this command is run, none of the changes are actually applied 
-        //to the chart.
+        //update. Until this command is run, none of the changes are actually applied to the chart.
+
         chart.update();
     },
     
@@ -387,15 +387,14 @@
                         }
                     }
                 }
-                
             }
-        }
-        return d;      
+        } 
+        return d;
+        
     },
     
     filterData:function(selectedTrack, selectedLocation, selectedDate, chart, allData, component)
-    {
-        // console.log('filter data has been entered');
+    { 
         //declare necessary variables
         var correctData = [];
         var correctDataCounter = 0;
@@ -442,6 +441,13 @@
                     //Add the current record to the array to be set as the current data
                     correctData[correctDataCounter] = allData[currData];
 
+                    && JSON.stringify(allData[currData].location) == selectedLocation)) 
+                   
+                {
+                    //Add the current record to the array to be set as the current data 
+                    correctData[correctDataCounter] = allData[currData];
+                    correctDataCounter++; 
+
                 }
 
                 else if(JSON.stringify(allData[currData].trackName) == selectedTrack 
@@ -458,6 +464,7 @@
                 }
                 
             } else {
+
                 correctData = allData;
             }
         }
@@ -472,6 +479,7 @@
     
     setInitFilterValues: function (component, event) {
         var allTrainings = component.get('v.qTraining');
+
         
         //Creating the Track List
         var TrackSet = new Set();
@@ -541,6 +549,7 @@
             {
                 if(JSON.stringify(allBatches[currBatch].trackName)==tracks[currTrack])
                 {
+
                     colorsApplied[colorsAppliedCounter] = colors[currTrack];
                     colorsAppliedCounter++;
                 }
