@@ -221,6 +221,13 @@ myAction : function(component, event, helper) {
     
         // This variable is needed for the hover event.
         var myChartComponent = component.find("myChart").getElement();
+        // function used to store how we want the hover event to work. This method allows for us to reuse it later if needed.
+        var hoverEvent = function(e) {
+            // inline if statement. If we aren't hovering over the timeline elements
+            // then we have the default pointer, otherwise we use the pointing pointer
+            // for the mouse to display on the browser window.
+            myChartComponent.style.cursor = e[0] ? "pointer" : "default";
+        };
         //the charts options such as x-axis, y-axis, if hover/no hover
         var barOptions_stacked = {
 
@@ -229,10 +236,7 @@ myAction : function(component, event, helper) {
                 // Documentation for this onHover function is in Chart.js
                 // https://www.chartjs.org/docs/latest/general/interactions/events.html
                 onHover: function (e, element) {
-                    // inline if statement. If we aren't hovering over the timeline elements
-                    // then we have the default pointer, otherwise we use the pointing pointer
-                    // for the mouse to display on the browser window.
-                    myChartComponent.style.cursor = e[0] ? "pointer" : "default";
+                    hoverEvent(e,element);
                 }
             },
         animation: {
@@ -242,21 +246,11 @@ myAction : function(component, event, helper) {
                 ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontFamily, 'normal', Chart.defaults.global.defaultFontFamily);
                 ctx.textAlign = 'left';
                 ctx.fillStyle = '#FFFFFF'; // label color
-                /*this.data.datasets.forEach(function (dataset) {
-                    for (var i = 0; i < dataset.data.length; i++) {
-                        var model = dataset._meta[Object.keys(dataset._meta)[0]].data[i]._model,
-                            left = dataset._meta[Object.keys(dataset._meta)[0]].data[i]._xScale.left;
-                        ctx.fillStyle = '#444'; // label color
-                        var label = model.label;
-                        ctx.fillText(label, left + 15, model.y + 8);
-                    }
-                }); */ 
                 this.data.datasets.forEach(function (dataset, i) {
                     var meta = chartInstance.controller.getDatasetMeta(i);
                     meta.data.forEach(function (bar, index) {
                         var model = dataset._meta[Object.keys(dataset._meta)[0]].data[index]._model;                            
                         var label = model.label;
-                        
                         ctx.fillText(label, bar._model.x+2, bar._model.y);
                         
                     });
@@ -332,10 +326,8 @@ myAction : function(component, event, helper) {
             },
         tooltips:{
             enabled: false
-        }
-        
-            
-        };
+    }        
+};
     
     //calls the apex controller and runs the method getTrainings then saves the return of the method into getTracks
     var getTracks = component.get("c.getTrainings");
@@ -377,12 +369,7 @@ runSort:function(component, event, helper)
     console.log('here\'s the length of the array after sort: '+allTrainings.length);
     helper.updateData(component);
     console.log('here\s the length of the array after updateData: '+allTrainings.length);
-    //console.log(myChart.data.datasets.data);
-    //var a = component.get('c.applyColors');
-    //$A.enqueueAction(a);
 },
-
-
 
 applyColors:function(component, event, helper)
 {
@@ -421,7 +408,7 @@ runFilter: function (component, event, helper) {
 callSaveComp : function(component, event, helper){
     var childCmp = component.find("modalComp")
     childCmp.showModal("Online","Salesforce");
-    },
+},
 
 showmodal: function(component, event, helper){
     var activePoints = component.get('v.dasChart').getElementsAtEvent(event);
@@ -442,19 +429,10 @@ showmodal: function(component, event, helper){
             JSON.stringify(track);
             console.log("track:"+track); 
 
-            //let newLocation = location.replace(/"/location,"");
-            //console.log(newLocation);
             childCmp.showModal(currSimpleTraining.trainingId, location, track);
-            
-            /*
-        */
-        }
-
-        
-
-        
-        
+        }    
 },
+
 modalUpdate:function(component,event,helper)
         {
             let action = component.get("c.getTrainings");
@@ -486,7 +464,5 @@ modalUpdate:function(component,event,helper)
         });
 
         $A.enqueueAction(action);
-        }  
-
-
+    }  
 })
