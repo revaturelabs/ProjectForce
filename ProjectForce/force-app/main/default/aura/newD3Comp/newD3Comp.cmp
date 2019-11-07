@@ -1,3 +1,14 @@
+<!--
+  @File Name          : newD3Comp.cmp
+  @Description        : 
+  @Author             : ChangeMeIn@UserSettingsUnder.SFDoc
+  @Group              : 
+  @Last Modified By   : ChangeMeIn@UserSettingsUnder.SFDoc
+  @Last Modified On   : 11/7/2019, 2:37:53 PM
+  @Modification Log   : 
+  Ver       Date            Author      		    Modification
+  1.0    11/7/2019   ChangeMeIn@UserSettingsUnder.SFDoc     Initial Version
+-->
 <aura:component controller="GantController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickActionWithoutHeader" access="global">
 
         <c:modal aura:id="modalComp"/>
@@ -86,8 +97,7 @@
         <!--Holds the Chart -->
         <div class="Chart">
             <div class="chartAreaWrapper">
-                <!-- <canvas aura:id="myChart" onclick= "{!c.showmodal}"/> -->
-                <canvas aura:id="myChart"/>
+                <canvas aura:id="myChart" onclick= "{!c.showmodal}"/>
             </div>
             <c:ChartCalculation />
         </div>
