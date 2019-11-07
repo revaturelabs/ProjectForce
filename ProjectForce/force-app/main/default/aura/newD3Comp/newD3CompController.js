@@ -193,23 +193,21 @@ myAction : function(component, event, helper) {
         var activePoints = component.get('v.dasChart').getElementsAtEvent(evt);
         var activePoint = component.get('v.dasChart').getElementAtEvent(evt)[0]; //WIP
         if(activePoints.length > 0 ){ 
-            if (activePoints[0]._datasetIndex === 0) console.log('hi');
-            if (activePoint._datasetIndex === 0) return;
+            if (activePoint._datasetIndex === 0) {
+                console.log('invisible click');
+                return;
+            }
+            if (activePoint._datasetIndex === 1) {
+                console.log('visible click');
+            }
             var currIndex = activePoints[0]._index;
             var currSimpleTraining = component.get('v.tempList')[currIndex];
-
             var childCmp = component.find("modalComp")
-
             let location = currSimpleTraining.location;
-            JSON.stringify(location);
-
             let track = currSimpleTraining.trackName;
-            JSON.stringify(track);
 
-            //let newLocation = location.replace(/"/location,"");
             childCmp.showModal(currSimpleTraining.trainingId, location, track);
-            
-            
+            console.log('here');
         }           
     };       
     
