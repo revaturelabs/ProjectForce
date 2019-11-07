@@ -111,7 +111,8 @@
             projects[i] = dataSet[i].project;
             trainers[i] = dataSet[i].trainer;
             rooms[i] = dataSet[i].room; // not on Training__c pagelayout
-        } 
+        }
+
         // location, name, project, room, startDate, trackName, trainer, trainingId
         
         //Once we have the startDates, we need it as an int.
@@ -181,7 +182,6 @@
         //either using or updating
         var chart = component.get('v.dasChart');
         var data = component.get('v.tempList');
-        // var currTracks = component.get('v.Tracks');
         var currColors = component.get('v.DisplayColors');
         
          //declare arrays to hold new data being passed in
@@ -191,16 +191,19 @@
          var holdProject = [];
          var holdLabels = [];
          var holdTrainers = [];
+
          for(var i = 0; i < data.length; i++) {
             startDates[i] = data[i].startDate;
             holdBatchName[i] = data[i].name;
             holdProject[i] = data[i].project;
             holdTrainers[i] = data[i].trainer;
          }
+
          for(let i =0;i<holdBatchName.length;i++){
              var some = `${holdBatchName[i]} - ${holdProject[i]} - ${holdTrainers[i]}`;
              holdLabels[i] = some;
          }
+
         //I'm pretty sure this combined with the chart.data.datasets[1].background color
         //don't actually do anything. But who knows, maybe I'm wrong.
         holdColors = currColors;
@@ -209,16 +212,18 @@
         chart.data.datasets[1].backgroundColor = holdColors;
         chart.data.datasets[0].data = this.convertDate(startDates);
         chart.data.labels = holdLabels;
+
         //update. Until this command is run, none of the changes are actually applied to the chart.
+
         chart.update();
     },
     
     /*	convert date method used for converting the date into a integer because the chart only takes in integers as data and not actual date
     */
-    convertDate : function(data){
-        
+    convertDate : function(data) { 
         //declare necessary variables
         var arraySize = data.length;
+
         var datesIntoInts = [];
         var monthDays = [31,28,31,30,31,31,31,31,30,31,30,31];
         
@@ -230,7 +235,7 @@
             addedMonthDays.push(sum);
             sum+=monthDays[i];
         }
-        
+
         //for all the data being passed in, take the string, and turn it into a number
         for(let dataIndex = 0; dataIndex<arraySize; dataIndex++)
         {
@@ -248,6 +253,7 @@
              * 	The chart only takes in integers as data, thus, the work around is taking the date and generate it into an integer
              * 	then in the x-axis tick, it'll do a callback with the integer value as the index of the array already set and return the value date.
             */
+
             if(currentYear<=year && year<=(currentYear+1))
             {
                 let amount=0;
@@ -259,6 +265,7 @@
                     if(year%400==0 || (year%4==0 && year%100!=0))
                     {
                         amount+=1;
+
                     }
                 }
                 
@@ -312,7 +319,6 @@
         dataDates = this.convertDate(dataDates);
         compareToDate = this.convertDate(compareToDate);
         
-        
         //For each record, determine if it meets the Filter Criteria.
         for(var currData = 0;currData < allData.length; currData++)
         {
@@ -324,12 +330,12 @@
                  //If the current record has the correct name or location, and the project starts after the listed date,
                 //enter
                 if((JSON.stringify(allData[currData].trackName) == selectedTrack 
-                    && JSON.stringify(allData[currData].location) == selectedLocation)) 
-                   //&& compareToDate[0] <= dataDates[currData])
-                {
+                    && JSON.stringify(allData[currData].location) == selectedLocation)) {
+
                     //Add the current record to the array to be set as the current data 
                     correctData[correctDataCounter] = allData[currData];
                     correctDataCounter++; 
+
                 }
 
                 else if(JSON.stringify(allData[currData].trackName) == selectedTrack 
@@ -345,8 +351,8 @@
                     correctDataCounter++;
                 }
                 
-            } else
-            {
+            } else {
+
                 correctData = allData;
             }
         }
@@ -360,7 +366,8 @@
     }, 
     
     setInitFilterValues: function (component, event) {
-        var allTrainings = component.get('v.qTraining'); 
+        var allTrainings = component.get('v.qTraining');
+
         
         //Creating the Track List
         var TrackSet = new Set();
@@ -373,24 +380,24 @@
 
         for(var i=0; i<allTrainings.length; i++)
         {
-            
             LocationSet.add(JSON.stringify(allTrainings[i].location));
-            
-            
             TrackSet.add(JSON.stringify(allTrainings[i].trackName));   
         }
+
         var LocationList = [];
         var LocationListCounter = 0;
+
         for(let currLocation of LocationSet)
         {
             LocationList[LocationListCounter]=currLocation;
             LocationListCounter++;
         }
+
         var TrackList = [];
-        var TrackListCounter = 0; 
+        var TrackListCounter = 0;
+
         for(let currTrack of TrackSet)
         {
-
             TrackList[TrackListCounter]=currTrack;
             TrackListCounter++;
         }
@@ -398,14 +405,14 @@
         //Creating Colors
         var UserColors = [];
         var PresetColors = ['#F26925', '#474C55', '#72A4C2', '#FCB414', '#B9B9BA'];
-        var currColors = []; 
+        var currColors = [];
+
         for(var i=0; i<TrackSet.size; i++)
         {
             let colorSelector = (PresetColors.length)%i;
-
             currColors[i] = PresetColors[colorSelector];
         }
-        
+
         component.set('v.Locations', LocationList);
         component.set('v.Tracks', TrackList);
         
@@ -421,26 +428,23 @@
         
     },
     
-    applyColors: function(tracks, colors, allBatches)
-    {
-        
+    applyColors: function(tracks, colors, allBatches) {      
         var colorsApplied = [];
         var colorsAppliedCounter = 0;
         for(let currBatch = 0; currBatch < allBatches.length; currBatch++)
-        { 
+        {
             for(let currTrack = 0; currTrack < tracks.length; currTrack++)
-            { 
+            {
                 if(JSON.stringify(allBatches[currBatch].trackName)==tracks[currTrack])
-                { 
+                {
+
                     colorsApplied[colorsAppliedCounter] = colors[currTrack];
                     colorsAppliedCounter++;
-                    
                 }
             }
-        }
-         
+        }   
         return colorsApplied;
-
     }
-    
+
 })
+
