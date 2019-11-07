@@ -438,12 +438,7 @@
                 //enter
                 if((JSON.stringify(allData[currData].trackName) == selectedTrack 
                     && JSON.stringify(allData[currData].location) == selectedLocation)) {
-                    //Add the current record to the array to be set as the current data
-                    correctData[correctDataCounter] = allData[currData];
 
-                    && JSON.stringify(allData[currData].location) == selectedLocation)) 
-                   
-                {
                     //Add the current record to the array to be set as the current data 
                     correctData[correctDataCounter] = allData[currData];
                     correctDataCounter++; 
