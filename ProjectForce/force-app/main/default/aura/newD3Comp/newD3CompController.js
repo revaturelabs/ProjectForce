@@ -91,20 +91,19 @@ myAction : function(component, event, helper) {
         var activePoint = component.get('v.dasChart').getElementAtEvent(evt)[0]; //WIP
         if(activePoints.length > 0 ){ 
             if (activePoint._datasetIndex === 0) {
-                console.log('invisible click');
+                // invisible click
                 return;
             }
             if (activePoint._datasetIndex === 1) {
-                console.log('visible click');
-            }
-            var currIndex = activePoints[0]._index;
-            var currSimpleTraining = component.get('v.tempList')[currIndex];
-            var childCmp = component.find("modalComp")
-            let location = currSimpleTraining.location;
-            let track = currSimpleTraining.trackName;
+                // visible click
+                var currIndex = activePoints[0]._index;
+                var currSimpleTraining = component.get('v.tempList')[currIndex];
+                var childCmp = component.find("modalComp")
+                let location = currSimpleTraining.location;
+                let track = currSimpleTraining.trackName;
 
-            childCmp.showModal(currSimpleTraining.trainingId, location, track);
-            console.log('here');
+                childCmp.showModal(currSimpleTraining.trainingId, location, track);
+            }
         }           
     };       
     
