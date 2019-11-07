@@ -11,6 +11,23 @@ public without sharing class ModalController {
     static List<Project__c> ProjectList = [select name, track__r.name ,(SELECT projectStartDate__c FROM trainings__r ORDER BY projectStartDate__c desc LIMIT 1) from Project__c];
     static List<training__c> trainingList = [SELECT Id, room__r.location__r.name, track__r.Name, room__r.Name, trainer__r.Name, Project__r.Name FROM training__c];
 
+    @AuraEnabled
+    public static Training__c getBatch(String trainingID) {
+        Training__c selectedBatch = new Training__c();
+        try {
+            if (schema.SObjectType.location__c.isAccessible()) {
+                List<Training__c> batch = [SELECT Id, Batch_Number__c, Track__r.Name, ProjectStartDate__c, Project__r.Name, Trainer__r.Name, Room__r.Name, Room__r.Location__r.Name FROM Training__c WHERE Id =: Id.valueOf(trainingID) LIMIT 1];
+
+                selectedBatch = batch[0];
+                return selectedBatch;
+            } else {
+                return null;
+            }
+        } catch(Exception e) {
+            throw new AuraHandledException('Batch cannot be found');
+        }
+    }
+
 	@Auraenabled
     //Return a list of locations available
     public static list<location__c> getLocation(){

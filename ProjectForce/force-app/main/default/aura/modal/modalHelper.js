@@ -60,6 +60,33 @@
 	$A.enqueueAction(action);
 },
 
+	batchById : function(component, event) {
+		let action = component.get("c.getBatch");
+		let params = event.getParam('arguments');
+
+		action.setParams ({ trainingID: String(params.trainingID) });
+		component.set("v.saveTrainingID", String(params.trainingID));
+
+		action.setCallback (this, function (response) {
+			var state = response.getState();
+
+			let batchInformation = response.getReturnValue();
+
+			if(state === "SUCCESS"){
+				component.set("v.batchNumber", batchInformation.Batch_Number__c);
+				component.set("v.batchTrack", batchInformation.Track__r.Name);
+				component.set("v.batchProjectDate", batchInformation.ProjectStartDate__c);
+				component.set("v.updateProject", batchInformation.Project__r.Name);
+				component.set("v.updateTrainer", batchInformation.Trainer__r.Name);
+				component.set("v.batchRoom", batchInformation.Room__r.Name);
+				component.set("v.batchLocation", batchInformation.Room__r.Location__r.Name);
+			}
+			else{
+				console.log("Failed with state: "+state);
+			}
+		});
+		$A.enqueueAction(action);
+	},
 	//Funcation for the location drop down
 	//sets the list of locations by calling the server- side controller
 	locationByID : function(component, event) {

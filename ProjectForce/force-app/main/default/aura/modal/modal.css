@@ -12,7 +12,7 @@
 
 .THIS .slds-modal__footer {
    
-   background-color: #474C55;
+   background-color: white;
 }
 
 
@@ -21,18 +21,19 @@
    background-color: #72A4C2;
    
 }
-
+/*
 .THIS .slds-select,.THIS .slds-input{
    
    color: #474C55;
    font-size: 1rem;
 }
-
+*/
 .THIS .slds-modal__header {
-   background: #474C55;
+   background: white;
    color: #F26925;
    font-size: 2rem;
 }
+/*
 .THIS .slds-form-element__label{
    
    padding: .25rem .5rem;
@@ -46,4 +47,4 @@
    margin-top: .5rem;
    background-color: #474c55;
    width: 80px;
-}
+}*/

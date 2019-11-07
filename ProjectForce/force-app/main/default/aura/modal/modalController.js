@@ -2,10 +2,10 @@
     //Calls the helper to initialize the location, track and date
     doInit : function(component, event, helper){
 
-           /* helper.showModal(component);
+            //helper.showModal(component);
             helper.locationByID(component, event);
             helper.trackByID(component, event);
-            helper.date(component,event);*/
+            helper.date(component,event);
             helper.room(component, event);
             helper.trainer(component, event);
             helper.project(component, event);
@@ -57,12 +57,15 @@
 
     showModal : function(component, event, helper) {
         console.log("showModal");
-        helper.locationByID(component, event);
-        helper.trackByID(component, event);
-        helper.date(component,event);
-        helper.room(component, event);
-        helper.trainer(component, event);
-        helper.project(component, event);
+
+        helper.batchById(component, event);
+
+        //helper.locationByID(component, event);
+        //helper.trackByID(component, event);
+        //helper.date(component,event);
+        //helper.room(component, event);
+        //helper.trainer(component, event);
+        //helper.project(component, event);
         helper.showModal(component);
 
         console.log("showModal completed");
