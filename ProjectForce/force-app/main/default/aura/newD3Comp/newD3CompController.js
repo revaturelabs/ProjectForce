@@ -41,7 +41,7 @@ myAction : function(component, event, helper) {
     var monthDays = [31,28,31,30,31,31,31,31,30,31,30,31];
 
     //checking if this year is a leap year
-    if(year%400==0 || (year%4==0 && year&100!=0))
+    if(year%400==0 || (year%4==0 && year%100!=0))
     {
         //febraury gets an extra day
         monthDays[1] = 29; 
@@ -71,7 +71,7 @@ myAction : function(component, event, helper) {
             {
                 year++;
                 //checking if this year is a leap year
-                if(year%400==0 || (year%4==0 && year&100!=0))
+                if(year%400==0 || (year%4==0 && year%100!=0))
                 {
                     //febraury gets an extra day
                     monthDays[1] = 29; 
