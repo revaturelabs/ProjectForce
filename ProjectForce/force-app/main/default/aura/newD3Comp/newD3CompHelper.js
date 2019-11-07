@@ -37,8 +37,7 @@
     ////////////////////////////////////////////
     
     //Bubble Sort based on Sort By Filter
-    sortArray:function(sortThis, sortColors, sortBy) {
-        // console.log('newD3CompHelper.sortArray()');
+    sortArray:function(sortThis, sortColors, sortBy) { 
         //Bubble sort each item in the array
         for(var currItem = 0; currItem < sortThis.length; currItem++) {
             for (var j = 0; j < sortThis.length-1; j++) 
@@ -96,7 +95,6 @@
     
     //creating the chart and passing in data
     createChart : function(ctx, options, dataSet, userColors, sortBy) {
-        // console.log('newD3CompHelper.createChart()');
 
         //First, sort the data passed in according to the value in sortBy
         dataSet = this.sortArray(dataSet, sortBy);   
@@ -113,8 +111,7 @@
             projects[i] = dataSet[i].project;
             trainers[i] = dataSet[i].trainer;
             rooms[i] = dataSet[i].room; // not on Training__c pagelayout
-        }
-        // console.log("sample data: " + JSON.stringify(dataSet[3], null, 2));
+        } 
         // location, name, project, room, startDate, trackName, trainer, trainingId
         
         //Once we have the startDates, we need it as an int.
@@ -186,7 +183,6 @@
         var data = component.get('v.tempList');
         // var currTracks = component.get('v.Tracks');
         var currColors = component.get('v.DisplayColors');
-        //console.log('here\'s the data currently being displayed: '+chart.data.datasets[0].data);
         
          //declare arrays to hold new data being passed in
          var startDates = [];
@@ -195,14 +191,12 @@
          var holdProject = [];
          var holdLabels = [];
          var holdTrainers = [];
-         //console.log('here\'s the data: '+data);
          for(var i = 0; i < data.length; i++) {
             startDates[i] = data[i].startDate;
             holdBatchName[i] = data[i].name;
             holdProject[i] = data[i].project;
             holdTrainers[i] = data[i].trainer;
          }
-         //console.log('here are the colors about to be used: '+ currColors);
          for(let i =0;i<holdBatchName.length;i++){
              var some = `${holdBatchName[i]} - ${holdProject[i]} - ${holdTrainers[i]}`;
              holdLabels[i] = some;
@@ -215,10 +209,6 @@
         chart.data.datasets[1].backgroundColor = holdColors;
         chart.data.datasets[0].data = this.convertDate(startDates);
         chart.data.labels = holdLabels;
-        //log the changes
-        //console.log('list of colors list: '+holdColors);
-        //console.log('converted dates' + this.convertDate(startDates));
-        //console.log('last data of dates: '+chart.data.datasets[0].data);
         //update. Until this command is run, none of the changes are actually applied to the chart.
         chart.update();
     },
@@ -230,8 +220,7 @@
         //declare necessary variables
         var arraySize = data.length;
         var d = [];
-        var dIntoInt = [];
-        // console.log('convertDate has been entered.');
+        var dIntoInt = []; 
         //for all the data being passed in, take the string, and turn it into a number
         for(let currTI = 0; currTI<arraySize; currTI++)
         {
@@ -393,19 +382,14 @@
                         }
                     }
                 }
-                
             }
-            
-            //console.log(tracks[currTI]);   
-        }
-        // console.log('D: '+d);
+        } 
         return d;
         
     },
     
     filterData:function(selectedTrack, selectedLocation, selectedDate, chart, allData, component)
-    {
-        // console.log('filter data has been entered');
+    { 
         //declare necessary variables
         var correctData = [];
         var correctDataCounter = 0;
@@ -437,11 +421,6 @@
         dataDates = this.convertDate(dataDates);
         compareToDate = this.convertDate(compareToDate);
         
-        //console logs
-        // console.log('This was the selected track: ' +selectedTrack);
-        // console.log('This was the selected Location: ' +selectedLocation);
-        // console.log('This is the compare To Date: ' +compareToDate[0]);
-        // console.log('This is the list of dataDates: ' + dataDates);
         
         //For each record, determine if it meets the Filter Criteria.
         for(var currData = 0;currData < allData.length; currData++)
@@ -450,22 +429,16 @@
             
             //If either selectbox had an actual value, the code enters this if statement
             if((selectedTrack!="All" || selectedLocation!="All"))
-            {
-                // console.log('currently checking allData[currData].name: ' + JSON.stringify(allData[currData].trackName))
-                // console.log('date int: ' + dataDates[currData])
-                
-                
+            { 
                  //If the current record has the correct name or location, and the project starts after the listed date,
                 //enter
                 if((JSON.stringify(allData[currData].trackName) == selectedTrack 
                     && JSON.stringify(allData[currData].location) == selectedLocation)) 
                    //&& compareToDate[0] <= dataDates[currData])
                 {
-                    //Add the current record to the array to be set as the current data
-                    // console.log('the second if statement has been entered.');
+                    //Add the current record to the array to be set as the current data 
                     correctData[correctDataCounter] = allData[currData];
-                    correctDataCounter++;
-                    // console.log('a correct match has been found' + correctData[correctDataCounter]);
+                    correctDataCounter++; 
                 }
 
                 else if(JSON.stringify(allData[currData].trackName) == selectedTrack 
@@ -483,7 +456,6 @@
                 
             } else
             {
-                //console.log('the All/All portion');
                 correctData = allData;
             }
         }
@@ -497,9 +469,7 @@
     }, 
     
     setInitFilterValues: function (component, event) {
-        var allTrainings = component.get('v.qTraining');
-        //console.log('here are all the trainings');
-        //console.log(allTrainings);
+        var allTrainings = component.get('v.qTraining'); 
         
         //Creating the Track List
         var TrackSet = new Set();
@@ -526,8 +496,7 @@
             LocationListCounter++;
         }
         var TrackList = [];
-        var TrackListCounter = 0;
-        // console.log('The current length of TrackSet is: '+ TrackSet.size);
+        var TrackListCounter = 0; 
         for(let currTrack of TrackSet)
         {
 
@@ -538,19 +507,14 @@
         //Creating Colors
         var UserColors = [];
         var PresetColors = ['#F26925', '#474C55', '#72A4C2', '#FCB414', '#B9B9BA'];
-        var currColors = [];
-        // console.log('The current length of TrackSet is: '+ TrackSet.size);
+        var currColors = []; 
         for(var i=0; i<TrackSet.size; i++)
         {
             let colorSelector = (PresetColors.length)%i;
 
             currColors[i] = PresetColors[colorSelector];
         }
-
-        //console.log('here is LocationList:')
-        //console.log(LocationList);
-        //console.log('here is the length of the UserColor array: ')
-        //console.log(UserColors.length);
+        
         component.set('v.Locations', LocationList);
         component.set('v.Tracks', TrackList);
         
@@ -572,16 +536,11 @@
         var colorsApplied = [];
         var colorsAppliedCounter = 0;
         for(let currBatch = 0; currBatch < allBatches.length; currBatch++)
-        {
-            // console.log('here is tracks.length: '+tracks.length);
+        { 
             for(let currTrack = 0; currTrack < tracks.length; currTrack++)
-            {
-                // console.log('trackName: '+JSON.stringify(allBatches[currBatch].trackName));
-                // console.log('tracks[currTrack]: '+tracks[currTrack]);
+            { 
                 if(JSON.stringify(allBatches[currBatch].trackName)==tracks[currTrack])
-                {
-                    
-                    // console.log('The if statement has been entered. The new color is: ' + colors[currTrack]);
+                { 
                     colorsApplied[colorsAppliedCounter] = colors[currTrack];
                     colorsAppliedCounter++;
                     
