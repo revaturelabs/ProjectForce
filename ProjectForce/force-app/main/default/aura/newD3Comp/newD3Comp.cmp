@@ -4,7 +4,7 @@
   @Author             : ChangeMeIn@UserSettingsUnder.SFDoc
   @Group              : 
   @Last Modified By   : ChangeMeIn@UserSettingsUnder.SFDoc
-  @Last Modified On   : 11/7/2019, 2:37:53 PM
+  @Last Modified On   : 11/7/2019, 2:40:27 PM
   @Modification Log   : 
   Ver       Date            Author      		    Modification
   1.0    11/7/2019   ChangeMeIn@UserSettingsUnder.SFDoc     Initial Version
@@ -97,7 +97,7 @@
         <!--Holds the Chart -->
         <div class="Chart">
             <div class="chartAreaWrapper">
-                <canvas aura:id="myChart" onclick= "{!c.showmodal}"/>
+                <canvas aura:id="myChart" onclick= "{!c.showmodal}"></canvas>
             </div>
             <c:ChartCalculation />
         </div>
