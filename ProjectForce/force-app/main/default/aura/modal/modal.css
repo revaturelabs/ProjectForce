@@ -4,15 +4,28 @@
 
 .THIS .slds-button_neutral {
    
-   background-color: #F26925;
+   background-color: #1798c1;
    color: white;
    font-size: 1rem;
    width: 100px;
+   border-color: gray;
+}
+
+.THIS .save{
+   background-color: #1798c1;
+   color: white;
+}
+
+.THIS .cancel{
+   background-color: white;
+   color: #1798c1;
+   float: left;
+ 
 }
 
 .THIS .slds-modal__footer {
    
-   background-color: #474C55;
+   background-color: white;
 }
 
 
@@ -29,21 +42,39 @@
 }
 
 .THIS .slds-modal__header {
-   background: #474C55;
-   color: #F26925;
+   background: white;
+  
    font-size: 2rem;
 }
-.THIS .slds-form-element__label{
-   
-   padding: .25rem .5rem;
-   border-radius: 15rem;
-   font-size: 1rem;
-   font-weight: 700;
-   line-height: normal;
-   color: white;
-   white-space: nowrap;
-   margin-bottom: .5rem;
-   margin-top: .5rem;
-   background-color: #474c55;
-   width: 80px;
+
+.THIS .header{
+   color:black;
+}
+
+.THIS .hidden  {
+   display: none;
+}
+
+
+.THIS .buttonStyle{
+  border: none;
+  color: white;
+
+  text-align: center;
+  border-radius: 8px;
+  display: inline-block;
+  font-size: 16px;
+  background-color: #1798c1;
+  cursor: pointer;
+  height: 20px;
+ 
+}
+
+
+.THIS .row{
+   display: flex
+}
+.THIS .column{
+   flex: 50%;
+   padding: 10px;
 }

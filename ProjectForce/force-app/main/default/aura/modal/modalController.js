@@ -66,5 +66,13 @@
         helper.showModal(component);
 
         console.log("showModal completed");
-    }    
+    },
+    openDiv : function(component, event, helper) {
+        var x = document.getElementById("locationDiv");
+        if (x.style.display === "block") {
+          x.style.display = "none";
+        } else {
+          x.style.display = "block";
+        }
+      }
 })
