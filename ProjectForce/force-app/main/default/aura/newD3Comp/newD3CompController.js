@@ -223,7 +223,10 @@ myAction : function(component, event, helper) {
     var barOptions_stacked = {
         
             hover: {
-                animationDuration:10
+                animationDuration:10,
+                // onHover: function(e, a) {
+                //     $("Chart").css("cursor", a[0] ? "pointer" : "default");
+                // }
             },
             events: {
                 events: ['onClick']
@@ -231,6 +234,7 @@ myAction : function(component, event, helper) {
         animation: {
             onComplete: function () {
                 var ctx = this.chart.ctx;
+                // console.log(ctx);
                 var chartInstance = this.chart;
                 ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontFamily, 'normal', Chart.defaults.global.defaultFontFamily);
                 ctx.textAlign = 'left';
@@ -246,12 +250,15 @@ myAction : function(component, event, helper) {
                 }); */ 
                 this.data.datasets.forEach(function (dataset, i) {
                     var meta = chartInstance.controller.getDatasetMeta(i);
+                    // console.log(meta.data[0]);
                     meta.data.forEach(function (bar, index) {
-                        var model = dataset._meta[Object.keys(dataset._meta)[0]].data[index]._model;                            
-                        var label = model.label;
-                        
-                        ctx.fillText(label, bar._model.x+2, bar._model.y);
-                        
+                        if (bar._datasetIndex === 0) {
+                            var model = dataset._meta[Object.keys(dataset._meta)[0]].data[index]._model;                            
+                            var label = model.label;
+                            // console.log(bar._datasetIndex);
+    
+                            ctx.fillText(label, bar._model.x+2, bar._model.y);
+                        }
                     });
                 });
             }
