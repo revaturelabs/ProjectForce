@@ -56,7 +56,6 @@
     },
 
     showModal : function(component, event, helper) {
-        console.log("showModal");
         helper.locationByID(component, event);
         helper.trackByID(component, event);
         helper.date(component,event);
@@ -64,7 +63,5 @@
         helper.trainer(component, event);
         helper.project(component, event);
         helper.showModal(component);
-
-        console.log("showModal completed");
     }    
 })

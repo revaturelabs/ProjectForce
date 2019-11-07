@@ -1,3 +1,14 @@
+<!--
+  @File Name          : newD3Comp.cmp
+  @Description        : 
+  @Author             : ChangeMeIn@UserSettingsUnder.SFDoc
+  @Group              : 
+  @Last Modified By   : ChangeMeIn@UserSettingsUnder.SFDoc
+  @Last Modified On   : 11/7/2019, 2:52:24 PM
+  @Modification Log   : 
+  Ver       Date            Author      		    Modification
+  1.0    11/7/2019   ChangeMeIn@UserSettingsUnder.SFDoc     Initial Version
+-->
 <aura:component controller="GantController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickActionWithoutHeader" access="global">
 
         <c:modal aura:id="modalComp"/>
@@ -17,11 +28,7 @@
     <aura:attribute name ="UserColors" type="List"/>
     <aura:attribute name = "DisplayColors" type = "List" />
     <aura:attribute name="today" type="Date" default=""/>
-    <!--<aura:attribute name= "modalComplete" type="Boolean" default = "false" />"
-    <aura:handler name="change" value="{!v.modalComplete}" action="{!c.modalUpdate}"/>-->
-    
-    
-    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
     <div class = "THIS">
         <!--This div marks where all the chart manipulation sections can be found. -->
         <div class="chartmanip" label="Chart Manipulations" >

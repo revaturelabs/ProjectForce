@@ -23,6 +23,10 @@
 //    	
 //    If you have any questions, please email Geoffrey Murray @ geoffrey.murray.1995@gmail.com
 ////////////////////////////////////////////
+doInit : function(component, event, helper){
+
+},
+
 myAction : function(component, event, helper) {
     
     //creating a variable.
@@ -185,34 +189,28 @@ myAction : function(component, event, helper) {
                     yLabels[i] = 'Dec '+ (i-699) + ' ' + (year+1)
                 }
             }
-        }
-        //testing return
-        /*for(let i=1;i<732;i++) {
-            console.log(yLabels[i])
-        }*/
+        } 
     }
 
     //Once you click on the chart, you're able to modify and save/update the modifications
     component.find("myChart").getElement().onclick = function(evt){
         var activePoints = component.get('v.dasChart').getElementsAtEvent(evt);
-        if(activePoints.length > 0 ){
-            var currIndex = activePoints[0]._index;                
+        var activePoint = component.get('v.dasChart').getElementAtEvent(evt)[0]; //WIP
+        if(activePoints.length > 0 ){ 
+            if (activePoints[0]._datasetIndex === 0) console.log('hi');
+            if (activePoint._datasetIndex === 0) return;
+            var currIndex = activePoints[0]._index;
             var currSimpleTraining = component.get('v.tempList')[currIndex];
-            //console.log('here is the current simple training: ');
-            //console.log(currSimpleTraining.trainingId);
 
             var childCmp = component.find("modalComp")
 
             let location = currSimpleTraining.location;
             JSON.stringify(location);
-            //console.log("location:"+location);
 
             let track = currSimpleTraining.trackName;
             JSON.stringify(track);
-            //console.log("track:"+track); 
 
             //let newLocation = location.replace(/"/location,"");
-            //console.log(newLocation);
             childCmp.showModal(currSimpleTraining.trainingId, location, track);
             
             
@@ -222,15 +220,12 @@ myAction : function(component, event, helper) {
     //the charts options such as x-axis, y-axis, if hover/no hover
     var barOptions_stacked = {
         
-        hover: {
-            animationDuration:10,
-            // onHover: function (e, element) {
-            //     if (e.length) {
-            //         const data = e[0]._chart.config.data.datasets[0].data[e[0]._index];
-            //         console.log(e, data);
-            //     }
-            // }
-        },
+            hover: {
+                animationDuration:10,
+                // onHover: function(e, a) {
+                //     $("Chart").css("cursor", a[0] ? "pointer" : "default");
+                // }
+            },
             events: {
                 events: ['onClick']
             },
@@ -243,13 +238,15 @@ myAction : function(component, event, helper) {
                 ctx.fillStyle = '#FFFFFF'; // label color
               
                 this.data.datasets.forEach(function (dataset, i) {
-                    var meta = chartInstance.controller.getDatasetMeta(i);
+                    var meta = chartInstance.controller.getDatasetMeta(i); 
                     meta.data.forEach(function (bar, index) {
-                        var model = dataset._meta[Object.keys(dataset._meta)[0]].data[index]._model;                            
-                        var label = model.label;
-                        
-                        ctx.fillText(label, bar._model.x+2, bar._model.y);
-                        
+                        // only fillText for the first bar, otherwise we get double label overflow
+                        if (bar._datasetIndex === 0) {
+                            var model = dataset._meta[Object.keys(dataset._meta)[0]].data[index]._model;                            
+                            var label = model.label;
+    
+                            ctx.fillText(label, bar._model.x+2, bar._model.y);
+                        }
                     });
                 });
             }
@@ -301,7 +298,8 @@ myAction : function(component, event, helper) {
                         display:false,
                         color: "#fff",
                         zeroLineColor: "#fff",
-                        zeroLineWidth: 0
+                        zeroLineWidth: 0,
+                        drawOnChartArea: true
                     },
                     ticks: {
                         fontFamily: "'Futura', sans-serif",
@@ -309,9 +307,10 @@ myAction : function(component, event, helper) {
                         display: true,
                         callback: function(value, index, values) {
                             var tra = JSON.parse(localStorage.getItem("tracks"));
-                            console.log(tra[index]);
-                            //let sortedTracks = tra.sort();
+                            console.log(tra[index]);                        
                             var trackString = tra[index].split("-");
+                            var currentTrack = trackString.trackId;
+                        
                             return trackString[trackString.length - 1];
                             
                         }
@@ -349,6 +348,8 @@ myAction : function(component, event, helper) {
             helper.setInitFilterValues(component, event);
             //pass the results to the chart creator.
             var ctx = component.find("myChart").getElement();
+
+            // putting params on newlines for readability
             var newChart = helper.createChart(
                 ctx, 
                 barOptions_stacked, 
@@ -370,13 +371,9 @@ runSort:function(component, event, helper)
     var sortBy= component.find('select').get('v.value');
     var allTrainings = component.get('v.tempList');
     var myChart = component.get('v.dasChart');
-    var getColors = component.get('v.DisplayColors');
-    console.log('here\'s the length of the array before sort:' + allTrainings.length);
-    helper.sortArray(allTrainings, getColors, sortBy);
-    console.log('here\'s the length of the array after sort: '+allTrainings.length);
-    helper.updateData(component);
-    console.log('here\s the length of the array after updateData: '+allTrainings.length);
-    //console.log(myChart.data.datasets.data);
+    var getColors = component.get('v.DisplayColors'); 
+    helper.sortArray(allTrainings, getColors, sortBy); 
+    helper.updateData(component); 
     //var a = component.get('c.applyColors');
     //$A.enqueueAction(a);
 },
@@ -389,8 +386,7 @@ applyColors:function(component, event, helper)
     var currTrainings = component.get('v.tempList');
     var allTracks = [];
     var allColors = [];
-    var colorElements = component.find('colors');
-    console.log('colorElements length is: ' + colorElements.length);
+    var colorElements = component.find('colors'); 
     for(let i=0; i<colorElements.length; i++)
     {
         allTracks[i] = colorElements[i].get('v.id');
@@ -402,8 +398,7 @@ applyColors:function(component, event, helper)
     
 },
 
-runFilter: function (component, event, helper) {
-    console.log('runFilter has been entered.');
+runFilter: function (component, event, helper) { 
     //Grabbing Relevant data
     var allTrainings = component.get('v.qTraining');
     var myChart = component.get('v.dasChart');
@@ -427,22 +422,17 @@ showmodal: function(component, event, helper){
         if(activePoints.length > 0 )
         {
             var currIndex = activePoints[0]._index;                
-            var currSimpleTraining = component.get('v.tempList')[currIndex];
-            console.log('here is the current simple training: ');
-            console.log(currSimpleTraining.trainingId);
+            var currSimpleTraining = component.get('v.tempList')[currIndex]; 
 
             var childCmp = component.find("modalComp");
 
             let location = currSimpleTraining.location;
-            JSON.stringify(location);
-            console.log("location:"+location);
+            JSON.stringify(location); 
 
             let track = currSimpleTraining.trackName;
-            JSON.stringify(track);
-            console.log("track:"+track); 
+            JSON.stringify(track); 
 
             //let newLocation = location.replace(/"/location,"");
-            //console.log(newLocation);
             childCmp.showModal(currSimpleTraining.trainingId, location, track);
             
             /*
@@ -459,8 +449,7 @@ modalUpdate:function(component,event,helper)
             let action = component.get("c.getTrainings");
             action.setCallback(this, function(response) {
             let state = response.getState();
-            if (state === "SUCCESS") {
-                console.log('callout was a success');
+            if (state === "SUCCESS") { 
                 let returnedList = response.getReturnValue();
                 component.set('v.qTraining', returnedList);
                 let displayList = component.get('v.tempList');
@@ -469,8 +458,7 @@ modalUpdate:function(component,event,helper)
                     for(let currReturned = 0; currReturned < returnedList.length; currReturned++)
                     {
                     if(displayList[currRecord].trackName == returnedList[currReturned].trackName)
-                    {
-                        console.log('match was found: '+ returnedList[currReturned].trackName);
+                    { 
                         displayList[currReturned] = returnedList[currRecord];
                     }
                 }
