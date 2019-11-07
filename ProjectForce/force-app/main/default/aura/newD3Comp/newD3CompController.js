@@ -57,7 +57,7 @@ myAction : function(component, event, helper) {
     while(year < lastYear)
     {
         //label shown as:month day year
-        yLabels.push({ value:(monthNames[month] + " " + day + " " + year) });
+        yLabels.push(monthNames[month] + " " + day + " " + year);
         labelIndex++;
         day++;
 
