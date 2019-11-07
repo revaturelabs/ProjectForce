@@ -8,8 +8,8 @@ public without sharing class ModalController {
     static Trainer__c ExternalTrainer = [SELECT name FROM trainer__c WHERE Name = 'External'];
     static List<Room__c> RoomList = [select name, location__r.name , (select start_date__c from trainings__r) from room__c];
     static list<Track__c> trackList = [SELECT name FROM Track__c];
-    static List<Project__c> ProjectList = [select name, track__r.name ,(SELECT projectStartDate__c FROM trainings__r ORDER BY projectStartDate__c desc LIMIT 1) from Project__c];
-    static List<training__c> trainingList = [SELECT Id, room__r.location__r.name, track__r.Name, room__r.Name, trainer__r.Name, Project__r.Name FROM training__c];
+    static List<Project__c> ProjectList = [select name, projectcomplete__c, track__r.name,(SELECT projectStartDate__c FROM trainings__r ORDER BY projectStartDate__c desc LIMIT 1) from Project__c];
+    static List<training__c> trainingList = [SELECT Id, batchsize__c, room__r.location__r.name, track__r.Name, room__r.Name, trainer__r.Name, Project__r.Name FROM training__c];
 
 	@Auraenabled
     //Return a list of locations available
