@@ -16,6 +16,11 @@
     },
 
     save : function(component, event, helper){
-       
+       var saveInlineEdits = component.getEvent("saveInlineEdits");
+       saveInlineEdits.setParams({
+            "editedItems": event.getParam("draftValues")
+       });
+       saveInlineEdits.fire();
+       component.find("table").set("v.draftValues", null);
     }
 })

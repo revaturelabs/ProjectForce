@@ -8,7 +8,7 @@
                             label:fields[i], 
                             fieldName:fields[i], 
                             type:"text", 
-                            fixedWidth:(width/fields.length)-(100/fields.length),
+                            fixedWidth:(width/fields.length)-(90/fields.length),
                             editable:true
                         };
         }

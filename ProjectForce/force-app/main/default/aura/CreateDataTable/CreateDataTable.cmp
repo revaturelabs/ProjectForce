@@ -10,6 +10,7 @@
     <aura:attribute name="selectedRows" type="String[]" />
 
     <aura:registerEvent name="tableItemSelected" type="c:TableItemSelectedEvent" />
+    <aura:registerEvent name="saveInlineEdits" type="c:SaveInlineEditsEvent" />
     <aura:handler name="init" value="{!this}" action="{!c.init}" />
     
     <div class="TableDiv" aura:id="TableDiv">
