@@ -27,7 +27,7 @@ myAction : function(component, event, helper) {
     
     //creating a variable.
     var yLabels = {};
-    var trackLabels = ['JavaEE', 'Big Data', 'Salesforce'];
+    var trackLabels = ['Java EE', 'Big Data', 'Salesforce'];
     //This gets the current date.
     var date = new Date();
     //only the current year
@@ -224,12 +224,12 @@ myAction : function(component, event, helper) {
         
         hover: {
             animationDuration:10,
-            onHover: function (e, element) {
-                if (e.length) {
-                    const data = e[0]._chart.config.data.datasets[0].data[e[0]._index];
-                    console.log(e, data);
-                }
-            }
+            // onHover: function (e, element) {
+            //     if (e.length) {
+            //         const data = e[0]._chart.config.data.datasets[0].data[e[0]._index];
+            //         console.log(e, data);
+            //     }
+            // }
         },
             events: {
                 events: ['onClick']
@@ -308,14 +308,19 @@ myAction : function(component, event, helper) {
                         fontSize:11,
                         display: true,
                         callback: function(value, index, values) {
-                            return trackLabels[index++];
+                            var tra = JSON.parse(localStorage.getItem("tracks"));
+                            console.log(tra[index]);
+                            //let sortedTracks = tra.sort();
+                            var trackString = tra[index].split("-");
+                            return trackString[trackString.length - 1];
+                            
                         }
                         
                         
                     },
                     //y-axis label name
                     scaleLabel:{
-                        display:false,
+                        display:true,
                         labelString: 'Batches',
                     },
                     stacked: true

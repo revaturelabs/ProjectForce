@@ -104,19 +104,18 @@
         //Here we take the dataset and split it into several different arrays to make it easier to use.
         var startTimes = [];
         var tracks =  [];
+        var trackId = [];
         var trainers = [];
         var projects = [];
         var rooms = [];
         for(let i = 0; i < dataSet.length; i++) {
             startTimes[i] = dataSet[i].startDate;
             tracks[i] = dataSet[i].name;
+            trackId[i] = dataSet[i].trackName;
             projects[i] = dataSet[i].project;
             trainers[i] = dataSet[i].trainer;
             rooms[i] = dataSet[i].room; // not on Training__c pagelayout
         }
-        // console.log("sample data: " + JSON.stringify(dataSet[3], null, 2));
-        // location, name, project, room, startDate, trackName, trainer, trainingId
-        
         //Once we have the startDates, we need it as an int.
         var days = this.convertDate(startTimes);
         
@@ -148,10 +147,11 @@
         //Create the labels that show up on the sides and when hovered over.
         let tracksAndProjects = [];
         for(let i = 0; i < days.length; i++){
-            var some = `${tracks[i]} - ${projects[i]} - ${trainers[i]}`;
+            var some = `${tracks[i]} - ${projects[i]} - ${trainers[i]} - ${trackId[i]}`;
             tracksAndProjects[i] = some;
         }
         
+        localStorage.setItem("tracks", JSON.stringify(tracksAndProjects));
         //This is going to build the Chart. By this point the data has been brought in through dataSet
         //and it's been split into separate arrays, so that way it's easier to use in the Chart creation.
         return new Chart(ctx, {    
@@ -163,7 +163,7 @@
                         //example of how to reference something in here: chart.data.datasets[0].data[i]
                         //This data is when the project is supposed to start
                         data: days,
-                        //backgroundColor: "rgba(63,103,126,0)" 
+                        backgroundColor: "rgba(63,103,126,20)" 
                         }, {
                         //example of how to reference something in here: chart.data.datasets[1].data[i]
                         //Data here is the duration of the project
@@ -203,7 +203,7 @@
             holdProject[i] = data[i].project;
             holdTrainers[i] = data[i].trainer;
          }
-         //console.log('here are the colors about to be used: '+ currColors);
+
          for(let i =0;i<holdBatchName.length;i++){
              var some = `${holdBatchName[i]} - ${holdProject[i]} - ${holdTrainers[i]}`;
              holdLabels[i] = some;
@@ -216,10 +216,6 @@
         chart.data.datasets[1].backgroundColor = holdColors;
         chart.data.datasets[0].data = this.convertDate(startDates);
         chart.data.labels = holdLabels;
-        //log the changes
-        //console.log('list of colors list: '+holdColors);
-        //console.log('converted dates' + this.convertDate(startDates));
-        //console.log('last data of dates: '+chart.data.datasets[0].data);
         //update. Until this command is run, none of the changes are actually applied to the chart.
         chart.update();
     },
@@ -437,12 +433,6 @@
         //convert the arrays from arrays of strings into arrays of numbers
         dataDates = this.convertDate(dataDates);
         compareToDate = this.convertDate(compareToDate);
-        
-        //console logs
-        // console.log('This was the selected track: ' +selectedTrack);
-        // console.log('This was the selected Location: ' +selectedLocation);
-        // console.log('This is the compare To Date: ' +compareToDate[0]);
-        // console.log('This is the list of dataDates: ' + dataDates);
         
         //For each record, determine if it meets the Filter Criteria.
         for(var currData = 0;currData < allData.length; currData++)
