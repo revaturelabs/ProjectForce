@@ -26,166 +26,63 @@
 myAction : function(component, event, helper) {
     
     //creating a variable.
-    var yLabels = {};
-    
+    var yLabels = [];
     //This gets the current date.
     var date = new Date();
     //only the current year
     var year = date.getUTCFullYear();
-    
-    /*	Making an array with 2 years worth of days. Taking into account if this year or the next are leap years or not.
-     * 	The First index of the array is Jan 1 and every +1 added to the index goes up 1 day.
-     * 	The reason for this is because the x-axis of the the chart only takes in an integer as data; Chart JS limitations
-     * 	The data(integer) that gets passed into the chart then calls the array in x-axis ticks and the index of the array returns the date.
+
+    /*  Making an array with 2 years worth of days. Taking into account if this year or the next are leap years or not.
+    *  The First index of the array is Jan 1 and every +1 added to the index goes up 1 day.
+    *  The reason for this is because the x-axis of the the chart only takes in an integer as data; Chart JS limitations
+    *  The data(integer) that gets passed into the chart then calls the array in x-axis ticks and the index of the array returns the date.
     */
+    var monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    var monthDays = [31,28,31,30,31,31,31,31,30,31,30,31];
+
     //checking if this year is a leap year
-    if(year%4==0) {
-        //this year is a leap year; 366 days
-        for(let i=1;i<367;i++) {
-            if(i<32) {
-                yLabels[i] = 'Jan '+ i + ' ' + year
-            } else if (i>31 && i<61) {
-                yLabels[i] = 'Feb '+ (i-31) + ' ' + year
-            } else if (i>60 && i<92) {
-                yLabels[i] = 'Mar '+ (i-60) + ' ' + year
-            } else if (i>91 && i<122) {
-                yLabels[i] = 'Apr '+ (i-91) + ' ' + year
-            } else if (i>121 && i<153) {
-                yLabels[i] = 'May '+ (i-121) + ' ' + year
-            } else if (i>152 && i<183) {
-                yLabels[i] = 'Jun '+ (i-152) + ' ' + year
-            } else if (i>182 && i<214) {
-                yLabels[i] = 'Jul '+ (i-182) + ' ' + year
-            } else if (i>213 && i<245) {
-                yLabels[i] = 'Aug '+ (i-213) + ' ' + year
-            } else if (i>244 && i<275) {
-                yLabels[i] = 'Sep '+ (i-244) + ' ' + year
-            } else if (i>274 && i<306) {
-                yLabels[i] = 'Oct '+ (i-274) + ' ' + year
-            } else if (i>305 && i<336) {
-                yLabels[i] = 'Nov '+ (i-305) + ' ' + year
-            } else if (i>335 && i<367) {
-                yLabels[i] = 'Dec '+ (i-335) + ' ' + year
-            }
-        }
-        //this is the next year after this year and since this year is a leap year then next year is not a leap year; 365 days
-        for(let i=367;i<733;i++) {
-            if(i>366 && i<398) {
-                yLabels[i] = 'Jan '+ (i-366) + ' ' + (year+1)
-            } else if (i>397 && i<426) {
-                yLabels[i] = 'Feb '+ (i-397) + ' ' + (year+1)
-            } else if (i>425 && i<457) {
-                yLabels[i] = 'Mar '+ (i-425) + ' ' + (year+1)
-            } else if (i>456 && i<487) {
-                yLabels[i] = 'Apr '+ (i-456) + ' ' + (year+1)
-            } else if (i>486 && i<518) {
-                yLabels[i] = 'May '+ (i-486) + ' ' + (year+1)
-            } else if (i>517 && i<548) {
-                yLabels[i] = 'Jun '+ (i-517) + ' ' + (year+1)
-            } else if (i>547 && i<579) {
-                yLabels[i] = 'Jul '+ (i-547) + ' ' + (year+1)
-            } else if (i>578 && i<610) {
-                yLabels[i] = 'Aug '+ (i-578) + ' ' + (year+1)
-            } else if (i>609 && i<641) {
-                yLabels[i] = 'Sep '+ (i-609) + ' ' + (year+1)
-            } else if (i>640 && i<672) {
-                yLabels[i] = 'Oct '+ (i-640) + ' ' + (year+1)
-            } else if (i>671 && i<702) {
-                yLabels[i] = 'Nov '+ (i-671) + ' ' + (year+1)
-            } else if (i>701 && i<733) {
-                yLabels[i] = 'Dec '+ (i-701) + ' ' + (year+1)
-            }
-        }
-    } 
-    //else if this year is not a leap year; 365 days
-    else {
-        for(let i=1;i<366;i++) {
-            if(i<32) {
-                yLabels[i] = 'Jan '+ i + ' ' + year
-            } else if (i>31 && i<60) {
-                yLabels[i] = 'Feb '+ (i-31) + ' ' + year
-            } else if (i>59 && i<91) {
-                yLabels[i] = 'Mar '+ (i-59) + ' ' + year
-            } else if (i>90 && i<121) {
-                yLabels[i] = 'Apr '+ (i-90) + ' ' + year
-            } else if (i>120 && i<152) {
-                yLabels[i] = 'May '+ (i-120) + ' ' + year
-            } else if (i>151 && i<182) {
-                yLabels[i] = 'Jun '+ (i-151) + ' ' + year
-            } else if (i>181 && i<213) {
-                yLabels[i] = 'Jul '+ (i-181) + ' ' + year
-            } else if (i>212 && i<244) {
-                yLabels[i] = 'Aug '+ (i-212) + ' ' + year
-            } else if (i>243 && i<274) {
-                yLabels[i] = 'Sep '+ (i-243) + ' ' + year
-            } else if (i>273 && i<305) {
-                yLabels[i] = 'Oct '+ (i-273) + ' ' + year
-            } else if (i>304 && i<335) {
-                yLabels[i] = 'Nov '+ (i-304) + ' ' + year
-            } else if (i>334 && i<366) {
-                yLabels[i] = 'Dec '+ (i-334) + ' ' + year
-            }
-        }
-        //this is the next year after this year(checking if its a leap year)
-        if((year+1)%4==0) {
-            for(let i=366;i<732;i++) {
-                if(i>365 && i<397) {
-                    yLabels[i] = 'Jan '+ (i-365) + ' ' + (year+1)
-                } else if (i>396 && i<426) {
-                    yLabels[i] = 'Feb '+ (i-396) + ' ' + (year+1)
-                } else if (i>425 && i<457) {
-                    yLabels[i] = 'Mar '+ (i-425) + ' ' + (year+1)
-                } else if (i>456 && i<487) {
-                    yLabels[i] = 'Apr '+ (i-456) + ' ' + (year+1)
-                } else if (i>486 && i<518) {
-                    yLabels[i] = 'May '+ (i-486) + ' ' + (year+1)
-                } else if (i>517 && i<548) {
-                    yLabels[i] = 'Jun '+ (i-517) + ' ' + (year+1)
-                } else if (i>547 && i<579) {
-                    yLabels[i] = 'Jul '+ (i-547) + ' ' + (year+1)
-                } else if (i>578 && i<610) {
-                    yLabels[i] = 'Aug '+ (i-578) + ' ' + (year+1)
-                } else if (i>609 && i<640) {
-                    yLabels[i] = 'Sep '+ (i-609) + ' ' + (year+1)
-                } else if (i>639 && i<671) {
-                    yLabels[i] = 'Oct '+ (i-639) + ' ' + (year+1)
-                } else if (i>670 && i<701) {
-                    yLabels[i] = 'Nov '+ (i-670) + ' ' + (year+1)
-                } else if (i>700 && i<732) {
-                    yLabels[i] = 'Dec '+ (i-700) + ' ' + (year+1)
+    if(year%400==0 || (year%4==0 && year%100!=0))
+    {
+        //febraury gets an extra day
+        monthDays[1] = 29; 
+    }else{
+        monthDays[1] = 28;
+    }
+
+    //initializing
+    var labelIndex = 0;
+    var month = 0;
+    var day = 1;
+
+    var lastYear = year+2;
+    //labels for next 2 years
+    while(year < lastYear)
+    {
+        //label shown as:month day year
+        yLabels.push(monthNames[month] + " " + day + " " + year);
+        labelIndex++;
+        day++;
+
+        //check if day passes end of the month
+        if(day > monthDays[month])
+        {
+            //reaches end of the year
+            if(month==11)
+            {
+                year++;
+                //checking if this year is a leap year
+                if(year%400==0 || (year%4==0 && year%100!=0))
+                {
+                    //febraury gets an extra day
+                    monthDays[1] = 29; 
+                }else{
+                    monthDays[1] = 28;
                 }
             }
-        } 
-        //else if next year is also not a leap year
-        else {
-            for(let i=366;i<731;i++) {
-                if(i>365 && i<397) {
-                    yLabels[i] = 'Jan '+ (i-365) + ' ' + (year+1)
-                } else if (i>396 && i<425) {
-                    yLabels[i] = 'Feb '+ (i-396) + ' ' + (year+1)
-                } else if (i>424 && i<456) {
-                    yLabels[i] = 'Mar '+ (i-424) + ' ' + (year+1)
-                } else if (i>455 && i<486) {
-                    yLabels[i] = 'Apr '+ (i-455) + ' ' + (year+1)
-                } else if (i>485 && i<517) {
-                    yLabels[i] = 'May '+ (i-485) + ' ' + (year+1)
-                } else if (i>516 && i<547) {
-                    yLabels[i] = 'Jun '+ (i-516) + ' ' + (year+1)
-                } else if (i>546 && i<578) {
-                    yLabels[i] = 'Jul '+ (i-546) + ' ' + (year+1)
-                } else if (i>577 && i<609) {
-                    yLabels[i] = 'Aug '+ (i-577) + ' ' + (year+1)
-                } else if (i>608 && i<639) {
-                    yLabels[i] = 'Sep '+ (i-608) + ' ' + (year+1)
-                } else if (i>638 && i<670) {
-                    yLabels[i] = 'Oct '+ (i-638) + ' ' + (year+1)
-                } else if (i>669 && i<700) {
-                    yLabels[i] = 'Nov '+ (i-669) + ' ' + (year+1)
-                } else if (i>699 && i<731) {
-                    yLabels[i] = 'Dec '+ (i-699) + ' ' + (year+1)
-                }
-            }
-        } 
+
+            month = (month+1)%12;
+            day=1;
+        }
     }
 
     //Once you click on the chart, you're able to modify and save/update the modifications
@@ -211,14 +108,25 @@ myAction : function(component, event, helper) {
         }           
     };       
     
-    //the charts options such as x-axis, y-axis, if hover/no hover
-    var barOptions_stacked = {
-        
+        // This variable is needed for the hover event.
+        var myChartComponent = component.find("myChart").getElement();
+        // function used to store how we want the hover event to work. This method allows for us to reuse it later if needed.
+        var hoverEvent = function(e) {
+            // inline if statement. If we aren't hovering over the timeline elements
+            // then we have the default pointer, otherwise we use the pointing pointer
+            // for the mouse to display on the browser window.
+            myChartComponent.style.cursor = e[0] ? "pointer" : "default";
+        };
+        //the charts options such as x-axis, y-axis, if hover/no hover
+        var barOptions_stacked = {
+
             hover: {
                 animationDuration:10,
-                // onHover: function(e, a) {
-                //     $("Chart").css("cursor", a[0] ? "pointer" : "default");
-                // }
+                // Documentation for this onHover function is in Chart.js
+                // https://www.chartjs.org/docs/latest/general/interactions/events.html
+                onHover: function (e, element) {
+                    hoverEvent(e,element);
+                }
             },
             events: {
                 events: ['onClick']
@@ -230,18 +138,13 @@ myAction : function(component, event, helper) {
                 ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontFamily, 'normal', Chart.defaults.global.defaultFontFamily);
                 ctx.textAlign = 'left';
                 ctx.fillStyle = '#FFFFFF'; // label color
-                /*this.data.datasets.forEach(function (dataset) {
-                    for (var i = 0; i < dataset.data.length; i++) {
-                        var model = dataset._meta[Object.keys(dataset._meta)[0]].data[i]._model,
-                            left = dataset._meta[Object.keys(dataset._meta)[0]].data[i]._xScale.left;
-                        ctx.fillStyle = '#444'; // label color
-                        var label = model.label;
-                        ctx.fillText(label, left + 15, model.y + 8);
-                    }
-                }); */ 
                 this.data.datasets.forEach(function (dataset, i) {
                     var meta = chartInstance.controller.getDatasetMeta(i); 
                     meta.data.forEach(function (bar, index) {
+                        var model = dataset._meta[Object.keys(dataset._meta)[0]].data[index]._model;                            
+                        var label = model.label;
+                        ctx.fillText(label, bar._model.x+2, bar._model.y);
+                        
                         // only fillText for the first bar, otherwise we get double label overflow
                         if (bar._datasetIndex === 0) {
                             var model = dataset._meta[Object.keys(dataset._meta)[0]].data[index]._model;                            
@@ -322,10 +225,8 @@ myAction : function(component, event, helper) {
             },
         tooltips:{
             enabled: false
-        }
-        
-            
-        };
+    }        
+};
     
     //calls the apex controller and runs the method getTrainings then saves the return of the method into getTracks
     var getTracks = component.get("c.getTrainings");
@@ -363,14 +264,17 @@ runSort:function(component, event, helper)
     var sortBy= component.find('select').get('v.value');
     var allTrainings = component.get('v.tempList');
     var myChart = component.get('v.dasChart');
-    var getColors = component.get('v.DisplayColors'); 
+
+    var getColors = component.get('v.DisplayColors');
+    console.log('here\'s the length of the array before sort:' + allTrainings.length);
+    helper.sortArray(allTrainings, getColors, sortBy);
+    console.log('here\'s the length of the array after sort: '+allTrainings.length);
+    helper.updateData(component);
+    console.log('here\s the length of the array after updateData: '+allTrainings.length);
     helper.sortArray(allTrainings, getColors, sortBy); 
     helper.updateData(component); 
-    //var a = component.get('c.applyColors');
-    //$A.enqueueAction(a);
+
 },
-
-
 
 applyColors:function(component, event, helper)
 {
@@ -407,7 +311,7 @@ runFilter: function (component, event, helper) {
 callSaveComp : function(component, event, helper){
     var childCmp = component.find("modalComp")
     childCmp.showModal("Online","Salesforce");
-    },
+},
 
 showmodal: function(component, event, helper){
     var activePoints = component.get('v.dasChart').getElementsAtEvent(event);
@@ -424,18 +328,10 @@ showmodal: function(component, event, helper){
             let track = currSimpleTraining.trackName;
             JSON.stringify(track); 
 
-            //let newLocation = location.replace(/"/location,"");
             childCmp.showModal(currSimpleTraining.trainingId, location, track);
-            
-            /*
-        */
-        }
-
-        
-
-        
-        
+        }    
 },
+
 modalUpdate:function(component,event,helper)
         {
             let action = component.get("c.getTrainings");
@@ -465,7 +361,6 @@ modalUpdate:function(component,event,helper)
         });
 
         $A.enqueueAction(action);
-        }  
-
-
+    }  
 })
+
