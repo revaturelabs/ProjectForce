@@ -230,7 +230,7 @@
         //create an array with the running sum for the amount of days before a month in a regular year
         var addedMonthDays = [];
         var sum = 0;
-        for(int i=0;i<monthdays.length;i++)
+        for(let i=0;i<monthdays.length;i++)
         {
             addedMonthDays.push(sum);
             sum+=monthDays[i];
