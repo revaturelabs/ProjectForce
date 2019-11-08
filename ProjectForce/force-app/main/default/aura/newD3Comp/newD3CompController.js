@@ -299,7 +299,7 @@ myAction : function(component, event, helper) {
                     },
                     ticks: {
                         fontFamily: "'Futura', sans-serif",
-                        fontSize:11,
+                        fontSize:20,
                         display: true,
                         callback: function(value, index, values) {
                             var tra = JSON.parse(localStorage.getItem("tracks"));// getting values from helper
