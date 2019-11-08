@@ -75,14 +75,16 @@
     
 	
 <section aura:id = "modalSection" role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open hideModal slds-modal_small">
-        <div class="font">
-    <div class="slds-modal__container " style="max-width:50rem; ">
+    
+    <!--Changed font to default-->
+    <div class="font">
+
+
+        <div class="slds-modal__container " style="max-width:50rem; ">
 
         <header class="slds-modal__header">
             <div class ="header slds-box slds-box_small slds-modal__header">
-            <h1 id="modal-heading-01" class="slds-modal__title slds-hyphenate">Batch ### - Trainer </h1>
-          
-            
+                <h1 id="modal-heading-01" class="slds-modal__title slds-hyphenate">Batch ### - Trainer </h1>
             </div>
       
         
@@ -106,7 +108,7 @@
             </div>
 
             <div class="column">
-                <div class="slds-size_2-of-4 slds-media_inline">
+                <div class="slds-size_3-of-4 slds-media_inline">
                     <div class="slds-media slds-media_medium">
                         <div class="slds-media__figure">
                         <span class="slds-avatar slds-avatar_medium">
@@ -119,6 +121,15 @@
                     </div>
                 </div>
              </div>
+
+             <div class="column">
+                <label>Mark as Complete
+                    <input type="checkbox"/>
+                </label>
+            </div>
+
+
+
         </div>
 
         </header>
@@ -213,7 +224,7 @@
             <!--</lightning:card>-->
                 <footer class="slds-modal__footer slds-modal__footer_directional">
                     <div class="slds-button-group" role="group">
-                            <lightning:button class="slds-button slds-button_neutral save" label="View Kanban" value="Cancel" onclick="{!c.hideModal}"/>
+                            <lightning:button class="slds-button slds-button_neutral kanban" label="Kanban" value="Cancel" onclick="{!c.hideModal}"/>
                         <lightning:button class="slds-button slds-button_neutral cancel" label="Cancel" value="Cancel" onclick="{!c.hideModal}"/>
                         <lightning:button class="slds-button slds-button_neutral save" label="Save" value="Save" onclick="{!c.save}"/>
                     </div>

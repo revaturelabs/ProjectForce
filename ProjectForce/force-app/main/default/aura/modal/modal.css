@@ -6,9 +6,16 @@
    
    background-color: #1798c1;
    color: white;
-   font-size: 1rem;
+   font-size: 20px;
    width: 100px;
+   height: 50px;
    border-color: gray;
+}
+
+.THIS .kanban{
+   background-color: #1798c1;
+   color: white;
+   float: left;
 }
 
 .THIS .save{
@@ -22,6 +29,7 @@
    float: left;
  
 }
+
 
 .THIS .slds-modal__footer {
    
