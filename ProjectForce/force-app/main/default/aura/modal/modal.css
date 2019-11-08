@@ -55,18 +55,25 @@
    display: none;
 }
 
+.THIS .font{
+   font-family: 'Times New Roman', Times, serif;
+}
 
 .THIS .buttonStyle{
   border: none;
   color: white;
-
-  text-align: center;
+   padding: 0px;
   border-radius: 8px;
   display: inline-block;
-  font-size: 16px;
+  font-size: 18px;
   background-color: #1798c1;
   cursor: pointer;
   height: 20px;
+  width: 175px;
+  vertical-align: middle;
+  text-align: center;
+  margin: auto;
+  line-height: 18px;
  
 }
 

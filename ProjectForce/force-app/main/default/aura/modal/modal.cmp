@@ -75,12 +75,13 @@
     
 	
 <section aura:id = "modalSection" role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open hideModal slds-modal_small">
-
+        <div class="font">
     <div class="slds-modal__container " style="max-width:50rem; ">
 
         <header class="slds-modal__header">
             <div class ="header slds-box slds-box_small slds-modal__header">
-                <h1 id="modal-heading-01" class="slds-modal__title slds-hyphenate">Batch ### - Trainer </h1>
+            <h1 id="modal-heading-01" class="slds-modal__title slds-hyphenate">Batch ### - Trainer </h1>
+          
             
             </div>
       
@@ -131,11 +132,11 @@
             <!--Project-->  
             
                 <label style="font-size: 20px"  >Project: </label>
-                <button class="buttonStyle" type="button" name="{!v.updateProject}" title="{!v.updateProject}"  onclick="{!c.openDiv}" > Hi my name </button>
+                <lightning:button class="buttonStyle slds-align_absolute-center" type="button" label="{!v.updateProject}"  onclick="{!c.openDiv}" />
             <br/>
             <!-- shows projects-->
-            <div  style="display:none" id="locationDiv" >
-                <lightning:select name="selProject" label="Project" aura:id="selProject" value="{!v.updateProject}"   >
+            <div  style="display:none" id="locationDiv">
+                <lightning:select name="selProject" label="Project" aura:id="selProject" value="{!v.updateProject}"  onchange="{!c.changeButton}" >
                     <aura:iteration items="{!v.updateProjects}" var="project">
                         <option text="{!project.Name}" value="{!project.Name}" selected="{!project.selected}"/>
                     </aura:iteration>
@@ -212,12 +213,15 @@
             <!--</lightning:card>-->
                 <footer class="slds-modal__footer slds-modal__footer_directional">
                     <div class="slds-button-group" role="group">
+                            <lightning:button class="slds-button slds-button_neutral save" label="View Kanban" value="Cancel" onclick="{!c.hideModal}"/>
                         <lightning:button class="slds-button slds-button_neutral cancel" label="Cancel" value="Cancel" onclick="{!c.hideModal}"/>
                         <lightning:button class="slds-button slds-button_neutral save" label="Save" value="Save" onclick="{!c.save}"/>
                     </div>
                 </footer>
             </div>
+        </div>
         </section>
+    
     <div aura:id = "backdrop"></div>
 
     
