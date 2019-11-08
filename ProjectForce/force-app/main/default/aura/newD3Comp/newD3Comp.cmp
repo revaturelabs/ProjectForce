@@ -1,24 +1,11 @@
-<!--
-  @File Name          : newD3Comp.cmp
-  @Description        : 
-  @Author             : ChangeMeIn@UserSettingsUnder.SFDoc
-  @Group              : 
-  @Last Modified By   : ChangeMeIn@UserSettingsUnder.SFDoc
-  @Last Modified On   : 11/7/2019, 2:52:24 PM
-  @Modification Log   : 
-  Ver       Date            Author      		    Modification
-  1.0    11/7/2019   ChangeMeIn@UserSettingsUnder.SFDoc     Initial Version
--->
 <aura:component controller="GantController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickActionWithoutHeader" access="global">
-
-        <c:modal aura:id="modalComp"/>
-       <!-- <lightning:button variant="neutral" label="New" onclick="{!c.callSaveComp}"/>-->
-        <c:modal/>
-    <!--This grabs the Chart.js library from the static resources, 
-		and runs the chart creation function when finished.-->
+    <c:modal aura:id="modalComp"/>
+    <c:modal/>
+    <!--This grabs the Chart.js library from the static resources,
+        and runs the chart creation function when finished.-->
     <ltng:require scripts="{!$Resource.ChartJS}" afterScriptsLoaded="{!c.myAction}" />
     <!--These are variables being used to store data relevant to the chart.
-		It's how we  can maintain values being passed between js functions and apex functions as well. -->
+        It's how we  can maintain values being passed between js functions and apex functions as well. -->
     <aura:attribute name="qTraining" type="List"/>
     <aura:attribute name="tempList" type="List"/>
     <aura:attribute name="dasChart" type = "Object"/>
@@ -28,7 +15,7 @@
     <aura:attribute name ="UserColors" type="List"/>
     <aura:attribute name = "DisplayColors" type = "List" />
     <aura:attribute name="today" type="Date" default=""/>
-    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+
     <div class = "THIS">
         <!--This div marks where all the chart manipulation sections can be found. -->
         <div class="chartmanip" label="Chart Manipulations" >
@@ -40,10 +27,10 @@
                 </header>
                 <!--This is a selectbox that will hold the value for the Track filter -->
                 <lightning:select name="TrackFilter" label="Select a Track:" aura:id="TrackFilter" >
-                <!--Iterate through all the tracks attribute, and add them to the select box -->
-                <aura:iteration items="{!v.Tracks}" var="option">
-                    <option text="{!option}" value="{!option}"/>
-                </aura:iteration>
+                    <!--Iterate through all the tracks attribute, and add them to the select box -->
+                    <aura:iteration items="{!v.Tracks}" var="option">
+                        <option text="{!option}" value="{!option}"/>
+                    </aura:iteration>
                 </lightning:select>
                 <!--Another selectbox for the Location Filter -->
                 <lightning:select name="LocationFilter" label="Select a Location:" aura:id="LocationFilter" >
@@ -52,9 +39,9 @@
                         <option text="{!option}" value="{!option}"/>
                     </aura:iteration>
                 </lightning:select>
-				<!--Allow only batches that start after this date. Set automatically to today. -->                
+                <!--Allow only batches that start after this date. Set automatically to today. -->
                 <ui:inputDate aura:id="DateFilter" label="Select a Start Date" class="field" value="{!v.today}" displayDatePicker="true" />
-               	<!--Press to run the runFilter function in the controller. -->
+                <!--Press to run the runFilter function in the controller. -->
                 <button label="Run Filters" title="Run Filters" onclick="{!c.runFilter}" >Run Filters</button>
             </div>
             <!--Beginning of the Sorting section -->
@@ -64,7 +51,7 @@
                     <h1 id="modal-heading-01" class="slds-modal__title slds-hyphenate">Sort</h1>
                 </header>
                 <!--Select what to sort by, and when it changes, run the runSort function in the controller. -->
-                <lightning:select aura:id="select" name="select" label="Sort By: "  onchange="{!c.runSort}">
+                <lightning:select aura:id="select" name="select" label="Sort By: " onchange="{!c.runSort}">
                     <option value="">choose one...</option>
                     <option value="Track"  >Track</option>
                     <option value="Project">Project</option>
@@ -77,27 +64,24 @@
                 <!--Header -->
                 <header class="slds-modal__header">
                     <h1 id="modal-heading-01" class="slds-modal__title slds-hyphenate">Colors</h1>
-                </header>              
+                </header>
                 <!--Iterate through the Tracks attribute and for each track, add another color picker
-         			w/ distinct ID's -->
+                    w/ distinct ID's -->
                 <aura:iteration items="{!v.Tracks}" var="option" indexVar = "index">
-                <aura:if isTrue="{! index != 0 }"> 
-                    {!option} Color:
-                    <lightning:input id="{!option}" type="color" name="color" value="#F26925" aura:id="colors" />
-                </aura:if>
+                    <aura:if isTrue="{! index != 0 }">
+                        {!option} Color:
+                        <lightning:input id="{!option}" type="color" name="color" value="#F26925" aura:id="colors" />
+                    </aura:if>
                 </aura:iteration>
                 <button label="Apply Colors" title="Apply Colors" onclick="{!c.applyColors}" >Apply Colors</button>
             </div>
-            
+
         </div>
         <!--Holds the Chart -->
         <div class="Chart">
-            <div class="chartAreaWrapper">
-                <canvas aura:id="myChart" onclick= "{!c.showmodal}"></canvas>
-            </div>
+            <canvas aura:id="myChart" onclick= "{!c.showmodal}"></canvas>
             <c:ChartCalculation />
         </div>
     </div>
-       
 
 </aura:component>
