@@ -90,23 +90,20 @@ myAction : function(component, event, helper) {
         var activePoints = component.get('v.dasChart').getElementsAtEvent(evt);
         var activePoint = component.get('v.dasChart').getElementAtEvent(evt)[0]; //WIP
         if(activePoints.length > 0 ){ 
-            if (activePoints[0]._datasetIndex === 0) console.log('hi');
-            if (activePoint._datasetIndex === 0) return;
-            var currIndex = activePoints[0]._index;
-            var currSimpleTraining = component.get('v.tempList')[currIndex];
+            if (activePoint._datasetIndex === 0) {
+                // invisible click
+                return;
+            }
+            if (activePoint._datasetIndex === 1) {
+                // visible click
+                var currIndex = activePoints[0]._index;
+                var currSimpleTraining = component.get('v.tempList')[currIndex];
+                var childCmp = component.find("modalComp")
+                let location = currSimpleTraining.location;
+                let track = currSimpleTraining.trackName;
 
-            var childCmp = component.find("modalComp")
-
-            let location = currSimpleTraining.location;
-            JSON.stringify(location);
-
-            let track = currSimpleTraining.trackName;
-            JSON.stringify(track);
-
-            //let newLocation = location.replace(/"/location,"");
-            childCmp.showModal(currSimpleTraining.trainingId, location, track);
-            
-            
+                childCmp.showModal(currSimpleTraining.trainingId, location, track);
+            }
         }           
     };       
     
@@ -143,10 +140,6 @@ myAction : function(component, event, helper) {
                 this.data.datasets.forEach(function (dataset, i) {
                     var meta = chartInstance.controller.getDatasetMeta(i); 
                     meta.data.forEach(function (bar, index) {
-                        var model = dataset._meta[Object.keys(dataset._meta)[0]].data[index]._model;                            
-                        var label = model.label;
-                        ctx.fillText(label, bar._model.x+2, bar._model.y);
-                        
                         // only fillText for the first bar, otherwise we get double label overflow
                         if (bar._datasetIndex === 0) {
                             var model = dataset._meta[Object.keys(dataset._meta)[0]].data[index]._model;                            
