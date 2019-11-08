@@ -17,10 +17,8 @@
     <aura:attribute name ="UserColors" type="List"/>
     <aura:attribute name = "DisplayColors" type = "List" />
     <aura:attribute name="today" type="Date" default=""/>
-    <!--<aura:attribute name= "modalComplete" type="Boolean" default = "false" />"
-    <aura:handler name="change" value="{!v.modalComplete}" action="{!c.modalUpdate}"/>-->
     
-    
+    <aura:handler name="modalCompleteEvent" event="c:ModalCompletedEvent" action="{!c.myAction}" />
     
     <div class = "THIS">
         <!--This div marks where all the chart manipulation sections can be found. -->

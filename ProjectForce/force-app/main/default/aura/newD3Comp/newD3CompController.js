@@ -123,14 +123,14 @@ myAction : function(component, event, helper) {
                 animationDuration:10,
                 // Documentation for this onHover function is in Chart.js
                 // https://www.chartjs.org/docs/latest/general/interactions/events.html
-                onHover: function (e, element) {
-                    hoverEvent(e,element);
+                onHover: function(e, a) {
+                    $("Chart").css("cursor", a[0] ? "pointer" : "default");
                 }
             },
             events: {
                 events: ['onClick']
             },
-        animation: {
+        animation: {       
             onComplete: function () {
                 var ctx = this.chart.ctx;
                 var chartInstance = this.chart;

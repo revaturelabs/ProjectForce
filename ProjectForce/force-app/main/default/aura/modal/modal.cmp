@@ -10,6 +10,9 @@
             <aura:attribute name="paramTrack" type="String"/>
     </aura:method> 
 
+    <!-- This component can fire an event that will trigger the chart to rerender once saved from the modal -->
+    <aura:registerEvent name="modalCompleteEvent" type="c:ModalCompletedEvent" />
+
     <!--Attribute for the selected value-->
     <aura:attribute name="selectedLocation" type="String"/>
     

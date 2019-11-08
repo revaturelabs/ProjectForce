@@ -27,8 +27,11 @@
         if(updateTrainer && updateProject && updateRoom)
         {
             helper.saveModal(component, event);
-            location.reload();
-            //alert("works");
+            
+            // Create new instance of event to be fired. This prevents the 
+            // whole page from reloading
+            var modalCompletedEvent = component.getEvent("modalCompleteEvent");
+            modalCompletedEvent.fire();
         }
         else
         {
