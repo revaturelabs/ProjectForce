@@ -1,6 +1,6 @@
 public with sharing class TableApexController {
     @AuraEnabled
-    public static List<Training__c> getTableData(String queryObject, List<String> queryFields){
+    public static List<sObject> getTableData(String queryObject, List<String> queryFields){
         if(Schema.sObjectType.Training__c.isAccessible()){
             String fields = queryFields[0];
             for(Integer i=1;i<queryFields.size();i++){
@@ -10,7 +10,7 @@ public with sharing class TableApexController {
             return Database.query(queryString);
         }
         else{
-            return new List<Training__c>();
+            return new List<sObject>();
         }
     }
 }
