@@ -13,15 +13,4 @@ public with sharing class TableApexController {
             return new List<Training__c>();
         }
     }
-
-    @AuraEnabled
-    public static Boolean updateTableData(List<sObject> itemsToUpdate){
-        try{
-            update itemsToUpdate;
-            return true;
-        }
-        catch(Exception e){
-            return false;
-        }
-    }
 }

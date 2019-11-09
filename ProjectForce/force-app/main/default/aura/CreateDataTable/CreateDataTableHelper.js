@@ -1,32 +1,47 @@
 ({
-    setColumns : function(component){
-        var fields = component.get("v.queryFields");
+    /**
+     * set the columns to be displayed on the table
+     * @param {*} component 
+     * @param {*} helper 
+     */
+    setColumns : function(component, helper){
+        var fields = helper.getColumns(component.get("v.queryFields"));
         var width = component.get("v.width");
         var columns = [];
         for(var i=0;i<fields.length;i++){
-            columns[i] = {
+            columns.push({
                             label:fields[i], 
                             fieldName:fields[i], 
                             type:"text", 
                             fixedWidth:(width/fields.length)-(90/fields.length),
                             editable:true
-                        };
+                        });
         }
         component.set("v.columns",columns);
     },
 
-    getTableData : function(component){
+    /**
+     * query the database for the records to be displayed
+     * @param {*} component 
+     * @param {*} helper 
+     */
+    getTableData : function(component, helper){
         var width = component.get("v.width");
         var height = component.get("v.height");
+        var headerHeight = 30;
+        var queryFields = helper.getQueryFields(component.get("v.queryFields"));
         var getTableData = component.get("c.getTableData");
+
         getTableData.setParams({
             "queryObject": component.get("v.queryObject"),
-            "queryFields": component.get("v.queryFields")
+            "queryFields": queryFields
         });
+
         getTableData.setCallback(this, function(response){
             var state = response.getState();
+            // set the width and height of the table here because there is no reference until its created
             component.find("TableDiv").getElement().style.width = `${width}px`;
-            component.find("TableDiv").getElement().style.gridTemplateRows = `25px ${height-25}px`;
+            component.find("TableDiv").getElement().style.gridTemplateRows = `${headerHeight}px ${height-headerHeight}px`;
             if(state==="SUCCESS"){
                 component.set("v.data", response.getReturnValue());
             }
@@ -43,5 +58,38 @@
         })
         
         $A.enqueueAction(getTableData);
+    },
+
+    /**
+     * because some items in the list are lists themselves
+     * only return the reference to the fields that will be queried
+     * @param {List} queryFields 
+     */
+    getQueryFields : function(queryFields){
+        var returnQueryFields = [];
+        for(let i=0;i<queryFields.length;i++){
+            if(queryFields[i][1]===false || queryFields[i][1]===true){
+                returnQueryFields.push(queryFields[i][0]);
+            }
+            else{
+                returnQueryFields.push(queryFields[i]);
+            }
+        }
+        return returnQueryFields;
+    },
+
+    /**
+     * Some items that you want queried don't need to be shown in the table,
+     * so this returns only the ones that aren't marked as false
+     * @param {List} queryFields 
+     */
+    getColumns : function(queryFields){
+        var queryColumns = [];
+        for(let i=0;i<queryFields.length;i++){
+            if(queryFields[i][1]!=false){
+                queryColumns.push(queryFields[i]);
+            }
+        }
+        return queryColumns;
     }
 })

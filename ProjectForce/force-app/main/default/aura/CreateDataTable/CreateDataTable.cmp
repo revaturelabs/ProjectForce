@@ -7,7 +7,6 @@
     <aura:attribute name="queryFields" type="String[]" default="['Id', 'Name']"/>
     <aura:attribute name="width" type="String" default="500" />
     <aura:attribute name="height" type="String" default="300" />
-    <aura:attribute name="selectedRows" type="String[]" />
 
     <aura:registerEvent name="tableItemSelected" type="c:TableItemSelectedEvent" />
     <aura:registerEvent name="saveInlineEdits" type="c:SaveInlineEditsEvent" />
