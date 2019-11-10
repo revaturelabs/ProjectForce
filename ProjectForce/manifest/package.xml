@@ -2,10 +2,12 @@
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
     <types>
         <members>*</members>
+        <members>KanbanProjectApexClass</members>
         <name>ApexClass</name>
     </types>
     <types>
         <members>*</members>
+       
         <name>ApexComponent</name>
     </types>
     <types>
@@ -22,6 +24,12 @@
     </types>
     <types>
         <members>*</members>
+        <members>droppedOnColumn</members>
+        <members>KanbanProject</members>
+        <members>KanbanColumn</members>
+        <members>KanbanCard</members>
+        <members>KanbanColumn</members>
+
         <name>AuraDefinitionBundle</name>
     </types>
     <types>
@@ -37,6 +45,7 @@
         <name>StaticResource</name>
     </types>
     <types>
+        <members>*</members>
         <members>Location__c</members>
         <members>Project__c</members>
         <members>Room__c</members>
@@ -44,9 +53,11 @@
         <members>Trainer__c</members>
         <members>TrainerTrack__c</members>
         <members>Training__c</members>
+        <members>Backlog__c</members>
         <name>CustomObject</name>
     </types>
     <types>
+        <members>*</members>
         <members>Location__c</members>
         <members>Project__c</members>
         <members>Room__c</members>
@@ -54,7 +65,9 @@
         <members>Trainer__c</members>
         <members>TrainerTrack__c</members>
         <members>Training__c</members>
+        <members>Backlog__c</members>
         <members>ProjectForce</members>
+        <members>ManageProjectKanban</members>
         <name>CustomTab</name>
     </types>
     <types>

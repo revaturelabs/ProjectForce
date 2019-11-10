@@ -1,0 +1,9 @@
+<aura:component >
+    <aura:attribute name="backlog" type="Backlog__c" required="true"></aura:attribute>
+	<ltng:require styles="{!$Resource.bulma}" />
+    <div class="card draggable" draggable="true" ondragstart="{!c.onDragStart}">
+        <div class="card-content">
+            <p>{!v.backlog.Story__c}</p>
+        </div>
+    </div>
+</aura:component>

@@ -1,0 +1,17 @@
+<aura:component  controller="KanbanProjectApexClass" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickAction" access="global">
+    <!-- resources -->
+    <ltng:require styles="{!$Resource.bulma + '/bulma-0.4.2/css/bulma.css'}" />
+	
+    <!-- attributes -->
+    <aura:attribute name="backlogs" type="Backlog__c[]"/>
+    
+    <!-- event handlers -->
+    <aura:handler name="init" action="{!c.doInit}" value="{!this}"></aura:handler>
+    <aura:handler name="droppedOnColumn" event="c:droppedOnColumn" action="{!c.droppedHandler}"></aura:handler>
+    
+    <div class="columns" >
+        <c:KanbanColumn title="To Do" backlogs="{!v.backlogs}"></c:KanbanColumn>
+        <c:KanbanColumn title="Doing" backlogs="{!v.backlogs}"></c:KanbanColumn>
+        <c:KanbanColumn title="Done" backlogs="{!v.backlogs}"></c:KanbanColumn>
+    </div>
+</aura:component>
