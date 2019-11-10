@@ -142,6 +142,11 @@ myAction : function(component, event, helper) {
                 ctx.fillStyle = '#FFFFFF'; // label color
                 this.data.datasets.forEach(function (dataset, i) {
                     var meta = chartInstance.controller.getDatasetMeta(i); 
+                    // Grab the dataset that is at the 0th index. This should be
+                    // all of the elements that are behind the main ones that are colored.
+                    var hiddenData = chartInstance.controller.getDatasetMeta(0);
+                    // This line makes sure that all elements that are at the index of 0 are hidden.
+                    // Which makes them unclickable, not visible, and not hoverable.
                     meta.data.forEach(function (bar, index) {
                         var model = dataset._meta[Object.keys(dataset._meta)[0]].data[index]._model;                            
                         var label = model.label;
