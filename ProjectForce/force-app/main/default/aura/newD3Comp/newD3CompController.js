@@ -147,6 +147,7 @@ myAction : function(component, event, helper) {
                     var hiddenData = chartInstance.controller.getDatasetMeta(0);
                     // This line makes sure that all elements that are at the index of 0 are hidden.
                     // Which makes them unclickable, not visible, and not hoverable.
+                    hiddenData.hidden = true;
                     meta.data.forEach(function (bar, index) {
                         var model = dataset._meta[Object.keys(dataset._meta)[0]].data[index]._model;                            
                         var label = model.label;
