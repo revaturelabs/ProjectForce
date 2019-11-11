@@ -236,11 +236,14 @@ myAction : function(component, event, helper) {
                 this.data.datasets.forEach(function (dataset, i) {
                     var meta = chartInstance.controller.getDatasetMeta(i);
                     meta.data.forEach(function (bar, index) {
-                        var model = dataset._meta[Object.keys(dataset._meta)[0]].data[index]._model;
-                        var label = model.label;
-
-                        ctx.fillText(label, bar._model.x+2, bar._model.y);
-
+                        if(bar._datasetIndex === 0){
+                            var model = dataset._meta[Object.keys(dataset._meta)[0]].data[index]._model;
+                            var label = model.label;
+    
+                            ctx.fillText(label, bar._model.x+2, bar._model.y);
+    
+                        }
+                       
                     });
                 });
             }
