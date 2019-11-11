@@ -1,7 +1,7 @@
 public with sharing class KanbanProjectApexClass {
     @AuraEnabled
     public static List<Backlog__c> getBacklogs() {
-        return [SELECT Id, Name, Story__c, Stage__c, Project__c, Training__c, 
+        return [SELECT Id, Name, Story__c, Stage__c, Project__c, 
                        DateLogged__c 
                 FROM Backlog__c];
     }

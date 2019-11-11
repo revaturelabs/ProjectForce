@@ -4,7 +4,6 @@
     <columns>NAME</columns>
     <columns>Story__c</columns>
     <columns>Stage__c</columns>
-    <columns>Training__c</columns>
     <columns>Project__c</columns>
     <columns>DateLogged__c</columns>
     <filterScope>Everything</filterScope>
