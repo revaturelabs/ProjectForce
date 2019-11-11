@@ -193,32 +193,27 @@ myAction : function(component, event, helper) {
         var activePoints = component.get('v.dasChart').getElementsAtEvent(evt);
         var activePoint = component.get('v.dasChart').getElementAtEvent(evt)[0]; //WIP
         if(activePoints.length > 0 ){ 
-            if (activePoint._datasetIndex === 0) {
-                console.log('invisible click');
-                return;
-            }
             if (activePoint._datasetIndex === 1) {
-                console.log('visible click');
+                var currIndex = activePoints[0]._index;
+                var currSimpleTraining = component.get('v.tempList')[currIndex];
+                var childCmp = component.find("modalComp");
+                let location = currSimpleTraining.location;
+                let track = currSimpleTraining.trackName;   
+                childCmp.showModal(currSimpleTraining.trainingId, location, track);
+                component.location.reload();
             }
-            var currIndex = activePoints[0]._index;
-            var currSimpleTraining = component.get('v.tempList')[currIndex];
-            var childCmp = component.find("modalComp")
-            let location = currSimpleTraining.location;
-            let track = currSimpleTraining.trackName;
-
-            childCmp.showModal(currSimpleTraining.trainingId, location, track);
-            console.log('here');
-        }           
-    };       
+        }                
+    };  
     
+    var myChartComponent = component.find("myChart").getElement();
     //the charts options such as x-axis, y-axis, if hover/no hover
     var barOptions_stacked = {
         
             hover: {
                 animationDuration:10,
-                // onHover: function(e, a) {
-                //     $("Chart").css("cursor", a[0] ? "pointer" : "default");
-                // }
+                onHover: function(e, elements) {
+                    myChartComponent.style.cursor = e[0] ? 'pointer' : 'default';
+                }
             },
             events: {
                 events: ['onClick']
@@ -227,26 +222,20 @@ myAction : function(component, event, helper) {
             onComplete: function () {
                 var ctx = this.chart.ctx;
                 var chartInstance = this.chart;
+                
                 ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontFamily, 'normal', Chart.defaults.global.defaultFontFamily);
                 ctx.textAlign = 'left';
                 ctx.fillStyle = '#FFFFFF'; // label color
-                /*this.data.datasets.forEach(function (dataset) {
-                    for (var i = 0; i < dataset.data.length; i++) {
-                        var model = dataset._meta[Object.keys(dataset._meta)[0]].data[i]._model,
-                            left = dataset._meta[Object.keys(dataset._meta)[0]].data[i]._xScale.left;
-                        ctx.fillStyle = '#444'; // label color
-                        var label = model.label;
-                        ctx.fillText(label, left + 15, model.y + 8);
-                    }
-                }); */ 
+                
                 this.data.datasets.forEach(function (dataset, i) {
-                    var meta = chartInstance.controller.getDatasetMeta(i); 
+                    var meta = chartInstance.controller.getDatasetMeta(i);
+                    var hiddenData = chartInstance.controller.getDatasetMeta(0);
+                    hiddenData.hidden = true;       
                     meta.data.forEach(function (bar, index) {
                         // only fillText for the first bar, otherwise we get double label overflow
                         if (bar._datasetIndex === 0) {
-                            var model = dataset._meta[Object.keys(dataset._meta)[0]].data[index]._model;                            
+                            var model = dataset._meta[Object.keys(dataset._meta)[0]].data[index]._model;                  
                             var label = model.label;
-    
                             ctx.fillText(label, bar._model.x+2, bar._model.y);
                         }
                     });
@@ -254,6 +243,8 @@ myAction : function(component, event, helper) {
             }
         },
             scales: {
+                
+
                 series: [{
                     data:[100,200,400]
                 }],
@@ -262,7 +253,7 @@ myAction : function(component, event, helper) {
                     bar: {
                         horizontal: true,
                         dataLabels: {
-                            position: 'top',
+                        position: 'top',
                         },
                         
                     }  
@@ -321,7 +312,7 @@ myAction : function(component, event, helper) {
                 display:false
             },
         tooltips:{
-            enabled: false
+            enabled: false,
         }
         
             
