@@ -5,11 +5,7 @@
         <default>false</default>
         <visible>true</visible>
     </applicationVisibilities>
-<<<<<<< HEAD
-    <classAccesses>
-=======
         <classAccesses>
->>>>>>> 42e225b2129ec14cd023293f55d2e77768e80d52
         <apexClass>ChartCalculationController</apexClass>
         <enabled>true</enabled>
     </classAccesses>

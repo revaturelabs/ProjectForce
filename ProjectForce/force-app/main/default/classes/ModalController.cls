@@ -16,7 +16,7 @@ public without sharing class ModalController {
         Training__c selectedBatch = new Training__c();
         try {
             if (schema.SObjectType.location__c.isAccessible()) {
-                List<Training__c> batch = [SELECT Id, Batch_Number__c, Track__r.Name, ProjectStartDate__c, Project__r.Name, Trainer__r.Name, Room__r.Name, Room__r.Location__r.Name FROM Training__c WHERE Id =: Id.valueOf(trainingID) LIMIT 1];
+                List<Training__c> batch = [SELECT Id, Batch_Number__c, BatchSize__c, Track__r.Name, ProjectStartDate__c, Project__r.Name, Trainer__r.Name, Room__r.Name, Room__r.Location__r.Name FROM Training__c WHERE Id =: Id.valueOf(trainingID) LIMIT 1];
 
                 selectedBatch = batch[0];
                 return selectedBatch;

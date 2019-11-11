@@ -74,6 +74,7 @@
 
 			if(state === "SUCCESS"){
 				component.set("v.batchNumber", batchInformation.Batch_Number__c);
+				component.set("v.batchSize", batchInformation.BatchSize__c);
 				component.set("v.batchTrack", batchInformation.Track__r.Name);
 				component.set("v.batchProjectDate", batchInformation.ProjectStartDate__c);
 				component.set("v.updateProject", batchInformation.Project__r.Name);
