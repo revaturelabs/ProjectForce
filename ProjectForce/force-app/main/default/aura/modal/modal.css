@@ -4,11 +4,32 @@
 
 .THIS .slds-button_neutral {
    
-   background-color: #F26925;
+   background-color: #1798c1;
    color: white;
-   font-size: 1rem;
+   font-size: 20px;
    width: 100px;
+   height: 50px;
+   border-color: gray;
 }
+
+.THIS .kanban{
+   background-color: #1798c1;
+   color: white;
+   float: left;
+}
+
+.THIS .save{
+   background-color: #1798c1;
+   color: white;
+}
+
+.THIS .cancel{
+   background-color: white;
+   color: #1798c1;
+   float: left;
+ 
+}
+
 
 .THIS .slds-modal__footer {
    
@@ -30,21 +51,45 @@
 */
 .THIS .slds-modal__header {
    background: white;
-   color: #F26925;
+  
    font-size: 2rem;
 }
-/*
-.THIS .slds-form-element__label{
-   
-   padding: .25rem .5rem;
-   border-radius: 15rem;
-   font-size: 1rem;
-   font-weight: 700;
-   line-height: normal;
-   color: white;
-   white-space: nowrap;
-   margin-bottom: .5rem;
-   margin-top: .5rem;
-   background-color: #474c55;
-   width: 80px;
-}*/
+
+.THIS .header{
+   color:black;
+}
+
+.THIS .hidden  {
+   display: none;
+}
+
+.THIS .font{
+   font-family: 'Times New Roman', Times, serif;
+}
+
+.THIS .buttonStyle{
+  border: none;
+  color: white;
+   padding: 0px;
+  border-radius: 8px;
+  display: inline-block;
+  font-size: 18px;
+  background-color: #1798c1;
+  cursor: pointer;
+  height: 20px;
+  width: 175px;
+  vertical-align: middle;
+  text-align: center;
+  margin: auto;
+  line-height: 18px;
+ 
+}
+
+
+.THIS .row{
+   display: flex
+}
+.THIS .column{
+   flex: 50%;
+   padding: 10px;
+}

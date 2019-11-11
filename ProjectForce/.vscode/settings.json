@@ -5,5 +5,10 @@
     "**/bower_components": true,
     "**/.sfdx": true
   },
+<<<<<<< HEAD
   "eslint.nodePath": "c:\\Users\\corma\\.vscode\\extensions\\salesforce.salesforcedx-vscode-lwc-47.5.0\\node_modules"
+=======
+  "eslint.nodePath": "c:\\Users\\Toby\\.vscode\\extensions\\salesforce.salesforcedx-vscode-lwc-47.4.0\\node_modules",
+  "salesforcedx-vscode-core.show-cli-success-msg": false
+>>>>>>> origin/tobyBranch
 }
