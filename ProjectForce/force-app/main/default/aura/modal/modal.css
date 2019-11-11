@@ -2,15 +2,6 @@
    display: none;
 }
 
-.THIS .slds-button_neutral {
-   
-   background-color: #1798c1;
-   color: white;
-   font-size: 20px;
-   width: 100px;
-   height: 50px;
-   border-color: gray;
-}
 
 .THIS .kanban{
    background-color: #1798c1;
@@ -55,6 +46,11 @@
    font-size: 2rem;
 }
 
+.THIS .button {
+   background-color:#1798c1;
+   border-radius: 0px;
+}
+
 .THIS .header{
    color:black;
 }
@@ -64,7 +60,8 @@
 }
 
 .THIS .font{
-   font-family: 'Times New Roman', Times, serif;
+   /* font-family: 'Times New Roman', Times, serif; */
+   font-family: sans-serif;
 }
 
 .THIS .buttonStyle{

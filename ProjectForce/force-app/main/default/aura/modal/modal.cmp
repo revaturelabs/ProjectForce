@@ -123,9 +123,19 @@
              </div>
 
              <div class="column">
-                <label>Mark as Complete
-                    <input type="checkbox"/>
-                </label>
+
+                    <div class="slds-form-element">
+                            <label class="slds-checkbox_toggle slds-grid">
+                              <span class="slds-form-element__label slds-m-bottom_none">Mark as Complete</span>
+                              <input type="checkbox" name="checkbox-toggle-17" value="checkbox-toggle-17" aria-describedby="checkbox-toggle-17" />
+                              <span id="checkbox-toggle-17" class="slds-checkbox_faux_container" aria-live="assertive">
+                                <span class="slds-checkbox_faux"></span>
+                                <span class="slds-checkbox_on">Completed</span>
+                                <span class="slds-checkbox_off">Not Complete</span>
+                              </span>
+                            </label>
+                          </div>
+               
             </div>
 
 
@@ -184,6 +194,8 @@
         </div>
     </div>
 
+    <hr></hr>
+
     <lightning:textarea name="TextBox" label="Comments" />
 
 </span>
@@ -223,11 +235,11 @@
     
             <!--</lightning:card>-->
                 <footer class="slds-modal__footer slds-modal__footer_directional">
-                    <div class="slds-button-group" role="group">
-                            <lightning:button class="slds-button slds-button_neutral kanban" label="Kanban" value="Cancel" onclick="{!c.hideModal}"/>
-                        <lightning:button class="slds-button slds-button_neutral cancel" label="Cancel" value="Cancel" onclick="{!c.hideModal}"/>
-                        <lightning:button class="slds-button slds-button_neutral save" label="Save" value="Save" onclick="{!c.save}"/>
-                    </div>
+                    
+                        <lightning:button class=" slds-button_brand button" label="Kanban" onclick="{!c.hideModal}"/>
+                        <lightning:button class=" slds-button_brand button " label="Cancel"  onclick="{!c.hideModal}"/>
+                        <lightning:button class="slds-button_brand  button" label="Save" onclick="{!c.save}"/>
+                   
                 </footer>
             </div>
         </div>
