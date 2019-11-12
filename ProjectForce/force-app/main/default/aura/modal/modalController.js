@@ -48,7 +48,8 @@
         //helper.track(component, event);
         helper.room(component, event);
         helper.trainer(component, event);
-        helper.project(component, event);
+        //helper.project(component, event);
+        helper.listOfTrackProject(component, event);
     },
 
     hideModal : function(component, event, helper) {
@@ -65,7 +66,7 @@
         //helper.date(component,event);
         //helper.room(component, event);
         //helper.trainer(component, event);
-        //helper.project(component, event);
+        helper.listOfTrackProject(component, event);
         helper.showModal(component);
 
         console.log("showModal completed");

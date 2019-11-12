@@ -1,5 +1,92 @@
 ({
+	batchById : function(component, event) {
+		let action = component.get("c.getBatch");
+		let params = event.getParam('arguments');
 
+		action.setParams ({ trainingID: String(params.trainingID) });
+		component.set("v.saveTrainingID", String(params.trainingID));
+
+		action.setCallback (this, function (response) {
+			var state = response.getState();
+			let batchInformation = response.getReturnValue();
+
+			if(state === "SUCCESS"){
+				component.set("v.batchNumber", batchInformation.Batch_Number__c);
+				component.set("v.batchSize", batchInformation.BatchSize__c);
+				component.set("v.batchTrack", batchInformation.Track__r.Name);
+				component.set("v.batchProjectDate", batchInformation.ProjectStartDate__c);
+				component.set("v.updateProject", batchInformation.Project__r.Name);
+				component.set("v.updateTrainer", batchInformation.Trainer__r.Name);
+				component.set("v.batchRoom", batchInformation.Room__r.Name);
+				component.set("v.batchLocation", batchInformation.Room__r.Location__r.Name);
+			}
+			else{
+				console.log("Failed with state: "+state);
+			}
+		});
+		$A.enqueueAction(action);
+	},
+
+	//Funcation for the project drop down
+	//sets the list of projects by calling the server- side controller	
+	listOfTrackProject : function(component, event) {
+		var action = component.get("c.getProject");
+		let params = event.getParam('arguments');
+
+		action.setParams ({ 
+			trackName: String(params.paramTrack), 
+			startDateName: Date(params.paramProjectDate)
+		});
+
+		action.setCallback (this, function (response) {
+			var state = response.getState();
+			let projectList = response.getReturnValue();
+
+			if(state === "SUCCESS"){
+				component.set("v.batchProjectsList", projectList);
+			}
+			else{
+				console.log("Failed with state: "+state);
+			}
+		});
+		$A.enqueueAction(action);
+
+		// let track = component.get("v.batchTrack");
+		// let startDate = component.get("v.batchProjectStartDate");
+		// console.log("selectedTrack:"+track);
+
+		// if(!track)
+		// {
+		// 	track = params.paramTrack;
+
+		// }
+		
+		// action.setParams({
+        //     "trackName": track,
+        //     "startDateName": startDate
+		// });
+		
+		// action.setCallback(this, function(response){
+		
+		// var state = response.getState();
+		// let project= response.getReturnValue();		
+		// console.log("inside callback");
+		
+		// if(state === "SUCCESS"){
+		// 	component.set("v.updateProjects", project);
+		// 	console.log("inside success");
+		// 	// if(project.length !=0)
+		// 	// {
+		// 	// 	component.set("v.updateProject", project[0].Name);
+		// 	// }
+		// }
+		// else{
+		// 	console.log("Failed with state: "+state);
+		// }	
+		// });
+		// console.log("Done with project function");
+		// $A.enqueueAction(action);
+	},
 
 	//Function for the trainer drop down
 	//sets the list of trainers by calling the server- side controller
@@ -59,35 +146,6 @@
 	console.log("Trainer done!");
 	$A.enqueueAction(action);
 },
-
-	batchById : function(component, event) {
-		let action = component.get("c.getBatch");
-		let params = event.getParam('arguments');
-
-		action.setParams ({ trainingID: String(params.trainingID) });
-		component.set("v.saveTrainingID", String(params.trainingID));
-
-		action.setCallback (this, function (response) {
-			var state = response.getState();
-
-			let batchInformation = response.getReturnValue();
-
-			if(state === "SUCCESS"){
-				component.set("v.batchNumber", batchInformation.Batch_Number__c);
-				component.set("v.batchSize", batchInformation.BatchSize__c);
-				component.set("v.batchTrack", batchInformation.Track__r.Name);
-				component.set("v.batchProjectDate", batchInformation.ProjectStartDate__c);
-				component.set("v.updateProject", batchInformation.Project__r.Name);
-				component.set("v.updateTrainer", batchInformation.Trainer__r.Name);
-				component.set("v.batchRoom", batchInformation.Room__r.Name);
-				component.set("v.batchLocation", batchInformation.Room__r.Location__r.Name);
-			}
-			else{
-				console.log("Failed with state: "+state);
-			}
-		});
-		$A.enqueueAction(action);
-	},
 	//Funcation for the location drop down
 	//sets the list of locations by calling the server- side controller
 	locationByID : function(component, event) {
@@ -356,20 +414,20 @@
 		var action = component.get("c.getProject");
 
 
-		let selectedTrack = component.get("v.selectedTrack");
-		let selectedDate = component.get("v.selectedDate");
+		let track = component.get("v.batchTrack");
+		let startDate = component.get("v.batchProjectStartDate");
 
-		console.log("selectedTrack:"+selectedTrack);
+		console.log("selectedTrack:"+track);
 
-		if(!selectedTrack)
-		{
-			selectedTrack = params.paramTrack;
+		// if(!track)
+		// {
+		// 	track = params.paramTrack;
 
-		}
+		// }
 		
 		action.setParams({
-            "trackName": selectedTrack,
-            "startDateName": selectedDate
+            "trackName": track,
+            "startDateName": startDate
 		});
 		
 		action.setCallback(this, function(response){
@@ -383,10 +441,10 @@
 		if(state === "SUCCESS"){
 			component.set("v.updateProjects", project);
 			console.log("inside success");
-			if(project.length !=0)
-			{
-				component.set("v.updateProject", project[0].Name);
-			}
+			// if(project.length !=0)
+			// {
+			// 	component.set("v.updateProject", project[0].Name);
+			// }
 		}
 		else{
 			console.log("Failed with state: "+state);

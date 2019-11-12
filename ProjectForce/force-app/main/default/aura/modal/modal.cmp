@@ -9,7 +9,7 @@
             <aura:attribute name="paramBatchNumber" type="String"/>
             <aura:attribute name="paramBatchSize" type="String"/>
             <aura:attribute name="paramTrack" type="String"/>
-            <aura:attribute name="paramProjectDate" type="String"/>
+            <aura:attribute name="paramProjectDate" type="Date"/>
             <aura:attribute name="paramTrainerName" type="String"/>
             <aura:attribute name="paramRoom" type="String"/>
             <aura:attribute name="paramLocation" type="String"/>
@@ -52,7 +52,7 @@
 
   
     <!--Attribute for list-->
-    <aura:attribute name="updateProjects" type="String"/>
+    <aura:attribute name="batchProjectsList" type="String"/>
 
      <!--Attribute for the selected value-->
     <aura:attribute name="updateRoom" type="String"/>
@@ -98,7 +98,7 @@
 
         <header class="slds-modal__header">
             <div class ="header slds-box slds-box_small slds-modal__header">
-                <h1 id="modal-heading-01" class="slds-modal__title slds-hyphenate">Batch ### - Trainer </h1>
+                <h1 id="modal-heading-01" class="slds-modal__title slds-hyphenate">Batch {!v.batchNumber} - {!v.updateTrainer}</h1>
             </div>
       
         
@@ -114,7 +114,7 @@
                         </div>
                         <span class="slds-media__body">
                             <p>
-                                <aura:text value="{!v.selectedTrack}"/>
+                                <aura:text value="{!v.batchTrack}"/>
                             </p>
                         </span>
                     </div>
@@ -130,16 +130,26 @@
                         </span>
                         </div>
                         <span class="slds-media__body">
-                            <aura:text value="{!v.selectedDate}"/>
+                            <aura:text value="{!v.batchProjectDate}"/>
                         </span>
                     </div>
                 </div>
              </div>
 
              <div class="column">
-                <label>Mark as Complete
-                    <input type="checkbox"/>
-                </label>
+
+                    <div class="slds-form-element">
+                            <label class="slds-checkbox_toggle slds-grid">
+                              <span class="slds-form-element__label slds-m-bottom_none">Mark as Complete</span>
+                              <input type="checkbox" name="checkbox-toggle-17" value="checkbox-toggle-17" aria-describedby="checkbox-toggle-17" />
+                              <span id="checkbox-toggle-17" class="slds-checkbox_faux_container" aria-live="assertive">
+                                <span class="slds-checkbox_faux"></span>
+                                <span class="slds-checkbox_on">Completed</span>
+                                <span class="slds-checkbox_off">Not Complete</span>
+                              </span>
+                            </label>
+                          </div>
+               
             </div>
 
 
@@ -155,14 +165,19 @@
         <div class="column">
 
             <!--Project-->  
-            
+                
+                <!-- <label style="font-size: 15px">Project: </label>
+                <span class="slds-badge">
+                    <lightning:button variant="base" label="{!v.updateProject}" onclick="{!c.openDiv}"/>
+                </span> -->
+
                 <label style="font-size: 20px"  >Project: </label>
-                <lightning:button class="buttonStyle slds-align_absolute-center" type="button" label="{!v.updateProject}"  onclick="{!c.openDiv}" />
+                <lightning:button class="buttonStyle slds-align_absolute-center" type="button" label="{!v.updateProject}"  onclick="{!c.openDiv}"/>
             <br/>
             <!-- shows projects-->
             <div  style="display:none" id="locationDiv">
-                <lightning:select name="selProject" label="Project" aura:id="selProject" value="{!v.updateProject}"  onchange="{!c.changeButton}" >
-                    <aura:iteration items="{!v.updateProjects}" var="project">
+                <lightning:select name="selProject" label="Project" aura:id="selProject" value="{!v.batchProjectsList}"  onchange="{!c.getFilter}" >
+                    <aura:iteration items="{!v.batchProjectsList}" var="project">
                         <option text="{!project.Name}" value="{!project.Name}" selected="{!project.selected}"/>
                     </aura:iteration>
                 </lightning:select>
@@ -173,14 +188,18 @@
 
             <!--Size-->
             <div>
-                <label style="font-size: 15px">Size: </label>   
+                <label style="font-size: 15px">Size: </label>
+                <aura:text value="{!v.batchSize}"/>
             </div>
 
             <br/>
             <!--Trainer-->
             
             <div>
-                <label style="font-size: 15px">Trainer: </label>   
+                <label style="font-size: 15px">Trainer: </label>
+                <span class="slds-badge" id="trainerBadge">
+                    <aura:text value="{!v.updateTrainer}"/>
+                </span>
             </div>
 
         </div>
@@ -188,15 +207,19 @@
         <div class="column">
 
             <div>
-                <label style="font-size: 15px">Room: </label>   
+                <label style="font-size: 15px">Room: </label>  
+                <aura:text value="{!v.batchRoom}"/> 
             </div>
             <br/>
             <div>
-                <label style="font-size: 15px">Location: </label>   
+                <label style="font-size: 15px">Location: </label> 
+                <aura:text value="{!v.batchLocation}"/>  
             </div>
 
         </div>
     </div>
+
+    <hr></hr>
 
     <lightning:textarea name="TextBox" label="Comments" />
 
@@ -237,11 +260,11 @@
     
             <!--</lightning:card>-->
                 <footer class="slds-modal__footer slds-modal__footer_directional">
-                    <div class="slds-button-group" role="group">
-                            <lightning:button class="slds-button slds-button_neutral kanban" label="Kanban" value="Cancel" onclick="{!c.hideModal}"/>
-                        <lightning:button class="slds-button slds-button_neutral cancel" label="Cancel" value="Cancel" onclick="{!c.hideModal}"/>
-                        <lightning:button class="slds-button slds-button_neutral save" label="Save" value="Save" onclick="{!c.save}"/>
-                    </div>
+                    
+                        <lightning:button class=" slds-button_brand button" label="Kanban" onclick="{!c.hideModal}"/>
+                        <lightning:button class=" slds-button_brand button " label="Cancel"  onclick="{!c.hideModal}"/>
+                        <lightning:button class="slds-button_brand  button" label="Save" onclick="{!c.save}"/>
+                   
                 </footer>
             </div>
         </div>
