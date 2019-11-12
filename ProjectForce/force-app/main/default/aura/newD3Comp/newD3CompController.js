@@ -139,6 +139,12 @@ myAction : function(component, event, helper) {
                 ctx.fillStyle = '#FFFFFF'; // label color
                 this.data.datasets.forEach(function (dataset, i) {
                     var meta = chartInstance.controller.getDatasetMeta(i); 
+                    // Grab the dataset that is at the 0th index. This should be
+                    // all of the elements that are behind the main ones that are colored.
+                    var hiddenData = chartInstance.controller.getDatasetMeta(0);
+                    // This line makes sure that all elements that are at the index of 0 are hidden.
+                    // Which makes them unclickable, not visible, and not hoverable.
+                    hiddenData.hidden = true;
                     meta.data.forEach(function (bar, index) {
                         // only fillText for the first bar, otherwise we get double label overflow
                         if (bar._datasetIndex === 0) {
