@@ -8,31 +8,37 @@
      */
     handleItemSelectedEvent : function(component, event, helper){
         var tableObject = event.getParam("tableObject");
-        var parameters = event.getParam("selectedRows");
-
-        if(tableObject=="Training__c"){
-            // get the list of project ids from the selected batches
-            var projectIds = [];
-            for(let i=0;i<parameters.length;i++){
-                projectIds.push(parameters[i].Project__c);
-            }
-            helper.markTableItemsAsSelected(projectIds, "project", component);
+        var selectionIds = [];
+        var tableAuraId;
+        if(tableObject=='Training__c'){
+            selectionIds = helper.getProjectIds(event);
+            tableAuraId = "project";
         }
         else if(tableObject=="Project__c"){
-            // get the list of batch ids from the selected projects
-            var batchIds = [];
-            for(let i=0;i<parameters.length;i++){
-                if(parameters[i].Trainings__r){
-                    for(let j=0;j<parameters[i].Trainings__r.length;j++){
-                        batchIds.push(parameters[i].Trainings__r[j].Id);
-                    }
-                }
-            }
-            helper.markTableItemsAsSelected(batchIds, "batch", component);
+           selectionIds = helper.getBatchIds(event);
+           tableAuraId = "batch";
         }
+        helper.markTableItemsAsSelected(selectionIds, tableAuraId, component);
+        helper.fireBatchInfoEvent(component);
     },
 
+
     handleSaveInlineEditsEvent : function(component, event, helper){
-        alert(JSON.stringify(event.getParam("editedItems")));
+        var modifiedElements = event.getParam("editedItems");
+        var newTableData = component.find("batch").get("v.data");
+        var dataToUpdate = [{}];
+        var keys = Object.keys(newTableData[0]);
+        for(let i=0;i<modifiedElements.length;i++){
+            var rowNumber = modifiedElements[i].id.split('-')[1];
+            dataToUpdate[i].Id = newTableData[rowNumber].Id;
+            for(let j=0;j<keys.length;j++){
+                var currentKey = keys[j];
+                if(modifiedElements[i][currentKey] && modifiedElements[i][currentKey]!='id'){
+                    dataToUpdate[i][currentKey] = modifiedElements[i][currentKey];
+                    newTableData[rowNumber][currentKey] = modifiedElements[i][currentKey];
+                }
+            }
+        }
+       helper.saveInlineEdits(component, dataToUpdate, newTableData);
     }
 })
