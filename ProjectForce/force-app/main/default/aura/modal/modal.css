@@ -91,7 +91,7 @@
    padding: 10px;
 }
 
-.THIS .slds-form-element__control {/*slds-border__bottom*/
-   height : 100px;
+.THIS #modal-content-id-1 {/*slds-border__bottom*/
+   height : 350px;
    overflow : scroll;
 }

@@ -210,12 +210,13 @@
         </lightning:recordViewForm>
     <!-- </div> -->
 
-    <lightning:textarea name="TextBox" value="{!v.updateComment}" label="Comments" />
+    <!-- <lightning:textarea name="TextBox" value="{!v.updateComment}" label="Comments" /> -->
 
 </span>
             <!--</lightning:card>-->
                 <footer class="slds-modal__footer slds-modal__footer_directional">
-                    
+                        <lightning:textarea name="TextBox" value="{!v.updateComment}" label="Comments" />
+                        <br />
                         <lightning:button class=" slds-button_brand button" label="Kanban" onclick="{!c.hideModal}"/>
                         <lightning:button class=" slds-button_brand button " label="Cancel"  onclick="{!c.hideModal}"/>
                         <lightning:button class="slds-button_brand  button" label="Save" onclick="{!c.save}"/>
