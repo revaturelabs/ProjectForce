@@ -1,0 +1,4 @@
+<aura:event type="COMPONENT" description="Event template">
+    <aura:attribute name="tableObject" type="String" />
+    <aura:attribute name="selectedRows" type="List" />
+</aura:event>
