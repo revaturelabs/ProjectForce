@@ -7,7 +7,6 @@
    background-color: #1798c1;
    color: white;
    float: left;
-<<<<<<< HEAD
 }
 
 .THIS .save{
@@ -22,9 +21,6 @@
  
 }
 
-=======
-}
-
 .THIS .save{
    background-color: #1798c1;
    color: white;
@@ -37,7 +33,6 @@
  
 }
 
->>>>>>> origin/modalComments
 
 .THIS .slds-modal__footer {
    
@@ -99,22 +94,18 @@
  
 }
 
-<<<<<<< HEAD
-=======
-
->>>>>>> origin/modalComments
 .THIS .row{
    display: flex
 }
 .THIS .column{
    flex: 50%;
    padding: 10px;
-<<<<<<< HEAD
-=======
 }
 
 .THIS #modal-content-id-1 {/*slds-border__bottom*/
    height : 350px;
    overflow : scroll;
->>>>>>> origin/modalComments
 }
+
+
+ 
