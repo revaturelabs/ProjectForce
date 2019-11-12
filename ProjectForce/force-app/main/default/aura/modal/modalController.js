@@ -23,6 +23,16 @@
        // let selectedTrack = "v.selectedTrack";
         //let selectedDate = "v.selectedDate";
 
+        // let updateComment = component.get("v.updateComment");
+
+        // let recordId = component.get("v.recordId");
+
+        // set to what's retreived in the apex controller 
+        //let updatedComments = component.get("v.updatedComments");
+
+        // if only comments are being updated, don't fire a rerendering event
+        // if {...}
+
         //alert(updateTrainer+" "+updateProject+" "+updateRoom);
         if(updateTrainer && updateProject && updateRoom)
         {
@@ -63,5 +73,29 @@
         helper.trainer(component, event);
         helper.project(component, event);
         helper.showModal(component);
-    }    
+
+        console.log("showModal completed");
+    },
+    openDiv : function(component, event, helper) {
+        var x = document.getElementById("locationDiv");
+        if (x.style.display === "block") {
+          x.style.display = "none";
+        } else {
+          x.style.display = "block";
+        }
+      },
+
+      changeButton : function(component, event, helper){
+        var x = document.getElementById("locationDiv");
+        if (x.style.display === "block") {
+          x.style.display = "none";
+        } else {
+          x.style.display = "block";
+        }
+
+
+
+      },
+   
+    
 })

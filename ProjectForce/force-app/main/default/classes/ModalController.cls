@@ -1,3 +1,14 @@
+/**
+ * @File Name          : ModalController.cls
+ * @Description        : 
+ * @Author             : ChangeMeIn@UserSettingsUnder.SFDoc
+ * @Group              : 
+ * @Last Modified By   : ChangeMeIn@UserSettingsUnder.SFDoc
+ * @Last Modified On   : 11/12/2019, 8:40:45 AM
+ * @Modification Log   : 
+ * Ver       Date            Author      		    Modification
+ * 1.0    11/11/2019   ChangeMeIn@UserSettingsUnder.SFDoc     Initial Version
+**/
 //change without sharing to with sharing when deploying
 public without sharing class ModalController {
 
@@ -555,14 +566,16 @@ public without sharing class ModalController {
 
     //Saves changes to selected batch (training)
     @auraEnabled
-    public static boolean Save(String trainingId, string newTrainerName, string newProjectName, string newRoomName, string newTrackName, date newStartDate){
+    public static boolean Save(Id trainingId, string newTrainerName, string newProjectName, 
+                                string newRoomName, string newTrackName, date newStartDate, String newComment){
         //Id trainingID = [SELECT Id FROM training__c WHERE name='Test Training 0' LIMIT 1].Id;//REMOVE THIS AFTER DEPLOYMENT!!!
         id newTrainerId = [SELECT Id FROM Trainer__c WHERE name = :newTrainerName LIMIT 1].id;
         Id trainerTrackID = [SELECT Id FROM trainertrack__c WHERE TrainerTrack__c =:newTrainerId LIMIT 1].Id;
         id newProjectId = [SELECT Id FROM Project__c WHERE name = :newProjectName LIMIT 1].id;
         id newRoomId = [SELECT Id FROM Room__c WHERE name = :newRoomName LIMIT 1].id;
         id newTrackId = [SELECT Id FROM Track__c WHERE name = :newTrackName LIMIT 1].id;
-        Training__c newTraining=[SELECT id, name, Start_Date__c, Trainer__c, Project__c, Room__c, Track__c FROM Training__c WHERE id = : Id.valueOf(trainingID) LIMIT 1];
+        Training__c newTraining=[SELECT id, name, Start_Date__c, Trainer__c, Project__c, Room__c, 
+                                    Comments__c, Track__c FROM Training__c WHERE id = : Id.valueOf(trainingID) LIMIT 1];
         trainertrack__c newTrainerTrack=[SELECT Id, TrackTrainer__c, TrackTrainer__r.name FROM trainertrack__c WHERE Id =:trainerTrackID LIMIT 1];
 
         newTraining.Trainer__c=newTrainerId;
@@ -570,6 +583,7 @@ public without sharing class ModalController {
         newTraining.room__c=newRoomId;
         newTraining.Track__c=newTrackId;
         newTraining.Start_Date__c=newStartDate;
+        newTraining.Comments__c = '<h1>' + newComment + '<br /></h1>' + newTraining.Comments__c;
         
         //newTrainerTrack.TrackTrainer__c=newTrackId;
         //update newTrainerTrack;

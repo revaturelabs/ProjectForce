@@ -265,7 +265,8 @@
 			"newProjectName": component.get("v.updateProject"),
 			"newRoomName": component.get("v.updateRoom"),
 			"newTrackName": component.get("v.selectedTrack"),
-			"newStartDate": component.get("v.selectedDate")
+			"newStartDate": component.get("v.selectedDate"),
+			"newComment" : component.get("v.updateComment")
 		});
 
 		action.setCallback(this, function(response){
