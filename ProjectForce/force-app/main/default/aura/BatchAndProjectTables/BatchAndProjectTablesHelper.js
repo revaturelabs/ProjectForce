@@ -56,7 +56,7 @@
         batchInfoEvent.fire();
     }, 
 
-    saveInlineEdits : function(component, dataToUpdate, newTableData){
+    saveInlineEdits : function(component, dataToUpdate, newTableData, tableAuraId){
         var updateTableData = component.get("c.updateTableData");
         
         updateTableData.setParams({
@@ -67,7 +67,7 @@
             var state = response.getState();
             
             if(state==="SUCCESS"){
-                component.find("batch").set("v.data", newTableData);
+                component.find(tableAuraId).set("v.data", newTableData);
             }
             else if(state==="ERROR"){
                 let errors = response.getError();

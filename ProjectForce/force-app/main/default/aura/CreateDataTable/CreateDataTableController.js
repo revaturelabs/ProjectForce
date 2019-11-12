@@ -35,6 +35,7 @@
     save : function(component, event, helper){
        var saveInlineEdits = component.getEvent("saveInlineEdits");
        saveInlineEdits.setParams({
+            "editedObject" : component.get("v.queryObject"),
             "editedItems": event.getParam("draftValues")
        });
        saveInlineEdits.fire();

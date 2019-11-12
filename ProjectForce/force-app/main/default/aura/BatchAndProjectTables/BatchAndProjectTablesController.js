@@ -25,7 +25,15 @@
 
     handleSaveInlineEditsEvent : function(component, event, helper){
         var modifiedElements = event.getParam("editedItems");
-        var newTableData = component.find("batch").get("v.data");
+        var modifiedTable = event.getParam("editedObject");
+        var tableAuraId;
+        if(modifiedTable==='Training__c'){
+           tableAuraId = 'batch';
+        }
+        else if(modifiedTable==='Project__c'){
+            tableAuraId = "project";
+        }
+        var newTableData = component.find(tableAuraId).get("v.data");
         var dataToUpdate = [{}];
         var keys = Object.keys(newTableData[0]);
         for(let i=0;i<modifiedElements.length;i++){
@@ -39,6 +47,6 @@
                 }
             }
         }
-       helper.saveInlineEdits(component, dataToUpdate, newTableData);
+       helper.saveInlineEdits(component, dataToUpdate, newTableData, tableAuraId);
     }
 })
