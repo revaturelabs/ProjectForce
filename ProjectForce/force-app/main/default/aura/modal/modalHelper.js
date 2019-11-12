@@ -303,22 +303,24 @@
 
 	//hides the modals and removes the backdrop class
 	hideModal : function(component) {
-
 		var modal = component.find("modalSection");
 		var backdrop = component.find("backdrop");
+		var mainComponent = component.find("chartIdThing");
 		$A.util.addClass(modal, 'hideModal');
-
 		$A.util.removeClass(backdrop, 'slds-backdrop slds-backdrop_open');
+		mainComponent.location.reload();
+		return;
 	},
 
 	//hides the modals and removes the backdrop class
 	showModal : function(component) {
-
 		var modal = component.find("modalSection");
 		var backdrop = component.find("backdrop");
+		console.log('Helper');
 		$A.util.removeClass(modal, 'hideModal');
-
+		console.log(`hideModal: ${$A.util.hasClass(modal, 'hideModal')}`);
 		$A.util.addClass(backdrop, 'slds-backdrop slds-backdrop_open');
+		return;
 	},
 	
 	successToast : function(component, event, helper) {
@@ -327,10 +329,9 @@
 		toastEvent.setParams({  
 		  "title": "Success!",  
 		  "message": "Save request has been completed!",  
-		  "type": "success"  
+		  "type": "success"
 		});  
 		toastEvent.fire(); 
-		
 	   },
 
 	   failToast : function(component, event, helper) {

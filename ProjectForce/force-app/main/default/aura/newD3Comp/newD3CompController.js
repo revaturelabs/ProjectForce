@@ -90,41 +90,26 @@ myAction : function(component, event, helper) {
         var activePoints = component.get('v.dasChart').getElementsAtEvent(evt);
         var activePoint = component.get('v.dasChart').getElementAtEvent(evt)[0]; //WIP
         if(activePoints.length > 0 ){ 
-            if (activePoint._datasetIndex === 0) {
-                // invisible click
-                return;
-            }
             if (activePoint._datasetIndex === 1) {
-                // visible click
                 var currIndex = activePoints[0]._index;
                 var currSimpleTraining = component.get('v.tempList')[currIndex];
-                var childCmp = component.find("modalComp")
+                var childCmp = component.find("modalComp");
                 let location = currSimpleTraining.location;
-                let track = currSimpleTraining.trackName;
-
+                let track = currSimpleTraining.trackName;   
                 childCmp.showModal(currSimpleTraining.trainingId, location, track);
+                component.location.reload();
             }
-        }           
-    };       
+        }                
+    };  
     
-        // This variable is needed for the hover event.
-        var myChartComponent = component.find("myChart").getElement();
-        // function used to store how we want the hover event to work. This method allows for us to reuse it later if needed.
-        var hoverEvent = function(e) {
-            // inline if statement. If we aren't hovering over the timeline elements
-            // then we have the default pointer, otherwise we use the pointing pointer
-            // for the mouse to display on the browser window.
-            myChartComponent.style.cursor = e[0] ? "pointer" : "default";
-        };
-        //the charts options such as x-axis, y-axis, if hover/no hover
-        var barOptions_stacked = {
-
+    var myChartComponent = component.find("myChart").getElement();
+    //the charts options such as x-axis, y-axis, if hover/no hover
+    var barOptions_stacked = {
+        
             hover: {
                 animationDuration:10,
-                // Documentation for this onHover function is in Chart.js
-                // https://www.chartjs.org/docs/latest/general/interactions/events.html
-                onHover: function (e, element) {
-                    hoverEvent(e,element);
+                onHover: function(e, elements) {
+                    myChartComponent.style.cursor = e[0] ? 'pointer' : 'default';
                 }
             },
             events: {
@@ -134,17 +119,20 @@ myAction : function(component, event, helper) {
             onComplete: function () {
                 var ctx = this.chart.ctx;
                 var chartInstance = this.chart;
+                
                 ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontFamily, 'normal', Chart.defaults.global.defaultFontFamily);
                 ctx.textAlign = 'left';
                 ctx.fillStyle = '#FFFFFF'; // label color
+                
                 this.data.datasets.forEach(function (dataset, i) {
-                    var meta = chartInstance.controller.getDatasetMeta(i); 
+                    var meta = chartInstance.controller.getDatasetMeta(i);
+                    var hiddenData = chartInstance.controller.getDatasetMeta(0);
+                    hiddenData.hidden = true;       
                     meta.data.forEach(function (bar, index) {
                         // only fillText for the first bar, otherwise we get double label overflow
                         if (bar._datasetIndex === 0) {
-                            var model = dataset._meta[Object.keys(dataset._meta)[0]].data[index]._model;                            
+                            var model = dataset._meta[Object.keys(dataset._meta)[0]].data[index]._model;                  
                             var label = model.label;
-    
                             ctx.fillText(label, bar._model.x+2, bar._model.y);
                         }
                     });
@@ -152,6 +140,8 @@ myAction : function(component, event, helper) {
             }
         },
             scales: {
+                
+
                 series: [{
                     data:[100,200,400]
                 }],
@@ -160,7 +150,7 @@ myAction : function(component, event, helper) {
                     bar: {
                         horizontal: true,
                         dataLabels: {
-                            position: 'top',
+                        position: 'top',
                         },
                         
                     }  
@@ -256,15 +246,14 @@ myAction : function(component, event, helper) {
 
 runSort:function(component, event, helper)
 {
+    
     var sortBy= component.find('select').get('v.value');
+    console.log(sortBy);
     var allTrainings = component.get('v.tempList');
     var myChart = component.get('v.dasChart');
 
     var getColors = component.get('v.DisplayColors');
-    console.log('here\'s the length of the array before sort:' + allTrainings.length);
-    helper.sortArray(allTrainings, getColors, sortBy);
-    console.log('here\'s the length of the array after sort: '+allTrainings.length);
-    helper.updateData(component);
+
     console.log('here\s the length of the array after updateData: '+allTrainings.length);
     helper.sortArray(allTrainings, getColors, sortBy); 
     helper.updateData(component); 
@@ -286,7 +275,6 @@ applyColors:function(component, event, helper)
     var newColors = helper.applyColors(allTracks, allColors, currTrainings);
     component.set('v.DisplayColors', newColors);
     helper.updateData(component);
-    
 },
 
 runFilter: function (component, event, helper) { 

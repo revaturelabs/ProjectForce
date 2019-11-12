@@ -84,7 +84,7 @@
             
         </div>
         <!--Holds the Chart -->
-        <div class="Chart">
+        <div aura:id="chartIdThing" class="Chart">
             <div class="chartAreaWrapper">
                 <canvas aura:id="myChart" onclick= "{!c.showmodal}"></canvas>
             </div>

@@ -9,9 +9,6 @@
             helper.room(component, event);
             helper.trainer(component, event);
             helper.project(component, event);
-            
-           
-
     },
     
     save : function(component, event, helper) {
@@ -27,8 +24,6 @@
         if(updateTrainer && updateProject && updateRoom)
         {
             helper.saveModal(component, event);
-            location.reload();
-            //alert("works");
         }
         else
         {
@@ -36,7 +31,7 @@
         }
 	},
     
-    //save this for warning for the date later.....
+    //save this for warning for the dashte later.....
     ////alert(component.find('myLocation').get('v.value') + ' is your location.');
     
     
@@ -52,7 +47,8 @@
     },
 
     hideModal : function(component, event, helper) {
-    	helper.hideModal(component);
+        helper.hideModal(component);
+        return;
     },
 
     showModal : function(component, event, helper) {
@@ -62,6 +58,8 @@
         helper.room(component, event);
         helper.trainer(component, event);
         helper.project(component, event);
+        console.log('modelcontroller');
         helper.showModal(component);
+        return;
     }    
 })
