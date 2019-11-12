@@ -10,6 +10,8 @@
             <aura:attribute name="paramTrack" type="String"/>
     </aura:method> 
 
+    <aura:attribute name="recordId" type="Id" />
+    
     <!--Attribute for the selected value-->
     <aura:attribute name="selectedLocation" type="String"/>
     
@@ -30,6 +32,10 @@
     
     <!--Attribute for the selected value-->
     <aura:attribute name="updateTrack" type="String"/>
+
+    <!-- Comments added in the modal are displayed above the input field -->
+    <aura:attribute name="updateComment" type="String" />
+    <!-- <aura:attribute name="updatedComments" type="String" /> -->
   
     <!--Attribute for list-->
     <aura:attribute name="updateTracks" type="String"/>
@@ -57,130 +63,158 @@
   
     <!--Attribute for list-->
     <aura:attribute name="updateTrainers" type="String"/>  
-    
-    <!--Something-->
     <aura:attribute name="none" type="String" default="none" />   
 
     
 	
-    <section aura:id = "modalSection" role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open hideModal slds-modal_small">
-        
-        <!--Changed font to default-->
-        <div class="font">
-
-            <div class="slds-modal__container " style="max-width:50rem; ">
-
-            <header class="slds-modal__header">
-                <div class ="header slds-box slds-box_small slds-modal__header">
-                    <h1 id="modal-heading-01" class="slds-modal__title slds-hyphenate">Batch ### - Trainer </h1>
-                </div>
+<section aura:id = "modalSection" role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open hideModal slds-modal_small">
     
-                <div class ="row">
-                    <div class="column">
+    <!--Changed font to default-->
+    <div class="font">
 
-                    <div class="slds-size_2-of-4 slds-media_inline">
-                        <div class="slds-media slds-media_medium">
-                            <div class="slds-media__figure">
-                                <span class="slds-avatar slds-avatar_large">
-                                    <img alt="Sf logo" src="{!$Resource.sf}" title="User avatar" />
-                                </span>
-                                </div>
-                                <span class="slds-media__body">
-                                    <p>
-                                        <aura:text value="{!v.selectedTrack}"/>
-                                    </p>
-                                </span>
-                            </div>
+
+        <div class="slds-modal__container " style="max-width:50rem; ">
+
+        <header class="slds-modal__header">
+            <div class ="header slds-box slds-box_small slds-modal__header">
+                <h1 id="modal-heading-01" class="slds-modal__title slds-hyphenate">Batch ### - Trainer </h1>
+            </div>
+      
+        
+        <div class ="row">
+            <div class="column">
+
+            <div class="slds-size_2-of-4 slds-media_inline">
+                <div class="slds-media slds-media_medium">
+                    <div class="slds-media__figure">
+                        <span class="slds-avatar slds-avatar_large">
+                            <img alt="Sf logo" src="{!$Resource.sf}" title="User avatar" />
+                        </span>
                         </div>
+                        <span class="slds-media__body">
+                            <p>
+                                <aura:text value="{!v.selectedTrack}"/>
+                            </p>
+                        </span>
                     </div>
-                    <div class="column">
-                        <div class="slds-size_3-of-4 slds-media_inline">
-                            <div class="slds-media slds-media_medium">
-                                <div class="slds-media__figure">
-                                <span class="slds-avatar slds-avatar_medium">
-                                    <img alt="Sf logo" src="{!$Resource.cal}" title="User avatar" />
-                                </span>
-                                </div>
-                                <span class="slds-media__body">
-                                    <aura:text value="{!v.selectedDate}"/>
-                                </span>
-                            </div>
+                </div>
+            </div>
+
+            <div class="column">
+                <div class="slds-size_3-of-4 slds-media_inline">
+                    <div class="slds-media slds-media_medium">
+                        <div class="slds-media__figure">
+                        <span class="slds-avatar slds-avatar_medium">
+                            <img alt="Sf logo" src="{!$Resource.cal}" title="User avatar" />
+                        </span>
                         </div>
+                        <span class="slds-media__body">
+                            <aura:text value="{!v.selectedDate}"/>
+                        </span>
                     </div>
-                    <div class="column">
-                        <div class="slds-form-element">
+                </div>
+             </div>
+
+             <div class="column">
+
+                    <div class="slds-form-element">
                             <label class="slds-checkbox_toggle slds-grid">
-                                <span class="slds-form-element__label slds-m-bottom_none">Mark as Complete</span>
-                                <input type="checkbox" name="checkbox-toggle-17" value="checkbox-toggle-17" aria-describedby="checkbox-toggle-17" />
-                                <span id="checkbox-toggle-17" class="slds-checkbox_faux_container" aria-live="assertive">
+                              <span class="slds-form-element__label slds-m-bottom_none">Mark as Complete</span>
+                              <input type="checkbox" name="checkbox-toggle-17" value="checkbox-toggle-17" aria-describedby="checkbox-toggle-17" />
+                              <span id="checkbox-toggle-17" class="slds-checkbox_faux_container" aria-live="assertive">
                                 <span class="slds-checkbox_faux"></span>
                                 <span class="slds-checkbox_on">Completed</span>
                                 <span class="slds-checkbox_off">Not Complete</span>
-                                </span>
+                              </span>
                             </label>
-                        </div>
-                    </div>
-                </div>
-            </header>
-        
-                <span style="overflow: scroll" class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
-                    <div class ="row">
-                        <div class="column">
+                          </div>
+               
+            </div>
 
-                            <!--Project-->  
-                            <label style="font-size: 20px"  >Project: </label>
-                            <lightning:button class="buttonStyle slds-align_absolute-center" type="button" label="{!v.updateProject}"  onclick="{!c.openDiv}" />
-                            <br/>
 
-                            <!-- shows projects-->
-                            <div  style="display:none" id="locationDiv">
-                                <lightning:select name="selProject" label="Project" aura:id="selProject" value="{!v.updateProject}"  onchange="{!c.changeButton}" >
-                                    <aura:iteration items="{!v.updateProjects}" var="project">
-                                        <option text="{!project.Name}" value="{!project.Name}" selected="{!project.selected}"/>
-                                    </aura:iteration>
-                                </lightning:select>
-                            </div>
-                            <br/>
 
-                            <!--Size-->
-                            <div>
-                                <label style="font-size: 15px">Size: </label>   
-                            </div>
-                            <br/>
+        </div>
 
-                            <!--Trainer-->
-                            <div>
-                                <label style="font-size: 15px">Trainer: </label>   
-                            </div>
-                        </div>
+        </header>
 
-                        <div class="column">
 
-                            <div>
-                                <label style="font-size: 15px">Room: </label>   
-                            </div>
-                            <br/>
+    
+<span class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+    <div class ="row">
+        <div class="column">
 
-                            <!--Location-->
-                            <div>
-                                <label style="font-size: 15px">Location: </label>   
-                            </div>
-                        </div>
-                    </div>
-
-                    <hr></hr>
-                    <lightning:textarea name="TextBox" label="Comments" />
-                </span>
+            <!--Project-->  
             
+                <label style="font-size: 20px"  >Project: </label>
+                <lightning:button class="buttonStyle slds-align_absolute-center" type="button" label="{!v.updateProject}"  onclick="{!c.openDiv}" />
+            <br/>
+            <!-- shows projects-->
+            <div  style="display:none" id="locationDiv">
+                <lightning:select name="selProject" label="Project" aura:id="selProject" value="{!v.updateProject}"  onchange="{!c.changeButton}" >
+                    <aura:iteration items="{!v.updateProjects}" var="project">
+                        <option text="{!project.Name}" value="{!project.Name}" selected="{!project.selected}"/>
+                    </aura:iteration>
+                </lightning:select>
+            </div>
+            
+            <br/>
+
+
+            <!--Size-->
+            <div>
+                <label style="font-size: 15px">Size: </label>   
+            </div>
+
+            <br/>
+            <!--Trainer-->
+            
+            <div>
+                <label style="font-size: 15px">Trainer: </label>   
+            </div>
+
+        </div>
+
+        <div class="column">
+
+            <div>
+                <label style="font-size: 15px">Room: </label>   
+            </div>
+            <br/>
+            <div>
+                <label style="font-size: 15px">Location: </label>   
+            </div>
+
+        </div>
+    </div>
+
+    <hr></hr>
+
+    <!-- <div> -->
+        <lightning:recordViewForm recordId="{!v.saveTrainingID}" objectApiName="Training__c">
+            <!-- <div class="slds-box slds-theme_default"> -->
+            <div class="slds-form-element__control slds-border__bottom"> 
+                <lightning:outputField fieldName="Comments__c" />
+            </div>
+        </lightning:recordViewForm>
+    <!-- </div> -->
+
+    <!-- <lightning:textarea name="TextBox" value="{!v.updateComment}" label="Comments" /> -->
+
+</span>
+            <!--</lightning:card>-->
                 <footer class="slds-modal__footer slds-modal__footer_directional">
-                    
+                        <lightning:textarea name="TextBox" value="{!v.updateComment}" label="Comments" />
+                        <br />
                         <lightning:button class=" slds-button_brand button" label="Kanban" onclick="{!c.hideModal}"/>
                         <lightning:button class=" slds-button_brand button " label="Cancel"  onclick="{!c.hideModal}"/>
-                        <lightning:button class="slds-button_brand button" label="Save" onclick="{!c.save}"/>
-                    
+                        <lightning:button class="slds-button_brand  button" label="Save" onclick="{!c.save}"/>
+                   
                 </footer>
             </div>
         </div>
-    </section>    
+        </section>
+    
     <div aura:id = "backdrop"></div>
+
+    
 </aura:component>

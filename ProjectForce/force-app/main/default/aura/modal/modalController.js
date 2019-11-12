@@ -23,6 +23,16 @@
        // let selectedTrack = "v.selectedTrack";
         //let selectedDate = "v.selectedDate";
 
+        // let updateComment = component.get("v.updateComment");
+
+        // let recordId = component.get("v.recordId");
+
+        // set to what's retreived in the apex controller 
+        //let updatedComments = component.get("v.updatedComments");
+
+        // if only comments are being updated, don't fire a rerendering event
+        // if {...}
+
         //alert(updateTrainer+" "+updateProject+" "+updateRoom);
         if(updateTrainer && updateProject && updateRoom)
         {
@@ -56,7 +66,6 @@
     },
 
     showModal : function(component, event, helper) {
-        console.log("showModal");
         helper.locationByID(component, event);
         helper.trackByID(component, event);
         helper.date(component,event);
