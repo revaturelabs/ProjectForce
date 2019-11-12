@@ -1,0 +1,29 @@
+<aura:component controller="KanbanProjectApexClass">
+    <aura:attribute name="index" type="Integer" default="1"/>
+    <aura:attribute name="categories" type="String[]" default="[]"/>
+    <aura:attribute name="records" type="List" default="[]"/>
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <lightning:accordion aura:id="accordion" allowMultipleSectionsOpen="true">
+        <lightning:button label="Open All" onclick="{!c.handleOpenAll}"/>
+        <lightning:button label="Close All" onclick="{!c.handleCloseAll}"/>
+        <aura:iteration items="{!v.categories}" var="category">
+            <lightning:accordionSection name="{!category}" label="{!category}">
+                <aura:set attribute="actions">
+                    <lightning:button label="New" onclick="{!c.selectNew}"/>
+                </aura:set>
+                <aura:set attribute="body">
+                    <aura:iteration items="{!v.records}" var="record">
+                        <aura:if isTrue="{!record.Type == category}">
+                            <div>
+                                <strong class="a">{!record.Name}</strong>
+                                <em class="a">{!record.Id}</em>
+                                <span class="a">{!record.Type}</span>
+                            </div>
+                        </aura:if>
+                    </aura:iteration>
+                </aura:set>
+            </lightning:accordionSection>
+        </aura:iteration>
+    </lightning:accordion>
+</aura:component>
