@@ -2,7 +2,7 @@
     doInit: function (component, event, helper) {
         var action = component.get("c.getBacklogs");
         var project = component.get("v.project");
-        action.setParams({project: project });
+        action.setParams({project: projgect });
         // Add callback behavior for when response is received
         action.setCallback(this, function (response) {
             var state = response.getState();
