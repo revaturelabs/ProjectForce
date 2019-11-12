@@ -28,7 +28,7 @@
         var modifiedTable = event.getParam("editedObject");
         var tableAuraId;
         if(modifiedTable==='Training__c'){
-           tableAuraId = 'batch';
+            tableAuraId = 'batch';
         }
         else if(modifiedTable==='Project__c'){
             tableAuraId = "project";
@@ -39,6 +39,7 @@
         for(let i=0;i<modifiedElements.length;i++){
             var rowNumber = modifiedElements[i].id.split('-')[1];
             dataToUpdate[i].Id = newTableData[rowNumber].Id;
+            dataToUpdate[i].Name = newTableData[rowNumber].Name;
             for(let j=0;j<keys.length;j++){
                 var currentKey = keys[j];
                 if(modifiedElements[i][currentKey] && modifiedElements[i][currentKey]!='id'){
@@ -47,6 +48,6 @@
                 }
             }
         }
-       helper.saveInlineEdits(component, dataToUpdate, newTableData, tableAuraId);
+        helper.saveInlineEdits(component, dataToUpdate, newTableData, tableAuraId);
     }
 })
