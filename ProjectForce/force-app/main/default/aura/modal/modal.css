@@ -18,21 +18,11 @@
    background-color: white;
    color: #1798c1;
    float: left;
- 
 }
 
-.THIS .save{
-   background-color: #1798c1;
-   color: white;
+.THIS #trainerBadge {
+   background-color: #FF7D3C;
 }
-
-.THIS .cancel{
-   background-color: white;
-   color: #1798c1;
-   float: left;
- 
-}
-
 
 .THIS .slds-modal__footer {
    
@@ -45,13 +35,13 @@
    background-color: #72A4C2;
    
 }
-
+/*
 .THIS .slds-select,.THIS .slds-input{
    
    color: #474C55;
    font-size: 1rem;
 }
-
+*/
 .THIS .slds-modal__header {
    background: white;
   
