@@ -4,7 +4,9 @@
 	
     <!-- attributes -->
     <aura:attribute name="backlogs" type="Backlog__c[]"/>
-    
+    <!-- project id stored as a string -->
+    <aura:attribute name="project" type="String" />
+
     <!-- event handlers -->
     <aura:handler name="init" action="{!c.doInit}" value="{!this}"></aura:handler>
     <aura:handler name="droppedOnColumn" event="c:droppedOnColumn" action="{!c.droppedHandler}"></aura:handler>

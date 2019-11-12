@@ -312,7 +312,11 @@ th:not([align]) {
 }
 
 html {
+<<<<<<< HEAD
 
+=======
+  /*background-color: white;*/
+>>>>>>> kanban-backlogs-feature
   font-size: 16px;
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
