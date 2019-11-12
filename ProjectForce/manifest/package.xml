@@ -7,8 +7,17 @@
     </types>
     <types>
         <members>*</members>
-       
         <name>ApexComponent</name>
+    </types>
+    <types>
+        <members>Backlog__c-Backlog Layout</members>
+        <members>Project__c-Project Layout</members>
+        <members>Room__c-Room Layout</members>
+        <members>Track__c-Track Layout</members>
+        <members>Trainer__c-Trainer Layout</members>
+        <members>TrainerTrack__c-TrainerTrack Layout</members>
+        <members>Training__c-Training Layout</members>
+        <name>Layout</name>
     </types>
     <types>
         <members>*</members>
