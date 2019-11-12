@@ -12,7 +12,7 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Required</behavior>
-                <field>Name</field>
+                <field>Capacity__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Required</behavior>
@@ -20,7 +20,7 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Required</behavior>
-                <field>Capacity__c</field>
+                <field>Name</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns/>
@@ -56,6 +56,8 @@
     </layoutSections>
     <miniLayout>
         <fields>Location__c</fields>
+        <fields>Capacity__c</fields>
+        <fields>Room_Number__c</fields>
     </miniLayout>
     <relatedLists>
         <fields>TASK.SUBJECT</fields>
