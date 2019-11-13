@@ -8,8 +8,8 @@
     markTableItemsAsSelected : function(selectionIds, tableAuraId, component){
         console.log("markTableItemsAsSelected");
         var selectionTable = component.find(tableAuraId).find("table");
-        var tableData = component.find(tableAuraId).find("table").get("v.data");
-        var selectedRows = selectionTable.get("v.selectedRows");
+        var tableData = component.find(tableAuraId).get("v.data");
+        var selectedRows = [];
 
         for(let i=0;i<tableData.length;i++){
             if(selectionIds.includes(tableData[i].Id)){
@@ -28,14 +28,15 @@
         return projectIds;
     },
 
-    getBatchIds : function(event){
-        var parameters = event.getParam("selectedRows");
+    getBatchIds : function(component){
+        var projects = component.find("project").get("v.data");
+        var selectedProjects = component.find("project").find("table").get("v.selectedRows");
         var batchIds = [];
-        for(let i=0;i<parameters.length;i++){
-            if(parameters[i].Trainings__r){
-                for(let j=0;j<parameters[i].Trainings__r.length;j++){
-                    batchIds.push(parameters[i].Trainings__r[j].Id);
-                }
+        var rowNumber;
+        for(let i=0;i<selectedProjects.length;i++){
+            rowNumber = selectedProjects[i].split('-')[1];
+            for(let j=0;j<projects[rowNumber].Trainings__r.length;j++){
+                batchIds.push(projects[rowNumber].Trainings__r[j].Id);
             }
         }
         return batchIds;
@@ -89,5 +90,38 @@
             }
         })
         $A.enqueueAction(updateTableData);
+    },
+
+    getTableAuraId : function(event){
+        var modifiedTable = event.getParam("editedObject");
+        var tableAuraId;
+        if(modifiedTable==='Training__c'){
+            tableAuraId = 'batch';
+        }
+        else if(modifiedTable==='Project__c'){
+            tableAuraId = "project";
+        }
+        return tableAuraId;
+    }, 
+
+    getUpdatedData : function(component, event, tableAuraId){
+        var modifiedElements = event.getParam("editedItems");
+        var newTableData = component.find(tableAuraId).get("v.data");
+        var dataToUpdate = [];
+        var keys = Object.keys(newTableData[0]);
+        for(let i=0;i<modifiedElements.length;i++){
+            var rowNumber = modifiedElements[i].id.split('-')[1];
+            dataToUpdate[i] = {};
+            dataToUpdate[i].Id = newTableData[rowNumber].Id;
+            for(let j=0;j<keys.length;j++){
+                var currentKey = keys[j];
+                var currentValue = modifiedElements[i][currentKey];
+                if(currentValue && currentKey!='Id'){
+                    dataToUpdate[i][currentKey] = currentValue;
+                    newTableData[rowNumber][currentKey] = currentValue;
+                }
+            }
+        }
+        return [dataToUpdate, newTableData];
     }
 })

@@ -43,6 +43,5 @@
        saveInlineEdits.fire();
        component.find("table").set("v.draftValues", null);
     },
-
     
 })
