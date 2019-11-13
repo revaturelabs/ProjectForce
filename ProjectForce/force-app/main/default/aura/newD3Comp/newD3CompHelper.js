@@ -116,6 +116,7 @@
             trainers[i] = dataSet[i].trainer;
             rooms[i] = dataSet[i].room; // not on Training__c pagelayout
         }
+
         //Once we have the startDates, we need it as an int.
         var days = this.convertDate(startTimes);
 
@@ -200,6 +201,7 @@
          var holdProject = [];
          var holdLabels = [];
          var holdTrainers = [];
+
          for(var i = 0; i < data.length; i++) {
             startDates[i] = data[i].startDate;
             holdBatchName[i] = data[i].name;
@@ -211,6 +213,7 @@
              var some = `${holdBatchName[i]} - ${holdProject[i]} - ${holdTrainers[i]}`;
              holdLabels[i] = some;
          }
+
         //I'm pretty sure this combined with the chart.data.datasets[1].background color
         //don't actually do anything. But who knows, maybe I'm wrong.
         holdColors = currColors;
@@ -219,18 +222,21 @@
         chart.data.datasets[1].backgroundColor = holdColors;
         chart.data.datasets[0].data = this.convertDate(startDates);
         chart.data.labels = holdLabels;
+
         //update. Until this command is run, none of the changes are actually applied to the chart.
+
         chart.update();
     },
 
     /*	convert date method used for converting the date into a integer because the chart only takes in integers as data and not actual date
     */
-    convertDate : function(data){
 
+    convertDate : function(data) {
         //declare necessary variables
         var arraySize = data.length;
         var d = [];
         var dIntoInt = [];
+      
         //for all the data being passed in, take the string, and turn it into a number
         for(let currTI = 0; currTI<arraySize; currTI++)
         {
@@ -248,7 +254,7 @@
              * 	then in the x-axis tick, it'll do a callback with the integer value as the index of the array already set and return the value date.
             */
             if(year>=currentYear && year<=(currentYear+1)) {
-		//if this the date year is this current year
+		        //if this the date year is this current year
                 if(year==currentYear) {
                     /*	Checking the date year is a leap year; 366 days
                      * 	1-31 is jan 1-31, 32-60 is feb 1-29, etc.
@@ -434,12 +440,6 @@
         dataDates = this.convertDate(dataDates);
         compareToDate = this.convertDate(compareToDate);
 
-        //console logs
-        // console.log('This was the selected track: ' +selectedTrack);
-        // console.log('This was the selected Location: ' +selectedLocation);
-        // console.log('This is the compare To Date: ' +compareToDate[0]);
-        // console.log('This is the list of dataDates: ' + dataDates);
-
         //For each record, determine if it meets the Filter Criteria.
         for(var currData = 0;currData < allData.length; currData++)
         {
@@ -451,13 +451,14 @@
 
                  //If the current record has the correct name or location, and the project starts after the listed date,
                 //enter
-                if((JSON.stringify(allData[currData].trackName) == selectedTrack
-                    && JSON.stringify(allData[currData].location) == selectedLocation))
 
-                {
-                    //Add the current record to the array to be set as the current data
+                if((JSON.stringify(allData[currData].trackName) == selectedTrack 
+                    && JSON.stringify(allData[currData].location) == selectedLocation)) {
+
+                    //Add the current record to the array to be set as the current data 
                     correctData[correctDataCounter] = allData[currData];
-                    correctDataCounter++;
+                    correctDataCounter++; 
+
 
                 }
 
@@ -474,8 +475,8 @@
                     correctDataCounter++;
                 }
 
-            } else
-            {
+                
+            } else {
                 correctData = allData;
             }
         }
@@ -491,6 +492,7 @@
     setInitFilterValues: function (component, event) {
         var allTrainings = component.get('v.qTraining');
 
+
         //Creating the Track List
         var TrackSet = new Set();
         TrackSet.add("All");
@@ -504,22 +506,23 @@
         {
 
             LocationSet.add(JSON.stringify(allTrainings[i].location));
-
-
-            TrackSet.add(JSON.stringify(allTrainings[i].trackName));
+            TrackSet.add(JSON.stringify(allTrainings[i].trackName));   
         }
+
         var LocationList = [];
         var LocationListCounter = 0;
+
         for(let currLocation of LocationSet)
         {
             LocationList[LocationListCounter]=currLocation;
             LocationListCounter++;
         }
+
         var TrackList = [];
         var TrackListCounter = 0;
+
         for(let currTrack of TrackSet)
         {
-
             TrackList[TrackListCounter]=currTrack;
             TrackListCounter++;
         }
@@ -528,10 +531,10 @@
         var UserColors = [];
         var PresetColors = ['#F26925', '#474C55', '#72A4C2', '#FCB414', '#B9B9BA'];
         var currColors = [];
+
         for(var i=0; i<TrackSet.size; i++)
         {
             let colorSelector = (PresetColors.length)%i;
-
             currColors[i] = PresetColors[colorSelector];
         }
 
@@ -551,8 +554,8 @@
 
     },
 
-    applyColors: function(tracks, colors, allBatches)
-    {
+    
+    applyColors: function(tracks, colors, allBatches) {      
 
         var colorsApplied = [];
         var colorsAppliedCounter = 0;
@@ -561,19 +564,14 @@
 
             for(let currTrack = 0; currTrack < tracks.length; currTrack++)
             {
-
                 if(JSON.stringify(allBatches[currBatch].trackName)==tracks[currTrack])
                 {
 
                     colorsApplied[colorsAppliedCounter] = colors[currTrack];
                     colorsAppliedCounter++;
-                    
                 }
             }
-        }
-         
+        }   
         return colorsApplied;
-
     }
-    
 })
