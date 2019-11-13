@@ -3,3 +3,9 @@
     grid-template-columns: auto auto;
     padding: 25px;
 }
+
+.THIS.b{
+    /* display:none; */
+    z-index: 9999;
+    position: fixed;
+}

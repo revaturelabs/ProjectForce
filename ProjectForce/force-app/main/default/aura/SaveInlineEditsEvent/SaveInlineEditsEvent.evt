@@ -1,4 +1,4 @@
 <aura:event type="COMPONENT" description="Event template">
     <aura:attribute name="editedObject" type="String" />
-    <aura:attribute name="editedItems" type="Object[]" />
+    <aura:attribute name="editedItems" type="List" />
 </aura:event>

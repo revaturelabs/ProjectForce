@@ -42,5 +42,10 @@
        component.find("table").set("v.draftValues", null);
     },
 
+    fireButtonPressEvent : function(component, event, helper){
+        var action = event.getParam('action');
+        var row = event.getParam('row');
+        alert(JSON.stringify(row));
+    }
     
 })

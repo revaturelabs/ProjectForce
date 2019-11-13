@@ -10,12 +10,12 @@
         var columns = [];
         for(var i=0;i<fields.length;i++){
             columns.push({
-                            label:fields[i], 
-                            fieldName:fields[i], 
-                            type:"text", 
-                            fixedWidth:(width/fields.length)-(90/fields.length),
-                            editable:true
-                        });
+                        label:fields[i][0], 
+                        fieldName:fields[i][0], 
+                        type:fields[i][1],
+                        fixedWidth:(width/fields.length)-(90/fields.length),
+                        editable:fields[i][2]
+                    });
         }
         component.set("v.columns",columns);
     },
@@ -68,28 +68,18 @@
     getQueryFields : function(queryFields){
         var returnQueryFields = [];
         for(let i=0;i<queryFields.length;i++){
-            if(queryFields[i][1]===false || queryFields[i][1]===true){
-                returnQueryFields.push(queryFields[i][0]);
-            }
-            else{
-                returnQueryFields.push(queryFields[i]);
-            }
+            returnQueryFields.push(queryFields[i][0]);
         }
         return returnQueryFields;
     },
 
-    /**
-     * Some items that you want queried don't need to be shown in the table,
-     * so this returns only the ones that aren't marked as false
-     * @param {List} queryFields 
-     */
     getColumns : function(queryFields){
-        var queryColumns = [];
+        var columns = [];
         for(let i=0;i<queryFields.length;i++){
             if(queryFields[i][1]!=false){
-                queryColumns.push(queryFields[i]);
+                columns.push(queryFields[i]);
             }
         }
-        return queryColumns;
+        return columns;
     }
 })

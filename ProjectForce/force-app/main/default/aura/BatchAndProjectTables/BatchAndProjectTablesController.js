@@ -34,12 +34,12 @@
             tableAuraId = "project";
         }
         var newTableData = component.find(tableAuraId).get("v.data");
-        var dataToUpdate = [{}];
+        var dataToUpdate = [];
         var keys = Object.keys(newTableData[0]);
         for(let i=0;i<modifiedElements.length;i++){
             var rowNumber = modifiedElements[i].id.split('-')[1];
+            dataToUpdate[i] = {};
             dataToUpdate[i].Id = newTableData[rowNumber].Id;
-            dataToUpdate[i].Name = newTableData[rowNumber].Name;
             for(let j=0;j<keys.length;j++){
                 var currentKey = keys[j];
                 if(modifiedElements[i][currentKey] && modifiedElements[i][currentKey]!='id'){
