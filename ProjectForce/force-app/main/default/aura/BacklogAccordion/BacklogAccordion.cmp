@@ -20,9 +20,11 @@
                 <aura:set attribute="body">
                     <aura:iteration items="{!v.records}" var="record">
                         <aura:if isTrue="{!record.Stage__c == category}">
-                            <div class="slds-grid slds-box slds-box_small">
-                                <div class="slds-col slds-size_1-of-4">{!record.Story__c}</div>
-                                <div class="slds-col slds-size_1-of-4">{!record.StartDateTime__c}</div>
+                            <div class="slds-grid slds-box slds-box_small" >
+                                <div class="slds-col slds-size_1-of-4">
+                                    <a href="{!'/one/one.app?#/sObject/'+ record.Id + '/view'}" target="_blank">{!record.Story__c}</a>
+                                </div>
+                                <div class="slds-col slds-size_1-of-4" title="{record.stime}">{!record.StartDateTime__c}</div>
                                 <div class="slds-col slds-size_1-of-4">{!record.EndDateTime__c}</div>
                                 <div class="slds-col slds-size_1-of-4">{!record.Stage__c}</div>
                             </div>
