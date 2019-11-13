@@ -42,12 +42,13 @@
             dataToUpdate[i].Id = newTableData[rowNumber].Id;
             for(let j=0;j<keys.length;j++){
                 var currentKey = keys[j];
-                if(modifiedElements[i][currentKey] && modifiedElements[i][currentKey]!='id'){
-                    dataToUpdate[i][currentKey] = modifiedElements[i][currentKey];
-                    newTableData[rowNumber][currentKey] = modifiedElements[i][currentKey];
+                var currentValue = modifiedElements[i][currentKey];
+                if(currentValue && currentKey!='Id'){
+                    dataToUpdate[i][currentKey] = currentValue;
+                    newTableData[rowNumber][currentKey] = currentValue;
                 }
             }
         }
-        helper.saveInlineEdits(component, dataToUpdate, newTableData, tableAuraId);
+       helper.saveInlineEdits(component, dataToUpdate, newTableData, tableAuraId);
     }
 })

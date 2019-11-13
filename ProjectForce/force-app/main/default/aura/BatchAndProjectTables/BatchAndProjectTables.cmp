@@ -7,10 +7,6 @@
     <aura:handler name="tableItemSelected" event="c:TableItemSelectedEvent" action="{!c.handleItemSelectedEvent}" />
     <aura:handler name="saveInlineEdits" event="c:saveInlineEditsEvent" action="{!c.handleSaveInlineEditsEvent}" />
     <aura:registerEvent name="batchInfoEvent" type="c:BatchInformationEvent" />
-    <!-- <div class="b">
-        <lightning:input type="color" label="Color" name="color" value="{!v.color}" />
-        <ui:outputText value="{!v.color}" />
-    </div> -->
     
 
     <div class="a">
