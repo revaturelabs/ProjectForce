@@ -20,13 +20,7 @@
                     record.EndDateTime__c = d.toLocaleDateString();
                     record['etime'] = d.toLocaleTimeString();
                 });
-                
-                categories.sort(function(a, b) {
-                    // hard coded: 'To Do' is first, 'Done' is last
-                    if (a === 'To Do') return 1;
-                    if (b === 'Done') return -1;
-                });
-                component.set('v.categories', categories);
+                // component.set('v.categories', categories); // having trouble sorting
                 component.set('v.records', response.getReturnValue());
             }
         });

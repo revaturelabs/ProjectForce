@@ -1,8 +1,8 @@
 <aura:component controller="KanbanProjectApexClass">
     <aura:attribute name="index" type="Integer" default="1"/>
-    <aura:attribute name="categories" type="String[]" default="[]"/>
+    <aura:attribute name="categories" type="String[]" default="['To Do', 'Doing', 'Done']"/>
     <aura:attribute name="records" type="List" default="[]"/>
-    <aura:attribute name="project" type="String" default="a016g0000026MfpAAE"/>
+    <aura:attribute name="project" type="String"/>
     <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
 
     <lightning:accordion aura:id="accordion" allowMultipleSectionsOpen="true">
@@ -29,12 +29,18 @@
                             </div>
                             <div class="slds-col slds-size_1-of-6">
                                 <a href="{!'/one/one.app?#/sObject/'+ record.Project__c + '/view'}" target="_blank">
-                                    {!record.Project__r.Name}
-                                </a>
+                                    {!record.Project__r.Name} </a>
                             </div>
-                            <div class="slds-col slds-size_1-of-6" title="{!record.stime}">{!record.StartDateTime__c}</div>
-                            <div class="slds-col slds-size_1-of-6" title="{!record.etime}">{!record.EndDateTime__c}</div>
-                            <div class="slds-col slds-size_1-of-6">{!record.Stage__c}</div>
+                            <div class="slds-col slds-size_1-of-6" title="{!record.stime}">
+                                {!record.StartDateTime__c}
+                            </div>
+                            <div class="slds-col slds-size_1-of-6" title="{!record.etime}">
+                                {!record.EndDateTime__c}
+                            </div>
+                            <div class="slds-col slds-size_1-of-6">
+                                {!record.Stage__c}
+
+                            </div>
                         </div>
                     </aura:if> </aura:iteration>
                 </aura:set>

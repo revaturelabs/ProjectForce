@@ -5,7 +5,7 @@
     <!-- attributes -->
     <aura:attribute name="backlogs" type="Backlog__c[]"/>
     <!-- project id stored as a string -->
-    <aura:attribute name="project" type="String" default="a016g0000026MfpAAE"/>
+    <aura:attribute name="project" type="String"/>
 
     <!-- event handlers -->
     <aura:handler name="init" action="{!c.doInit}" value="{!this}"></aura:handler>
