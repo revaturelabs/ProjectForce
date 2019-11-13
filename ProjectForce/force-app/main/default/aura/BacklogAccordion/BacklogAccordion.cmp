@@ -5,8 +5,13 @@
 
     <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
     <lightning:accordion aura:id="accordion" allowMultipleSectionsOpen="true">
-        <lightning:button label="Open All" onclick="{!c.handleOpenAll}"/>
-        <lightning:button label="Close All" onclick="{!c.handleCloseAll}"/>
+        <lightning:button class="slds-button_stretch" label="Open/Close All" onclick="{!c.handleOpenClose}"/>
+        <div class="slds-grid slds-box slds-box_small slds-theme_shade slds-m-horizontal_medium">
+            <div class="slds-col slds-size_1-of-4">Story</div>
+            <div class="slds-col slds-size_1-of-4">StartDateTime__c</div>
+            <div class="slds-col slds-size_1-of-4">EndDateTime__c</div>
+            <div class="slds-col slds-size_1-of-4">Stage__c</div>
+        </div>
         <aura:iteration items="{!v.categories}" var="category">
             <lightning:accordionSection name="{!category}" label="{!category}">
                 <aura:set attribute="actions">
@@ -15,10 +20,11 @@
                 <aura:set attribute="body">
                     <aura:iteration items="{!v.records}" var="record">
                         <aura:if isTrue="{!record.Stage__c == category}">
-                            <div class="slds-grid slds-gutters">
-                                <strong class="slds-col">{!record.Story__c}</strong>
-                                <em class="slds-col">{!record.Id}</em>
-                                <span class="slds-col">{!record.Stage__c}</span>
+                            <div class="slds-grid slds-box slds-box_small">
+                                <div class="slds-col slds-size_1-of-4">{!record.Story__c}</div>
+                                <div class="slds-col slds-size_1-of-4">{!record.StartDateTime__c}</div>
+                                <div class="slds-col slds-size_1-of-4">{!record.EndDateTime__c}</div>
+                                <div class="slds-col slds-size_1-of-4">{!record.Stage__c}</div>
                             </div>
                         </aura:if>
                     </aura:iteration>

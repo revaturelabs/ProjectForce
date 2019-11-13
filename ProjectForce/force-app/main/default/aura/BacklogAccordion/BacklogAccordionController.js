@@ -2,20 +2,24 @@
     doInit : function(component, event, helper) {
         // Retrieve records from server-side controller
         var action = component.get('c.getBacklogs');
+        // action.setParams({
+        //     project: 
+        // });
         action.setCallback(this, function(response) {
             if (response.getState() === 'SUCCESS') {
-                component.set('v.records', response.getReturnValue());
-                console.log(response.getReturnValue());
-
                 // Retrieve accordion categories
                 let categories = [];
                 response.getReturnValue().forEach(function(record) {
                     if (record.Stage__c && categories.indexOf(record.Stage__c) === -1) {
                         categories.push(record.Stage__c);
                     }
+                    let d = new Date(record.StartDateTime__c);
+                    record.StartDateTime__c = d.toLocaleDateString();
+                    d = new Date(record.EndDateTime__c);
+                    record.EndDateTime__c = d.toLocaleDateString();
                 });
                 component.set('v.categories', categories);
-                console.log(categories);
+                component.set('v.records', response.getReturnValue());
             }
         });
         $A.enqueueAction(action);        
@@ -23,10 +27,9 @@
     selectNew : function(component, event, helper) {
         alert("new backlog modal goes here");
     },
-    handleOpenAll: function (component) {
-        component.find("accordion").set('v.activeSectionName', component.get('v.categories'));
-    },
-    handleCloseAll: function (component) {
-        component.find("accordion").set('v.activeSectionName', '');
+    handleOpenClose: function (component) {
+        let button = component.find("accordion")
+        let sections = button.get('v.activeSectionName') ? '' : component.get('v.categories');
+        button.set('v.activeSectionName', sections);
     }
 })
