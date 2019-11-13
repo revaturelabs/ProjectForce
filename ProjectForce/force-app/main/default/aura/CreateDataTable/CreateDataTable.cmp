@@ -1,4 +1,4 @@
-<aura:component controller="TableApexController">
+<aura:component controller="TableApexController" access="global">
     <aura:attribute name="data" type="Object" />
     <aura:attribute name="columns" type="List" />
 
@@ -8,7 +8,7 @@
     <aura:attribute name="width" type="String" default="500" />
     <aura:attribute name="height" type="String" default="300" />
 
-    <aura:registerEvent name="tableItemSelected" type="c:TableItemSelectedEvent" />
+    <aura:registerEvent name="TableItemSelectedEvent" type="c:TableItemSelectedEvent" />
     <aura:registerEvent name="saveInlineEdits" type="c:SaveInlineEditsEvent" />
     <aura:handler name="init" value="{!this}" action="{!c.init}" />
 

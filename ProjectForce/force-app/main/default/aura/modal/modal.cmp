@@ -72,7 +72,7 @@
 
     
 	
-<section aura:id = "modalSection" role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open hideModal slds-modal_small">
+<section aura:id="modalSection" id="modalSection" role="dialog" tabindex="-1" aria-hidden="false" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open hideModal slds-modal_small">
 
     <div class="slds-modal__container" style="max-width:10rem; ">
 

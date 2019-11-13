@@ -1,4 +1,5 @@
-<aura:event type="COMPONENT" description="Event template">
+<aura:event type="APPLICATION" description="Event template">
     <aura:attribute name="tableObject" type="String" />
     <aura:attribute name="selectedRows" type="List" />
+    <aura:attribute name="batchInfo" type="List" />
 </aura:event>

@@ -7,6 +7,7 @@
      * @param {*} helper 
      */
     handleItemSelectedEvent : function(component, event, helper){
+        console.log("handleItemSelectedEvent");
         var tableObject = event.getParam("tableObject");
         var selectionIds = [];
         var tableAuraId;
@@ -19,7 +20,7 @@
            tableAuraId = "batch";
         }
         helper.markTableItemsAsSelected(selectionIds, tableAuraId, component);
-        helper.fireBatchInfoEvent(component);
+        helper.fireBatchInfoEvent(component, event);
     },
 
 
