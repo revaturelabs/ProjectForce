@@ -2,15 +2,17 @@
     <aura:attribute name="index" type="Integer" default="1"/>
     <aura:attribute name="categories" type="String[]" default="[]"/>
     <aura:attribute name="records" type="List" default="[]"/>
-
+    <aura:attribute name="project" type="String" default="a016g0000026MfpAAE"/>
     <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+
     <lightning:accordion aura:id="accordion" allowMultipleSectionsOpen="true">
-        <lightning:button class="slds-button_stretch" label="Open/Close All" onclick="{!c.handleOpenClose}"/>
+        <lightning:button label="Open/Close All" onclick="{!c.handleOpenClose}"/>
         <div class="slds-grid slds-box slds-box_small slds-theme_shade slds-m-horizontal_medium">
-            <div class="slds-col slds-size_1-of-4">Story</div>
-            <div class="slds-col slds-size_1-of-4">StartDateTime__c</div>
-            <div class="slds-col slds-size_1-of-4">EndDateTime__c</div>
-            <div class="slds-col slds-size_1-of-4">Stage__c</div>
+            <div class="slds-col slds-size_1-of-3">Story</div>
+            <div class="slds-col slds-size_1-of-6">Project</div>
+            <div class="slds-col slds-size_1-of-6">Start Date</div>
+            <div class="slds-col slds-size_1-of-6">End Date</div>
+            <div class="slds-col slds-size_1-of-6">Stage</div>
         </div>
         <aura:iteration items="{!v.categories}" var="category">
             <lightning:accordionSection name="{!category}" label="{!category}">
@@ -18,18 +20,23 @@
                     <lightning:button label="New" onclick="{!c.selectNew}"/>
                 </aura:set>
                 <aura:set attribute="body">
-                    <aura:iteration items="{!v.records}" var="record">
-                        <aura:if isTrue="{!record.Stage__c == category}">
-                            <div class="slds-grid slds-box slds-box_small" >
-                                <div class="slds-col slds-size_1-of-4">
-                                    <a href="{!'/one/one.app?#/sObject/'+ record.Id + '/view'}" target="_blank">{!record.Story__c}</a>
-                                </div>
-                                <div class="slds-col slds-size_1-of-4" title="{record.stime}">{!record.StartDateTime__c}</div>
-                                <div class="slds-col slds-size_1-of-4">{!record.EndDateTime__c}</div>
-                                <div class="slds-col slds-size_1-of-4">{!record.Stage__c}</div>
+                    <aura:iteration items="{!v.records}" var="record"> <aura:if isTrue="{!record.Stage__c == category}">
+                        <div class="slds-grid slds-box slds-box_small" >
+                            <div class="slds-col slds-size_1-of-3">
+                                <a href="{!'/one/one.app?#/sObject/'+ record.Id + '/view'}" target="_blank">
+                                    {!record.Story__c}
+                                </a>
                             </div>
-                        </aura:if>
-                    </aura:iteration>
+                            <div class="slds-col slds-size_1-of-6">
+                                <a href="{!'/one/one.app?#/sObject/'+ record.Project__c + '/view'}" target="_blank">
+                                    {!record.Project__r.Name}
+                                </a>
+                            </div>
+                            <div class="slds-col slds-size_1-of-6" title="{!record.stime}">{!record.StartDateTime__c}</div>
+                            <div class="slds-col slds-size_1-of-6" title="{!record.etime}">{!record.EndDateTime__c}</div>
+                            <div class="slds-col slds-size_1-of-6">{!record.Stage__c}</div>
+                        </div>
+                    </aura:if> </aura:iteration>
                 </aura:set>
             </lightning:accordionSection>
         </aura:iteration>

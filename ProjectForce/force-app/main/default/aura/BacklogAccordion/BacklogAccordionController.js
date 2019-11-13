@@ -2,9 +2,8 @@
     doInit : function(component, event, helper) {
         // Retrieve records from server-side controller
         var action = component.get('c.getBacklogs');
-        // action.setParams({
-        //     project: 
-        // });
+        var project = component.get("v.project");
+        action.setParams({project: project });
         action.setCallback(this, function(response) {
             if (response.getState() === 'SUCCESS') {
                 // Retrieve accordion categories
@@ -16,14 +15,17 @@
 
                     let d = new Date(record.StartDateTime__c);
                     record.StartDateTime__c = d.toLocaleDateString();
-                    console.log(typeof record);
-                    // record.set('stime', d.toLocaleTimeString());
+                    record['stime'] = d.toLocaleTimeString();
                     d = new Date(record.EndDateTime__c);
                     record.EndDateTime__c = d.toLocaleDateString();
-                    // record.set('etime', d.toLocaleTimeString());
+                    record['etime'] = d.toLocaleTimeString();
                 });
                 
-                categories.sort(); categories.reverse();
+                categories.sort(function(a, b) {
+                    // hard coded: 'To Do' is first, 'Done' is last
+                    if (a === 'To Do') return 1;
+                    if (b === 'Done') return -1;
+                });
                 component.set('v.categories', categories);
                 component.set('v.records', response.getReturnValue());
             }
