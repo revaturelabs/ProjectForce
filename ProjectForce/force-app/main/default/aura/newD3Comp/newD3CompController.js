@@ -222,7 +222,7 @@ myAction : function(component, event, helper) {
         if (state === "SUCCESS") {
             //place the response info somewhere safe :O
             component.set("v.qTraining", response.getReturnValue());
-            component.set("v.tempList", response.getReturnValue());
+            // component.set("v.tempList", response.getReturnValue());
             helper.setInitFilterValues(component, event);
             //pass the results to the chart creator.
             var ctx = component.find("myChart").getElement();
@@ -344,6 +344,13 @@ modalUpdate:function(component,event,helper)
         });
 
         $A.enqueueAction(action);
-    }  
-})
+    },
+    handleItemSelectedEvent:function(component, event, helper){
+        console.log("handling event");
+        var batchInfo = event.getParam("batchInfo");
+        helper.addToChart(component, batchInfo);
+
+    } 
+}
+)
 

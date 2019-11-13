@@ -159,12 +159,12 @@
                 datasets: [ {
                         //example of how to reference something in here: chart.data.datasets[0].data[i]
                         //This data is when the project is supposed to start
-                        data: days,
+                        data: [],
                         backgroundColor: "rgba(63,103,126,0)"
                         }, {
                         //example of how to reference something in here: chart.data.datasets[1].data[i]
                         //Data here is the duration of the project
-                        data: batchDuration,
+                        data: [],
                         backgroundColor: userColors,
                     }
                 ]
@@ -172,6 +172,29 @@
             //This is where we describe the axes. Check the barOptions_stacked variable to see what we are setting here.
             options: options,
         });
+    },
+
+    addToChart : function(component, batchInfo) {
+        
+        var projectsToAdd = batchInfo;
+        var currentData = [];
+
+        for (var i = 0; i < projectsToAdd.length; i++) {
+            var newData = {
+                location : projectsToAdd[i].Room__r.Location__r.Name,
+                name : projectsToAdd[i].Name,
+                project : projectsToAdd[i].Project__r.Name,
+                room : projectsToAdd[i].Room__r.Room_Number__c,
+                startDate : projectsToAdd[i].ProjectStartDate__c,
+                trackName : projectsToAdd[i].Track__r.Name,
+                trainer : projectsToAdd[i].Trainer__r.Name,
+                trainingId : projectsToAdd[i].Id
+            }
+            currentData.push(newData);
+        }
+
+        component.set('v.tempList', currentData);
+        this.updateData(component);
     },
     
     //When a user selects a sort by filter, it will automatically sort the 
@@ -526,7 +549,7 @@
         var allColors = this.applyColors(TrackList, currColors, allTrainings);
         component.set('v.UserColors', allColors);
         component.set('v.DisplayColors', allColors);
-        component.set('v.tempList', allTrainings);
+        // component.set('v.tempList', allTrainings);
         
         //Setting Today's Date
         var today = new Date();

@@ -1,11 +1,11 @@
-<aura:component controller="TableApexController">
+<aura:component controller="TableApexController" access="global">
     <aura:attribute name="tableHeight" type="String" default="300" />
     <aura:attribute name="tableWidth" type="String" default="650" />
     <aura:attribute name="selectedBatchIds" type="List" />
 
-    <aura:handler name="tableItemSelected" event="c:TableItemSelectedEvent" action="{!c.handleItemSelectedEvent}" />
+    <aura:handler name="TableItemSelectedEvent" event="c:TableItemSelectedEvent" action="{!c.handleItemSelectedEvent}" />
     <aura:handler name="saveInlineEdits" event="c:saveInlineEditsEvent" action="{!c.handleSaveInlineEditsEvent}" />
-    <aura:registerEvent name="batchInfoEvent" type="c:BatchInformationEvent" />
+    <aura:registerEvent name="BatchInformationEvent" type="c:BatchInformationEvent" />
 
     <div class="a">
         <c:CreateDataTable aura:id="batch"
@@ -13,7 +13,7 @@
             height="{!v.tableHeight}"
             queryObject="Training__c" 
             tableHeader="Batch Table"
-            queryFields="['Name', 'Color__c', 'ProjectStartDate__c', ['Trainer__r.Name', false], ['Project__r.Name', false]]" />
+            queryFields="['Name', 'ProjectStartDate__c', ['Trainer__r.Name', false], ['Project__r.Name', false], ['Room__r.Location__r.Name', false], ['Room__r.Room_Number__c', false], ['Track__r.Name', false]]" />
             <!-- for some of the fields you need the information but dont want it displayed to do this use ['queryField', false] -->
         <c:CreateDataTable aura:id="project"
             width="{!v.tableWidth}" 

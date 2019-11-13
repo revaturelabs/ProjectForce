@@ -19,6 +19,8 @@
     <aura:attribute name="today" type="Date" default=""/>
     <!--<aura:attribute name= "modalComplete" type="Boolean" default = "false" />"
     <aura:handler name="change" value="{!v.modalComplete}" action="{!c.modalUpdate}"/>-->
+
+    <aura:handler event="c:BatchInformationEvent" action="{!c.handleItemSelectedEvent}" />
     
     
     

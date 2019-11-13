@@ -18,7 +18,9 @@
      * @param {*} helper 
      */
     fireSelectedTableItemsEvent : function(component, event, helper){
-        var selectedTableItemsEvent = component.getEvent("tableItemSelected");
+        console.log("fireSelectedTableItemsEvent");
+        var selectedTableItemsEvent = component.getEvent("TableItemSelectedEvent");
+        // var selectedTableItemsEvent = $A.get("e.c:TableItemSelectedEvent");
         selectedTableItemsEvent.setParams({
             "tableObject" : component.get("v.queryObject"),
             "selectedRows" : event.getParam("selectedRows"),
