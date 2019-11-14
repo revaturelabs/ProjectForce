@@ -270,11 +270,9 @@ myAction : function(component, event, helper) {
             var newChart = helper.createChart(ctx, barOptions_stacked, response.getReturnValue(),
                                                 component.get('v.UserColors'), 'Track');
             component.set("v.dasChart", newChart);
-            console.log('performing runsort');
 
         }
         else {
-            console.log("Failed with state: " + state);
         }
     });
     $A.enqueueAction(getTrrrack);
@@ -282,20 +280,15 @@ myAction : function(component, event, helper) {
 
 runSort:function(component, event, helper)
 {
-    console.log('starting runsort');
     var sortBy= component.find('select').get('v.value');
-    console.log('getting trainings');
     var allTrainings = component.get('v.tempList');
-    console.log('getting daschart');
     var myChart = component.get('v.dasChart');
 
 
     var getColors = component.get('v.DisplayColors');
-    console.log('here\'s the length of the array before sort:' + allTrainings.length);
     helper.sortArray(allTrainings, getColors, sortBy);
-    console.log('here\'s the length of the array after sort: '+allTrainings.length);
+
     helper.updateData(component);
-    console.log('here\s the length of the array after updateData: '+allTrainings.length);
     helper.sortArray(allTrainings, getColors, sortBy); 
     helper.updateData(component); 
 
@@ -308,7 +301,6 @@ applyColors:function(component, event, helper)
     var allTracks = [];
     var allColors = [];
     var colorElements = component.find('colors');
-    console.log('colorElements length is: ' + colorElements.length);
     for(let i=0; i<colorElements.length; i++)
     {
         allTracks[i] = colorElements[i].get('v.id');
@@ -321,7 +313,6 @@ applyColors:function(component, event, helper)
 },
 
 runFilter: function (component, event, helper) {
-    console.log('runFilter has been entered.');
     //Grabbing Relevant data
     var allTrainings = component.get('v.qTraining');
     var myChart = component.get('v.dasChart');
@@ -346,18 +337,17 @@ showmodal: function(component, event, helper){
         {
             var currIndex = activePoints[0]._index;
             var currSimpleTraining = component.get('v.tempList')[currIndex];
-            console.log('here is the current simple training: ');
-            console.log(currSimpleTraining.trainingId);
+           
 
             var childCmp = component.find("modalComp");
 
             let location = currSimpleTraining.location;
             JSON.stringify(location);
-            console.log("location:"+location);
+          
 
             let track = currSimpleTraining.trackName;
             JSON.stringify(track);
-            console.log("track:"+track);
+
 
             childCmp.showModal(currSimpleTraining.trainingId, location, track);
 
@@ -370,7 +360,7 @@ modalUpdate:function(component,event,helper)
             action.setCallback(this, function(response) {
             let state = response.getState();
             if (state === "SUCCESS") {
-                console.log('callout was a success');
+              
                 let returnedList = response.getReturnValue();
                 component.set('v.qTraining', returnedList);
                 let displayList = component.get('v.tempList');
@@ -380,7 +370,6 @@ modalUpdate:function(component,event,helper)
                     {
                     if(displayList[currRecord].trackName == returnedList[currReturned].trackName)
                     {
-                        console.log('match was found: '+ returnedList[currReturned].trackName);
                         displayList[currReturned] = returnedList[currRecord];
                     }
                 }
@@ -390,7 +379,6 @@ modalUpdate:function(component,event,helper)
 
             }
             else {
-                console.log('callout failed with state: ' + state);
             }
         });
 
