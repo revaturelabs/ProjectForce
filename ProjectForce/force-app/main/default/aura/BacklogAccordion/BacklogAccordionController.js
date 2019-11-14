@@ -58,16 +58,24 @@
         }
     },
     sort : function(component, event, helper) {
-        alert('under maintenance');
         let order = component.get('v.order');
         let records = component.get('v.records');
         switch(order) {
             case 'nameAZ':
+                records.sort((a, b)=> (a.Story__c > b.Story__c) ? 1 : -1);
+                break;
             case 'nameZA':
+                records.sort((a, b)=> (a.Story__c < b.Story__c) ? 1 : -1);
+                break;
             case 'dueDateNew':
+                records.sort((a, b)=> (a.DueDate__c > b.DueDate__c) ? 1 : -1);
+                break;
             case 'dueDateOld':
+                records.sort((a, b)=> (a.DueDate__c < b.DueDate__c) ? 1 : -1);
+                break;
             case 'assignedAZ':
             case 'assignedZA':
         }
+        component.set('v.records', records);
     }
 })

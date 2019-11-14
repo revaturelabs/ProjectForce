@@ -15,7 +15,7 @@
                 <option value="myTasks">My Tasks</option>
                 <option value="neglectedTasks">Neglected Tasks</option>
                 <option value="dueThisWeek">Due This Week</option>
-                <option value="dueNextWeek">Due next Week</option>
+                <option value="dueNextWeek">Due Next Week</option>
             </lightning:select>
             <lightning:select class="slds-col" name="Sort" label="Sort:" value="{!v.order}" onchange="{!c.sort}">
                 <option value="">- None -</option>
