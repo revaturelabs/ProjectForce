@@ -212,14 +212,18 @@ myAction : function(component, event, helper) {
                         fontSize:20,
                         display: true,
                         callback: function(value, index, values) {
-                            var tra = JSON.parse(localStorage.getItem("tracks"));// getting values from helper
-                            var trackString = tra[index].split("-"); // making it to an array
+                            // getting values from helper
+                            var trackNProj = JSON.parse(localStorage.getItem("tracks"));
+                             // making it to an array
+                            var trackString = trackNProj[index].split("-");
                             if(index === 0){
-                                return trackString[trackString.length-1]; // grabing the last value ie., track
+                                 // grabing the last value ie., track
+                                return trackString[trackString.length-1];
                             }else{
-                                var prevTrackString = tra[index - 1].split("-");
+                                var prevTrackString = trackNProj[index - 1].split("-");
                                 if(trackString[trackString.length-1] != prevTrackString[prevTrackString.length-1]) {
-                                    return trackString[trackString.length-1]; // grabing the last value ie., track
+                                    // grabing the last value ie., track
+                                    return trackString[trackString.length-1]; 
                                 }
                             }
 

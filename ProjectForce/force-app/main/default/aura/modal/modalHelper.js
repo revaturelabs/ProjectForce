@@ -123,7 +123,6 @@
 	});
 	
 	$A.enqueueAction(action);
-	//return track[0].Name
 },
 
 
