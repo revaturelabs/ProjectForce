@@ -17,5 +17,6 @@
     <tabs>Training__c</tabs>
     <tabs>Room__c</tabs>
     <tabs>Backlog__c</tabs>
+    <tabs>CardLabel__c</tabs>
     <uiType>Lightning</uiType>
 </CustomApplication>

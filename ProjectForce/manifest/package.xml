@@ -38,7 +38,7 @@
         <members>KanbanColumn</members>
         <members>KanbanCard</members>
         <members>KanbanColumn</members>
-
+        <members>KanbanCardLabel</members>
         <name>AuraDefinitionBundle</name>
     </types>
     <types>
@@ -63,6 +63,8 @@
         <members>TrainerTrack__c</members>
         <members>Training__c</members>
         <members>Backlog__c</members>
+        <members>CardLabel__c</members>
+
         <name>CustomObject</name>
     </types>
     <types>

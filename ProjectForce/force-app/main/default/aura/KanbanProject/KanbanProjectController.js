@@ -24,7 +24,6 @@
         var backlog = event.getParam('backlog');
         var listOfBacklogs = component.get('v.backlogs');
 
-
         var theBacklog = listOfBacklogs.find(function (el) {
             return el.Story__c == backlog.Story__c;
         });

@@ -1,9 +1,11 @@
-<aura:component  controller="KanbanProjectApexClass" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickAction" access="global">
+<aura:component controller="KanbanProjectApexClass"
+    implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickAction"
+    access="global">
     <!-- resources -->
     <ltng:require styles="{!$Resource.bulma + '/bulma-0.4.2/css/bulma.css'}" />
-	
+
     <!-- attributes -->
-    <aura:attribute name="backlogs" type="Backlog__c[]"/>
+    <aura:attribute name="backlogs" type="Backlog__c[]" />
     <!-- project id stored as a string -->
     <aura:attribute name="project" type="String" />
 
@@ -16,12 +18,12 @@
             <c:KanbanColumn title="To Do" backlogs="{!v.backlogs}"></c:KanbanColumn>
             <c:KanbanColumn title="Doing" backlogs="{!v.backlogs}"></c:KanbanColumn>
             <c:KanbanColumn title="Done" backlogs="{!v.backlogs}"></c:KanbanColumn>
-        <aura:set attribute="else">
+            <aura:set attribute="else">
                 <div class="demo-only" style="padding:0.5rem;background:#16325c">
-                        <div class="slds-text-color_inverse">No Backlogs found</div>
+                    <div class="slds-text-color_inverse">No Backlogs found</div>
                 </div>
             </aura:set>
         </aura:if>
     </div>
-    
+
 </aura:component>

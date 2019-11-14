@@ -6,6 +6,8 @@
     <columns>Stage__c</columns>
     <columns>Project__c</columns>
     <columns>DateLogged__c</columns>
+    <columns>NumberOfCardLabels__c</columns>
+    <columns>CardLabel1__c</columns>
     <filterScope>Everything</filterScope>
     <label>All</label>
 </ListView>
