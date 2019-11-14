@@ -22,6 +22,7 @@
 
 .THIS #trainerBadge {
    background-color: #FF7D3C;
+   color: white;
 }
 
 .THIS .slds-modal__footer {
@@ -35,13 +36,7 @@
    background-color: #72A4C2;
    
 }
-/*
-.THIS .slds-select,.THIS .slds-input{
-   
-   color: #474C55;
-   font-size: 1rem;
-}
-*/
+
 .THIS .slds-modal__header {
    background: white;
   
@@ -62,7 +57,6 @@
 }
 
 .THIS .font{
-   /* font-family: 'Times New Roman', Times, serif; */
    font-family: sans-serif;
 }
 
@@ -92,9 +86,18 @@
    padding: 10px;
 }
 
-.THIS #modal-content-id-1 {/*slds-border__bottom*/
-   height : 350px;
+.THIS #modal-content-id-1 {
+   overflow-x: hidden;
+   overflow-y: hidden;
+   height : 150px;
+}
+.THIS #modal-content-id-2 {
+   height : 220px;
+}
+
+.THIS .scroll{
    overflow : scroll;
+   overflow-x: hidden;
 }
 
 

@@ -6,13 +6,8 @@
     <!--Allows the container component to call a method in this component-->
     <aura:method name="showModal" action="{!c.showModal}" access="PUBLIC">
             <aura:attribute name="trainingID" type="String"/>
-            <aura:attribute name="paramBatchNumber" type="String"/>
-            <aura:attribute name="paramBatchSize" type="String"/>
             <aura:attribute name="paramTrack" type="String"/>
             <aura:attribute name="paramProjectDate" type="Date"/>
-            <aura:attribute name="paramTrainerName" type="String"/>
-            <aura:attribute name="paramRoom" type="String"/>
-            <aura:attribute name="paramLocation" type="String"/>
     </aura:method> 
 
     <aura:attribute name="recordId" type="Id" />
@@ -98,11 +93,10 @@
         <div class ="row">
             <div class="column">
 
-            <div class="slds-size_2-of-4 slds-media_inline">
+            <div class="slds-size_3-of-4 slds-media_inline">
                 <div class="slds-media slds-media_medium">
                     <div class="slds-media__figure">
-                        <span class="slds-avatar slds-avatar_large">
-                        </span>
+                        
                         </div>
                         <span class="slds-media__body">
                             <p>
@@ -113,6 +107,7 @@
                 </div>
             </div>
 
+            <div class="column">
                 <div class="slds-size_3-of-4 slds-media_inline">
                     <div class="slds-media slds-media_medium">
                         <div class="slds-media__figure">
@@ -125,21 +120,7 @@
                         </span>
                     </div>
                 </div>
-
-                <div class="column">
-                    <div class="slds-size_3-of-4 slds-media_inline">
-                        <div class="slds-media slds-media_medium">
-                            <div class="slds-media__figure">
-                            <span class="slds-avatar slds-avatar_medium">
-                                <img alt="Sf logo" src="{!$Resource.cal}" title="User avatar" />
-                            </span>
-                            </div>
-                            <span class="slds-media__body">
-                                <aura:text value="{!v.selectedDate}"/>
-                            </span>
-                        </div>
-                    </div>
-                </div>
+            </div>
 
                 <div class="column">
 
@@ -162,91 +143,80 @@
 
     
         <span class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+
             <div class ="row">
                 <div class="column">
+                    <label style="font-size: 20px"  >Project: </label>
+                    <lightning:button class="buttonStyle slds-align_absolute-center" type="button" label="{!v.updateProject}"  onclick="{!c.openDiv}"/>
+                    <br/>
 
-            <!--Project-->  
-                
-                <!-- <label style="font-size: 15px">Project: </label>
-                <span class="slds-badge">
-                    <lightning:button variant="base" label="{!v.updateProject}" onclick="{!c.openDiv}"/>
-                </span> -->
+                    <!-- shows projects-->
+                    <div  style="display:none" id="locationDiv">
+                        <lightning:select name="selProject" label="Project" aura:id="selProject" value="{!v.batchProjectsList}"  onchange="{!c.getFilter}" >
+                            <aura:iteration items="{!v.batchProjectsList}" var="project">
+                                <option text="{!project.Name}" value="{!project.Name}" selected="{!project.selected}"/>
+                            </aura:iteration>
+                        </lightning:select>
+                    </div>
+                    <br/>
 
-                <label style="font-size: 20px"  >Project: </label>
-                <lightning:button class="buttonStyle slds-align_absolute-center" type="button" label="{!v.updateProject}"  onclick="{!c.openDiv}"/>
-            <br/>
-            <!-- shows projects-->
-            <div  style="display:none" id="locationDiv">
-                <lightning:select name="selProject" label="Project" aura:id="selProject" value="{!v.batchProjectsList}"  onchange="{!c.getFilter}" >
-                    <aura:iteration items="{!v.batchProjectsList}" var="project">
-                        <option text="{!project.Name}" value="{!project.Name}" selected="{!project.selected}"/>
-                    </aura:iteration>
-                </lightning:select>
-            </div>
-            
-            <br/>
+                    <!--Size-->
+                    <div>
+                        <label style="font-size: 15px">Size: </label>
+                        <aura:text value="{!v.batchSize}"/>
+                    </div>
+                    <br/>
 
-
-            <!--Size-->
-            <div>
-                <label style="font-size: 15px">Size: </label>
-                <aura:text value="{!v.batchSize}"/>
-            </div>
-
-            <br/>
-            <!--Trainer-->
-            
-            <div>
-                <label style="font-size: 15px">Trainer: </label>
-                <span class="slds-badge" id="trainerBadge">
-                    <aura:text value="{!v.updateTrainer}"/>
-                </span>
-            </div>
+                    <!--Trainer-->
+                    <div>
+                        <label style="font-size: 15px">Trainer: </label>
+                        <span class="slds-badge" id="trainerBadge">
+                            <aura:text value="{!v.updateTrainer}"/>
+                        </span>
+                    </div>
 
                 </div>
 
                 <div class="column">
+                    <!--Room-->
+                    <div>
+                        <label style="font-size: 15px">Room: </label>  
+                        <aura:text  value="{!v.batchRoom}"/> 
+                    </div>
+                    <br/>
 
-            <div>
-                <label style="font-size: 15px">Room: </label>  
-                <aura:text value="{!v.batchRoom}"/> 
-            </div>
-            <br/>
-            <div>
-                <label style="font-size: 15px">Location: </label> 
-                <aura:text value="{!v.batchLocation}"/>  
-            </div>
-
+                    <!--Location-->
+                    <div>
+                        <label style="font-size: 15px">Location: </label> 
+                        <aura:text value="{!v.batchLocation}"/>  
+                    </div>
+                    
                 </div>
             </div>
-
-
-            <hr class="line"></hr>
-            
-
-            <!-- <div> -->
-                <lightning:recordViewForm recordId="{!v.saveTrainingID}" objectApiName="Training__c">
-                    <!-- <div class="slds-box slds-theme_default"> -->
-                    <div class="slds-form-element__control slds-border__bottom"> 
-                        <lightning:outputField fieldName="Comments__c" />
-                    </div>
-                </lightning:recordViewForm>
-            <!-- </div> -->
-
-            <lightning:textarea name="TextBox" value="{!v.updateComment}" label="Comments" /> 
-
+            <hr></hr>
         </span>
-            <!--</lightning:card>-->
-                <footer class="slds-modal__footer slds-modal__footer_directional">
-                        
-                        
-                        <lightning:button class=" slds-button_brand button" label="Kanban" onclick="{!c.hideModal}"/>
-                        <lightning:button class=" slds-button_brand button " label="Cancel"  onclick="{!c.hideModal}"/>
-                        <lightning:button class="slds-button_brand  button" label="Save" onclick="{!c.save}"/>
-                   
-                </footer>
-            </div>
+        
+        <span class="slds-modal__content slds-p-around_medium scroll" id="modal-content-id-2">
+                
+            <!-- Comments -->
+            <lightning:recordViewForm recordId="{!v.saveTrainingID}" objectApiName="Training__c">
+                <div class="slds-form-element__control slds-border__bottom"> 
+                    <lightning:outputField fieldName="Comments__c" />
+                </div>
+            </lightning:recordViewForm> 
+            <lightning:textarea name="TextBox" value="{!v.updateComment}" label="Comments" /> 
+            
+        </span>
+
+            <!--Footer-->
+            <footer class="slds-modal__footer slds-modal__footer_directional">   
+            <lightning:button class=" slds-button_brand button" label="Kanban" onclick="{!c.hideModal}"/>
+            <lightning:button class=" slds-button_brand button " label="Cancel"  onclick="{!c.hideModal}"/>
+            <lightning:button class="slds-button_brand  button" label="Save" onclick="{!c.save}"/>
+            </footer>
+
         </div>
-    </section>
+    </div>
+</section>
     <div aura:id = "backdrop"></div>
 </aura:component>

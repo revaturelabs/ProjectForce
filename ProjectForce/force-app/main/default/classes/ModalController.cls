@@ -1,14 +1,3 @@
-/**
- * @File Name          : ModalController.cls
- * @Description        : 
- * @Author             : ChangeMeIn@UserSettingsUnder.SFDoc
- * @Group              : 
- * @Last Modified By   : ChangeMeIn@UserSettingsUnder.SFDoc
- * @Last Modified On   : 11/12/2019, 8:40:45 AM
- * @Modification Log   : 
- * Ver       Date            Author      		    Modification
- * 1.0    11/11/2019   ChangeMeIn@UserSettingsUnder.SFDoc     Initial Version
-**/
 //change without sharing to with sharing when deploying
 public without sharing class ModalController {
 
@@ -197,7 +186,6 @@ public without sharing class ModalController {
                         trainerStartDateMap.put(t,tg.start_Date__c);
                     }
                 }
-
                 //filters the trainers based on Start Date 
                 list<trainer__c> filterByDateTrainerList = new list<trainer__c>();
                 for(trainer__c t : trainerStartDateMap.keyset()){  
@@ -205,7 +193,6 @@ public without sharing class ModalController {
                         filterByDateTrainerList.add(t);
                     }
                 }
-
                 //Map the trainers with location name                                
                 Map<Trainer__c, string> trainerLocationMap= new Map<Trainer__c, string>();
                 for(Trainer__c t: TrainerList){
@@ -213,7 +200,6 @@ public without sharing class ModalController {
                         trainerLocationMap.put(t,tg.room__r.location__r.name);
                     }
                 }
-
                 //filters the trainers based on location and start date
                 list<trainer__c> filterByLocationTrainerList = new list<trainer__c>();
                 for(trainer__c t : trainerLocationMap.keyset())
@@ -222,7 +208,6 @@ public without sharing class ModalController {
                         filterByLocationTrainerList.add(t);
                     }
                 }
-
                 //Map the trainers with tracks
                 Map<Trainer__c, string> trainerTrackMap= new Map<Trainer__c, string>();
                 for(Trainer__c t: TrainerList){
@@ -230,7 +215,6 @@ public without sharing class ModalController {
                         trainerTrackMap.put(t,tt.trackTrainer__r.name);
                     }
                 }
-
                 //filters the trainers based on track and start date
                 list<trainer__c> filterByTrackTrainerList = new list<trainer__c>();
                 for(trainer__c t : trainerTrackMap.keyset()){
@@ -238,7 +222,6 @@ public without sharing class ModalController {
                         filterByTrackTrainerList.add(t);
                     }
                 }
-
                 //Find trainers that matches all three filters and add to finalTrainerList
                 list<trainer__c> finalTrainerList= new list<trainer__c>();
                 for(trainer__c t:filterByDateTrainerList){
@@ -246,11 +229,9 @@ public without sharing class ModalController {
                         finalTrainerList.add(t);
                     }
                 }
-
                 //finalTrainerList.addall(ExternalTrainerList);
                 if(LocationName == 'Online'){
                 filterByTrackTrainerList.add(ExternalTrainer);
-
                 //sort based on selected value
                 String selectedTrainer;
                 for(training__c t: trainingList){
@@ -274,7 +255,6 @@ public without sharing class ModalController {
                     return filterByTrackTrainerList;
                 }else{
                     finalTrainerList.add(ExternalTrainer);
-
                 //sort based on selected value
                 String selectedTrainer;
                 for(training__c t: trainingList){
@@ -368,7 +348,6 @@ public without sharing class ModalController {
         try{
             if (schema.SObjectType.Room__c.isAccessible()){
                 //List<Room__c> RoomList = [select name, location__r.name , (select start_date__c from trainings__r) from room__c];
-
                 //Map the rooms with Training Start Date
                 Map<Room__c, date> roomStartDateMap= new Map<Room__c, date>();
                 for(Room__c r: RoomList){
@@ -376,7 +355,6 @@ public without sharing class ModalController {
                         roomStartDateMap.put(r,tg.start_Date__c);
                     }
                 }
-
                 //filters the rooms based on Start Date 
                 list<room__c> secondFilterRoomList = new list<room__c>();
                 for(room__c r : roomStartDateMap.keyset()){
@@ -384,7 +362,6 @@ public without sharing class ModalController {
                         secondFilterRoomList.add(r);
                     }
                 }
-
                 //filters the rooms based on location
                 list<Room__c> filterRoomList = new list<Room__c>();
                 for(room__c r : RoomList){
@@ -399,7 +376,6 @@ public without sharing class ModalController {
                         finalRoomList.add(r);
                     }
                 }
-
                 //Put the selected room as the first item in the list
                 String SelectedRoom;
                 for(training__c t: trainingList){
@@ -420,7 +396,6 @@ public without sharing class ModalController {
                 finalRoomList[0]=tr;
                 finalRoomList.remove(trindex);
                 finalRoomList.add(tempRoom);
-
                 return finalRoomList;                    
             }else{
                 return null;
@@ -432,7 +407,6 @@ public without sharing class ModalController {
         }finally{
             //Finally logic goes in here
         }
-
     } 
     */
 
@@ -540,7 +514,6 @@ public without sharing class ModalController {
                 list<Project__c> filterProjectList = new list<Project__c>();
                 //Find projects that matches all two filters and add to filterProjectList
                 for(Project__c p : ProjectList){
-
                     if(p.trainings__r.size() == 0){
                         continue;
                     }else if(p.track__r.name==trackName && p.trainings__r[0].projectStartDate__c>=startDateName && p.trainings__r[0].projectStartDate__c!= null){
@@ -566,7 +539,6 @@ public without sharing class ModalController {
                 filterProjectList[0]=tr;
                 filterProjectList.remove(trindex);
                 filterProjectList.add(tempproject);
-
                 return filterProjectList;
             }else{
                 return null;
@@ -583,16 +555,14 @@ public without sharing class ModalController {
 
     //Saves changes to selected batch (training)
     @auraEnabled
-    public static boolean Save(Id trainingId, string newTrainerName, string newProjectName, 
-                                string newRoomName, string newTrackName, date newStartDate, String newComment){
+    public static boolean Save(String trainingId, string newTrainerName, string newProjectName, string newRoomName, string newTrackName, date newStartDate){
         //Id trainingID = [SELECT Id FROM training__c WHERE name='Test Training 0' LIMIT 1].Id;//REMOVE THIS AFTER DEPLOYMENT!!!
         id newTrainerId = [SELECT Id FROM Trainer__c WHERE name = :newTrainerName LIMIT 1].id;
         Id trainerTrackID = [SELECT Id FROM trainertrack__c WHERE TrainerTrack__c =:newTrainerId LIMIT 1].Id;
         id newProjectId = [SELECT Id FROM Project__c WHERE name = :newProjectName LIMIT 1].id;
         id newRoomId = [SELECT Id FROM Room__c WHERE name = :newRoomName LIMIT 1].id;
         id newTrackId = [SELECT Id FROM Track__c WHERE name = :newTrackName LIMIT 1].id;
-        Training__c newTraining=[SELECT id, name, Start_Date__c, Trainer__c, Project__c, Room__c, 
-                                    Comments__c, Track__c FROM Training__c WHERE id = : Id.valueOf(trainingID) LIMIT 1];
+        Training__c newTraining=[SELECT id, name, Start_Date__c, Trainer__c, Project__c, Room__c, Track__c FROM Training__c WHERE id = : Id.valueOf(trainingID) LIMIT 1];
         trainertrack__c newTrainerTrack=[SELECT Id, TrackTrainer__c, TrackTrainer__r.name FROM trainertrack__c WHERE Id =:trainerTrackID LIMIT 1];
 
         newTraining.Trainer__c=newTrainerId;
@@ -600,7 +570,6 @@ public without sharing class ModalController {
         newTraining.room__c=newRoomId;
         newTraining.Track__c=newTrackId;
         newTraining.Start_Date__c=newStartDate;
-        newTraining.Comments__c = '<h1>' + newComment + '<br /></h1>' + newTraining.Comments__c;
         
         //newTrainerTrack.TrackTrainer__c=newTrackId;
         //update newTrainerTrack;
