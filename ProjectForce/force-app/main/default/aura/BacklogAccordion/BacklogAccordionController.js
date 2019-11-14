@@ -41,23 +41,30 @@
     filter : function(component, event, helper) {
         let criteria = component.get('v.criteria');
         let recordsBackup = component.get('v.recordsBackup');
-        recordsBackup.forEach(function(element){
-            helper.getWeek(element);
-        });
+        let today = new Date();
+        let filteredRecords = [];
 
         switch(criteria) {
             case 'my tasks':
                 break;
             case 'neglected tasks':
                 break;
-            case 'due this week':
-                break;
             case 'due next week':
+                today.setDate(today.getDate() + 7);
+            case 'due this week':
+                recordsBackup.forEach(function(element){
+                    if (helper.getWeek(element.DueDate__c, today)) {
+                        filteredRecords.push(element);
+                    }
+                }); 
+                component.set('v.records', filteredRecords);
                 break;
+            default:
+                component.set('v.records', recordsBackup);
         }
-        component.set('v.records', recordsBackup);
     },
     sort : function(component, event, helper) {
+        let order = component.get('v.order');
         alert("sort function goes here");
     }
 })

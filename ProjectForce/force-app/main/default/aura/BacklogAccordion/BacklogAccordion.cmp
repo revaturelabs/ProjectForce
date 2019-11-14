@@ -3,15 +3,28 @@
     <aura:attribute name="recordsBackup" type="List" default="[]"/>
     <aura:attribute name="categories" type="String[]" default="['To Do', 'Doing', 'Done']"/>
     <aura:attribute name="project" type="String"/>
-    <aura:attribute name="criteria" type="String" default="due this week"/>
+    <aura:attribute name="criteria" type="String"/>
+    <aura:attribute name="order" type="String"/>
     <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
     <aura:method name="sampleMethod" action="{!c.doInit}" access="PUBLIC"/> 
 
     <lightning:accordion aura:id="accordion" allowMultipleSectionsOpen="true">
-        <div align="center">
-            <lightning:button label="Open/Close All" onclick="{!c.handleOpenClose}"/>
-            <lightning:button label="Filter" onclick="{!c.filter}"/>
-            <lightning:button label="Sort" onclick="{!c.sort}"/>
+        <div class="slds-grid">
+            <lightning:button class="slds-col slds-box slds-box_small" label="Open/Close All" onclick="{!c.handleOpenClose}"/>
+            <lightning:select class="slds-col slds-box slds-box_small" name="Filter" label="Filter:" value="{!v.criteria}" onchange="{!c.filter}">
+                <option value="">- None -</option>
+                <option value="my tasks">My Tasks</option>
+                <option value="neglected tasks">Neglected Tasks</option>
+                <option value="due this week">Due This Week</option>
+                <option value="due next week">Due Next Week</option>
+            </lightning:select>
+            <lightning:select class="slds-col slds-box slds-box_small" name="Sort" label="Sort:" value="{!v.order}" onchange="{!c.sort}">
+                <option value="">- None -</option>
+                <option value="my tasks">My Tasks</option>
+                <option value="neglected tasks">Neglected Tasks</option>
+                <option value="due this week">Due This Week</option>
+                <option value="due next week">Due next Week</option>
+            </lightning:select>
         </div>
         <div class="slds-box slds-box_small slds-theme_shade">
             <div class="slds-grid slds-m-horizontal_small">
