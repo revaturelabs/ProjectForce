@@ -1,7 +1,7 @@
 <aura:component controller="KanbanProjectApexClass">
-    <aura:attribute name="index" type="Integer" default="1"/>
-    <aura:attribute name="categories" type="String[]" default="['To Do', 'Doing', 'Done']"/>
     <aura:attribute name="records" type="List" default="[]"/>
+    <aura:attribute name="recordsBackup" type="List" default="[]"/>
+    <aura:attribute name="categories" type="String[]" default="['To Do', 'Doing', 'Done']"/>
     <aura:attribute name="project" type="String"/>
     <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
     <aura:method name="sampleMethod" action="{!c.doInit}" access="PUBLIC"/> 
@@ -21,7 +21,8 @@
                     <lightning:button label="New" onclick="{!c.selectNew}"/>
                 </aura:set>
                 <aura:set attribute="body">
-                    <aura:iteration items="{!v.records}" var="record"> <aura:if isTrue="{!record.Stage__c == category}">
+                    <aura:iteration items="{!v.records}" var="record"> 
+                        <aura:if isTrue="{!record.Stage__c == category}">
                         <div class="slds-grid slds-box slds-box_small" >
                             <div class="slds-col slds-size_1-of-3">
                                 <a href="{!'/one/one.app?#/sObject/'+ record.Id + '/view'}" target="_blank">
@@ -43,7 +44,8 @@
 
                             </div>
                         </div>
-                    </aura:if> </aura:iteration>
+                        </aura:if> 
+                    </aura:iteration>
                 </aura:set>
             </lightning:accordionSection>
         </aura:iteration>

@@ -22,16 +22,36 @@
                 });
                 // component.set('v.categories', categories); // having trouble sorting
                 component.set('v.records', response.getReturnValue());
+                component.set('v.recordsBackup', response.getReturnValue());
             }
         });
         $A.enqueueAction(action);        
     },
-    selectNew : function(component, event, helper) {
+    selectNew : function() {
         alert("new backlog modal goes here");
     },
     handleOpenClose : function(component) {
         let button = component.find("accordion")
         let sections = button.get('v.activeSectionName') ? '' : component.get('v.categories');
         button.set('v.activeSectionName', sections);
+    },
+    filter : function(component, event, helper) {
+        let criteria = component.get('v.criteria');
+        let recordsBackup = component.get('v.recordsBackup');
+
+        switch(criteria) {
+            case 'my tasks':
+                break;
+            case 'neglected tasks':
+                break;
+            case 'due this week':
+                recordsBackup.forEach(function(element){
+                    console.log(element.DateLogged__c)
+                });
+                break;
+            case 'due next week':
+                break;
+        }
+        component.set('v.records', recordsBackup);
     }
 })
