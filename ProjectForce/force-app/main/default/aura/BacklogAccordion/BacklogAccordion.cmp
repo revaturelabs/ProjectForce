@@ -3,17 +3,24 @@
     <aura:attribute name="recordsBackup" type="List" default="[]"/>
     <aura:attribute name="categories" type="String[]" default="['To Do', 'Doing', 'Done']"/>
     <aura:attribute name="project" type="String"/>
+    <aura:attribute name="criteria" type="String" default="due this week"/>
     <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
     <aura:method name="sampleMethod" action="{!c.doInit}" access="PUBLIC"/> 
 
     <lightning:accordion aura:id="accordion" allowMultipleSectionsOpen="true">
-        <lightning:button label="Open/Close All" onclick="{!c.handleOpenClose}"/>
-        <div class="slds-grid slds-box slds-box_small slds-theme_shade slds-m-horizontal_medium">
-            <div class="slds-col slds-size_1-of-3">Story</div>
-            <div class="slds-col slds-size_1-of-6">Project</div>
-            <div class="slds-col slds-size_1-of-6">Start Date</div>
-            <div class="slds-col slds-size_1-of-6">End Date</div>
-            <div class="slds-col slds-size_1-of-6">Stage</div>
+        <div align="center">
+            <lightning:button label="Open/Close All" onclick="{!c.handleOpenClose}"/>
+            <lightning:button label="Filter" onclick="{!c.filter}"/>
+            <lightning:button label="Sort" onclick="{!c.sort}"/>
+        </div>
+        <div class="slds-box slds-box_small slds-theme_shade">
+            <div class="slds-grid slds-m-horizontal_small">
+                <div class="slds-col slds-size_1-of-3">Story</div>
+                <div class="slds-col slds-size_1-of-6">Project</div>
+                <div class="slds-col slds-size_1-of-6">Start Date</div>
+                <div class="slds-col slds-size_1-of-6">End Date</div>
+                <div class="slds-col slds-size_1-of-6">Due Date</div>
+            </div>
         </div>
         <aura:iteration items="{!v.categories}" var="category">
             <lightning:accordionSection name="{!category}" label="{!category}">
@@ -23,7 +30,7 @@
                 <aura:set attribute="body">
                     <aura:iteration items="{!v.records}" var="record"> 
                         <aura:if isTrue="{!record.Stage__c == category}">
-                        <div class="slds-grid slds-box slds-box_small" >
+                        <div class="slds-grid slds-box slds-box_small">
                             <div class="slds-col slds-size_1-of-3">
                                 <a href="{!'/one/one.app?#/sObject/'+ record.Id + '/view'}" target="_blank">
                                     {!record.Story__c}
@@ -40,7 +47,7 @@
                                 {!record.EndDateTime__c}
                             </div>
                             <div class="slds-col slds-size_1-of-6">
-                                {!record.Stage__c}
+                                {!record.DueDate__c}
 
                             </div>
                         </div>

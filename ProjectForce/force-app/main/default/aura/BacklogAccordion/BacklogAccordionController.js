@@ -13,12 +13,15 @@
                         categories.push(record.Stage__c);
                     } 
 
+                    // Convert Date/Time to Date or Time
                     let d = new Date(record.StartDateTime__c);
                     record.StartDateTime__c = d.toLocaleDateString();
                     record['stime'] = d.toLocaleTimeString();
                     d = new Date(record.EndDateTime__c);
                     record.EndDateTime__c = d.toLocaleDateString();
                     record['etime'] = d.toLocaleTimeString();
+                    d = new Date(record.DueDate__c);
+                    record.DueDate__c = d.toLocaleDateString();
                 });
                 // component.set('v.categories', categories); // having trouble sorting
                 component.set('v.records', response.getReturnValue());
@@ -38,6 +41,9 @@
     filter : function(component, event, helper) {
         let criteria = component.get('v.criteria');
         let recordsBackup = component.get('v.recordsBackup');
+        recordsBackup.forEach(function(element){
+            helper.getWeek(element);
+        });
 
         switch(criteria) {
             case 'my tasks':
@@ -45,13 +51,13 @@
             case 'neglected tasks':
                 break;
             case 'due this week':
-                recordsBackup.forEach(function(element){
-                    console.log(element.DateLogged__c)
-                });
                 break;
             case 'due next week':
                 break;
         }
         component.set('v.records', recordsBackup);
+    },
+    sort : function(component, event, helper) {
+        alert("sort function goes here");
     }
 })

@@ -7,7 +7,6 @@
         action.setCallback(this, function (response) {
             var state = response.getState();
             if (state === "SUCCESS") {
-                console.log(response.getReturnValue())
                 component.set("v.backlogs", response.getReturnValue());
             }
             else {
@@ -39,9 +38,6 @@
             });
             action.setCallback(this, function(response){
                 var state = response.getState();
-                if (state === "SUCCESS") {
-                    console.log('updated');
-                }
             });
             $A.enqueueAction(action);
         } else {
