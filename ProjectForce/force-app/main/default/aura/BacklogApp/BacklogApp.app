@@ -13,4 +13,4 @@
             </lightning:tab>
         </lightning:tabset>
     </div>
-</aura:application>	
+</aura:application>
