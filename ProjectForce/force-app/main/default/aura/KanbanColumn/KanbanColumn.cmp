@@ -15,7 +15,7 @@
                 <aura:iteration items="{!v.backlogs}" var="blog">
                     <aura:if isTrue="{!blog.Stage__c == v.title}">
                     	<c:KanbanCard backlog="{!blog}"></c:KanbanCard>
-                    </aura:if>    
+                    </aura:if>     
                 </aura:iteration>
             </div>
         </div>
