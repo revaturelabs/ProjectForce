@@ -37,92 +37,94 @@
     ////////////////////////////////////////////
     
     //Bubble Sort based on Sort By Filter
-    sortArray:function(sortThis, sortColors, sortBy) { 
+    sortArray:function(sortThis, sortColors, sortBy) {
+
+
         //Bubble sort each item in the array
         for(var currItem = 0; currItem < sortThis.length; currItem++) {
-            for (var j = 0; j < sortThis.length-1; j++) 
+            for (var j = 0; j < sortThis.length-1; j++)
                 //compare the field on the SimpleTraining object with the category selected
                 switch(sortBy) {
                     case 'Track':
-                        if (JSON.stringify(sortThis[j].trackName) > JSON.stringify(sortThis[j+1].trackName)) { 
-                            // swap arr[j+1] and arr[i] 
-                            var temp = sortThis[j]; 
-                            sortThis[j] = sortThis[j+1]; 
+                        if (JSON.stringify(sortThis[j].trackName) > JSON.stringify(sortThis[j+1].trackName)) {
+                            // swap arr[j+1] and arr[i]
+                            var temp = sortThis[j];
+                            sortThis[j] = sortThis[j+1];
                             sortThis[j+1] = temp;
-                            var tempColor = sortColors[j]; 
-                            sortColors[j] = sortColors[j+1]; 
-                            sortColors[j+1] = tempColor; 
+                            var tempColor = sortColors[j];
+                            sortColors[j] = sortColors[j+1];
+                            sortColors[j+1] = tempColor;
                         }
                         break;
                     case 'Project':
-                        if (JSON.stringify(sortThis[j].project) > JSON.stringify(sortThis[j+1].project)) { 
-                            // swap arr[j+1] and arr[i] 
-                            var temp = sortThis[j]; 
-                            sortThis[j] = sortThis[j+1]; 
+                        if (JSON.stringify(sortThis[j].project) > JSON.stringify(sortThis[j+1].project)) {
+                            // swap arr[j+1] and arr[i]
+                            var temp = sortThis[j];
+                            sortThis[j] = sortThis[j+1];
                             sortThis[j+1] = temp;
-                            var tempColor = sortColors[j]; 
-                            sortColors[j] = sortColors[j+1]; 
+                            var tempColor = sortColors[j];
+                            sortColors[j] = sortColors[j+1];
                             sortColors[j+1] = tempColor;
                         }
                         break;
                     case 'Date':
-                        if (JSON.stringify(sortThis[j].startDate) > JSON.stringify(sortThis[j+1].startDate)) { 
-                            // swap arr[j+1] and arr[i] 
-                            var temp = sortThis[j]; 
-                            sortThis[j] = sortThis[j+1]; 
+                        if (JSON.stringify(sortThis[j].startDate) > JSON.stringify(sortThis[j+1].startDate)) {
+                            // swap arr[j+1] and arr[i]
+                            var temp = sortThis[j];
+                            sortThis[j] = sortThis[j+1];
                             sortThis[j+1] = temp;
-                            var tempColor = sortColors[j]; 
-                            sortColors[j] = sortColors[j+1]; 
-                            sortColors[j+1] = tempColor; 
-                        }
-                        break;
-                    case 'Trainer':
-                        if (JSON.stringify(sortThis[j].trainer) > JSON.stringify(sortThis[j+1].trainer)) { 
-                            // swap arr[j+1] and arr[i] 
-                            var temp = sortThis[j]; 
-                            sortThis[j] = sortThis[j+1]; 
-                            sortThis[j+1] = temp;
-                            var tempColor = sortColors[j]; 
-                            sortColors[j] = sortColors[j+1]; 
+                            var tempColor = sortColors[j];
+                            sortColors[j] = sortColors[j+1];
                             sortColors[j+1] = tempColor;
                         }
                         break;
-                } 
-        } 
+                    case 'Trainer':
+                        if (JSON.stringify(sortThis[j].trainer) > JSON.stringify(sortThis[j+1].trainer)) {
+                            // swap arr[j+1] and arr[i]
+                            var temp = sortThis[j];
+                            sortThis[j] = sortThis[j+1];
+                            sortThis[j+1] = temp;
+                            var tempColor = sortColors[j];
+                            sortColors[j] = sortColors[j+1];
+                            sortColors[j+1] = tempColor;
+                        }
+                        break;
+                }
+        }
         return sortThis;
-    }, 
-    
-    
+    },
+
+
     //creating the chart and passing in data
     createChart : function(ctx, options, dataSet, userColors, sortBy) {
 
         //First, sort the data passed in according to the value in sortBy
-        dataSet = this.sortArray(dataSet, sortBy);   
+        dataSet = this.sortArray(dataSet, userColors, 'Track');
 
         //Here we take the dataset and split it into several different arrays to make it easier to use.
         var startTimes = [];
         var tracks =  [];
+        var trackId = [];
         var trainers = [];
         var projects = [];
         var rooms = [];
         for(let i = 0; i < dataSet.length; i++) {
             startTimes[i] = dataSet[i].startDate;
             tracks[i] = dataSet[i].name;
+            trackId[i] = dataSet[i].trackName;
             projects[i] = dataSet[i].project;
             trainers[i] = dataSet[i].trainer;
             rooms[i] = dataSet[i].room; // not on Training__c pagelayout
         }
 
-        // location, name, project, room, startDate, trackName, trainer, trainingId
-        
         //Once we have the startDates, we need it as an int.
         var days = this.convertDate(startTimes);
-        
+
         //currently no reason to believe the duration of a project will be longer than 3 weeks.
         var batchDuration = [];
         var defaultDuration = 21;
         for(var i = 0; i < days.length; i++) batchDuration[i] = defaultDuration;
-        
+
        //Setting the minimum date and maximum date displayed by the chart.
        //This is based on the first and last dates in the data passed in.
         var minDate = days[0];
@@ -136,22 +138,29 @@
             }
         }
         maxDate += defaultDuration;
-           
+
+        maxDate += defaultDuration;
         //Set the keys in the options Javascript Object equal to the values just generated
         options.scales.xAxes[0].ticks.max = maxDate;
         options.scales.xAxes[0].ticks.min = minDate;
         options.scales.xAxes[0].offset = false;
-        
+
         //Create the labels that show up on the sides and when hovered over.
         let tracksAndProjects = [];
+        let tracksAndProj2 = [];
         for(let i = 0; i < days.length; i++){
             var some = `${tracks[i]} - ${projects[i]} - ${trainers[i]}`;
             tracksAndProjects[i] = some;
         }
-        
+        for(let i = 0; i < days.length; i++){
+            var some = `${tracks[i]} - ${projects[i]} - ${trainers[i]} - ${trackId[i]}`;
+            tracksAndProj2[i] = some;
+        }
+
+        localStorage.setItem("tracks", JSON.stringify(tracksAndProj2));
         //This is going to build the Chart. By this point the data has been brought in through dataSet
         //and it's been split into separate arrays, so that way it's easier to use in the Chart creation.
-        return new Chart(ctx, {    
+        return new Chart(ctx, {
             type: 'horizontalBar',
             events:[],
             data: {
@@ -160,7 +169,7 @@
                         //example of how to reference something in here: chart.data.datasets[0].data[i]
                         //This data is when the project is supposed to start
                         data: days,
-                        backgroundColor: "rgba(63,103,126,0)" 
+                        backgroundColor: "rgba(63,103,126,0)"
                         }, {
                         //example of how to reference something in here: chart.data.datasets[1].data[i]
                         //Data here is the duration of the project
@@ -173,8 +182,8 @@
             options: options,
         });
     },
-    
-    //When a user selects a sort by filter, it will automatically sort the 
+
+    //When a user selects a sort by filter, it will automatically sort the
     //chart
     updateData : function(component)
     {
@@ -183,7 +192,8 @@
         var chart = component.get('v.dasChart');
         var data = component.get('v.tempList');
         var currColors = component.get('v.DisplayColors');
-        
+
+
          //declare arrays to hold new data being passed in
          var startDates = [];
          var holdBatchName = [];
@@ -207,7 +217,7 @@
         //I'm pretty sure this combined with the chart.data.datasets[1].background color
         //don't actually do anything. But who knows, maybe I'm wrong.
         holdColors = currColors;
-		
+
         //assign new values to the chart properties
         chart.data.datasets[1].backgroundColor = holdColors;
         chart.data.datasets[0].data = this.convertDate(startDates);
@@ -217,15 +227,16 @@
 
         chart.update();
     },
-    
+
     /*	convert date method used for converting the date into a integer because the chart only takes in integers as data and not actual date
     */
-    convertDate : function(data) { 
+
+    convertDate : function(data) {
         //declare necessary variables
         var arraySize = data.length;
         var d = [];
         var dIntoInt = [];
-
+      
         //for all the data being passed in, take the string, and turn it into a number
         for(let currTI = 0; currTI<arraySize; currTI++)
         {
@@ -234,10 +245,10 @@
             var month = date.getMonth()+1;
             var day = date.getUTCDate();
             var year = date.getUTCFullYear();
-            
+
             var currentDate = new Date();
             var currentYear = currentDate.getUTCFullYear();
-            
+
             /*	Checking the date year being passed in is within this year or next year; Don't want to show data that old or way far ahead.
              * 	The chart only takes in integers as data, thus, the work around is taking the date and generate it into an integer
              * 	then in the x-axis tick, it'll do a callback with the integer value as the index of the array already set and return the value date.
@@ -246,9 +257,9 @@
 		        //if this the date year is this current year
                 if(year==currentYear) {
                     /*	Checking the date year is a leap year; 366 days
-                     * 	1-31 is jan 1-31, 32-60 is feb 1-29, etc. 
+                     * 	1-31 is jan 1-31, 32-60 is feb 1-29, etc.
                      * 	Takes the date and generate it into a integer within 366 days for leap year or 365 for normal year
-                    */ 
+                    */
                     if(year%4==0) {
                         if(month == 1) {
                             d[currTI] = day;
@@ -274,7 +285,7 @@
                             d[currTI] = day + 31 + 29 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31;
                         } else if(month == 12) {
                             d[currTI] = day + 31 + 29 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31 + 30;
-                        } 
+                        }
                     } else {
                         if(month == 1) {
                             d[currTI] = day;
@@ -300,7 +311,7 @@
                             d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31;
                         } else if(month == 12) {
                             d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31 + 30;
-                        } 
+                        }
                     }
                 } else if(year==(currentYear+1)) {
                     //checking if it's a leap year
@@ -329,7 +340,7 @@
                             d[currTI] = day + 31 + 29 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31 + 365;
                         } else if(month == 12) {
                             d[currTI] = day + 31 + 29 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31 + 30 + 365;
-                        } 
+                        }
 		      //checks if the previous year is a leap year, because if the previous year was a leap year then the current data year cannot be a leap year.
                     } else {
                         if((year-1)%4==0) {
@@ -357,7 +368,7 @@
                                 d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31 + 366;
                             } else if(month == 12) {
                                 d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31 + 30 + 366;
-                            }  
+                            }
                         } else {
                             if(month == 1) {
                                 d[currTI] = day + 365;
@@ -383,23 +394,26 @@
                                 d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31 + 365;
                             } else if(month == 12) {
                                 d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31 + 30 + 365;
-                            }  
+                            }
                         }
                     }
                 }
+
             }
-        } 
+
+        }
         return d;
-        
+
     },
-    
+
     filterData:function(selectedTrack, selectedLocation, selectedDate, chart, allData, component)
-    { 
+    {
+        // console.log('filter data has been entered');
         //declare necessary variables
         var correctData = [];
         var correctDataCounter = 0;
         var correctColors = [];
-        
+
         //If the filters haven't been used yet, assign the "all" field to them
         //This is so it doesn't throw off the rest of the loop
         if(selectedTrack == "")
@@ -410,32 +424,34 @@
         {
             selectedLocation = "All";
         }
-        
+
         //Take the date given and store it in an array
         var compareToDate = [];
         compareToDate[0] = selectedDate;
-        
+
         //take the dates of the data and store them in an array
         var dataDates = [];
         for(let i = 0; i<allData.length; i++)
         {
             dataDates[i] = JSON.stringify(allData[i].startDate);
         }
-        
+
         //convert the arrays from arrays of strings into arrays of numbers
         dataDates = this.convertDate(dataDates);
         compareToDate = this.convertDate(compareToDate);
-        
+
         //For each record, determine if it meets the Filter Criteria.
         for(var currData = 0;currData < allData.length; currData++)
         {
             //**********************Filter Logic*****************
-            
+
             //If either selectbox had an actual value, the code enters this if statement
             if((selectedTrack!="All" || selectedLocation!="All"))
-            { 
+            {
+
                  //If the current record has the correct name or location, and the project starts after the listed date,
                 //enter
+
                 if((JSON.stringify(allData[currData].trackName) == selectedTrack 
                     && JSON.stringify(allData[currData].location) == selectedLocation)) {
 
@@ -443,50 +459,52 @@
                     correctData[correctDataCounter] = allData[currData];
                     correctDataCounter++; 
 
+
                 }
 
-                else if(JSON.stringify(allData[currData].trackName) == selectedTrack 
+                else if(JSON.stringify(allData[currData].trackName) == selectedTrack
                     && selectedLocation == 'All')
                 {
                     correctData[correctDataCounter] = allData[currData];
                     correctDataCounter++;
                 }
-                else if(selectedTrack == 'All' 
+                else if(selectedTrack == 'All'
                     && JSON.stringify(allData[currData].location) == selectedLocation)
                 {
                     correctData[correctDataCounter] = allData[currData];
                     correctDataCounter++;
                 }
+
                 
             } else {
-
                 correctData = allData;
             }
         }
-        
+
         //once the data has been selected, update the attributes on the page to stay current.
         component.set('v.tempList', correctData);
         component.set('v.DisplayColors', correctColors);
         this.updateData(component);
- 
+
         return correctData;
-    }, 
-    
+    },
+
     setInitFilterValues: function (component, event) {
         var allTrainings = component.get('v.qTraining');
 
-        
+
         //Creating the Track List
         var TrackSet = new Set();
         TrackSet.add("All");
-        
-        
+
+
         //Creating Location List
         var LocationSet = new Set();
         LocationSet.add("All");
 
         for(var i=0; i<allTrainings.length; i++)
         {
+
             LocationSet.add(JSON.stringify(allTrainings[i].location));
             TrackSet.add(JSON.stringify(allTrainings[i].trackName));   
         }
@@ -520,26 +538,30 @@
             currColors[i] = PresetColors[colorSelector];
         }
 
+
         component.set('v.Locations', LocationList);
         component.set('v.Tracks', TrackList);
-        
+
         var allColors = this.applyColors(TrackList, currColors, allTrainings);
         component.set('v.UserColors', allColors);
         component.set('v.DisplayColors', allColors);
         component.set('v.tempList', allTrainings);
-        
+
         //Setting Today's Date
         var today = new Date();
         component.set('v.today', today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate());
         //Setting User Colors
-        
+
     },
+
     
     applyColors: function(tracks, colors, allBatches) {      
+
         var colorsApplied = [];
         var colorsAppliedCounter = 0;
         for(let currBatch = 0; currBatch < allBatches.length; currBatch++)
         {
+
             for(let currTrack = 0; currTrack < tracks.length; currTrack++)
             {
                 if(JSON.stringify(allBatches[currBatch].trackName)==tracks[currTrack])

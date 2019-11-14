@@ -201,22 +201,34 @@ myAction : function(component, event, helper) {
                 }],
                 yAxes: [{
                     gridLines: {
-                        display:false,
-                        color: "#fff",
-                        zeroLineColor: "#fff",
-                        zeroLineWidth: 0
+                        display:true,
+                        offsetGridLines:true,
+                        zeroLineWidth: 1,
+                        color: 'black',
+                        drawTicks: false
                     },
                     ticks: {
                         fontFamily: "'Futura', sans-serif",
-                        fontSize:11,
-                        display: false
-                        
-                        
+                        fontSize:20,
+                        display: true,
+                        callback: function(value, index, values) {
+                            var tra = JSON.parse(localStorage.getItem("tracks"));// getting values from helper
+                            var trackString = tra[index].split("-"); // making it to an array
+                            if(index === 0){
+                                return trackString[trackString.length-1]; // grabing the last value ie., track
+                            }else{
+                                var prevTrackString = tra[index - 1].split("-");
+                                if(trackString[trackString.length-1] != prevTrackString[prevTrackString.length-1]) {
+                                    return trackString[trackString.length-1]; // grabing the last value ie., track
+                                }
+                            }
+
+                        }
                     },
                     //y-axis label name
                     scaleLabel:{
-                        display:false,
-                        labelString: 'Batches',
+                        display:true,
+                        labelString: 'Track',
                     },
                     stacked: true
                 }]
@@ -226,7 +238,8 @@ myAction : function(component, event, helper) {
             },
         tooltips:{
             enabled: false
-    }        
+
+    }               
 };
     
     //calls the apex controller and runs the method getTrainings then saves the return of the method into getTracks
