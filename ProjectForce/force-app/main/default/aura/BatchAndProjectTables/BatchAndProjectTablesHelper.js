@@ -6,7 +6,6 @@
      * @param {*} component 
      */
     markTableItemsAsSelected : function(selectionIds, tableAuraId, component){
-        console.log("markTableItemsAsSelected");
         var selectionTable = component.find(tableAuraId).find("table");
         var tableData = component.find(tableAuraId).get("v.data");
         var selectedRows = [];

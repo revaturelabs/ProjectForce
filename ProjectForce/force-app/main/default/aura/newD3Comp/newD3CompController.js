@@ -122,7 +122,7 @@ myAction : function(component, event, helper) {
                 
                 ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontFamily, 'normal', Chart.defaults.global.defaultFontFamily);
                 ctx.textAlign = 'left';
-                ctx.fillStyle = '#FFFFFF'; // label color
+                ctx.fillStyle = '#F300EA'; // label color
                 
                 this.data.datasets.forEach(function (dataset, i) {
                     var meta = chartInstance.controller.getDatasetMeta(i);
@@ -339,4 +339,3 @@ modalUpdate:function(component,event,helper)
     } 
 }
 )
-

@@ -5,7 +5,6 @@
     <aura:attribute name="queryObject" type="String" />
     <aura:attribute name="tableHeader" type="String" />
     <aura:attribute name="queryFields" type="String[]" default="['Id', 'Name']"/>
-    <aura:attribute name="width" type="String" default="500" />
     <aura:attribute name="height" type="String" default="300" />
 
     <aura:registerEvent name="TableItemSelectedEvent" type="c:TableItemSelectedEvent" />
@@ -21,8 +20,9 @@
             onrowselection="{!c.fireSelectedTableItemsEvent}"
             onrowaction="{!c.fireButtonPressEvent}"
             onsave="{!c.save}"
+            resizeColumnDisabled="true"
         />
     </div>
 
     
-</aura:component>	
+</aura:component>

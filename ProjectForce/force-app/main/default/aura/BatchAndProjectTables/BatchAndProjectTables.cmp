@@ -1,28 +1,25 @@
 <aura:component controller="TableApexController" access="global">
     <aura:attribute name="tableHeight" type="String" default="300" />
-    <aura:attribute name="tableWidth" type="String" default="650" />
     <aura:attribute name="selectedBatchIds" type="List" />
     <aura:attribute name="color" type="String" default="C307C3" />
 
     <aura:handler name="TableItemSelectedEvent" event="c:TableItemSelectedEvent" action="{!c.handleItemSelectedEvent}" />
-    <aura:handler name="saveInlineEdits" event="c:saveInlineEditsEvent" action="{!c.handleSaveInlineEditsEvent}" />
+    <aura:handler name="saveInlineEdits" event="c:SaveInlineEditsEvent" action="{!c.handleSaveInlineEditsEvent}" />
 
     <aura:registerEvent name="BatchInformationEvent" type="c:BatchInformationEvent" />
 
     <div class="a">
         <c:CreateDataTable aura:id="batch"
-            width="{!v.tableWidth}" 
             height="{!v.tableHeight}"
             queryObject="Training__c" 
             tableHeader="Batch Table"
-            queryFields="[['Name','text', true], ['ProjectStartDate__c', 'date', true], ['Trainer__r.Name', false], ['Project__r.Name', false], ['Room__r.Location__r.Name', false], ['Room__r.Room_Number__c', false], ['Track__r.Name', false]]" />
+            queryFields="[['Name','text', false], ['Color__c', 'text', true], ['ProjectStartDate__c', 'date', false], ['Trainer__r.Name', false], ['Project__r.Name', false], ['Room__r.Location__r.Name', false], ['Room__r.Room_Number__c', false], ['Track__r.Name', false]]" />
             <!-- query field is a list of lists each inner list consists of [row, type, editable] if type is false dont display that column-->
 
         <c:CreateDataTable aura:id="project"
-            width="{!v.tableWidth}" 
             height="{!v.tableHeight}"
             queryObject="Project__c" 
             tableHeader="Project Table" 
-            queryFields="[['Name','text', true], ['(SELECT Id FROM Trainings__r)', false]]" />
+            queryFields="[['Name','text', false], ['(SELECT Id FROM Trainings__r)', false]]" />
     </div>
-</aura:component>	
+</aura:component>
