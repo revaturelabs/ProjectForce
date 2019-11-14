@@ -10,7 +10,6 @@
             <c:KanbanCardLabel backlog="{!v.backlog}" labelIndex="{!index + 1}" />
         </aura:iteration>
         <div class="card-content">
-
             <p>{!v.backlog.Story__c}</p>
         </div>  
     </div>

@@ -2,7 +2,7 @@
     implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickAction"
     access="global">
     <!-- resources -->
-    <ltng:require styles="{!$Resource.bulma + '/bulma-0.4.2/css/bulma.css'}" />
+    <!-- <ltng:require styles="{!$Resource.bulma + '/bulma-0.4.2/css/bulma.css'}" /> -->
 
     <!-- attributes -->
     <aura:attribute name="backlogs" type="Backlog__c[]" />

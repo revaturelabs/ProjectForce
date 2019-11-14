@@ -8,8 +8,9 @@
         var droppedOnColumnEvent = component.getEvent('droppedOnColumn');
         droppedOnColumnEvent.setParams({
             'title': component.get('v.title'),
-            'backlog': JSON.parse(event.dataTransfer.getData('DraggedBacklog')),
+            'backlog': JSON.parse(event.dataTransfer.getData('DraggedBacklog'))
         });
         droppedOnColumnEvent.fire();
+        
     },
 })
