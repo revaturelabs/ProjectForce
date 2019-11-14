@@ -44,25 +44,21 @@
     },
 
     fireBatchInfoEvent : function(component, event){
-        console.log("fireBatchInfoEvent");
+
         var selectedRows = component.find("batch").find("table").get("v.selectedRows");
         var batchData = component.find("batch").get("v.data");
 
-        console.log(batchData);
+
         var selectedBatches = [];
         for(let i=0;i<batchData.length;i++){
             if(selectedRows.includes(`row-${i}`)){
                 selectedBatches.push(batchData[i]);
             }
         }
-        // var batchInfoEvent = component.getEvent("batchInfoEvent");
         var batchInfoEvent = $A.get("e.c:BatchInformationEvent");
-        console.log("event type: ");
-        console.log(batchInfoEvent.getEventType());
         batchInfoEvent.setParams({
             "batchInfo" : selectedBatches
         });
-        console.log("firing event");
         batchInfoEvent.fire();
     }, 
 
