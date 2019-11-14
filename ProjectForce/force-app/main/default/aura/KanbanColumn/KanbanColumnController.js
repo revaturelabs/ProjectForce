@@ -11,6 +11,5 @@
             'backlog': JSON.parse(event.dataTransfer.getData('DraggedBacklog')),
         });
         droppedOnColumnEvent.fire();
-        console.log('title in KanbanColumnController is ',title);
     },
 })
