@@ -52,183 +52,6 @@
 		$A.enqueueAction(action);
 	},
 
-	//Function for the trainer drop down
-	//sets the list of trainers by calling the server- side controller
-	trainer : function(component, event) {
-		console.log("Trainer function");
-		//sets veriables by getting info from the component attributes 
-		let location = component.get("v.selectedLocation");
-		let track = component.get("v.selectedTrack");
-		let startDate = component.get("v.selectedDate");
-
-		let params = event.getParam('arguments');
-
-		if(!location)
-		{
-			location = params.paramLocation;
-			component.set("v.selectedLocation",location);
-		}
-
-		if(!track)
-		{
-			track = params.paramTrack;
-			component.set("v.selectedTrack",track);
-		}		
-
-		//calls to method in the apex controller
-		var action = component.get("c.getTrainer");
-		
-		//set the parameters from the call
-		action.setParams({
-            locationName:location,
-            trackName:track, 
-			startDateName:startDate});
-			
-		//response from the apex method
-		action.setCallback(this, function(response){
-		
-		var state = response.getState();
-		
-		//storing return value
-		let trainer = response.getReturnValue();
-
-		if(state === "SUCCESS"){
-
-			component.set("v.updateTrainers", response.getReturnValue());
-
-			if(trainer.length !=0)
-			{
-				component.set("v.updateTrainer", trainer[0].Name);
-			}
-		}
-		else{
-			console.log("Failed with state: "+state);
-		}
-		
-		
-	});
-	console.log("Trainer done!");
-	$A.enqueueAction(action);
-},
-	//Funcation for the location drop down
-	//sets the list of locations by calling the server- side controller
-	locationByID : function(component, event) {
-		console.log("locationByID Funcation");
-
-		let selectedLocation = component.get("v.selectedLocation");
-		let action = component.get("c.getLocation");
-		let params = event.getParam('arguments');
-
-		console.log("params.trainingID:"+params.trainingID);
-		console.log("selectedLocation:"+selectedLocation);
-		//set the parameters from the call
-
-			action.setParams({
-				trainingID: String(params.trainingID)
-			});
-			component.set("v.saveTrainingID", String(params.trainingID));
-
-
-		action.setCallback(this, function(response){
-		var state = response.getState();
-		let location =response.getReturnValue();
-		let locationList = component.get("v.locations");
-		
-		console.log("locationList:"+locationList);
-
-		if(!locationList){
-			component.set("v.locations", location);
-		}
-		component.set("v.selectedLocation", location[0].Name);
-
-
-	});
-	console.log("Location Done!");
-	$A.enqueueAction(action);
-},
-	//Funcation for the track drop down
-	//sets the list of tracks by calling the server- side controller
-	trackByID : function(component, event) {
-
-		console.log("Track Function");
-		let action = component.get("c.getTrack");
-		let params = event.getParam('arguments');
-		let selectedTrack = component.get("v.selectedTrack");
-
-
-			//set the parameters from the call
-			action.setParams({
-				trainingID: String(params.trainingID)
-			});
-	
-	
-		action.setCallback(this, function(response){
-		
-		let state = response.getState();
-		
-		let track = response.getReturnValue();
-		let trackList = component.get("v.tracks");
-
-		console.log("trackList"+ trackList);
-		if(!trackList){
-			component.set("v.tracks", track);
-		}
-		component.set("v.selectedTrack",track[0].Name);
-
-		
-	});
-	console.log("Track Function Done!");
-	$A.enqueueAction(action);
-	//return track[0].Name
-},
-
-	
-
-	//Funcation for the room drop down
-	//sets the list of rooms by calling the server- side controller
-	room : function(component, event) {
-		console.log("Entering room function");
-
-		var action = component.get("c.getRoom");
-       // var location = component.get("v.selectedLocation");
-		//var date = component.get("v.selectedDate");
-		let params = event.getParam('arguments');
-		let selectedLocation = component.get("v.selectedLocation");
-		let selectedDate = component.get("v.selectedDate");
-
-		if(!selectedLocation)
-		{
-			selectedLocation = params.paramLocation;
-		}	
-
-        action.setParams({
-            "locationName": selectedLocation,
-            "startDateName": selectedDate
-		});
-		
-		action.setCallback(this, function(response){
-		var state = response.getState();
-
-		let room = response.getReturnValue();
-
-		if(state === "SUCCESS"){
-			component.set("v.updateRooms", room);
-
-			if(room.length !=0)
-			{
-				component.set("v.updateRoom", room[0].Name);
-			}
-		}
-		else{
-			console.log("Failed with state: "+state);
-		}
-		
-		
-	});
-	console.log("Done with Room function");
-	$A.enqueueAction(action);
-	},
-
 	//Funcation for the project drop down
 	//sets the list of projects by calling the server- side controller	
 	project : function(component, event) {
@@ -244,12 +67,6 @@
 		let startDate = component.get("v.batchProjectStartDate");
 
 		console.log("selectedTrack:"+track);
-
-		// if(!track)
-		// {
-		// 	track = params.paramTrack;
-
-		// }
 		
 		action.setParams({
             "trackName": track,
@@ -282,42 +99,6 @@
 	$A.enqueueAction(action);
 },
 
-	//Funcation for the Date selection
-	//sets the date to today if there is not selected date
-	date : function(component,event){
-		console.log("entering date function");
-        
-        let selectedDate = component.get("v.selectedDate");
-
-		//only sets the value of the selected date if it is null
-        if(selectedDate == null)
-        {
-			console.log("entering IF date function");
-            let today = new Date();
-            let dd = today.getDate();
-            let mm = today.getMonth() + 1;
-            let year = today.getFullYear();
-
-            if(dd<10)
-            {
-                dd='0'+dd;
-            }
-
-            if(mm<10)
-            {
-                mm='0'+mm
-            }
-
-			today = year + '-' + mm + '-' + dd;
-
-			component.set('v.selectedDate', today);
-			console.log("selectedDate: "+selectedDate);
-			console.log("today: "+today);
-		}
-
-		console.log("Exiting Date function");
-	},
-
 	saveModal : function(component, event) {
 		
 		var action = component.get("c.Save");
@@ -329,27 +110,21 @@
 			"newProjectName": component.get("v.updateProject"),
 			"newRoomName": component.get("v.updateRoom"),
 			"newTrackName": component.get("v.selectedTrack"),
-			"newStartDate": component.get("v.selectedDate")
+			"newStartDate": component.get("v.selectedDate"),
+			"newComment" : component.get("v.updateComment")
 		});
 
 		action.setCallback(this, function(response){
 		var state = response.getState();
 
 		let saveComplete = response.getReturnValue();
-
-		//this.hide(component,event);
-		//this.showToast(component,event);
-		
-
 		if(state === "SUCCESS"){
 			
 			if(saveComplete)
 			{
-				
 				this.hideModal(component,event);
 				this.successToast(component,event);
 			}
-
 			else
 			{
 				this.failToast(component,event);

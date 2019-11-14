@@ -2,26 +2,15 @@
    display: none;
 }
 
-
-.THIS .kanban{
-   background-color: #1798c1;
-   color: white;
-   float: left;
-}
-
-.THIS .save{
-   background-color: #1798c1;
-   color: white;
-}
-
-.THIS .cancel{
-   background-color: white;
-   color: #1798c1;
-   float: left;
-}
-
 .THIS #trainerBadge {
    background-color: #FF7D3C;
+   color: white;
+}
+.THIS #projectBadge {
+   background-color: rgb(74, 136, 230);
+}
+.THIS .projectButton {
+   background-color: transparent;
    color: white;
 }
 
@@ -30,16 +19,12 @@
    background-color: white;
 }
 
-
 .THIS .slds-button_neutral:hover {
-   
    background-color: #72A4C2;
-   
 }
 
 .THIS .slds-modal__header {
    background: white;
-  
    font-size: 2rem;
 }
 
@@ -63,11 +48,11 @@
 .THIS .buttonStyle{
   border: none;
   color: white;
-   padding: 0px;
+  padding: 0px;
   border-radius: 8px;
   display: inline-block;
   font-size: 18px;
-  background-color: #1798c1;
+  background-color: transparent;
   cursor: pointer;
   height: 20px;
   width: 175px;
@@ -89,10 +74,10 @@
 .THIS #modal-content-id-1 {
    overflow-x: hidden;
    overflow-y: hidden;
-   height : 150px;
+   height : 220px;
 }
 .THIS #modal-content-id-2 {
-   height : 220px;
+   height : 150px;
 }
 
 .THIS .scroll{

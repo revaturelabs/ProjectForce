@@ -3,69 +3,79 @@
 <aura:component controller = "ModalController"
                 implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickActionWithoutHeader" access="global" >
 
-    <!--Allows the container component to call a method in this component-->
-    <aura:method name="showModal" action="{!c.showModal}" access="PUBLIC">
-            <aura:attribute name="trainingID" type="String"/>
-            <aura:attribute name="paramTrack" type="String"/>
-            <aura:attribute name="paramProjectDate" type="Date"/>
-    </aura:method> 
+  <!--Allows the container component to call a method in this component-->
+  <aura:method name="showModal" action="{!c.showModal}" access="PUBLIC">
+        <aura:attribute name="trainingID" type="String"/>
+        <aura:attribute name="paramLocation" type="String"/>
+        <aura:attribute name="paramTrack" type="String"/>
+</aura:method> 
 
-    <aura:attribute name="recordId" type="Id" />
-    
+<aura:attribute name="recordId" type="Id" />
+
+<!--Attribute for the selected value-->
+<aura:attribute name="selectedLocation" type="String"/>
+
+ <!--Calls the Javascript controller on initialization of the page
+<aura:handler name="init" value="{!this}" action="{!c.doInit}"/>-->
+
+<!--Attribute of trainingId for saving-->
+<aura:attribute name="saveTrainingID" type="String"/>
+
+<!--Attribute for list of locations-->
+<aura:attribute name="locations" type="String"/>
+
+<!--Date input-->
+<aura:attribute name="selectedDate" type="Date"/>
+
     <!--Attribute for the selected value-->
-    <aura:attribute name="selectedLocation" type="String"/>
-    
-    <!--Attribute of trainingId for saving-->
-    <aura:attribute name="saveTrainingID" type="String"/>
+<aura:attribute name="selectedTrack" type="String"/>
 
-    <aura:attribute name="trainingName" type="String"/>
 
-    <!--Attribute for list of locations-->
-    <aura:attribute name="locations" type="String"/>
-    
-    <!--Date input-->
-    <aura:attribute name="selectedDate" type="Date"/>
-    
-    <!--Attribute for the selected value-->
-    <aura:attribute name="selectedTrack" type="String"/>
-  
-     <!--Attribute for list-->
-    <aura:attribute name="tracks" type="String"/>
-    
-    <!--Attribute for the selected value-->
-    <aura:attribute name="updateTrack" type="String"/>
+ <!--Attribute for list-->
+<aura:attribute name="tracks" type="String"/>
 
-    <!-- Comments added in the modal are displayed above the input field -->
-    <aura:attribute name="updateComment" type="String" />
-    <!-- <aura:attribute name="updatedComments" type="String" /> -->
-  
-    <!--Attribute for list-->
-    <aura:attribute name="updateTracks" type="String"/>
 
-     <!--Attribute for the selected value-->
-    <aura:attribute name="updateProject" type="String"/>
-  
-    <!--Attribute for list-->
-    <aura:attribute name="batchProjectsList" type="String"/>
+<!--Attribute for the selected value-->
+<aura:attribute name="updateTrack" type="String"/>
 
-     <!--Attribute for the selected value-->
-    <aura:attribute name="updateRoom" type="String"/>
- 
-    <!--Attribute for list-->
-    <aura:attribute name="updateRooms" type="String"/>    
-    
-     <!--Attribute for the selected value-->
-    <aura:attribute name="updateLocation" type="String"/>
-  
-    <!--Attribute for list-->
-    <aura:attribute name="updateLocations" type="String"/>
-    
-     <!--Attribute for the selected value-->
-    <aura:attribute name="updateTrainer" type="String"/>
-  
-    <!--Attribute for list-->
-    <aura:attribute name="updateTrainers" type="String"/>  
-    <aura:attribute name="none" type="String" default="none" />   
+<!-- Comments added in the modal are displayed above the input field -->
+<aura:attribute name="updateComment" type="String" />
+<!-- <aura:attribute name="updatedComments" type="String" /> -->
+
+<!--Attribute for list-->
+<aura:attribute name="updateTracks" type="String"/>
+
+ <!--Attribute for the selected value-->
+<aura:attribute name="updateProject" type="String"/>
+
+
+<!--Attribute for list-->
+<aura:attribute name="updateProjects" type="String"/>
+
+ <!--Attribute for the selected value-->
+<aura:attribute name="updateRoom" type="String"/>
+
+
+<!--Attribute for list-->
+<aura:attribute name="updateRooms" type="String"/>    
+
+
+ <!--Attribute for the selected value-->
+<aura:attribute name="updateLocation" type="String"/>
+
+
+<!--Attribute for list-->
+<aura:attribute name="updateLocations" type="String"/>
+
+
+ <!--Attribute for the selected value-->
+<aura:attribute name="updateTrainer" type="String"/>
+
+
+<!--Attribute for list-->
+<aura:attribute name="updateTrainers" type="String"/>  
+
+<aura:attribute name="none" type="String" default="none" />     
 
     
     <!-- Attributes for the entire Batch modal -->
@@ -95,16 +105,13 @@
 
             <div class="slds-size_3-of-4 slds-media_inline">
                 <div class="slds-media slds-media_medium">
-                    <div class="slds-media__figure">
-                        
-                        </div>
                         <span class="slds-media__body">
                             <p>
                                 <aura:text value="{!v.batchTrack}"/>
                             </p>
                         </span>
-                    </div>
                 </div>
+            </div>
             </div>
 
             <div class="column">
@@ -124,35 +131,36 @@
 
                 <div class="column">
 
-                        <div class="slds-form-element">
-                                <label class="slds-checkbox_toggle slds-grid">
-                                <span class="slds-form-element__label slds-m-bottom_none"></span>
-                                <input type="checkbox" name="checkbox-toggle-17" value="checkbox-toggle-17" aria-describedby="checkbox-toggle-17" />
-                                <span id="checkbox-toggle-17" class="slds-checkbox_faux_container" aria-live="assertive">
-                                    <span class="slds-checkbox_faux"></span>
-                                    <span class="slds-checkbox_on">Completed</span>
-                                    <span class="slds-checkbox_off">Not Complete</span>
-                                </span>
-                                </label>
-                            </div>
+                    <div class="slds-form-element">
+                        <label class="slds-checkbox_toggle slds-grid">
+                        <span class="slds-form-element__label slds-m-bottom_none"></span>
+                        <input type="checkbox" name="checkbox-toggle-17" value="checkbox-toggle-17" aria-describedby="checkbox-toggle-17" />
+                        <span id="checkbox-toggle-17" class="slds-checkbox_faux_container" aria-live="assertive">
+                            <span class="slds-checkbox_faux"></span>
+                            <span class="slds-checkbox_on">Completed</span>
+                            <span class="slds-checkbox_off">Not Complete</span>
+                        </span>
+                        </label>
+                    </div>
                 
                 </div>
             </div>
         </header>
 
-
-    
         <span class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
 
             <div class ="row">
                 <div class="column">
-                    <label style="font-size: 20px"  >Project: </label>
-                    <lightning:button class="buttonStyle slds-align_absolute-center" type="button" label="{!v.updateProject}"  onclick="{!c.openDiv}"/>
+                    
+                    <label style="font-size: 15px"  >Project: </label>
+                    <span class="slds-badge" id="projectBadge">
+                            <lightning:button class="projectButton" variant="base" label="{!v.updateProject}" onclick="{!c.openDiv}"/>
+                        </span>
                     <br/>
-
+             
                     <!-- shows projects-->
                     <div  style="display:none" id="locationDiv">
-                        <lightning:select name="selProject" label="Project" aura:id="selProject" value="{!v.batchProjectsList}"  onchange="{!c.getFilter}" >
+                        <lightning:select name="selProject" label="Project" value="{!v.updateProject}"  onchange="{!c.getFilter}" >
                             <aura:iteration items="{!v.batchProjectsList}" var="project">
                                 <option text="{!project.Name}" value="{!project.Name}" selected="{!project.selected}"/>
                             </aura:iteration>
@@ -200,11 +208,15 @@
                 
             <!-- Comments -->
             <lightning:recordViewForm recordId="{!v.saveTrainingID}" objectApiName="Training__c">
-                <div class="slds-form-element__control slds-border__bottom"> 
+                <div class="slds-form-element__control"> 
                     <lightning:outputField fieldName="Comments__c" />
                 </div>
             </lightning:recordViewForm> 
-            <lightning:textarea name="TextBox" value="{!v.updateComment}" label="Comments" /> 
+
+            
+       <lightning:input name="TextBox" value="{!v.updateComment}"  />
+        
+            <!-- <textarea name="TextBox" value="{!v.updateComment}"  />  -->
             
         </span>
 
