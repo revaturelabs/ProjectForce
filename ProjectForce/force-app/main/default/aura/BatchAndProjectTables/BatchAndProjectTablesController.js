@@ -7,7 +7,6 @@
      * @param {*} helper 
      */
     handleItemSelectedEvent : function(component, event, helper){
-        console.log("handleItemSelectedEvent");
         var tableObject = event.getParam("tableObject");
         var selectionIds = [];
         var tableAuraId;
