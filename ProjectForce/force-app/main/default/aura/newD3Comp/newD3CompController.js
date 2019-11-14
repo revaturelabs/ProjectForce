@@ -209,11 +209,15 @@ myAction : function(component, event, helper) {
 
             let track = currSimpleTraining.trackName;
             JSON.stringify(track);
-            console.log("track:"+track); 
+            console.log("track:"+track);
+
+            let projectStartDate = currSimpleTraining.startDate;
+            JSON.stringify(projectStartDate);
+            console.log("projectStartDate:"+projectStartDate);
 
             //let newLocation = location.replace(/"/location,"");
             //console.log(newLocation);
-            childCmp.showModal(currSimpleTraining.trainingId, location, track);
+            childCmp.showModal(currSimpleTraining.trainingId, track, projectStartDate);
             
             
         }           
@@ -418,7 +422,7 @@ showmodal: function(component, event, helper){
             var currIndex = activePoints[0]._index;                
             var currSimpleTraining = component.get('v.tempList')[currIndex];
             console.log('here is the current simple training: ');
-            console.log(currSimpleTraining.trainingId);
+            console.log(currSimpleTraining);
 
             var childCmp = component.find("modalComp");
 
@@ -428,11 +432,15 @@ showmodal: function(component, event, helper){
 
             let track = currSimpleTraining.trackName;
             JSON.stringify(track);
-            console.log("track:"+track); 
+            console.log("track:"+track);
+            
+            let projectStartDate = currSimpleTraining.startDate;
+            JSON.stringify(projectStartDate);
+            console.log("projectStartDate:"+projectStartDate);
 
             //let newLocation = location.replace(/"/location,"");
             //console.log(newLocation);
-            childCmp.showModal(currSimpleTraining.trainingId, location, track);
+            childCmp.showModal(currSimpleTraining.trainingId, track, projectStartDate);
             
             /*
         */

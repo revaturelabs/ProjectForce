@@ -34,8 +34,8 @@
 		let params = event.getParam('arguments');
 
 		action.setParams ({ 
-			trackName: String(params.paramTrack), 
-			startDateName: Date(params.paramProjectDate)
+			"trackName": params.paramTrack, 
+			"startDateName": params.paramProjectDate
 		});
 
 		action.setCallback (this, function (response) {
@@ -50,42 +50,6 @@
 			}
 		});
 		$A.enqueueAction(action);
-
-		// let track = component.get("v.batchTrack");
-		// let startDate = component.get("v.batchProjectStartDate");
-		// console.log("selectedTrack:"+track);
-
-		// if(!track)
-		// {
-		// 	track = params.paramTrack;
-
-		// }
-		
-		// action.setParams({
-        //     "trackName": track,
-        //     "startDateName": startDate
-		// });
-		
-		// action.setCallback(this, function(response){
-		
-		// var state = response.getState();
-		// let project= response.getReturnValue();		
-		// console.log("inside callback");
-		
-		// if(state === "SUCCESS"){
-		// 	component.set("v.updateProjects", project);
-		// 	console.log("inside success");
-		// 	// if(project.length !=0)
-		// 	// {
-		// 	// 	component.set("v.updateProject", project[0].Name);
-		// 	// }
-		// }
-		// else{
-		// 	console.log("Failed with state: "+state);
-		// }	
-		// });
-		// console.log("Done with project function");
-		// $A.enqueueAction(action);
 	},
 
 	//Function for the trainer drop down

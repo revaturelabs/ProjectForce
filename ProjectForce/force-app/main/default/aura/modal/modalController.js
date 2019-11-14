@@ -19,12 +19,11 @@
         //helper.showToast(component, event);
         let updateTrainer = component.get("v.updateTrainer");
         let updateProject = component.get("v.updateProject");
-        let updateRoom = component.get("v.updateRoom");
        // let selectedTrack = "v.selectedTrack";
         //let selectedDate = "v.selectedDate";
 
         //alert(updateTrainer+" "+updateProject+" "+updateRoom);
-        if(updateTrainer && updateProject && updateRoom)
+        if(updateTrainer && updateProject)
         {
             helper.saveModal(component, event);
             location.reload();
@@ -46,8 +45,8 @@
         
         //helper.location(component, event);
         //helper.track(component, event);
-        helper.room(component, event);
-        helper.trainer(component, event);
+        //helper.room(component, event);
+        //helper.trainer(component, event);
         //helper.project(component, event);
         helper.listOfTrackProject(component, event);
     },
@@ -60,14 +59,13 @@
         console.log("showModal");
 
         helper.batchById(component, event);
-
         //helper.locationByID(component, event);
         //helper.trackByID(component, event);
         //helper.date(component,event);
         //helper.room(component, event);
         //helper.trainer(component, event);
-        helper.listOfTrackProject(component, event);
         helper.showModal(component);
+        helper.listOfTrackProject(component, event);
 
         console.log("showModal completed");
     },
