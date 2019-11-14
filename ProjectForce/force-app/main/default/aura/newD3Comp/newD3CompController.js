@@ -23,19 +23,14 @@
 //    	
 //    If you have any questions, please email Geoffrey Murray @ geoffrey.murray.1995@gmail.com
 ////////////////////////////////////////////
-
-
 myAction : function(component, event, helper) {
-
+    
     //creating a variable.
-
     var yLabels = [];
-
     //This gets the current date.
     var date = new Date();
     //only the current year
     var year = date.getUTCFullYear();
-
 
     /*  Making an array with 2 years worth of days. Taking into account if this year or the next are leap years or not.
     *  The First index of the array is Jan 1 and every +1 added to the index goes up 1 day.
@@ -46,7 +41,6 @@ myAction : function(component, event, helper) {
     var monthDays = [31,28,31,30,31,31,31,31,30,31,30,31];
 
     //checking if this year is a leap year
-
     if(year%400==0 || (year%4==0 && year%100!=0))
     {
         //febraury gets an extra day
@@ -94,7 +88,6 @@ myAction : function(component, event, helper) {
     //Once you click on the chart, you're able to modify and save/update the modifications
     component.find("myChart").getElement().onclick = function(evt){
         var activePoints = component.get('v.dasChart').getElementsAtEvent(evt);
-
         var activePoint = component.get('v.dasChart').getElementAtEvent(evt)[0]; //WIP
         if(activePoints.length > 0 ){ 
             if (activePoint._datasetIndex === 0) {
@@ -144,7 +137,6 @@ myAction : function(component, event, helper) {
                 ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontFamily, 'normal', Chart.defaults.global.defaultFontFamily);
                 ctx.textAlign = 'left';
                 ctx.fillStyle = '#FFFFFF'; // label color
-
                 this.data.datasets.forEach(function (dataset, i) {
                     var meta = chartInstance.controller.getDatasetMeta(i); 
                     // Grab the dataset that is at the 0th index. This should be
@@ -153,16 +145,14 @@ myAction : function(component, event, helper) {
                     // This line makes sure that all elements that are at the index of 0 are hidden.
                     // Which makes them unclickable, not visible, and not hoverable.
                     hiddenData.hidden = true;
-
                     meta.data.forEach(function (bar, index) {
-                        if(bar._datasetIndex === 0){
-                            var model = dataset._meta[Object.keys(dataset._meta)[0]].data[index]._model;
+                        // only fillText for the first bar, otherwise we get double label overflow
+                        if (bar._datasetIndex === 0) {
+                            var model = dataset._meta[Object.keys(dataset._meta)[0]].data[index]._model;                            
                             var label = model.label;
     
                             ctx.fillText(label, bar._model.x+2, bar._model.y);
-    
                         }
-                       
                     });
                 });
             }
@@ -171,26 +161,25 @@ myAction : function(component, event, helper) {
                 series: [{
                     data:[100,200,400]
                 }],
-
+                
                 plotOptions: {
                     bar: {
                         horizontal: true,
                         dataLabels: {
                             position: 'top',
                         },
-
-                    }
+                        
+                    }  
                 },
-
+                
                 dataLabels: {
                     enabled: true,
                     offsetX: -6,
                     style: {
-
+                        
                         colors: ['#FFFFFF']
                     }
                 },
-
                 xAxes: [{
                     ticks: {
                         //beginAtZero: true,
@@ -207,40 +196,27 @@ myAction : function(component, event, helper) {
                         labelString: 'Month',
                     },
                     gridLines: {
-                        display:false,
-                    },
+                    }, 
                     stacked: true
                 }],
                 yAxes: [{
                     gridLines: {
-                        display:true,
-                        offsetGridLines:true,
-                        zeroLineWidth: 1,
-                        color: 'black',
-                        drawTicks: false
+                        display:false,
+                        color: "#fff",
+                        zeroLineColor: "#fff",
+                        zeroLineWidth: 0
                     },
                     ticks: {
                         fontFamily: "'Futura', sans-serif",
-                        fontSize:20,
-                        display: true,
-                        callback: function(value, index, values) {
-                            var tra = JSON.parse(localStorage.getItem("tracks"));// getting values from helper
-                            var trackString = tra[index].split("-"); // making it to an array
-                            if(index === 0){
-                                return trackString[trackString.length-1]; // grabing the last value ie., track
-                            }else{
-                                var prevTrackString = tra[index - 1].split("-");
-                                if(trackString[trackString.length-1] != prevTrackString[prevTrackString.length-1]) {
-                                    return trackString[trackString.length-1]; // grabing the last value ie., track
-                                }
-                            }
-
-                        }
+                        fontSize:11,
+                        display: false
+                        
+                        
                     },
                     //y-axis label name
                     scaleLabel:{
-                        display:true,
-                        labelString: 'Track',
+                        display:false,
+                        labelString: 'Batches',
                     },
                     stacked: true
                 }]
@@ -250,14 +226,13 @@ myAction : function(component, event, helper) {
             },
         tooltips:{
             enabled: false
-
     }        
 };
     
     //calls the apex controller and runs the method getTrainings then saves the return of the method into getTracks
     var getTracks = component.get("c.getTrainings");
     //run a callback
-    getTrrrack.setCallback(this, function(response) {
+    getTracks.setCallback(this, function(response) {
         //gets the response state; fail,success
         var state = response.getState();
         if (state === "SUCCESS") {
@@ -267,15 +242,22 @@ myAction : function(component, event, helper) {
             helper.setInitFilterValues(component, event);
             //pass the results to the chart creator.
             var ctx = component.find("myChart").getElement();
-            var newChart = helper.createChart(ctx, barOptions_stacked, response.getReturnValue(),
-                                                component.get('v.UserColors'), 'Track');
-            component.set("v.dasChart", newChart);
 
+            // putting params on newlines for readability
+            var newChart = helper.createChart(
+                ctx, 
+                barOptions_stacked, 
+                response.getReturnValue(),
+                component.get('v.UserColors'),  
+                component.find('select').get('v.value')
+            );
+            component.set("v.dasChart", newChart);
         }
         else {
+            console.log("Failed with state: " + state);
         }
     });
-    $A.enqueueAction(getTrrrack);
+    $A.enqueueAction(getTracks);   
 },
 
 runSort:function(component, event, helper)
@@ -284,11 +266,12 @@ runSort:function(component, event, helper)
     var allTrainings = component.get('v.tempList');
     var myChart = component.get('v.dasChart');
 
-
     var getColors = component.get('v.DisplayColors');
+    console.log('here\'s the length of the array before sort:' + allTrainings.length);
     helper.sortArray(allTrainings, getColors, sortBy);
-
+    console.log('here\'s the length of the array after sort: '+allTrainings.length);
     helper.updateData(component);
+    console.log('here\s the length of the array after updateData: '+allTrainings.length);
     helper.sortArray(allTrainings, getColors, sortBy); 
     helper.updateData(component); 
 
@@ -300,7 +283,7 @@ applyColors:function(component, event, helper)
     var currTrainings = component.get('v.tempList');
     var allTracks = [];
     var allColors = [];
-    var colorElements = component.find('colors');
+    var colorElements = component.find('colors'); 
     for(let i=0; i<colorElements.length; i++)
     {
         allTracks[i] = colorElements[i].get('v.id');
@@ -309,10 +292,10 @@ applyColors:function(component, event, helper)
     var newColors = helper.applyColors(allTracks, allColors, currTrainings);
     component.set('v.DisplayColors', newColors);
     helper.updateData(component);
-
+    
 },
 
-runFilter: function (component, event, helper) {
+runFilter: function (component, event, helper) { 
     //Grabbing Relevant data
     var allTrainings = component.get('v.qTraining');
     var myChart = component.get('v.dasChart');
@@ -323,7 +306,7 @@ runFilter: function (component, event, helper) {
     var a = component.get('c.applyColors');
     $A.enqueueAction(a);
     component.set('v.tempList', newData);
-
+    
 },
 
 callSaveComp : function(component, event, helper){
@@ -335,22 +318,18 @@ showmodal: function(component, event, helper){
     var activePoints = component.get('v.dasChart').getElementsAtEvent(event);
         if(activePoints.length > 0 )
         {
-            var currIndex = activePoints[0]._index;
-            var currSimpleTraining = component.get('v.tempList')[currIndex];
-           
+            var currIndex = activePoints[0]._index;                
+            var currSimpleTraining = component.get('v.tempList')[currIndex]; 
 
             var childCmp = component.find("modalComp");
 
             let location = currSimpleTraining.location;
-            JSON.stringify(location);
-          
+            JSON.stringify(location); 
 
             let track = currSimpleTraining.trackName;
-            JSON.stringify(track);
-
+            JSON.stringify(track); 
 
             childCmp.showModal(currSimpleTraining.trainingId, location, track);
-
         }    
 },
 
@@ -359,8 +338,7 @@ modalUpdate:function(component,event,helper)
             let action = component.get("c.getTrainings");
             action.setCallback(this, function(response) {
             let state = response.getState();
-            if (state === "SUCCESS") {
-              
+            if (state === "SUCCESS") { 
                 let returnedList = response.getReturnValue();
                 component.set('v.qTraining', returnedList);
                 let displayList = component.get('v.tempList');
@@ -369,7 +347,7 @@ modalUpdate:function(component,event,helper)
                     for(let currReturned = 0; currReturned < returnedList.length; currReturned++)
                     {
                     if(displayList[currRecord].trackName == returnedList[currReturned].trackName)
-                    {
+                    { 
                         displayList[currReturned] = returnedList[currRecord];
                     }
                 }
@@ -379,6 +357,7 @@ modalUpdate:function(component,event,helper)
 
             }
             else {
+                console.log('callout failed with state: ' + state);
             }
         });
 

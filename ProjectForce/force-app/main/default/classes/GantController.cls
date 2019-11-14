@@ -9,8 +9,7 @@ public with sharing class GantController {
             'Project__c',
             'Room__c',
             'Trainer__c',
-            'projectstartdate__c',
-            'Track__c' //added
+            'projectstartdate__c'
             };
                 // Obtain the field name/token map for the Expense object
                 Map<String,Schema.SObjectField> m = Schema.SObjectType.Training__c.fields.getMap();
