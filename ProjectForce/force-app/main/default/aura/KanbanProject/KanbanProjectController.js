@@ -3,7 +3,6 @@
         var action = component.get("c.getBacklogs");
         var project = component.get("v.project");
         action.setParams({ project: project });
-        // Add callback behavior for when response is received
         action.setCallback(this, function (response) {
             var state = response.getState();
             if (state === "SUCCESS") {
@@ -14,7 +13,6 @@
             }
         });
 
-        // Send action off to be executed
         $A.enqueueAction(action);
     },
 
@@ -49,8 +47,7 @@
             // update database
             var action = component.get("c.saveBacklog");
             action.setParams({
-                // setting params for apex controller
-                backlog: theBacklog //setting in apex controller class
+                backlog: theBacklog 
             });
             action.setCallback(this, function (response) {
                 // calling saveBacklog function
