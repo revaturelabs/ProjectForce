@@ -24,9 +24,8 @@
         var backlog = event.getParam('backlog'); //title and backlog after drag
         var listOfBacklogs = component.get('v.backlogs');
 
-
-        var theBacklog = listOfBacklogs.find(function (el) {// theBacklog is the one that we found
-            return el.Story__c == backlog.Story__c; // using story instead of id
+        var theBacklog = listOfBacklogs.find(function (el) {
+            return el.Story__c == backlog.Story__c;
         });
         if (theBacklog) { //truthy
             theBacklog.Stage__c = title;

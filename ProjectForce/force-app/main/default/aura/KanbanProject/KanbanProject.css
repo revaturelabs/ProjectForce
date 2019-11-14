@@ -1,2 +1,4 @@
-.THIS {
+/*toggleCss.css*/
+.THIS toggle {
+    display: none;
 }

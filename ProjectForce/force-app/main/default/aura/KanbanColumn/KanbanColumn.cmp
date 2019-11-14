@@ -11,11 +11,14 @@
             <div class="panel-heading">
                 {! v.title }
             </div>
-            <div class="panel-block column">
+            <div class="panel-block column" style="background-color:transparent;">
                 <aura:iteration items="{!v.backlogs}" var="blog">
                     <aura:if isTrue="{!blog.Stage__c == v.title}">
-                    	<c:KanbanCard backlog="{!blog}"></c:KanbanCard>
-                    </aura:if>     
+
+                        <c:KanbanCard backlog="{!blog}"></c:KanbanCard>
+                        <br/>     
+                    </aura:if>
+                      
                 </aura:iteration>
             </div>
         </div>
