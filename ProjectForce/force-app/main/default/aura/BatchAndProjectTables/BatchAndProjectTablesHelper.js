@@ -35,8 +35,10 @@
         var rowNumber;
         for(let i=0;i<selectedProjects.length;i++){
             rowNumber = selectedProjects[i].split('-')[1];
-            for(let j=0;j<projects[rowNumber].Trainings__r.length;j++){
-                batchIds.push(projects[rowNumber].Trainings__r[j].Id);
+            if(projects[rowNumber].Trainings__r){
+                for(let j=0;j<projects[rowNumber].Trainings__r.length;j++){
+                    batchIds.push(projects[rowNumber].Trainings__r[j].Id);
+                }
             }
         }
         return batchIds;
