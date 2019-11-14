@@ -164,8 +164,7 @@
                         }, {
                         //example of how to reference something in here: chart.data.datasets[1].data[i]
                         //Data here is the duration of the project
-                        data: [],
-                        backgroundColor: "yellow"
+                        data: []
                     }
                 ]
             },
@@ -222,6 +221,9 @@
          var holdProject = [];
          var holdLabels = [];
          var holdTrainers = [];
+         var holdColors = [];
+         var holdTest = [];
+         var holdTestColor = [];
 
          for(var i = 0; i < data.length; i++) {
             startDates[i] = data[i].startDate;
@@ -231,18 +233,27 @@
          }
 
          for(let i =0;i<holdBatchName.length;i++){
-             var some = `${holdBatchName[i]} - ${holdProject[i]} - ${holdTrainers[i]}`;
-             holdLabels[i] = some;
+            var some = `${holdBatchName[i]} - ${holdProject[i]} - ${holdTrainers[i]}`;
+            holdLabels[i] = some;
+            holdTest[i] = 21;
+            holdTestColor[i] = '#F300EA';
          }
+         //comment here
+         component.set('v.UserColors', holdTestColor);
 		
         //assign new values to the chart properties
-        
         chart.data.datasets[0].data = this.convertDate(startDates);
+        console.log("background color");
+        console.log(chart.data.datasets[0].backgroundColor);
+        chart.data.datasets[1].data = holdTest;
+        chart.data.datasets[1].backgroundColor = component.get('v.UserColors');
+        console.log(chart.data.datasets[1].backgroundColor);
         chart.data.labels = holdLabels;
+        // console.log(chart.controller.getDatasetMeta(0));
 
         //update. Until this command is run, none of the changes are actually applied to the chart.
-
         chart.update();
+
     },
     
     /*	convert date method used for converting the date into a integer because the chart only takes in integers as data and not actual date
