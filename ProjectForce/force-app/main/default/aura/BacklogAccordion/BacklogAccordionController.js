@@ -29,7 +29,7 @@
     selectNew : function(component, event, helper) {
         alert("new backlog modal goes here");
     },
-    handleOpenClose: function (component) {
+    handleOpenClose : function(component) {
         let button = component.find("accordion")
         let sections = button.get('v.activeSectionName') ? '' : component.get('v.categories');
         button.set('v.activeSectionName', sections);
