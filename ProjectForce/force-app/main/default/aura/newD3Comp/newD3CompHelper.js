@@ -408,7 +408,6 @@
 
     filterData:function(selectedTrack, selectedLocation, selectedDate, chart, allData, component)
     {
-        // console.log('filter data has been entered');
         //declare necessary variables
         var correctData = [];
         var correctDataCounter = 0;

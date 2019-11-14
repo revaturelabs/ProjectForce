@@ -267,7 +267,6 @@ myAction : function(component, event, helper) {
             component.set("v.dasChart", newChart);
         }
         else {
-            console.log("Failed with state: " + state);
         }
     });
     $A.enqueueAction(getTracks);   
@@ -280,11 +279,8 @@ runSort:function(component, event, helper)
     var myChart = component.get('v.dasChart');
 
     var getColors = component.get('v.DisplayColors');
-    console.log('here\'s the length of the array before sort:' + allTrainings.length);
     helper.sortArray(allTrainings, getColors, sortBy);
-    console.log('here\'s the length of the array after sort: '+allTrainings.length);
     helper.updateData(component);
-    console.log('here\s the length of the array after updateData: '+allTrainings.length);
     helper.sortArray(allTrainings, getColors, sortBy); 
     helper.updateData(component); 
 
@@ -370,7 +366,6 @@ modalUpdate:function(component,event,helper)
 
             }
             else {
-                console.log('callout failed with state: ' + state);
             }
         });
 
