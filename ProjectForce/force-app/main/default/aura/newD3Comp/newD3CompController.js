@@ -226,14 +226,13 @@ myAction : function(component, event, helper) {
             helper.setInitFilterValues(component, event);
             //pass the results to the chart creator.
             var ctx = component.find("myChart").getElement();
-
+            // var theseColors = component.get('v.UserColors');
+            // var theseSortBys = component.find('select').get('v.value');
             // putting params on newlines for readability
             var newChart = helper.createChart(
                 ctx, 
                 barOptions_stacked, 
-                response.getReturnValue(),
-                component.get('v.UserColors'),  
-                component.find('select').get('v.value')
+                response.getReturnValue()
             );
             component.set("v.dasChart", newChart);
         }
@@ -248,33 +247,14 @@ runSort:function(component, event, helper)
 {
     
     var sortBy= component.find('select').get('v.value');
-    console.log(sortBy);
     var allTrainings = component.get('v.tempList');
     var myChart = component.get('v.dasChart');
 
     var getColors = component.get('v.DisplayColors');
 
-    console.log('here\s the length of the array after updateData: '+allTrainings.length);
     helper.sortArray(allTrainings, getColors, sortBy); 
     helper.updateData(component); 
 
-},
-
-applyColors:function(component, event, helper)
-{
-    var myChart = component.get('v.dasChart');
-    var currTrainings = component.get('v.tempList');
-    var allTracks = [];
-    var allColors = [];
-    var colorElements = component.find('colors'); 
-    for(let i=0; i<colorElements.length; i++)
-    {
-        allTracks[i] = colorElements[i].get('v.id');
-        allColors[i] = colorElements[i].get('v.value');
-    }
-    var newColors = helper.applyColors(allTracks, allColors, currTrainings);
-    component.set('v.DisplayColors', newColors);
-    helper.updateData(component);
 },
 
 runFilter: function (component, event, helper) { 
@@ -345,9 +325,15 @@ modalUpdate:function(component,event,helper)
 
         $A.enqueueAction(action);
     },
-    handleItemSelectedEvent:function(component, event, helper){
-        console.log("handling event");
-        var batchInfo = event.getParam("batchInfo");
+
+    /*
+        handleBatchInformationEvent catches an application event that's fired 
+        when a project or batch gets selected from the BatchAndProjectTables component.
+        Then, sends information to the helper to be added to the Gantt Chart.
+    */
+    handleBatchInformationEvent:function(component, event, helper){
+        
+        var batchInfo = event.getParam("batchInfo"); //all selected projects
         helper.addToChart(component, batchInfo);
 
     } 

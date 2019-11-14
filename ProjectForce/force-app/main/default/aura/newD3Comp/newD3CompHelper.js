@@ -94,10 +94,10 @@
     
     
     //creating the chart and passing in data
-    createChart : function(ctx, options, dataSet, userColors, sortBy) {
+    createChart : function(ctx, options, dataSet) {
 
         //First, sort the data passed in according to the value in sortBy
-        dataSet = this.sortArray(dataSet, sortBy);   
+        // dataSet = this.sortArray(dataSet, sortBy);   
 
         //Here we take the dataset and split it into several different arrays to make it easier to use.
         var startTimes = [];
@@ -165,7 +165,7 @@
                         //example of how to reference something in here: chart.data.datasets[1].data[i]
                         //Data here is the duration of the project
                         data: [],
-                        backgroundColor: userColors,
+                        backgroundColor: "yellow"
                     }
                 ]
             },
@@ -174,11 +174,19 @@
         });
     },
 
+    /*
+        addToChart clears the current gantt chart, formats each selected project
+        into the correct JSON Format, then adds it to the views v.tempList for 
+        this.updateData() to populate the gantt chart with the v.tempList.
+    */
     addToChart : function(component, batchInfo) {
         
         var projectsToAdd = batchInfo;
+        // Sweep clean the current Data on the gantt chart to avoid
+        // duplicate population of previously selected projects.
         var currentData = [];
 
+        //flatten the JSON into a compatible object.
         for (var i = 0; i < projectsToAdd.length; i++) {
             var newData = {
                 location : projectsToAdd[i].Room__r.Location__r.Name,
@@ -193,6 +201,7 @@
             currentData.push(newData);
         }
 
+        //set temporary list of currently selected data
         component.set('v.tempList', currentData);
         this.updateData(component);
     },
@@ -205,12 +214,11 @@
         //either using or updating
         var chart = component.get('v.dasChart');
         var data = component.get('v.tempList');
-        var currColors = component.get('v.DisplayColors');
+        // var currColors = component.get('v.DisplayColors');
         
          //declare arrays to hold new data being passed in
          var startDates = [];
          var holdBatchName = [];
-         var holdColors = [];
          var holdProject = [];
          var holdLabels = [];
          var holdTrainers = [];
@@ -226,13 +234,9 @@
              var some = `${holdBatchName[i]} - ${holdProject[i]} - ${holdTrainers[i]}`;
              holdLabels[i] = some;
          }
-
-        //I'm pretty sure this combined with the chart.data.datasets[1].background color
-        //don't actually do anything. But who knows, maybe I'm wrong.
-        holdColors = currColors;
 		
         //assign new values to the chart properties
-        chart.data.datasets[1].backgroundColor = holdColors;
+        
         chart.data.datasets[0].data = this.convertDate(startDates);
         chart.data.labels = holdLabels;
 
@@ -532,47 +536,13 @@
             TrackListCounter++;
         }
 
-        //Creating Colors
-        var UserColors = [];
-        var PresetColors = ['#F26925', '#474C55', '#72A4C2', '#FCB414', '#B9B9BA'];
-        var currColors = [];
-
-        for(var i=0; i<TrackSet.size; i++)
-        {
-            let colorSelector = (PresetColors.length)%i;
-            currColors[i] = PresetColors[colorSelector];
-        }
-
         component.set('v.Locations', LocationList);
         component.set('v.Tracks', TrackList);
-        
-        var allColors = this.applyColors(TrackList, currColors, allTrainings);
-        component.set('v.UserColors', allColors);
-        component.set('v.DisplayColors', allColors);
-        // component.set('v.tempList', allTrainings);
         
         //Setting Today's Date
         var today = new Date();
         component.set('v.today', today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate());
-        //Setting User Colors
         
     },
     
-    applyColors: function(tracks, colors, allBatches) {      
-        var colorsApplied = [];
-        var colorsAppliedCounter = 0;
-        for(let currBatch = 0; currBatch < allBatches.length; currBatch++)
-        {
-            for(let currTrack = 0; currTrack < tracks.length; currTrack++)
-            {
-                if(JSON.stringify(allBatches[currBatch].trackName)==tracks[currTrack])
-                {
-
-                    colorsApplied[colorsAppliedCounter] = colors[currTrack];
-                    colorsAppliedCounter++;
-                }
-            }
-        }   
-        return colorsApplied;
-    }
 })
