@@ -15,8 +15,7 @@
             height="{!v.tableHeight}"
             queryObject="Training__c" 
             tableHeader="Batch Table"
-
-            queryFields="[['Name','text', true], ['Color__c', 'text', true], ['ProjectStartDate__c', 'date', true], ['Trainer__r.Name', false], ['Project__r.Name', false]]" />
+            queryFields="[['Name','text', false], ['Color__c', 'text', true], ['ProjectStartDate__c', 'date', false], ['Trainer__r.Name', false], ['Project__r.Name', false], ['Room__r.Location__r.Name', false], ['Room__r.Room_Number__c', false], ['Track__r.Name', false]]" />
             <!-- query field is a list of lists each inner list consists of [row, type, editable] if type is false dont display that column-->
 
         <c:CreateDataTable aura:id="project"
