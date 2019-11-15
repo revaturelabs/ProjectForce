@@ -8,71 +8,19 @@
             <aura:attribute name="trainingID" type="String"/>
             <aura:attribute name="paramTrack" type="String"/>
             <aura:attribute name="paramProjectDate" type="Date"/>
-    </aura:method> 
-
-    <!--Attribute for the selected value-->
-    <aura:attribute name="selectedLocation" type="String"/>
-    
-     <!--Calls the Javascript controller on initialization of the page
-    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>-->
+    </aura:method>
     
     <!--Attribute of trainingId for saving-->
     <aura:attribute name="saveTrainingID" type="String"/>
 
-    <aura:attribute name="trainingName" type="String"/>
-
-    <!--Attribute for list of locations-->
-    <aura:attribute name="locations" type="String"/>
-    
-    <!--Date input-->
-    <aura:attribute name="selectedDate" type="Date"/>
-    
-        <!--Attribute for the selected value-->
-    <aura:attribute name="selectedTrack" type="String"/>
-
-  
-     <!--Attribute for list-->
-    <aura:attribute name="tracks" type="String"/>
-    
-    
-    <!--Attribute for the selected value-->
-    <aura:attribute name="updateTrack" type="String"/>
-
-  
-    <!--Attribute for list-->
-    <aura:attribute name="updateTracks" type="String"/>
-
      <!--Attribute for the selected value-->
     <aura:attribute name="updateProject" type="String"/>
-
   
     <!--Attribute for list-->
     <aura:attribute name="batchProjectsList" type="String"/>
-
-     <!--Attribute for the selected value-->
-    <aura:attribute name="updateRoom" type="String"/>
-
-  
-    <!--Attribute for list-->
-    <aura:attribute name="updateRooms" type="String"/>    
-    
     
      <!--Attribute for the selected value-->
-    <aura:attribute name="updateLocation" type="String"/>
-
-  
-    <!--Attribute for list-->
-    <aura:attribute name="updateLocations" type="String"/>
-
-    
-     <!--Attribute for the selected value-->
-    <aura:attribute name="updateTrainer" type="String"/>
-
-  
-    <!--Attribute for list-->
-    <aura:attribute name="updateTrainers" type="String"/>  
-
-    <aura:attribute name="none" type="String" default="none" />   
+    <aura:attribute name="updateTrainer" type="String"/>  
 
     
     <!-- Attributes for the entire Batch modal -->
@@ -95,13 +43,8 @@
             
                 <div class ="row">
                     <div class="column">
-                        <div class="slds-size_2-of-4 slds-media_inline">
+                        <div class="slds-size_3-of-4 slds-media_inline">
                             <div class="slds-media slds-media_medium">
-                                <div class="slds-media__figure">
-                                    <span class="slds-avatar slds-avatar_large">
-                                        <img alt="Sf logo" src="{!$Resource.salesforceLogo}" title="User avatar" />
-                                    </span>
-                                </div>
                                 <span class="slds-media__body">
                                     <p>
                                         <aura:text value="{!v.batchTrack}"/>
@@ -129,7 +72,6 @@
                     <div class="column">
                         <div class="slds-form-element">
                             <label class="slds-checkbox_toggle slds-grid">
-                                <span class="slds-form-element__label slds-m-bottom_none">Mark as Complete</span>
                                 <input type="checkbox" name="checkbox-toggle-17" value="checkbox-toggle-17" aria-describedby="checkbox-toggle-17" />
                                 <span id="checkbox-toggle-17" class="slds-checkbox_faux_container" aria-live="assertive">
                                     <span class="slds-checkbox_faux"></span>
@@ -145,29 +87,31 @@
         <span class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
             <div class ="row">
                 <div class="column">
-                    <!--Project-->    
-                    <!-- <label style="font-size: 15px">Project: </label>
-                    <span class="slds-badge">
-                        <lightning:button variant="base" label="{!v.updateProject}" onclick="{!c.openDiv}"/>
-                    </span> -->
-                    <label style="font-size: 20px" >Project: </label>
-                    <lightning:button class="buttonStyle slds-align_absolute-center" type="button" label="{!v.updateProject}"  onclick="{!c.openDiv}"/>
-                    <br/>
-                    <!-- shows projects-->
-                    <div  style="display:none" id="locationDiv">
-                        <lightning:select name="selProject" label="Project" aura:id="selProject" value="{!v.updateProject}"  onchange="{!c.changeButton}" >
-                            <aura:iteration items="{!v.batchProjectsList}" var="project">
-                                <option text="{!project.Name}" value="{!project.Name}" selected="{!project.selected}"/>
-                            </aura:iteration>
-                        </lightning:select>
+                    <!--Project-->
+                    <div>
+                        <label style="font-size: 15px">Project: </label>
+                        <span class="slds-badge" id="projectBadge">
+                            <lightning:button class="projectButton" variant="base" label="{!v.updateProject}" onclick="{!c.openDiv}"/>
+                        </span>
+
+                        <!-- List of Projects-->
+                        <div style="display:none" id="locationDiv">
+                            <lightning:select name="selProject" label="Project" aura:id="selProject" value="{!v.updateProject}"  onchange="{!c.getFilter}" >
+                                <aura:iteration items="{!v.batchProjectsList}" var="project">
+                                    <option text="{!project.Name}" value="{!project.Name}" selected="{!project.selected}"/>
+                                </aura:iteration>
+                            </lightning:select>
+                        </div>
                     </div>
                     <br/>
+
                     <!--Size-->
                     <div>
                         <label style="font-size: 15px">Size: </label>
                         <aura:text value="{!v.batchSize}"/>
                     </div>
                     <br/>
+
                     <!--Trainer-->
                     <div>
                         <label style="font-size: 15px">Trainer: </label>
@@ -190,48 +134,15 @@
                 </div>
             </div>
 
-            <hr></hr>
+            <hr class="modalSections"></hr>
             <lightning:textarea name="TextBox" label="Comments" />
         </span>
-            
-
-                <!--track drop down-->
-                <!-- <lightning:select  name="myTrack" label="Track" aura:id="myTrack" value="{!v.selectedTrack}" onchange="{!c.getFilter}">
-                    <aura:iteration items="{!v.tracks}" var="track">
-                        <option text="{!track.Name}" value="{!track.Name}" selected="{!track.selected == v.selectedTrack}"/>
-                    </aura:iteration>
-                </lightning:select>  -->
-
-                <!--Date-->
-                <!-- <lightning:input type="date" name="Date" label="Date" value="{!v.selectedDate}" onchange="{!c.getFilter}"/>
-            </div> -->
-        
-                <!--Project drop down-->
-                <!-- <lightning:select name="selProject" label="Project" aura:id="selProject" value="{!v.updateProject}">
-                    <aura:iteration items="{!v.updateProjects}" var="project">
-                        <option text="{!project.Name}" value="{!project.Name}" selected="{!project.selected}"/>
-                    </aura:iteration>
-                </lightning:select> -->
-
-                <!--Room drop down-->
-                <!-- <lightning:select name="selRoom" label="Room" aura:id="selRoom" value="{!v.updateRoom}">
-                    <aura:iteration items="{!v.updateRooms}" var="room">
-                        <option text="{!room.Name}" value="{!room.Name}" selected="{!room.selected}"/>
-                    </aura:iteration>
-                </lightning:select>  -->
-
-                <!--Trainer drop down-->
-                <!-- <lightning:select name="selTrainer" label="Trainer" aura:id="selTrainer" value="{!v.updateTrainer}">
-                    <aura:iteration items="{!v.updateTrainers}" var="trainer">
-                        <option text="{!trainer.Name}" value="{!trainer.Name}" selected="{!trainer.selected}"/>
-                    </aura:iteration>
-                </lightning:select> -->
         
                 <!--</lightning:card>-->
                 <footer class="slds-modal__footer slds-modal__footer_directional">
-                    <lightning:button class=" slds-button_brand button" label="Kanban" onclick="{!c.hideModal}"/>
-                    <lightning:button class=" slds-button_brand button " label="Cancel"  onclick="{!c.hideModal}"/>
-                    <lightning:button class="slds-button_brand  button" label="Save" onclick="{!c.save}"/>
+                    <lightning:button class="slds-button_brand button" label="Kanban" onclick="{!c.hideModal}"/>
+                    <lightning:button class="slds-button_brand button" label="Cancel"  onclick="{!c.hideModal}"/>
+                    <lightning:button class="slds-button_brand button" label="Save" onclick="{!c.save}"/>
                 </footer>
             </div>
         </div>

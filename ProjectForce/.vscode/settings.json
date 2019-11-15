@@ -6,5 +6,5 @@
     "**/.sfdx": true
   },
 
-  "eslint.nodePath": "c:\\Users\\corma\\.vscode\\extensions\\salesforce.salesforcedx-vscode-lwc-47.5.0\\node_modules"
+  "eslint.nodePath": "c:\\Users\\corma\\.vscode\\extensions\\salesforce.salesforcedx-vscode-lwc-47.6.0\\node_modules"
 }

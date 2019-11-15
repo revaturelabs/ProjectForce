@@ -2,7 +2,6 @@
    display: none;
 }
 
-
 .THIS .kanban{
    background-color: #1798c1;
    color: white;
@@ -22,18 +21,35 @@
 
 .THIS #trainerBadge {
    background-color: #FF7D3C;
+   color: white;
+}
+
+.THIS #projectBadge {
+   background-color: rgb(74, 136, 230);
+   color: white;
+}
+
+.THIS .projectButton {
+   background-color: transparent;
+   margin: 0px;
+   border: 0px;
+   height: 20px;
+   line-height: 1px;
+}
+
+.THIS .modalSections {
+   color: rgb(221, 219, 218);
+   background-color: rgb(221, 219, 218);
+   height: 1.5px;
 }
 
 .THIS .slds-modal__footer {
-   
    background-color: white;
 }
 
 
 .THIS .slds-button_neutral:hover {
-   
    background-color: #72A4C2;
-   
 }
 /*
 .THIS .slds-select,.THIS .slds-input{
@@ -50,7 +66,7 @@
 
 .THIS .button {
    background-color:#1798c1;
-   border-radius: 0px;
+   border: 0px;
 }
 
 .THIS .header{

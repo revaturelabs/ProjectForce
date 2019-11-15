@@ -203,10 +203,6 @@ myAction : function(component, event, helper) {
 
             var childCmp = component.find("modalComp")
 
-            let location = currSimpleTraining.location;
-            JSON.stringify(location);
-            console.log("location:"+location);
-
             let track = currSimpleTraining.trackName;
             JSON.stringify(track);
             console.log("track:"+track);
@@ -217,9 +213,7 @@ myAction : function(component, event, helper) {
 
             //let newLocation = location.replace(/"/location,"");
             //console.log(newLocation);
-            childCmp.showModal(currSimpleTraining.trainingId, track, projectStartDate);
-            
-            
+            childCmp.showModal(currSimpleTraining.trainingId, track, projectStartDate);      
         }           
     };       
     
@@ -425,10 +419,6 @@ showmodal: function(component, event, helper){
             console.log(currSimpleTraining);
 
             var childCmp = component.find("modalComp");
-
-            let location = currSimpleTraining.location;
-            JSON.stringify(location);
-            console.log("location:"+location);
 
             let track = currSimpleTraining.trackName;
             JSON.stringify(track);
