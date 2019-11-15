@@ -71,8 +71,6 @@
             case 'dueDateOld':
                 records.sort((a, b)=> (a.DueDate__c < b.DueDate__c) ? 1 : -1);
                 break;
-            case 'assignedAZ':
-            case 'assignedZA':
         }
         component.set('v.records', records);
     }

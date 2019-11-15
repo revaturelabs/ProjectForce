@@ -12,8 +12,6 @@
         <div class="slds-grid">
             <lightning:select class="slds-col" name="Filter" label="Filter:" value="{!v.criteria}" onchange="{!c.filter}">
                 <option value="">- None -</option>
-                <option value="myTasks">My Tasks</option>
-                <option value="neglectedTasks">Neglected Tasks</option>
                 <option value="dueThisWeek">Due This Week</option>
                 <option value="dueNextWeek">Due Next Week</option>
             </lightning:select>
@@ -23,8 +21,6 @@
                 <option value="nameZA">Story (Z-A)</option>
                 <option value="dueDateNew">Due Date (Newest)</option>
                 <option value="dueDateOld">Due Date (Oldest)</option>
-                <option value="assignedAZ">Assignee (A-Z)</option>
-                <option value="assignedZA">Assignee (Z-A)</option>
             </lightning:select>
         </div>
         <div class="slds-box slds-box_small slds-theme_shade">
