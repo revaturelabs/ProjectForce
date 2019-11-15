@@ -1,7 +1,7 @@
+
 <aura:component controller="GantController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickActionWithoutHeader" access="global">
 
         <c:modal aura:id="modalComp"/>
-       <!-- <lightning:button variant="neutral" label="New" onclick="{!c.callSaveComp}"/>-->
         <c:modal/>
     <!--This grabs the Chart.js library from the static resources, 
 		and runs the chart creation function when finished.-->
@@ -17,8 +17,7 @@
     <aura:attribute name ="UserColors" type="List"/>
     <aura:attribute name = "DisplayColors" type = "List" />
     <aura:attribute name="today" type="Date" default=""/>
-    <!--<aura:attribute name= "modalComplete" type="Boolean" default = "false" />"
-    <aura:handler name="change" value="{!v.modalComplete}" action="{!c.modalUpdate}"/>-->
+
     
     
     

@@ -225,6 +225,7 @@
         
         //the charts options such as x-axis, y-axis, if hover/no hover
         var barOptions_stacked = {
+
             
                 hover: {
                     animationDuration:10
@@ -251,6 +252,7 @@
                     this.data.datasets.forEach(function (dataset, i) {
                         var meta = chartInstance.controller.getDatasetMeta(i);
                         meta.data.forEach(function (bar, index) {
+
                             var model = dataset._meta[Object.keys(dataset._meta)[0]].data[index]._model;                            
                             var label = model.label;
                             
@@ -327,6 +329,7 @@
                 legend:{
                     display:false
                 },
+
             tooltips:{
                 enabled: false
             }
@@ -359,6 +362,7 @@
     },
     
     runSort:function(component, event, helper)
+
     {
         var sortBy= component.find('select').get('v.value');
         var allTrainings = component.get('v.tempList');
@@ -479,6 +483,7 @@
                 else {
                     console.log('callout failed with state: ' + state);
                 }
+
             });
     
             $A.enqueueAction(action);
@@ -486,3 +491,4 @@
     
     
     })
+

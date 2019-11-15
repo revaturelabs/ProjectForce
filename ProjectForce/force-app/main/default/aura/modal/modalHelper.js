@@ -20,6 +20,7 @@
 				component.set("v.batchRoom", batchInformation.Room__r.Name);
 				component.set("v.batchLocation", batchInformation.Room__r.Location__r.Name);
 			}
+
 			else{
 				console.log("Failed with state: "+state);
 			}
@@ -31,6 +32,7 @@
 	//sets the list of projects by calling the server- side controller	
 	listOfTrackProject : function(component, event) {
 		var action = component.get("c.getProject");
+
 		let params = event.getParam('arguments');
 
 		action.setParams ({ 
@@ -118,6 +120,7 @@
 		var state = response.getState();
 
 		let saveComplete = response.getReturnValue();
+
 		if(state === "SUCCESS"){
 			
 			if(saveComplete)
