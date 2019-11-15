@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>No_Same_Labels</fullName>
-    <active>true</active>
+    <active>false</active>
     <description>A backlog card cannot have same labels</description>
     <errorConditionFormula>OR( CardLabel1__c == CardLabel2__c, CardLabel2__c == CardLabel3__c , CardLabel1__c == CardLabel3__c)</errorConditionFormula>
     <errorMessage>The card already contains this label</errorMessage>
