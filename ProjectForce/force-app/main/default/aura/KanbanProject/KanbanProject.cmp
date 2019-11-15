@@ -1,27 +1,23 @@
-<aura:component  controller="KanbanProjectApexClass" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickAction" access="global">
-    <!-- resources -->
-    <ltng:require styles="{!$Resource.bulma + '/bulma-0.4.2/css/bulma.css'}" />
-	
+<aura:component controller="KanbanProjectApexClass"
+    implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickAction"
+    access="global">
     <!-- attributes -->
-    <aura:attribute name="backlogs" type="Backlog__c[]"/>
+    <aura:attribute name="backlogs" type="Backlog__c[]" />
     <!-- project id stored as a string -->
-    <aura:attribute name="project" type="String"/>
-
+    <aura:attribute name="project" type="String" />
     <!-- event handlers -->
     <aura:handler name="init" action="{!c.doInit}" value="{!this}"></aura:handler>
     <aura:handler name="droppedOnColumn" event="c:droppedOnColumn" action="{!c.droppedHandler}"></aura:handler>
-
     <div class="columns">
         <aura:if isTrue="{!v.backlogs.length}">
             <c:KanbanColumn title="To Do" backlogs="{!v.backlogs}"></c:KanbanColumn>
             <c:KanbanColumn title="Doing" backlogs="{!v.backlogs}"></c:KanbanColumn>
             <c:KanbanColumn title="Done" backlogs="{!v.backlogs}"></c:KanbanColumn>
-        <aura:set attribute="else">
+            <aura:set attribute="else">
                 <div class="demo-only" style="padding:0.5rem;background:#16325c">
-                        <div class="slds-text-color_inverse">No Backlogs found</div>
+                    <div class="slds-text-color_inverse">No Backlogs found</div>
                 </div>
             </aura:set>
         </aura:if>
     </div>
-    
 </aura:component>
