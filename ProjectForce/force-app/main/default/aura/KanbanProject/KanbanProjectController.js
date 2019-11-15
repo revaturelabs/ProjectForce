@@ -12,9 +12,6 @@
         action.setCallback(this, function (response) {
             var state = response.getState();
             if (state === "SUCCESS") {
-                console.log(response.getReturnValue());
-                // It find all backlog records for the given project
-                // and sets v.backlogs
                 component.set("v.backlogs", response.getReturnValue());
             } else {
                 console.log("Failed with state: " + state);
@@ -83,9 +80,6 @@
             action.setCallback(this, function (response) {
                 // calling saveBacklog function
                 var state = response.getState();
-                if (state === "SUCCESS") {
-                    console.log("updated");
-                }
             });
             $A.enqueueAction(action);
         } else {

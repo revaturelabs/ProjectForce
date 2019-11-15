@@ -5,7 +5,9 @@
     <columns>Story__c</columns>
     <columns>Stage__c</columns>
     <columns>Project__c</columns>
-    <columns>DateLogged__c</columns>
+    <columns>StartDateTime__c</columns>
+    <columns>EndDateTime__c</columns>
+    <columns>DueDate__c</columns>
     <columns>NumberOfCardLabels__c</columns>
     <columns>CardLabel1__c</columns>
     <filterScope>Everything</filterScope>

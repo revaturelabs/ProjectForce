@@ -1,0 +1,73 @@
+<aura:component controller="KanbanProjectApexClass">
+    <aura:attribute name="records" type="List" default="[]"/>
+    <aura:attribute name="recordsBackup" type="List" default="[]"/>
+    <aura:attribute name="categories" type="String[]" default="['To Do', 'Doing', 'Done']"/>
+    <aura:attribute name="project" type="String"/>
+    <aura:attribute name="criteria" type="String"/>
+    <aura:attribute name="order" type="String"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:method name="refresh" action="{!c.doInit}" access="PUBLIC"/> 
+
+    <lightning:accordion aura:id="accordion" allowMultipleSectionsOpen="true">
+        <div class="slds-grid">
+            <lightning:select class="slds-col" name="Filter" label="Filter:" value="{!v.criteria}" onchange="{!c.filter}">
+                <option value="">- None -</option>
+                <option value="dueThisWeek">Due This Week</option>
+                <option value="dueNextWeek">Due Next Week</option>
+            </lightning:select>
+            <lightning:select class="slds-col" name="Sort" label="Sort:" value="{!v.order}" onchange="{!c.sort}">
+                <option value="">- None -</option>
+                <option value="nameAZ">Story (A-Z)</option>
+                <option value="nameZA">Story (Z-A)</option>
+                <option value="dueDateNew">Due Date (Newest)</option>
+                <option value="dueDateOld">Due Date (Oldest)</option>
+            </lightning:select>
+        </div>
+        <div class="slds-box slds-box_small slds-theme_shade">
+            <div class="slds-grid slds-m-horizontal_small">
+                <div class="slds-col slds-size_1-of-3" >
+                    <span onclick="{!c.handleOpenClose}">Story  </span>
+                    <lightning:helptext content="Click on Story to open/close all"/>
+                </div>
+                <div class="slds-col slds-size_1-of-6">Project</div>
+                <div class="slds-col slds-size_1-of-6">Start Date</div>
+                <div class="slds-col slds-size_1-of-6">End Date</div>
+                <div class="slds-col slds-size_1-of-6">Due Date</div>
+            </div>
+        </div>
+        <aura:iteration items="{!v.categories}" var="category">
+            <lightning:accordionSection name="{!category}" label="{!category}">
+                <aura:set attribute="actions">
+                    <lightning:button label="New" onclick="{!c.selectNew}"/>
+                </aura:set>
+                <aura:set attribute="body">
+                    <aura:iteration items="{!v.records}" var="record"> 
+                        <aura:if isTrue="{!record.Stage__c == category}">
+                        <div class="slds-grid slds-box slds-box_small">
+                            <div class="slds-col slds-size_1-of-3">
+                                <a href="{!'/one/one.app?#/sObject/'+ record.Id + '/view'}" target="_blank">
+                                    {!record.Story__c}
+                                </a>
+                            </div>
+                            <div class="slds-col slds-size_1-of-6">
+                                <a href="{!'/one/one.app?#/sObject/'+ record.Project__c + '/view'}" target="_blank">
+                                    {!record.Project__r.Name} </a>
+                            </div>
+                            <div class="slds-col slds-size_1-of-6" title="{!record.stime}">
+                                {!record.StartDateTime__c}
+                            </div>
+                            <div class="slds-col slds-size_1-of-6" title="{!record.etime}">
+                                {!record.EndDateTime__c}
+                            </div>
+                            <div class="slds-col slds-size_1-of-6">
+                                {!record.DueDate__c}
+
+                            </div>
+                        </div>
+                        </aura:if> 
+                    </aura:iteration>
+                </aura:set>
+            </lightning:accordionSection>
+        </aura:iteration>
+    </lightning:accordion>
+</aura:component>
