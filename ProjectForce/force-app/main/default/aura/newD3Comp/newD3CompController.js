@@ -139,6 +139,12 @@ myAction : function(component, event, helper) {
                 ctx.fillStyle = '#FFFFFF'; // label color
                 this.data.datasets.forEach(function (dataset, i) {
                     var meta = chartInstance.controller.getDatasetMeta(i); 
+                    // Grab the dataset that is at the 0th index. This should be
+                    // all of the elements that are behind the main ones that are colored.
+                    var hiddenData = chartInstance.controller.getDatasetMeta(0);
+                    // This line makes sure that all elements that are at the index of 0 are hidden.
+                    // Which makes them unclickable, not visible, and not hoverable.
+                    hiddenData.hidden = true;
                     meta.data.forEach(function (bar, index) {
                         // only fillText for the first bar, otherwise we get double label overflow
                         if (bar._datasetIndex === 0) {
@@ -195,22 +201,38 @@ myAction : function(component, event, helper) {
                 }],
                 yAxes: [{
                     gridLines: {
-                        display:false,
-                        color: "#fff",
-                        zeroLineColor: "#fff",
-                        zeroLineWidth: 0
+                        display:true,
+                        offsetGridLines:true,
+                        zeroLineWidth: 1,
+                        color: 'black',
+                        drawTicks: false
                     },
                     ticks: {
                         fontFamily: "'Futura', sans-serif",
-                        fontSize:11,
-                        display: false
-                        
-                        
+                        fontSize:20,
+                        display: true,
+                        callback: function(value, index, values) {
+                            // getting values from helper
+                            var trackNProj = JSON.parse(localStorage.getItem("tracks"));
+                             // making it to an array
+                            var trackString = trackNProj[index].split("-");
+                            if(index === 0){
+                                 // grabing the last value ie., track
+                                return trackString[trackString.length-1];
+                            }else{
+                                var prevTrackString = trackNProj[index - 1].split("-");
+                                if(trackString[trackString.length-1] != prevTrackString[prevTrackString.length-1]) {
+                                    // grabing the last value ie., track
+                                    return trackString[trackString.length-1]; 
+                                }
+                            }
+
+                        }
                     },
                     //y-axis label name
                     scaleLabel:{
-                        display:false,
-                        labelString: 'Batches',
+                        display:true,
+                        labelString: 'Track',
                     },
                     stacked: true
                 }]
@@ -220,7 +242,8 @@ myAction : function(component, event, helper) {
             },
         tooltips:{
             enabled: false
-    }        
+
+    }               
 };
     
     //calls the apex controller and runs the method getTrainings then saves the return of the method into getTracks
@@ -248,7 +271,6 @@ myAction : function(component, event, helper) {
             component.set("v.dasChart", newChart);
         }
         else {
-            console.log("Failed with state: " + state);
         }
     });
     $A.enqueueAction(getTracks);   
@@ -261,11 +283,8 @@ runSort:function(component, event, helper)
     var myChart = component.get('v.dasChart');
 
     var getColors = component.get('v.DisplayColors');
-    console.log('here\'s the length of the array before sort:' + allTrainings.length);
     helper.sortArray(allTrainings, getColors, sortBy);
-    console.log('here\'s the length of the array after sort: '+allTrainings.length);
     helper.updateData(component);
-    console.log('here\s the length of the array after updateData: '+allTrainings.length);
     helper.sortArray(allTrainings, getColors, sortBy); 
     helper.updateData(component); 
 
@@ -351,7 +370,6 @@ modalUpdate:function(component,event,helper)
 
             }
             else {
-                console.log('callout failed with state: ' + state);
             }
         });
 

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
     <types>
-        <members>*</members>
         <members>KanbanProjectApexClass</members>
         <name>ApexClass</name>
     </types>
@@ -54,7 +53,6 @@
         <name>StaticResource</name>
     </types>
     <types>
-        <members>*</members>
         <members>Location__c</members>
         <members>Project__c</members>
         <members>Room__c</members>
@@ -68,7 +66,6 @@
         <name>CustomObject</name>
     </types>
     <types>
-        <members>*</members>
         <members>Location__c</members>
         <members>Project__c</members>
         <members>Room__c</members>

@@ -4,6 +4,13 @@
     <columns>NAME</columns>
     <columns>Story__c</columns>
     <columns>Stage__c</columns>
+<<<<<<< HEAD
+=======
+    <columns>Project__c</columns>
+    <columns>StartDateTime__c</columns>
+    <columns>EndDateTime__c</columns>
+    <columns>DueDate__c</columns>
+>>>>>>> 091619salesforce
     <columns>NumberOfCardLabels__c</columns>
     <columns>CardLabel1__c</columns>
     <columns>StartDateTime__c</columns>

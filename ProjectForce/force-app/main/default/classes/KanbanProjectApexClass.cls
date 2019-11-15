@@ -7,7 +7,12 @@ public with sharing class KanbanProjectApexClass {
                 CardLabel1__c, CardLabel1__r.Text__c, CardLabel1__r.Color__c, 
                 CardLabel2__c, CardLabel2__r.Text__c, CardLabel2__r.Color__c,
                 CardLabel3__c, CardLabel3__r.Text__c, CardLabel3__r.Color__c,
+<<<<<<< HEAD
                 Stage__c, Project__c, DateLogged__c, PullRequest__c 
+=======
+                Stage__c, Project__c, Project__r.Name, 
+                StartDateTime__c, EndDateTime__c, DueDate__c  
+>>>>>>> 091619salesforce
             FROM  Backlog__c
             WHERE Project__c =: project];
     }

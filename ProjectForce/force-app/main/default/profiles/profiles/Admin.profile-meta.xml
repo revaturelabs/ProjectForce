@@ -6,35 +6,7 @@
         <visible>true</visible>
     </applicationVisibilities>
     <classAccesses>
-        <apexClass>ChartCalculationController</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>ChartCalculationControllerTest</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>GantController</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>KanbanProjectApexClass</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>ModalController</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>ModalControllerTest</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>TestDataFactory</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>TestGantController</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <custom>false</custom>
@@ -56,6 +28,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Backlog__c.DateLogged__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Backlog__c.DueDate__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

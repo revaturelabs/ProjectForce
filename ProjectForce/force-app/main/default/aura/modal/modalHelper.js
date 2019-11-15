@@ -123,7 +123,6 @@
 	});
 	
 	$A.enqueueAction(action);
-	//return track[0].Name
 },
 
 
@@ -133,8 +132,6 @@
 		
 
 		var action = component.get("c.getRoom");
-       // var location = component.get("v.selectedLocation");
-		//var date = component.get("v.selectedDate");
 		let params = event.getParam('arguments');
 		let selectedLocation = component.get("v.selectedLocation");
 		let selectedDate = component.get("v.selectedDate");
@@ -272,10 +269,6 @@
 		var state = response.getState();
 
 		let saveComplete = response.getReturnValue();
-
-		//this.hide(component,event);
-		//this.showToast(component,event);
-		
 
 		if(state === "SUCCESS"){
 			

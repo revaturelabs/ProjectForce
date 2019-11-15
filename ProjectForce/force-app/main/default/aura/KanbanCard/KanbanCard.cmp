@@ -1,16 +1,12 @@
 <aura:component>
     <aura:attribute name="backlog" type="Backlog__c" required="true"></aura:attribute>
-    <!-- <aura:attribute name="showLabel" type="Boolean" default="false" /> -->
-    <!-- <aura:attribute name="labelColor" type="String" /> -->
     <ltng:require styles="{!$Resource.bulma}" />
     <aura:handler name="init" action="{!c.doInit}" value="{!this}" />
-
-    <div class="card draggable" draggable="true" ondragstart="{!c.onDragStart}">
+    <div class="slds-card card draggable" draggable="true" ondragstart="{!c.onDragStart}">
         <aura:iteration end="{!v.backlog.NumberOfCardLabels__c}" items="0,1,2" var="item" indexVar="index">
             <c:KanbanCardLabel backlog="{!v.backlog}" labelIndex="{!index + 1}" />
         </aura:iteration>
-        <div class="card-content">
-
+        <div class="slds-card__body slds-card__body_inner card-content">
             <p>{!v.backlog.Story__c}</p>
         </div>  
     </div>
