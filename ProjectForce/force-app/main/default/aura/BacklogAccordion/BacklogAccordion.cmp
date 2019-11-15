@@ -30,7 +30,7 @@
         <div class="slds-box slds-box_small slds-theme_shade">
             <div class="slds-grid slds-m-horizontal_small">
                 <div class="slds-col slds-size_1-of-3" >
-                    <span onclick="{!c.handleOpenClose}">Story</span>
+                    <span onclick="{!c.handleOpenClose}">Story  </span>
                     <lightning:helptext content="Click on Story to open/close all"/>
                 </div>
                 <div class="slds-col slds-size_1-of-6">Project</div>
