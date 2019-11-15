@@ -376,4 +376,3 @@ modalUpdate:function(component,event,helper)
         $A.enqueueAction(action);
     }  
 })
-
