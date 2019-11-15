@@ -109,8 +109,10 @@ myAction : function(component, event, helper) {
     
         // This variable is needed for the hover event.
         var myChartComponent = component.find("myChart").getElement();
-        // function used to store how we want the hover event to work. This method allows for us to reuse it later if needed.
+        //function used to store how we want the hover event to work. This method allows for us to reuse it later if needed.
         var hoverEvent = function(e) {
+            var ctx = this.chart.ctx;
+            var chartInstance = this.chart;
             // inline if statement. If we aren't hovering over the timeline elements
             // then we have the default pointer, otherwise we use the pointing pointer
             // for the mouse to display on the browser window.
@@ -120,17 +122,19 @@ myAction : function(component, event, helper) {
         var barOptions_stacked = {
 
             hover: {
-                animationDuration:10,
+               
                 // Documentation for this onHover function is in Chart.js
                 // https://www.chartjs.org/docs/latest/general/interactions/events.html
                 onHover: function (e, element) {
+                    
                     hoverEvent(e,element);
                 }
             },
+            animationDuration:10,
             events: {
-                events: ['onClick']
+                events: ['click']
             },
-        animation: {
+        animation: {       
             onComplete: function () {
                 var ctx = this.chart.ctx;
                 var chartInstance = this.chart;
@@ -201,38 +205,22 @@ myAction : function(component, event, helper) {
                 }],
                 yAxes: [{
                     gridLines: {
-                        display:true,
-                        offsetGridLines:true,
-                        zeroLineWidth: 1,
-                        color: 'black',
-                        drawTicks: false
+                        display:false,
+                        color: "#fff",
+                        zeroLineColor: "#fff",
+                        zeroLineWidth: 0
                     },
                     ticks: {
                         fontFamily: "'Futura', sans-serif",
-                        fontSize:20,
-                        display: true,
-                        callback: function(value, index, values) {
-                            // getting values from helper
-                            var trackNProj = JSON.parse(localStorage.getItem("tracks"));
-                             // making it to an array
-                            var trackString = trackNProj[index].split("-");
-                            if(index === 0){
-                                 // grabing the last value ie., track
-                                return trackString[trackString.length-1];
-                            }else{
-                                var prevTrackString = trackNProj[index - 1].split("-");
-                                if(trackString[trackString.length-1] != prevTrackString[prevTrackString.length-1]) {
-                                    // grabing the last value ie., track
-                                    return trackString[trackString.length-1]; 
-                                }
-                            }
-
-                        }
+                        fontSize:11,
+                        display: false
+                        
+                        
                     },
                     //y-axis label name
                     scaleLabel:{
-                        display:true,
-                        labelString: 'Track',
+                        display:false,
+                        labelString: 'Batches',
                     },
                     stacked: true
                 }]
@@ -242,8 +230,7 @@ myAction : function(component, event, helper) {
             },
         tooltips:{
             enabled: false
-
-    }               
+    }        
 };
     
     //calls the apex controller and runs the method getTrainings then saves the return of the method into getTracks
@@ -258,7 +245,7 @@ myAction : function(component, event, helper) {
             component.set("v.tempList", response.getReturnValue());
             helper.setInitFilterValues(component, event);
             //pass the results to the chart creator.
-            var ctx = component.find("myChart").getElement();
+            var ctx = component.find("myChart").getElement().getContext("2d"); ///////////////////
 
             // putting params on newlines for readability
             var newChart = helper.createChart(
@@ -271,6 +258,7 @@ myAction : function(component, event, helper) {
             component.set("v.dasChart", newChart);
         }
         else {
+            console.log("Failed with state: " + state);
         }
     });
     $A.enqueueAction(getTracks);   
@@ -283,8 +271,11 @@ runSort:function(component, event, helper)
     var myChart = component.get('v.dasChart');
 
     var getColors = component.get('v.DisplayColors');
+    console.log('here\'s the length of the array before sort:' + allTrainings.length);
     helper.sortArray(allTrainings, getColors, sortBy);
+    console.log('here\'s the length of the array after sort: '+allTrainings.length);
     helper.updateData(component);
+    console.log('here\s the length of the array after updateData: '+allTrainings.length);
     helper.sortArray(allTrainings, getColors, sortBy); 
     helper.updateData(component); 
 
@@ -370,9 +361,11 @@ modalUpdate:function(component,event,helper)
 
             }
             else {
+                console.log('callout failed with state: ' + state);
             }
         });
 
         $A.enqueueAction(action);
     }  
 })
+

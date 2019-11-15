@@ -1,8 +1,7 @@
-
 <aura:component controller="GantController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickActionWithoutHeader" access="global">
 
         <c:modal aura:id="modalComp"/>
-        <c:modal/>
+       <!-- <lightning:button variant="neutral" label="New" onclick="{!c.callSaveComp}"/>-->
     <!--This grabs the Chart.js library from the static resources, 
 		and runs the chart creation function when finished.-->
     <ltng:require scripts="{!$Resource.ChartJS}" afterScriptsLoaded="{!c.myAction}" />
@@ -17,9 +16,8 @@
     <aura:attribute name ="UserColors" type="List"/>
     <aura:attribute name = "DisplayColors" type = "List" />
     <aura:attribute name="today" type="Date" default=""/>
-
     
-    
+    <aura:handler name="modalCompleteEvent" event="c:ModalCompletedEvent" action="{!c.myAction}" />
     
     <div class = "THIS">
         <!--This div marks where all the chart manipulation sections can be found. -->
