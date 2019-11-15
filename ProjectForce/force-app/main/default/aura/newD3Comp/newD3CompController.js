@@ -175,6 +175,7 @@
           }
         },
         xAxes: [
+            
           {
             barPercentage: 0.4,
             ticks: {
@@ -197,6 +198,7 @@
         ],
         yAxes: [
           {
+            barThickness : 30,
             gridLines: {
               display: false,
               color: "#fff",
