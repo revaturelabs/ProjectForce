@@ -109,8 +109,10 @@ myAction : function(component, event, helper) {
     
         // This variable is needed for the hover event.
         var myChartComponent = component.find("myChart").getElement();
-        // function used to store how we want the hover event to work. This method allows for us to reuse it later if needed.
+        //function used to store how we want the hover event to work. This method allows for us to reuse it later if needed.
         var hoverEvent = function(e) {
+            var ctx = this.chart.ctx;
+            var chartInstance = this.chart;
             // inline if statement. If we aren't hovering over the timeline elements
             // then we have the default pointer, otherwise we use the pointing pointer
             // for the mouse to display on the browser window.
@@ -120,15 +122,17 @@ myAction : function(component, event, helper) {
         var barOptions_stacked = {
 
             hover: {
-                animationDuration:10,
+               
                 // Documentation for this onHover function is in Chart.js
                 // https://www.chartjs.org/docs/latest/general/interactions/events.html
                 onHover: function (e, element) {
+                    
                     hoverEvent(e,element);
                 }
             },
+            animationDuration:10,
             events: {
-                events: ['onClick']
+                events: ['click']
             },
         animation: {       
             onComplete: function () {
@@ -241,7 +245,7 @@ myAction : function(component, event, helper) {
             component.set("v.tempList", response.getReturnValue());
             helper.setInitFilterValues(component, event);
             //pass the results to the chart creator.
-            var ctx = component.find("myChart").getElement();
+            var ctx = component.find("myChart").getElement().getContext("2d"); ///////////////////
 
             // putting params on newlines for readability
             var newChart = helper.createChart(
