@@ -46,21 +46,9 @@
 }
 
 .THIS .buttonStyle{
-  border: none;
-  color: white;
-  padding: 0px;
-  border-radius: 8px;
-  display: inline-block;
-  font-size: 18px;
   background-color: transparent;
-  cursor: pointer;
-  height: 20px;
-  width: 175px;
-  vertical-align: middle;
-  text-align: center;
-  margin: auto;
-  line-height: 18px;
- 
+  height: 1px;
+  width:1px;
 }
 
 .THIS .row{
