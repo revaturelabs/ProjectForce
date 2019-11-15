@@ -1979,6 +1979,9 @@ module.exports = function(Chart) {
 
 		calculateBarWidth: function() {
 			var xScale = this.getScaleForId(this.getMeta().xAxisID);
+			if (xScale.options.barThickness) {
+				return xScale.options.barThickness;
+			}
 			var ruler = this.getRuler();
 			return xScale.options.stacked ? ruler.categoryWidth : ruler.barWidth;
 		},
@@ -2313,6 +2316,9 @@ module.exports = function(Chart) {
 
 		calculateBarHeight: function () {
 			var yScale = this.getScaleForId(this.getMeta().yAxisID);
+			if (yScale.options.barThickness) {
+				return yScale.options.barThickness;
+			}
 			var ruler = this.getRuler();
 			return yScale.options.stacked ? ruler.categoryHeight : ruler.barHeight;
 		},
