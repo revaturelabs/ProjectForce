@@ -6,7 +6,7 @@
     <aura:attribute name="criteria" type="String"/>
     <aura:attribute name="order" type="String"/>
     <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
-    <aura:method name="sampleMethod" action="{!c.doInit}" access="PUBLIC"/> 
+    <aura:method name="refresh" action="{!c.doInit}" access="PUBLIC"/> 
 
     <lightning:accordion aura:id="accordion" allowMultipleSectionsOpen="true">
         <div class="slds-grid">
