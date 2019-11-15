@@ -243,11 +243,8 @@
 		
         //assign new values to the chart properties
         chart.data.datasets[0].data = this.convertDate(startDates);
-        console.log("background color");
-        console.log(chart.data.datasets[0].backgroundColor);
         chart.data.datasets[1].data = holdTest;
         chart.data.datasets[1].backgroundColor = component.get('v.UserColors');
-        console.log(chart.data.datasets[1].backgroundColor);
         chart.data.labels = holdLabels;
         // console.log(chart.controller.getDatasetMeta(0));
 

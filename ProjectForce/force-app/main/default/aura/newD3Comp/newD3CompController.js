@@ -122,19 +122,21 @@ myAction : function(component, event, helper) {
                 
                 ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontFamily, 'normal', Chart.defaults.global.defaultFontFamily);
                 ctx.textAlign = 'left';
-                ctx.fillStyle = '#F300EA'; // label color
+                ctx.fillStyle = 'red'; // label color
                 
                 this.data.datasets.forEach(function (dataset, i) {
+
                     var meta = chartInstance.controller.getDatasetMeta(i);
-                    var hiddenData = chartInstance.controller.getDatasetMeta(0);
-                    hiddenData.hidden = true;       
+                    
                     meta.data.forEach(function (bar, index) {
                         // only fillText for the first bar, otherwise we get double label overflow
+                        // Also hide the first bar so it cannot be hovered over and clicked.
                         if (bar._datasetIndex === 0) {
-                            var model = dataset._meta[Object.keys(dataset._meta)[0]].data[index]._model;                  
+                            var model = dataset._meta[Object.keys(dataset._meta)[0]].data[index]._model;               
                             var label = model.label;
+                            meta.hidden = true;           
                             ctx.fillText(label, bar._model.x+2, bar._model.y);
-                        }
+                        } 
                     });
                 });
             }
@@ -165,6 +167,7 @@ myAction : function(component, event, helper) {
                     }
                 },
                 xAxes: [{
+                    barPercentage : 0.4,
                     ticks: {
                         //beginAtZero: true,
                         fontFamily: "'Futura', sans-serif",
