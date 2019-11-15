@@ -59,8 +59,8 @@
     border-left: 2px solid #474C55;
     border-right: 2px solid #474C55;
     border-top: 10px solid #474C55; 
-    border-radius: 5px;
-    margin: 2.5%;
+    border-radius: 2.5%;
+    margin: 0px 25px 5px 25px;
     background-color: white;
 }
 .THIS button{

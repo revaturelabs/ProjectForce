@@ -6,15 +6,14 @@
      */
     setColumns : function(component, helper){
         var fields = helper.getColumns(component.get("v.queryFields"));
-        var width = component.get("v.width");
         var columns = [];
         for(var i=0;i<fields.length;i++){
             columns.push({
                         label:fields[i][0], 
                         fieldName:fields[i][0], 
                         type:fields[i][1],
-                        fixedWidth:(width/fields.length)-(90/fields.length),
-                        editable:fields[i][2]
+                        editable:fields[i][2],
+                        sortable:true
                     });
         }
         component.set("v.columns",columns);
@@ -26,9 +25,7 @@
      * @param {*} helper 
      */
     getTableData : function(component, helper){
-        var width = component.get("v.width");
         var height = component.get("v.height");
-        var headerHeight = 30;
         var queryFields = helper.getQueryFields(component.get("v.queryFields"));
         var getTableData = component.get("c.getTableData");
 
@@ -39,9 +36,7 @@
 
         getTableData.setCallback(this, function(response){
             var state = response.getState();
-            // set the width and height of the table here because there is no reference until its created
-            component.find("TableDiv").getElement().style.width = `${width}px`;
-            component.find("TableDiv").getElement().style.gridTemplateRows = `${headerHeight}px ${height-headerHeight}px`;
+            component.find("TableDiv").getElement().style.gridTemplateRows = `auto ${height}px`;
             if(state==="SUCCESS"){
                 component.set("v.data", response.getReturnValue());
             }

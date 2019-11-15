@@ -1,5 +1,6 @@
 .THIS.a{
     display: grid;
-    grid-template-columns: auto auto;
-    padding: 25px;
+    width: 95%;
+    margin:2%;
+    grid-template-columns: 50% 50%;
 }

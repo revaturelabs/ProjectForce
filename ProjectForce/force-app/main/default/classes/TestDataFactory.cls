@@ -130,7 +130,7 @@ public class TestDataFactory {
             Date someDate = day.addDays(randomDate); 
             Training__c t = new Training__c(name='Test Training '+i, Trainer__c=trainerIdList[i].id, Track__c=TrainerTrackIdList[i].trackTrainer__c,
                                             Room__c=RoomIdList[i].id, Project__c=ProjectIDAssign[randomProject].id, Batch_Number__c=1000+i, Start_Date__c = someDate, 
-                                            BatchDuration__c=batchDuration);
+                                            BatchDuration__c=batchDuration, Color__c='#F26925');
             TrainingList.add(t);
         }
         Insert TrainingList; 

@@ -17,13 +17,11 @@
     <aura:attribute name ="UserColors" type="List"/>
     <aura:attribute name = "DisplayColors" type = "List" />
     <aura:attribute name="today" type="Date" default=""/>
-    <!--<aura:attribute name= "modalComplete" type="Boolean" default = "false" />"
-    <aura:handler name="change" value="{!v.modalComplete}" action="{!c.modalUpdate}"/>-->
 
     <aura:handler event="c:BatchInformationEvent" action="{!c.handleBatchInformationEvent}" />
     
     
-    
+    <c:BatchAndProjectTables />
     <div class = "THIS">
         <!--Holds the Chart -->
         <div aura:id="chartIdThing" class="Chart">
