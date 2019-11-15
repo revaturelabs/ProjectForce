@@ -21,14 +21,6 @@
 
 }
 
-.THIS .slds-button_brand button{
-    color: white;
-}
-
-.THIS button{
-    color: white;
-}
-
 
 .THIS .slds-modal__footer {
 
@@ -58,7 +50,6 @@
 .THIS .button {
     background-color: #1798c1;
     border-radius: 0px;
-    color: white;
 }
 
 .THIS .header {
