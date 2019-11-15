@@ -142,9 +142,7 @@
               // only fillText for the first bar, otherwise we get double label overflow
               // Also hide the first bar so it cannot be hovered over and clicked.
               if (bar._datasetIndex === 0) {
-                var model =
-                  dataset._meta[Object.keys(dataset._meta)[0]].data[index]
-                    ._model;
+                var model = dataset._meta[Object.keys(dataset._meta)[0]].data[index]._model;
                 var label = model.label;
                 // meta.hidden = true;
                 ctx.fillText(label, bar._model.x + 2, bar._model.y);

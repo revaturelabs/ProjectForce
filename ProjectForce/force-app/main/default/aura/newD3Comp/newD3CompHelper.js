@@ -248,7 +248,7 @@
     for (let i = 0; i < holdBatchName.length; i++) {
       var some = `${holdBatchName[i]} - ${holdProject[i]} - ${holdTrainers[i]}`;
       holdLabels[i] = some;
-      holdTest[i] = 75;
+      holdTest[i] = 21;
     }
     //comment here
     component.set("v.UserColors", holdTestColor);
