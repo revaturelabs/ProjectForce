@@ -7,7 +7,11 @@
     <!-- project id stored as a string -->
     <aura:attribute name="project" type="String" />
 
+
+    
+
     <!-- modal attributes -->
+    <aura:attribute name="showDates" type="boolean"/>
     <aura:attribute name="Stage" type="String"/>
     <aura:attribute name="Story" type="String" />
     <aura:attribute name="Label1" type="String" />
@@ -16,6 +20,8 @@
     <aura:attribute name="Color1" type="String" />
     <aura:attribute name="Color2" type="String" />
     <aura:attribute name="Color3" type="String" />
+    <aura:attribute name="EndDate" type="String"/>
+
 
 
     <!-- event handlers -->
@@ -58,7 +64,35 @@
                                         messageWhenValueMissing="Story Required">
                                     </lightning:textarea>
 
-                                    <!-- Key words-->
+
+                                     
+                                    <div class="slds-grid slds-gutters slds-p-around_medium">
+                                            <div class="slds-col">
+                                                <span>
+                                                    Start Date: 
+                                                </span>
+                                            </div>
+
+                                            <div class="slds-col">
+                                                <span>
+                                                    <!-- <lightning:inputField fieldName="StartDateField" aria-placeholder="10/10/2019"/> -->
+                                                </span>
+                                            </div>
+
+                                            <div class="slds-col">
+                                                <span>
+                                                    End Date:
+                                                </span>
+                                            </div>
+
+                                            <div class="slds-col">
+                                                <span>
+                                                    <force:outputField value="{!v.EndDate}" /> 
+                                                </span>
+                                            </div>
+                                    </div>
+
+                                    <!-- Labels-->
                                     <div class="slds-grid slds-gutters slds-p-around_medium">
                                         <div class="slds-col">
                                             <span>
