@@ -8,6 +8,8 @@
     <columns>StartDateTime__c</columns>
     <columns>EndDateTime__c</columns>
     <columns>DueDate__c</columns>
+    <columns>NumberOfCardLabels__c</columns>
+    <columns>CardLabel1__c</columns>
     <filterScope>Everything</filterScope>
     <label>All</label>
 </ListView>
