@@ -11,16 +11,18 @@
     
 
     <!-- modal attributes -->
-    <aura:attribute name="showDates" type="boolean"/>
-    <aura:attribute name="Stage" type="String"/>
-    <aura:attribute name="Story" type="String" />
-    <aura:attribute name="Label1" type="String" />
-    <aura:attribute name="Label2" type="String" />
-    <aura:attribute name="Label3" type="String" />
-    <aura:attribute name="Color1" type="String" />
-    <aura:attribute name="Color2" type="String" />
-    <aura:attribute name="Color3" type="String" />
-    <aura:attribute name="EndDate" type="String"/>
+    <aura:attribute name="showDates" type="boolean" default="true"/>
+    <aura:attribute name="stage" type="String"/>
+    <aura:attribute name="story" type="String" />
+    <aura:attribute name="label1" type="String" />
+    <aura:attribute name="label2" type="String" />
+    <aura:attribute name="label3" type="String" />
+    <aura:attribute name="color1" type="String" />
+    <aura:attribute name="color2" type="String" />
+    <aura:attribute name="color3" type="String" />
+
+
+
 
 
 
@@ -52,20 +54,20 @@
 
                                 <!-- modal content-->
                                 <!-- drop down for status-->
-                                    <lightning:select name="status-select" label="Status">
-                                        <option value="1">To do</option>
-                                        <option value="2">Doing</option>
-                                        <option value="3">Done</option>
+                                    <lightning:select name="status-select" label="Status" value="{!v.stage}">
+                                        <option value="To do">To do</option>
+                                        <option value="Doing">Doing</option>
+                                        <option value="Done">Done</option>
                                     </lightning:select>
                                     <!-- story textfield-->
-                                    <lightning:textarea name="story-input" value="{!v.Story}" placeholder=""
+                                    <lightning:textarea name="story-input" value="{!v.story}" placeholder=""
                                         label="Story"
                                         maxlength="250" messageWhenTooLong="A maximum of 250 characters are allowed."
                                         messageWhenValueMissing="Story Required">
                                     </lightning:textarea>
 
 
-                                     
+                                    <aura:if isTrue="{!v.showDates}">
                                     <div class="slds-grid slds-gutters slds-p-around_medium">
                                             <div class="slds-col">
                                                 <span>
@@ -75,7 +77,7 @@
 
                                             <div class="slds-col">
                                                 <span>
-                                                    <!-- <lightning:inputField fieldName="StartDateField" aria-placeholder="10/10/2019"/> -->
+                                                     <ui:outputText value="10/10/2019" />
                                                 </span>
                                             </div>
 
@@ -87,10 +89,11 @@
 
                                             <div class="slds-col">
                                                 <span>
-                                                    <force:outputField value="{!v.EndDate}" /> 
+                                                    <ui:outputText value="10/10/2019"/>
                                                 </span>
                                             </div>
                                     </div>
+                                    </aura:if>
 
                                     <!-- Labels-->
                                     <div class="slds-grid slds-gutters slds-p-around_medium">
@@ -101,20 +104,46 @@
                                         </div>
                                         <div class="slds-col">
                                             <span>
-                                                <input type="text" id="text-input-id-1" placeholder="Placeholder Text"
-                                                    required="" class="slds-input" />
+                                                <lightning:input type="text" id="text-input-id-1" placeholder="Label 1"
+                                                    value="{!v.label1}"  />
                                             </span>
                                         </div>
                                         <div class="slds-col">
                                             <span>
-                                                <input type="text" id="text-input-id-1" placeholder="Placeholder Text"
-                                                    required="" class="slds-input" />
+                                                <lightning:input type="text" id="text-input-id-1" placeholder="Label 2"
+                                                    value="{!v.label2}"  />
                                             </span>
                                         </div>
                                         <div class="slds-col">
                                             <span>
-                                                <input type="text" id="text-input-id-1" placeholder="Placeholder Text"
-                                                    required="" class="slds-input" />
+                                                <lightning:input type="text" id="text-input-id-1" placeholder="Label 3"
+                                                    value="{!v.label3}"  />
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <div class="slds-grid slds-gutters slds-p-around_medium">
+                                        <div class="slds-col">
+                                            <span>
+                                                Colors:
+                                            </span>
+                                        </div>
+                                        <div class="slds-col">
+                                            <span>
+                                                <lightning:input type="text" id="text-input-id-1" placeholder="#HexColor"
+                                                     value="{!v.color1}" />
+                                            </span>
+                                        </div>
+                                        <div class="slds-col">
+                                            <span>
+                                                <lightning:input type="text" id="text-input-id-1" placeholder="#HexColor"
+                                                    value="{!v.color2}"  />
+                                            </span>
+                                        </div>
+                                        <div class="slds-col">
+                                            <span>
+                                                <lightning:input type="text" id="text-input-id-1" placeholder="#HexColor"
+                                                    value="{!v.color3}"  />
                                             </span>
                                         </div>
                                     </div>
