@@ -12,7 +12,6 @@
                     if (record.Stage__c && categories.indexOf(record.Stage__c) === -1) {
                         categories.push(record.Stage__c);
                     } 
-
                     // Convert Date/Time to Date or Time
                     let d = new Date(record.StartDateTime__c);
                     record.StartDateTime__c = d.toLocaleDateString();
@@ -23,7 +22,6 @@
                     d = new Date(record.DueDate__c);
                     record.DueDate__c = d.toLocaleDateString();
                 });
-                // component.set('v.categories', categories); // having trouble sorting
                 component.set('v.records', response.getReturnValue());
                 component.set('v.recordsBackup', response.getReturnValue());
             }
@@ -45,18 +43,12 @@
         let filteredRecords = [];
 
         switch(criteria) {
-            case 'my tasks':
-                break;
-            case 'neglected tasks':
-                break;
-            case 'due next week':
+            case 'dueNextWeek':
                 today.setDate(today.getDate() + 7);
-            case 'due this week':
-                recordsBackup.forEach(function(element){
-                    if (helper.getWeek(element.DueDate__c, today)) {
-                        filteredRecords.push(element);
-                    }
-                }); 
+            case 'dueThisWeek':
+                filteredRecords = recordsBackup.filter(
+                    element=> helper.getWeek(element.DueDate__c, today)
+                );
                 component.set('v.records', filteredRecords);
                 break;
             default:
@@ -65,6 +57,21 @@
     },
     sort : function(component, event, helper) {
         let order = component.get('v.order');
-        alert("sort function goes here");
+        let records = component.get('v.records');
+        switch(order) {
+            case 'nameAZ':
+                records.sort((a, b)=> (a.Story__c > b.Story__c) ? 1 : -1);
+                break;
+            case 'nameZA':
+                records.sort((a, b)=> (a.Story__c < b.Story__c) ? 1 : -1);
+                break;
+            case 'dueDateNew':
+                records.sort((a, b)=> (a.DueDate__c > b.DueDate__c) ? 1 : -1);
+                break;
+            case 'dueDateOld':
+                records.sort((a, b)=> (a.DueDate__c < b.DueDate__c) ? 1 : -1);
+                break;
+        }
+        component.set('v.records', records);
     }
 })
