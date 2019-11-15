@@ -46,11 +46,14 @@
             case 'dueNextWeek':
                 today.setDate(today.getDate() + 7);
             case 'dueThisWeek':
-                recordsBackup.forEach(function(element){
-                    if (helper.getWeek(element.DueDate__c, today)) {
-                        filteredRecords.push(element);
-                    }
-                }); 
+                filteredRecords = recordsBackup.filter(
+                    element=> helper.getWeek(element.DueDate__c, today)
+                );
+                // recordsBackup.forEach(function(element){
+                //     if (helper.getWeek(element.DueDate__c, today)) {
+                //         filteredRecords.push(element);
+                //     }
+                // }); 
                 component.set('v.records', filteredRecords);
                 break;
             default:
