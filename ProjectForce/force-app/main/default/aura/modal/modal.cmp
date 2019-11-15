@@ -22,6 +22,9 @@
      <!--Attribute for the selected value-->
     <aura:attribute name="updateTrainer" type="String"/>  
 
+    <!-- Comments added in the modal are displayed above the input field -->
+<aura:attribute name="updateComment" type="String" />
+
     
     <!-- Attributes for the entire Batch modal -->
     <aura:attribute name="batchNumber" type="String"/>
@@ -133,10 +136,20 @@
                     </div>
                 </div>
             </div>
-
-            <hr class="modalSections"></hr>
-            <lightning:textarea name="TextBox" label="Comments" />
         </span>
+
+          
+
+            <span class="slds-modal__content slds-p-around_medium" id="modal-content-id-2">
+            <!-- Comments -->
+            <lightning:recordViewForm recordId="{!v.saveTrainingID}" objectApiName="Training__c">
+                <div class="slds-form-element__control">
+                    <lightning:outputField fieldName="Comments__c" />
+                </div>
+            </lightning:recordViewForm>
+
+            <lightning:input name="TextBox" value="{!v.updateComment}"  />
+            </span>
         
                 <!--</lightning:card>-->
                 <footer class="slds-modal__footer slds-modal__footer_directional">

@@ -58,7 +58,8 @@
 		//how many params do we need to pass
         action.setParams({
 			"trainingId": component.get("v.saveTrainingID"),
-			"newProjectName": component.get("v.updateProject")
+			"newProjectName": component.get("v.updateProject"),
+			"newComment" : component.get("v.updateComment")
 		});
 
 		action.setCallback(this, function(response){

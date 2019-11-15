@@ -27,17 +27,6 @@ public without sharing class ModalController {
     public static List<Project__c> getProject(String trackName, Date startDateName){
         try{
             if (schema.SObjectType.Project__c.isAccessible()){
-                // list<Project__c> filterProjectList = new list<Project__c>();
-
-                // for(Project__c p : ProjectList){
-
-                //     if(p.trainings__r.size() == 0){
-                //         continue;
-                //     }else if(p.track__r.name==trackName && p.trainings__r[0].projectStartDate__c>=startDateName && p.trainings__r[0].projectStartDate__c!= null){
-                //         filterProjectList.add(p);
-                //     }
-                // }
-                // return filterProjectList;
                 List<Project__c> projectListByTrack = [SELECT Name, ProjectComplete__c, Track__r.Name FROM Project__c WHERE Track__r.Name =: trackName];
                 return projectListByTrack;
             }else{
@@ -53,10 +42,14 @@ public without sharing class ModalController {
 
     //Saves changes to selected batch (training)
     @auraEnabled
-    public static boolean Save(String trainingId, string newProjectName){
+    public static boolean Save(String trainingId, string newProjectName, String newComment){
         id newProjectId = [SELECT Id FROM Project__c WHERE name = :newProjectName LIMIT 1].id;
-        Training__c newTraining=[SELECT id, Project__c FROM Training__c WHERE id = : Id.valueOf(trainingID) LIMIT 1];
+        Training__c newTraining=[SELECT id, Project__c, Comments__c FROM Training__c WHERE id = : Id.valueOf(trainingID) LIMIT 1];
 
+        if (newTraining.Comments__c==null){
+            newTraining.Comments__c=' ';
+        }
+        newTraining.Comments__c =  newComment + '\n' + newTraining.Comments__c;
         newTraining.Project__c=newProjectId;
 
         database.saveResult result = Database.update(newTraining);
