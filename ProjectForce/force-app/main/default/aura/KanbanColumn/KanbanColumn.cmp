@@ -1,0 +1,25 @@
+<aura:component >
+    <!-- Attributes -->
+	<aura:attribute name="title" type="String" required="true"></aura:attribute>
+    <aura:attribute name="backlogs" type="Backlog__c[]"/>
+    
+    <!-- Custom Events -->
+    <aura:registerEvent name="droppedOnColumn" type="c:droppedOnColumn"/>
+    
+    <div class="column" ondrop="{!c.onDrop}" ondragover="{!c.allowDrop}">
+        <div class="panel">
+            <div class="panel-heading">
+                {! v.title }
+            </div>
+            <div class="panel-block column" style="background-color:transparent;">
+                <aura:iteration items="{!v.backlogs}" var="blog">
+                    <aura:if isTrue="{!blog.Stage__c == v.title}">
+                        <c:KanbanCard backlog="{!blog}"></c:KanbanCard>
+                        <br/>     
+                    </aura:if>
+                      
+                </aura:iteration>
+            </div>
+        </div>
+    </div>
+</aura:component>
