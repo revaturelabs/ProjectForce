@@ -6,9 +6,9 @@
     <aura:attribute name="labelColor" type="String" />
 
     <aura:handler name="init" action="{!c.doInit}" value="{!this}" />
-    <span aura:id="theBadge" class="slds-badge" onclick="{!c.toggle}" style="{! 'background-color: ' + v.labelColor +';'}">
+    <span aura:id="theBadge"  class="slds-badge" onclick="{!c.toggle}" style="{! 'background-color: ' + v.labelColor +';'}">
         <!-- {!v.backlog.CardLabel__r.Text__c.Length} -->
-        <span aura:id="labelText" class="{!v.showLabel? 'slds-visible ': 'slds-hidden '}">
+        <span aura:id="labelText" class="{!v.showLabel? 'slds-visible slds-card__header': 'slds-hidden slds-card__header'}">
             <aura:if isTrue="{!v.labelIndex == 1}">
                 {!v.backlog.CardLabel1__r.Text__c}
             </aura:if>
