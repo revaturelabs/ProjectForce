@@ -7,6 +7,17 @@
     <!-- project id stored as a string -->
     <aura:attribute name="project" type="String" />
 
+    <!-- modal attributes -->
+    <aura:attribute name="Stage" type="String"/>
+    <aura:attribute name="Story" type="String" />
+    <aura:attribute name="Label1" type="String" />
+    <aura:attribute name="Label2" type="String" />
+    <aura:attribute name="Label3" type="String" />
+    <aura:attribute name="Color1" type="String" />
+    <aura:attribute name="Color2" type="String" />
+    <aura:attribute name="Color3" type="String" />
+
+
     <!-- event handlers -->
     <aura:handler name="init" action="{!c.doInit}" value="{!this}"></aura:handler>
     <aura:handler name="droppedOnColumn" event="c:droppedOnColumn" action="{!c.droppedHandler}"></aura:handler>
@@ -26,29 +37,59 @@
                     <header class="slds-modal__header">
                         <lightning:buttonIcon iconName="utility:close" onclick="{! c.closeModel }"
                             alternativeText="close" variant="bare-inverse" class="slds-modal__close" />
-                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">About
-                            Sfdcmonkey.com</h2>
+                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">
+                            Adding Card..
+                        </h2>
                     </header>
                     <!--###### MODAL BOX BODY Part Start######-->
                     <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
-                        <p><b>The goal of this blog is to provide tips and tricks/workarounds for salesforce
-                                developer and admins.
-                                Many of us face the same issues and have the same questions when using and
-                                implementing Salesforce.
-                                As a community of users and developers, it is important for us to share our
-                                experiences.
-                                I try to reach out to other users and help the Salesforce community in general.
-                                Much of this blog will focus on Lightning(code &amp; config.) but I will also
-                                cover some of the more basic topics in salesforce.
-                            </b>
-                        </p>
-                    </div>
+
+                                <!-- modal content-->
+                                <!-- drop down for status-->
+                                    <lightning:select name="status-select" label="Status">
+                                        <option value="1">To do</option>
+                                        <option value="2">Doing</option>
+                                        <option value="3">Done</option>
+                                    </lightning:select>
+                                    <!-- story textfield-->
+                                    <lightning:textarea name="story-input" value="{!v.Story}" placeholder=""
+                                        label="Story"
+                                        maxlength="250" messageWhenTooLong="A maximum of 250 characters are allowed."
+                                        messageWhenValueMissing="Story Required">
+                                    </lightning:textarea>
+
+                                    <!-- Key words-->
+                                    <div class="slds-grid slds-gutters slds-p-around_medium">
+                                        <div class="slds-col">
+                                            <span>
+                                                Labels:
+                                            </span>
+                                        </div>
+                                        <div class="slds-col">
+                                            <span>
+                                                <input type="text" id="text-input-id-1" placeholder="Placeholder Text"
+                                                    required="" class="slds-input" />
+                                            </span>
+                                        </div>
+                                        <div class="slds-col">
+                                            <span>
+                                                <input type="text" id="text-input-id-1" placeholder="Placeholder Text"
+                                                    required="" class="slds-input" />
+                                            </span>
+                                        </div>
+                                        <div class="slds-col">
+                                            <span>
+                                                <input type="text" id="text-input-id-1" placeholder="Placeholder Text"
+                                                    required="" class="slds-input" />
+                                            </span>
+                                        </div>
+                                    </div>
+                                    </div>
+                          
                     <!--###### MODAL BOX FOOTER Part Start ######-->
-                    <footer class="slds-modal__footer">
-                        <lightning:button variant="neutral" label="Cancel" title="Cancel"
-                            onclick="{! c.closeModel }" />
-                        <lightning:button variant="brand" label="Save" title="Like and Close"
-                            onclick="{! c.saveCard }" />
+                    <footer class="slds-modal__footer slds-modal_footer_directional">
+                        <lightning:button class="slds-button_brand button" label="Cancel" title="Cancel" onclick="{! c.closeModel }" />
+                        <lightning:button class ="slds-button_brand button" label="Save" onclick="{! c.saveCard }" />
                     </footer>
                 </div>
             </section>

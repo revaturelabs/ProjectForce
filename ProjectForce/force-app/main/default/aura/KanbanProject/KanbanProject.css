@@ -1,2 +1,109 @@
-.THIS {
+.THIS.hideModal {
+    display: none;
+}
+
+
+.THIS .kanban {
+    background-color: #1798c1;
+    color: white;
+    float: left;
+}
+
+.THIS .save {
+    background-color: #1798c1;
+    color: white;
+}
+
+.THIS .cancel {
+    background-color: white;
+    color: #1798c1;
+    float: left;
+
+}
+
+.THIS .slds-button_brand button{
+    color: white;
+}
+
+.THIS button{
+    color: white;
+}
+
+
+.THIS .slds-modal__footer {
+
+    background-color: white;
+}
+
+
+.THIS .slds-button_neutral:hover {
+
+    background-color: #72A4C2;
+
+}
+
+.THIS .slds-select,
+.THIS .slds-input {
+
+    color: #474C55;
+    font-size: 1rem;
+}
+
+.THIS .slds-modal__header {
+    background: white;
+
+    font-size: 2rem;
+}
+
+.THIS .button {
+    background-color: #1798c1;
+    border-radius: 0px;
+    color: white;
+}
+
+.THIS .header {
+    color: black;
+}
+
+.THIS .hidden {
+    display: none;
+}
+
+.THIS .font {
+    /* font-family: 'Times New Roman', Times, serif; */
+    font-family: sans-serif;
+}
+
+.THIS .buttonStyle {
+    border: none;
+    color: white;
+    padding: 0px;
+    border-radius: 8px;
+    display: inline-block;
+    font-size: 18px;
+    background-color: #1798c1;
+    cursor: pointer;
+    height: 20px;
+    width: 175px;
+    vertical-align: middle;
+    text-align: center;
+    margin: auto;
+    line-height: 18px;
+
+}
+
+
+.THIS .row {
+    display: flex
+}
+
+.THIS .column {
+    flex: 50%;
+    padding: 10px;
+}
+
+.THIS .slds-form-element__control {
+    /*slds-border__bottom*/
+    height: 100px;
+    overflow: scroll;
 }

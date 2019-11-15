@@ -61,7 +61,16 @@
         saveCard: function (component, event, helper) {
             // Display alert message on the click on the "Like and Close" button from Model Footer 
             // and set set the "isOpen" attribute to "False for close the model Box.
-            alert('thanks for like Us :)');
+            var Story = component.get('v.Story');
+            alert(Story);
+
+
+
+
+            
             component.set("v.isOpen", false);
         },
+
+
+    
 })
