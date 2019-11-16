@@ -18,37 +18,45 @@
         selectionTable.set("v.selectedRows", selectedRows);
     },
 
+    /**
+     * get a list of project ids based on selected batches
+     * @param {*} event 
+     */
     getProjectIds : function(event){
-        var parameters = event.getParam("selectedRows");
         var projectIds = [];
-        for(let i=0;i<parameters.length;i++){
-            projectIds.push(parameters[i].Project__c);
+        var selectedBatches = event.getParam("selectedRows");
+        for(let i=0;i<selectedBatches.length;i++){
+            if(selectedBatches[i].Project__c){
+               projectIds.push(selectedBatches[i].Project__c);
+            }
         }
         return projectIds;
     },
 
-    getBatchIds : function(component){
-        var projects = component.find("project").get("v.data");
-        var selectedProjects = component.find("project").find("table").get("v.selectedRows");
+    /**
+     * get a list of the batch ids based on the selected projects
+     * @param {*} event 
+     */
+    getBatchIds : function(event){
         var batchIds = [];
-        var rowNumber;
+        var selectedProjects = event.getParam("selectedRows");
         for(let i=0;i<selectedProjects.length;i++){
-            rowNumber = selectedProjects[i].split('-')[1];
-            if(projects[rowNumber].Trainings__r){
-                for(let j=0;j<projects[rowNumber].Trainings__r.length;j++){
-                    batchIds.push(projects[rowNumber].Trainings__r[j].Id);
+            if(selectedProjects[i].Trainings__r){
+                for(let j=0;j<selectedProjects[i].Trainings__r.length;j++){
+                    batchIds.push(selectedProjects[i].Trainings__r[j].Id);
                 }
             }
         }
         return batchIds;
     },
 
-    fireBatchInfoEvent : function(component, event){
-
+    /**
+     * get the information for the selected batches and fire the event
+     * @param {*} component 
+     */
+    fireBatchInfoEvent : function(component){
         var selectedRows = component.find("batch").find("table").get("v.selectedRows");
         var batchData = component.find("batch").get("v.data");
-
-
         var selectedBatches = [];
         for(let i=0;i<batchData.length;i++){
             if(selectedRows.includes(`row-${i}`)){
@@ -62,9 +70,14 @@
         batchInfoEvent.fire();
     }, 
 
-    saveInlineEdits : function(component, dataToUpdate, newTableData, tableAuraId){
+    /**
+     * commit the changed information to the database
+     * @param {*} component 
+     * @param {*} helper 
+     * @param {Object[]} dataToUpdate - key value pairs of the changed data, needs the id of the updated items
+     */
+    saveInlineEdits : function(component, helper, dataToUpdate){
         var updateTableData = component.get("c.updateTableData");
-        
         updateTableData.setParams({
             "itemsToUpdate" : dataToUpdate
         });
@@ -73,7 +86,8 @@
             var state = response.getState();
             
             if(state==="SUCCESS"){
-                component.find(tableAuraId).set("v.data", newTableData);
+                // update the colors on the graph
+                helper.fireBatchInfoEvent(component);
             }
             else if(state==="ERROR"){
                 let errors = response.getError();
@@ -89,6 +103,10 @@
         $A.enqueueAction(updateTableData);
     },
 
+    /**
+     * return the aura ids of the table based on wich object was edited
+     * @param {*} event 
+     */
     getTableAuraId : function(event){
         var modifiedTable = event.getParam("editedObject");
         var tableAuraId;
@@ -101,24 +119,33 @@
         return tableAuraId;
     }, 
 
+    /**
+     * get the object that contains what the values of what was changed
+     * @param {*} component 
+     * @param {*} event 
+     * @param {String} tableAuraId - Id of the createDataTable component that was edited
+     */
     getUpdatedData : function(component, event, tableAuraId){
         var modifiedElements = event.getParam("editedItems");
         var newTableData = component.find(tableAuraId).get("v.data");
         var dataToUpdate = [];
         var keys = Object.keys(newTableData[0]);
+        
         for(let i=0;i<modifiedElements.length;i++){
             var rowNumber = modifiedElements[i].id.split('-')[1];
             dataToUpdate[i] = {};
+            // have to update id here because modified elements id is the row id
             dataToUpdate[i].Id = newTableData[rowNumber].Id;
             for(let j=0;j<keys.length;j++){
                 var currentKey = keys[j];
                 var currentValue = modifiedElements[i][currentKey];
                 if(currentValue && currentKey!='Id'){
                     dataToUpdate[i][currentKey] = currentValue;
+                    // this updates the values in the datatable(not database) and is necessary
                     newTableData[rowNumber][currentKey] = currentValue;
                 }
             }
         }
-        return [dataToUpdate, newTableData];
+        return dataToUpdate;
     }
 })

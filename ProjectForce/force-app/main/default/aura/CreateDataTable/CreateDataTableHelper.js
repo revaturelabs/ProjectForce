@@ -56,7 +56,7 @@
     },
 
     /**
-     * because some items in the list are lists themselves
+     * because the items in the list are lists themselves
      * only return the reference to the fields that will be queried
      * @param {List} queryFields 
      */
@@ -68,6 +68,10 @@
         return returnQueryFields;
     },
 
+    /**
+     * because some items are queried but not displayed, dont return the ones with type set to false
+     * @param {List} queryFields 
+     */
     getColumns : function(queryFields){
         var columns = [];
         for(let i=0;i<queryFields.length;i++){

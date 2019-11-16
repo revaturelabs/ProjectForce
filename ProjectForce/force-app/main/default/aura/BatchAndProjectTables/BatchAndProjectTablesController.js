@@ -15,17 +15,22 @@
             tableAuraId = "project";
         }
         else if(tableObject=="Project__c"){
-           selectionIds = helper.getBatchIds(component);
+           selectionIds = helper.getBatchIds(event);
            tableAuraId = "batch";
         }
         helper.markTableItemsAsSelected(selectionIds, tableAuraId, component);
-        helper.fireBatchInfoEvent(component, event);
+        helper.fireBatchInfoEvent(component);
     },
 
-
+    /**
+     * when an inline edit is made save the result to the database
+     * @param {} component 
+     * @param {*} event 
+     * @param {*} helper 
+     */
     handleSaveInlineEditsEvent : function(component, event, helper){
         var tableAuraId = helper.getTableAuraId(event);
         var updatedData = helper.getUpdatedData(component, event, tableAuraId); 
-        helper.saveInlineEdits(component, updatedData[0], updatedData[1], tableAuraId);
+        helper.saveInlineEdits(component, helper, updatedData);
     }
 })
