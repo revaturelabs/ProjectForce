@@ -8,6 +8,7 @@
         // for Hide/Close Model,set the "isOpen" attribute to "Fasle"
 
         // component.set("v.Stage", "");
+        
         component.set("v.story", "");
         component.set("v.label1", "");
         component.set("v.label2", "");

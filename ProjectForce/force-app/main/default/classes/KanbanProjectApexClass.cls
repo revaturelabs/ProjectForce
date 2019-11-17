@@ -21,20 +21,131 @@ public with sharing class KanbanProjectApexClass {
     }
 
     @AuraEnabled
-    public static Backlog__c addNewBacklog(String stage, String story, String l1, String l2, String l3){
+    public static Backlog__c addNewBacklog(String stage, String story, String l1, String l2, String l3, String c1, String c2, String c3){
+
 
         Backlog__c backlog = new Backlog__c();
 
+        if (l1 == null){
+            System.debug('No Label');
+            
+            backlog.Story__c = story;
+            backlog.Stage__c = stage;
 
-        backlog.Story__c = story;
-        backlog.Stage__c = stage;
-        // backlog.CardLabel1__c = l1;
-        // backlog.CardLabel2__c = l2;
-        // backlog.CardLabel3__c = l3;
+            insert backlog;
+         
+        }
 
-        insert backlog;
+        else if (l2 == null){
+            System.debug('One Label');
+
+            CardLabel__c cl1 =  new CardLabel__c();
+            cl1.Text__c = l1;
+            cl1.Color__c = c1;
+
+            insert cl1;
+
+            System.debug(cl1);
+
+            backlog.Story__c = story;
+            backlog.Stage__c = stage;
+            backlog.CardLabel1__c = cl1.Id;
+
+            insert backlog;
+
+
+        }
+
+        else if (l3 == null){
+            System.debug('Two Labels');
+
+            List<sObject> labels = new List<sObject>();
+
+            CardLabel__c cl1 =  new CardLabel__c();
+            cl1.Text__c = l1;
+            cl1.Color__c = c1;
+            labels.add(cl1);
+
+
+
+            CardLabel__c cl2 =  new CardLabel__c();
+            cl2.Text__c = l2;
+            cl2.Color__c = c2;
+            labels.add(cl2);
+
+            insert labels;
+
+
+            backlog.Story__c = story;
+            backlog.Stage__c = stage;
+            backlog.CardLabel1__c = cl1.Id;
+            backlog.CardLabel2__c = cl2.Id;
+
+            insert backlog;
+
+        }
+
+        else {
+            System.debug('Three Labels');
+
+
+            List<sObject> labels = new List<sObject>();
+
+            CardLabel__c cl1 =  new CardLabel__c();
+            cl1.Text__c = l1;
+            cl1.Color__c = c1;
+            labels.add(cl1);
+
+
+
+            CardLabel__c cl2 =  new CardLabel__c();
+            cl2.Text__c = l2;
+            cl2.Color__c = c2;
+            labels.add(cl2);
+
+
+            CardLabel__c cl3 =  new CardLabel__c();
+            cl3.Text__c = l3;
+            cl3.Color__c = c3;
+            labels.add(cl3);
+
+            insert labels;
+
+
+            backlog.Story__c = story;
+            backlog.Stage__c = stage;
+            backlog.CardLabel1__c = cl1.Id;
+            backlog.CardLabel2__c = cl2.Id;
+            backlog.CardLabel3__c = cl3.Id;
+
+            insert backlog;
+
+
+
+
+            // Backlog__c backlog = new Backlog__c();
+            // backlog.Story__c = story;
+            // backlog.Stage__c = stage;
+            // backlog.CardLabel1__c = l1;
+
+            // insert backlog;
+            // return backlog;
+
+        }
+        
+        // Backlog__c backlog = new Backlog__c();
+
+
+        // backlog.Story__c = story;
+        // backlog.Stage__c = stage;
+        // // backlog.CardLabel1__c = l1;
+        // // backlog.CardLabel2__c = l2;
+        // // backlog.CardLabel3__c = l3;
+
+        // insert backlog;
 
         return backlog;
+
      
     }
 

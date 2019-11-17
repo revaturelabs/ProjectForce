@@ -89,7 +89,18 @@
     },
     openModel: function (component, event, helper) {
             // for Display Model,set the "isOpen" attribute to "true"
+
             helper.openModel(component);
+
+            var lab2 = component.find("label2");
+            console.log(lab2);
+
+            $A.util.addClass(lab2, 'toggle');
+
+
+            // component.get("label3").className = "slds-hidden";
+            // console.log(component.find("label2"));
+
         },
 
     closeModel: function (component, event, helper) {
@@ -100,16 +111,7 @@
 
     saveCard: function (component, event, helper) {
 
-
-        var stage = component.get('v.stage');
         var story = component.get('v.story');
-        var l1 = component.get('v.label1');
-        var l2 = component.get('v.label2');
-        var l3 = component.get('v.label3');
-        var c1 = component.get('v.color1');
-        var c2 = component.get('v.color2');
-        var c3 = component.get('v.color3');
-
 
         if (story === undefined || story === "" ){
             var toastEvent = $A.get("e.force:showToast");
@@ -121,6 +123,16 @@
         }
 
         else {
+
+            var stage = component.get('v.stage');
+
+            var l1 = component.get('v.label1');
+            var l2 = component.get('v.label2');
+            var l3 = component.get('v.label3');
+
+            var c1 = component.get('v.color1');
+            var c2 = component.get('v.color2');
+            var c3 = component.get('v.color3');
 
             console.log('Stage: ' + stage);
             console.log('Story: ' + story);
@@ -156,7 +168,10 @@
                 "story" : story,
                 "l1" : l1,
                 "l2": l2,
-                "l3": l3
+                "l3": l3,
+                "c1": c1,
+                "c2": c2,
+                "c3": c3,
             });
 
 

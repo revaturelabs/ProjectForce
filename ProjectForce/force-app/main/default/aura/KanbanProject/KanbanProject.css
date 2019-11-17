@@ -94,7 +94,7 @@
 
 
 .THIS .row {
-    display: flex
+    display: flex;
 }
 
 .THIS .column {
@@ -107,3 +107,4 @@
     height: 100px;
     overflow: scroll;
 }
+

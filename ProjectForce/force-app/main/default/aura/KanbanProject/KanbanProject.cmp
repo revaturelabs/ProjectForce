@@ -124,21 +124,26 @@
                                 </div>
                                 <div class="slds-col">
                                     <span>
-                                        <lightning:input type="text" id="text-input-id-1" placeholder="Label 1"
+                                        <lightning:input type="text" aura:id="label1" label="Label 1"
                                             value="{!v.label1}"  />
                                     </span>
                                 </div>
                                 <div class="slds-col">
+                                    <aura:if isTrue="{!not(empty(v.label1))}">
                                     <span>
-                                        <lightning:input type="text" id="text-input-id-1" placeholder="Label 2"
+                                        <lightning:input type="text" aura:id="label2" label="Label 2"
                                             value="{!v.label2}"  />
                                     </span>
+                                    </aura:if>
                                 </div>
                                 <div class="slds-col">
+                                    <aura:if isTrue="{!and(not(empty(v.label1)),not(empty(v.label2)))}">
                                     <span>
-                                        <lightning:input type="text" id="text-input-id-1" placeholder="Label 3"
+                                        <lightning:input type="text" aura:id="label3" label="Label 3"
                                             value="{!v.label3}"  />
                                     </span>
+                                    </aura:if>
+                                    
                                 </div>
                             </div>
 
@@ -150,21 +155,26 @@
                                 </div>
                                 <div class="slds-col">
                                     <span>
-                                        <lightning:input type="text" id="text-input-id-1" placeholder="#HexColor"
+                                        <lightning:input type="text" aura:id="color1" label="Label 1 Color"
                                                 value="{!v.color1}" />
                                     </span>
                                 </div>
                                 <div class="slds-col">
+                                    <aura:if isTrue="{!not(empty(v.label1))}">
                                     <span>
-                                        <lightning:input type="text" id="text-input-id-1" placeholder="#HexColor"
+                                        <lightning:input type="text" aura:id="color2" label="Label 2 Color"
                                             value="{!v.color2}"  />
                                     </span>
+                                    </aura:if>
+                                    
                                 </div>
                                 <div class="slds-col">
+                                    <aura:if isTrue="{!and(not(empty(v.label1)),not(empty(v.label2)))}">
                                     <span>
-                                        <lightning:input type="text" id="text-input-id-1" placeholder="#HexColor"
+                                        <lightning:input type="text" aura:id="color3" label="Label 3 Color"
                                             value="{!v.color3}"  />
                                     </span>
+                                    </aura:if>
                                 </div>
                             </div>
                     </div>
