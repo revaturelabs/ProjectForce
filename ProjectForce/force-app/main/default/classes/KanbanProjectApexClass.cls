@@ -19,4 +19,25 @@ public with sharing class KanbanProjectApexClass {
         upsert backlog;
         return backlog;
     }
+
+    @AuraEnabled
+    public static Backlog__c addNewBacklog(String stage, String story, String l1, String l2, String l3){
+
+        Backlog__c backlog = new Backlog__c();
+
+
+        backlog.Story__c = story;
+        backlog.Stage__c = stage;
+        // backlog.CardLabel1__c = l1;
+        // backlog.CardLabel2__c = l2;
+        // backlog.CardLabel3__c = l3;
+
+        insert backlog;
+
+        return backlog;
+     
+    }
+
+
+
 }

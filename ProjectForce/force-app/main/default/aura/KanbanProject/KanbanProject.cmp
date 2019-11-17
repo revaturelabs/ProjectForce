@@ -1,6 +1,4 @@
-<aura:component controller="KanbanProjectApexClass"
-    implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickAction"
-    access="global">
+<aura:component controller="KanbanProjectApexClass" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickAction" access="global">
     <ltng:require styles="{!$Resource.bulma}" />
     <!-- attributes -->
     <aura:attribute name="backlogs" type="Backlog__c[]" />
@@ -41,6 +39,7 @@
     <aura:attribute name="color1" type="String" />
     <aura:attribute name="color2" type="String" />
     <aura:attribute name="color3" type="String" />
+    <aura:attribute name="savingNewBacklog" type="Backlog__c" />
 
 
 

@@ -99,8 +99,8 @@
     },
 
     saveCard: function (component, event, helper) {
-        // Display alert message on the click on the "Like and Close" button from Model Footer 
-        // and set set the "isOpen" attribute to "False for close the model Box.
+
+
         var stage = component.get('v.stage');
         var story = component.get('v.story');
         var l1 = component.get('v.label1');
@@ -130,8 +130,57 @@
             console.log('Color 1: ' + c1);
             console.log('Color 2: ' + c2);
             console.log('Color 3: ' + c3);
-            helper.closeModel(component);
 
+            // newBacklog.Story__c = story;
+
+            // console.log('Backlog: ' + newBacklog);
+
+            // newBacklog.Stage = stage;
+            // newBacklog.CardLabel1 = l1;
+            // newBacklog.CardLabel2 = l2;
+            // newBacklog.CardLabel3 = l3;
+
+
+
+
+            // component.set('v.savingNewbacklog',newBacklog);
+
+            console.log('almost....');
+
+            var savingBacklogAction = component.get('c.addNewBacklog');
+
+            console.log(savingBacklogAction);
+
+            savingBacklogAction.setParams({
+                "stage" : stage,
+                "story" : story,
+                "l1" : l1,
+                "l2": l2,
+                "l3": l3
+            });
+
+
+
+            savingBacklogAction.setCallback(this, function (response) {
+
+                var state = response.getState();
+
+                if (state === "SUCCESS"){
+                    alert("success");
+                    helper.closeModel(component);
+                    $A.get("e.force:refreshView").fire();
+                }
+
+                else 
+                {
+                    alert("failed")
+                }
+
+            });
+
+            $A.enqueueAction(savingBacklogAction);
+            
+            
         }
         
 
