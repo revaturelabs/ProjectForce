@@ -1,10 +1,11 @@
-<aura:component controller="KanbanProjectApexClass">
+<aura:component controller="KanbanProjectApexClass" implements="flexipage:availableForAllPageTypes,force:hasRecordId,force:appHostable">
     <aura:attribute name="records" type="List" default="[]"/>
     <aura:attribute name="recordsBackup" type="List" default="[]"/>
     <aura:attribute name="categories" type="String[]" default="['To Do', 'Doing', 'Done']"/>
     <aura:attribute name="project" type="String"/>
     <aura:attribute name="criteria" type="String"/>
     <aura:attribute name="order" type="String"/>
+    <aura:attribute name="showSaveCancelBtn" type="boolean" default="false"/>
     <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
     <aura:method name="sampleMethod" action="{!c.doInit}" access="PUBLIC"/> 
 
@@ -45,33 +46,23 @@
                     <lightning:button label="New" onclick="{!c.selectNew}"/>
                 </aura:set>
                 <aura:set attribute="body">
-                    <aura:iteration items="{!v.records}" var="record"> 
-                        <aura:if isTrue="{!record.Stage__c == category}">
-                        <div class="slds-grid slds-box slds-box_small">
-                            <div class="slds-col slds-size_1-of-3">
-                                <a href="{!'/one/one.app?#/sObject/'+ record.Id + '/view'}" target="_blank">
-                                    {!record.Story__c}
-                                </a>
-                            </div>
-                            <div class="slds-col slds-size_1-of-6">
-                                <a href="{!'/one/one.app?#/sObject/'+ record.Project__c + '/view'}" target="_blank">
-                                    {!record.Project__r.Name} </a>
-                            </div>
-                            <div class="slds-col slds-size_1-of-6" title="{!record.stime}">
-                                {!record.StartDateTime__c}
-                            </div>
-                            <div class="slds-col slds-size_1-of-6" title="{!record.etime}">
-                                {!record.EndDateTime__c}
-                            </div>
-                            <div class="slds-col slds-size_1-of-6">
-                                {!record.DueDate__c}
-
-                            </div>
-                        </div>
+                    <aura:iteration items="{!v.records}" var="record" > 
+                        <aura:if isTrue="{!record.Stage__c == category}"> 
+                            <c:BacklogInline backlogRecord="{!record}"
+                            showSaveCancelBtn="{!v.showSaveCancelBtn}"/>
                         </aura:if> 
                     </aura:iteration>
                 </aura:set>
             </lightning:accordionSection>
         </aura:iteration>
+        <aura:if isTrue="{!v.showSaveCancelBtn == true}">
+        <lightning:button label="Cancel" class="slds-col slds-size_1-of-6" onclick="{!c.doInit}"/>
+        <lightning:button label="Save" variant="success" class="slds-col slds-size_1-of-6" onclick="{!c.saveEdits}"/>
+        <aura:set attribute="else">
+            <lightning:button label="Cancel" class="slds-col" onclick="{!c.doInit}" disabled="true"/>
+            <lightning:button label="Save" variant="success" class="slds-col" onclick="{!c.saveEdits}" disabled="true"/>
+        </aura:set>
+    </aura:if>
     </lightning:accordion>
+    
 </aura:component>
