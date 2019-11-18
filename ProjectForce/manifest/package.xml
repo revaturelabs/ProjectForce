@@ -61,5 +61,21 @@
         <members>Admin</members>
         <name>Profile</name>
     </types>
+    <types>
+        <members>Public/BacklogLinkEmail</members>
+        <name>EmailTemplate</name>
+    </types>
+    <types>
+        <members>ProjectForce</members>
+        <name>Letterhead</name>
+    </types>
+    <types>
+        <members>*</members>
+        <name>Workflow</name>
+    </types>
+    <types>
+        <members>*</members>
+        <name>Flow</name>
+    </types>
     <version>47.0</version>
 </Package>

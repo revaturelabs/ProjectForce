@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>When a project is assigned to a batch, the trainer is emailed a link to the most recent backlog</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <letterhead>ProjectForce</letterhead>
+    <name>BacklogLinkEmail</name>
+    <style>freeForm</style>
+    <subject>Current Backlog Link</subject>
+    <textOnly>Dear {!Trainer__c.Name}:
+
+Here is your current backlog link: {!Backlog__c.Link}</textOnly>
+    <type>html</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

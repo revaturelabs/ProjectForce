@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Letterhead xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <backgroundColor>#FF6600</backgroundColor>
+    <bodyColor>#FFFFFF</bodyColor>
+    <bottomLine>
+        <color>#FF9900</color>
+        <height>0</height>
+    </bottomLine>
+    <description>Letterhead for Project Force</description>
+    <footer>
+        <backgroundColor>#FFFFFF</backgroundColor>
+        <height>100</height>
+        <horizontalAlignment>Left</horizontalAlignment>
+        <verticalAlignment>Top</verticalAlignment>
+    </footer>
+    <header>
+        <backgroundColor>#FFFFFF</backgroundColor>
+        <height>100</height>
+        <horizontalAlignment>Left</horizontalAlignment>
+        <verticalAlignment>Top</verticalAlignment>
+    </header>
+    <middleLine>
+        <color>#FF9900</color>
+        <height>0</height>
+    </middleLine>
+    <name>Project Force</name>
+    <topLine>
+        <color>#FF9900</color>
+        <height>0</height>
+    </topLine>
+</Letterhead>
