@@ -1,0 +1,4 @@
+<aura:event type="COMPONENT" description="">
+	<aura:attribute type="String" name="title"></aura:attribute>
+    <aura:attribute type="Backlog__c" name="backlog"></aura:attribute>
+</aura:event>

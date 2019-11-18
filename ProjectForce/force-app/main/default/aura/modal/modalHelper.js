@@ -122,7 +122,6 @@
 	});
 	
 	$A.enqueueAction(action);
-	//return track[0].Name
 },
 
 	//Funcation for the room drop down
@@ -131,8 +130,6 @@
 		
 
 		var action = component.get("c.getRoom");
-       // var location = component.get("v.selectedLocation");
-		//var date = component.get("v.selectedDate");
 		let params = event.getParam('arguments');
 		let selectedLocation = component.get("v.selectedLocation");
 		let selectedDate = component.get("v.selectedDate");

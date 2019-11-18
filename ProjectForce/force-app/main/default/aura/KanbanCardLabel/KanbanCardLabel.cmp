@@ -1,0 +1,23 @@
+<aura:component>
+    <aura:attribute name="backlog" type="Backlog__c" required="true"></aura:attribute>
+    <aura:attribute name="labelIndex" type="Integer" required="true"></aura:attribute>
+
+    <aura:attribute name="showLabel" type="Boolean" default="false" />
+    <aura:attribute name="labelColor" type="String" />
+
+    <aura:handler name="init" action="{!c.doInit}" value="{!this}" />
+    <span aura:id="theBadge"  class="slds-badge" onclick="{!c.toggle}" style="{! 'background-color: ' + v.labelColor +';'}">
+        <!-- {!v.backlog.CardLabel__r.Text__c.Length} -->
+        <span aura:id="labelText" class="{!v.showLabel? 'slds-visible slds-card__header': 'slds-hidden slds-card__header'}">
+            <aura:if isTrue="{!v.labelIndex == 1}">
+                {!v.backlog.CardLabel1__r.Text__c}
+            </aura:if>
+            <aura:if isTrue="{!v.labelIndex == 2}">
+                {!v.backlog.CardLabel2__r.Text__c}
+            </aura:if>
+            <aura:if isTrue="{!v.labelIndex == 3}">
+                {!v.backlog.CardLabel3__r.Text__c}
+            </aura:if>
+        </span>
+    </span>
+</aura:component>

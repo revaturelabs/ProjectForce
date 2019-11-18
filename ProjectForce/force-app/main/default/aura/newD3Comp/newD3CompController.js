@@ -261,11 +261,13 @@
     var allTrainings = component.get("v.tempList");
     var myChart = component.get("v.dasChart");
 
-    var getColors = component.get("v.DisplayColors");
-
+    var getColors = component.get('v.DisplayColors');
     helper.sortArray(allTrainings, getColors, sortBy);
     helper.updateData(component);
-  },
+    helper.sortArray(allTrainings, getColors, sortBy); 
+    helper.updateData(component); 
+
+},
 
   runFilter: function(component, event, helper) {
     //Grabbing Relevant data
