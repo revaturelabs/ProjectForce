@@ -126,11 +126,12 @@ public class TestDataFactory {
 
             Integer randomDate = Integer.valueof((Math.random() * 60));
             Integer batchDuration = Integer.valueof((Math.random() * 3)+10);
+            Integer batchSize = Integer.valueof((Math.random() * 20));
             Date day = system.today();
             Date someDate = day.addDays(randomDate); 
             Training__c t = new Training__c(name='Test Training '+i, Trainer__c=trainerIdList[i].id, Track__c=TrainerTrackIdList[i].trackTrainer__c,
                                             Room__c=RoomIdList[i].id, Project__c=ProjectIDAssign[randomProject].id, Batch_Number__c=1000+i, Start_Date__c = someDate, 
-                                            BatchDuration__c=batchDuration, Color__c='#F26925');
+                                            BatchDuration__c=batchDuration, Color__c='#F26925', BatchSize__c=batchSize);
             TrainingList.add(t);
         }
         Insert TrainingList; 

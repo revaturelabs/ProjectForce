@@ -2,48 +2,109 @@
    display: none;
 }
 
-.THIS .slds-button_neutral {
-   
-   background-color: #F26925;
+.THIS .kanban{
+   background-color: #1798c1;
    color: white;
-   font-size: 1rem;
-   width: 100px;
+   float: left;
+}
+
+.THIS .save{
+   background-color: #1798c1;
+   color: white;
+}
+
+.THIS .cancel{
+   background-color: white;
+   color: #1798c1;
+   float: left;
+}
+
+.THIS #trainerBadge {
+   background-color: #FF7D3C;
+   color: white;
+}
+
+.THIS #projectBadge {
+   background-color: rgb(74, 136, 230);
+   color: white;
+}
+
+.THIS .projectButton {
+   background-color: transparent;
+   margin: 0px;
+   border: 0px;
+   height: 20px;
+   line-height: 1px;
+}
+
+.THIS .modalSections {
+   color: rgb(221, 219, 218);
+   background-color: rgb(221, 219, 218);
+   height: 1.5px;
 }
 
 .THIS .slds-modal__footer {
-   
-   background-color: #474C55;
+   background-color: white;
 }
 
 
 .THIS .slds-button_neutral:hover {
-   
    background-color: #72A4C2;
-   
 }
-
+/*
 .THIS .slds-select,.THIS .slds-input{
    
    color: #474C55;
    font-size: 1rem;
 }
-
+*/
 .THIS .slds-modal__header {
-   background: #474C55;
-   color: #F26925;
+   background: white;
+  
    font-size: 2rem;
 }
-.THIS .slds-form-element__label{
-   
-   padding: .25rem .5rem;
-   border-radius: 15rem;
-   font-size: 1rem;
-   font-weight: 700;
-   line-height: normal;
-   color: white;
-   white-space: nowrap;
-   margin-bottom: .5rem;
-   margin-top: .5rem;
-   background-color: #474c55;
-   width: 80px;
+
+.THIS .button {
+   background-color:#1798c1;
+   border: 0px;
+}
+
+.THIS .header{
+   color:black;
+}
+
+.THIS .hidden  {
+   display: none;
+}
+
+.THIS .font{
+   /* font-family: 'Times New Roman', Times, serif; */
+   font-family: sans-serif;
+}
+
+.THIS .buttonStyle{
+  border: none;
+  color: white;
+   padding: 0px;
+  border-radius: 8px;
+  display: inline-block;
+  font-size: 18px;
+  background-color: #1798c1;
+  cursor: pointer;
+  height: 20px;
+  width: 175px;
+  vertical-align: middle;
+  text-align: center;
+  margin: auto;
+  line-height: 18px;
+ 
+}
+
+
+.THIS .row{
+   display: flex
+}
+.THIS .column{
+   flex: 50%;
+   padding: 10px;
 }

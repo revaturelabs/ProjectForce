@@ -43,6 +43,7 @@
 .THIS .slds-modal__header {
     color: #474C55;
     font-size: 1rem;
+    font-family: Sans-Serif;
  }
 
 .THIS #Filters {
@@ -67,7 +68,6 @@
     border-radius: 5px;
 	background-color: #F26925;
     color: white;
-    
     margin: 3px;
 }
 .THIS .chartAreaWrapper {

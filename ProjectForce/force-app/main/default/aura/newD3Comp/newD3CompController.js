@@ -104,8 +104,8 @@
           var childCmp = component.find("modalComp");
           let location = currSimpleTraining.location;
           let track = currSimpleTraining.trackName;
-          childCmp.showModal(currSimpleTraining.trainingId, location, track);
-          component.location.reload();
+          let projectStartDate = currSimpleTraining.startDate;
+          childCmp.showModal(currSimpleTraining.trainingId, track, projectStartDate); 
         }
       }
     };
@@ -287,27 +287,44 @@
     component.set("v.tempList", newData);
   },
 
+
   callSaveComp: function(component, event, helper) {
     var childCmp = component.find("modalComp");
     childCmp.showModal("Online", "Salesforce");
   },
+  showmodal: function(component, event, helper){
+    var activePoints = component.get('v.dasChart').getElementsAtEvent(event);
+        if(activePoints.length > 0 )
+        {
+            var currIndex = activePoints[0]._index;                
+            var currSimpleTraining = component.get('v.tempList')[currIndex];
+            console.log('here is the current simple training: ');
+            console.log(currSimpleTraining);
 
-  showmodal: function(component, event, helper) {
-    var activePoints = component.get("v.dasChart").getElementsAtEvent(event);
-    if (activePoints.length > 0) {
-      var currIndex = activePoints[0]._index;
-      var currSimpleTraining = component.get("v.tempList")[currIndex];
+            var childCmp = component.find("modalComp");
 
-      var childCmp = component.find("modalComp");
+            let location = currSimpleTraining.location;
+            JSON.stringify(location);
+            let track = currSimpleTraining.trackName;
+            JSON.stringify(track);
+            console.log("track:"+track);
+            
+            let projectStartDate = currSimpleTraining.startDate;
+            JSON.stringify(projectStartDate);
+            console.log("projectStartDate:"+projectStartDate);
 
-      let location = currSimpleTraining.location;
-      JSON.stringify(location);
+            //let newLocation = location.replace(/"/location,"");
+            //console.log(newLocation);
+            childCmp.showModal(currSimpleTraining.trainingId, track, projectStartDate);
+            
+            /*
+        */
+        }
 
       let track = currSimpleTraining.trackName;
       JSON.stringify(track);
 
       childCmp.showModal(currSimpleTraining.trainingId, location, track);
-    }
   },
 
   modalUpdate: function(component, event, helper) {
