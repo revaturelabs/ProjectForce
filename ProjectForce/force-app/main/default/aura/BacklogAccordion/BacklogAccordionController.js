@@ -8,22 +8,15 @@
             if (response.getState() === 'SUCCESS') {
                 // Retrieve accordion categories
                 let categories = [];
+                
                 response.getReturnValue().forEach(function(record) {
                     if (record.Stage__c && categories.indexOf(record.Stage__c) === -1) {
                         categories.push(record.Stage__c);
                     } 
-                    // Convert Date/Time to Date or Time
-                    let d = new Date(record.StartDateTime__c);
-                    record.StartDateTime__c = d.toLocaleDateString();
-                    record['stime'] = d.toLocaleTimeString();
-                    d = new Date(record.EndDateTime__c);
-                    record.EndDateTime__c = d.toLocaleDateString();
-                    record['etime'] = d.toLocaleTimeString();
-                    d = new Date(record.DueDate__c);
-                    record.DueDate__c = d.toLocaleDateString();
                 });
                 component.set('v.records', response.getReturnValue());
                 component.set('v.recordsBackup', response.getReturnValue());
+                component.set("v.showSaveCancelBtn",false);
             }
         });
         $A.enqueueAction(action);        
@@ -73,5 +66,27 @@
                 break;
         }
         component.set('v.records', records);
+    },
+    
+    saveEdits : function(component,event,helper){
+        var action = component.get("c.saveBacklogs");
+            action.setParams({
+            'backlogs': component.get("v.records")
+        });
+        action.setCallback(this, function(response) {
+            var state = response.getState();
+            if (state === "SUCCESS") {
+                var storeResponse = response.getReturnValue();
+                component.set("v.records", storeResponse); 
+                component.set("v.showSaveCancelBtn",false);
+                alert('Updated...');
+                var sorter = component.get('c.sort');
+                var filterer = component.get('c.filter');
+                $A.enqueueAction(sorter);
+                $A.enqueueAction(filterer);
+            }
+        });
+        $A.enqueueAction(action);
     }
+
 })

@@ -7,6 +7,7 @@
         <members>KanbanProjectApexClass</members>
         <members>ModalController</members>
         <members>ModalControllerTest</members>
+        <members>TableApexController</members>
         <members>TestDataFactory</members>
         <members>TestGantController</members>
         <name>ApexClass</name>
@@ -40,7 +41,11 @@
     <types>
         <members>BacklogAccordion</members>
         <members>BacklogApp</members>
+        <members>BacklogInline</members>
+        <members>BatchAndProjectTables</members>
+        <members>BatchInformationEvent</members>
         <members>ChartCalculation</members>
+        <members>CreateDataTable</members>
         <members>droppedOnColumn</members>
         <members>KanbanProject</members>
         <members>KanbanColumn</members>
@@ -51,6 +56,8 @@
         <members>newD3App</members>
         <members>newD3Comp</members>
         <members>NewKanbanCardModal</members>
+        <members>SaveInlineEditsEvent</members>
+        <members>TableItemSelectedEvent</members>
         <members>test</members>
         <name>AuraDefinitionBundle</name>
     </types>

@@ -1,0 +1,98 @@
+<!--http://sfdcmonkey.com/2017/12/08/lightning-data-table-inline-editing/-->
+<aura:component controller="KanbanProjectApexClass" implements="flexipage:availableForAllPageTypes,force:hasRecordId" access="global">
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:attribute name="showSaveCancelBtn" type="boolean"/>
+    <aura:attribute name="projects" type="string[]" description="store picklist options values"/> 
+    <aura:attribute name="backlogRecord" type="sobject" default="{'sobjectType' : 'Backlog__c',
+    'Id' : '',
+    'Story__c' : '',
+    'Project__c' : '',
+    'StartDateTime__c' : '',
+    'EndDateTime__c' : '',
+    'DueDate__c' : ''}"/>
+    <aura:attribute name="storyEditMode" type="boolean" default="false" />
+    <aura:attribute name="projectEditMode" type="boolean" default="false" />
+    <aura:attribute name="startEditMode" type="boolean" default="false" />
+    <aura:attribute name="endEditMode" type="boolean" default="false" />
+    <aura:attribute name="stageEditMode" type="boolean" default="false" />
+    <aura:attribute name="dueEditMode" type="boolean" default="false" />
+    <aura:attribute name="lastEdited" type="string" default="" />
+    <aura:attribute name="projectName" type="string" default="{!v.backlogRecord.Project__r.Name}"/>
+    <div class="slds-grid slds-box slds-box_small">
+        <div class="slds-col slds-size_1-of-3">
+            <aura:if isTrue="{!v.storyEditMode == false}">
+                <a href="{!'/one/one.app?#/sObject/'+ v.backlogRecord.Id + '/view'}" target="_blank">
+                    {!v.backlogRecord.Story__c}
+                </a>
+                <button onclick="{!c.inlineEdit}" class="slds-button slds-button_icon slds-cell-edit__button slds-m-left_x-small" tabindex="0" title="Edit Story" data-value="storyEditMode">
+                    <lightning:icon iconName="utility:edit" size="xx-small" alternativeText="edit story"/>
+                </button>
+                     
+                <aura:set attribute="else">
+                    <lightning:input name="story" aura:id="storyInput" value="{!v.backlogRecord.Story__c}" onblur="{!c.inlineClose}" onchange="{!c.alwaysChange}" label="Story"/>
+                </aura:set>    
+            </aura:if>
+        </div>
+        <div class="slds-col slds-size_1-of-6">
+            <aura:if isTrue="{!v.projectEditMode == false}">
+                <a href="{!'/one/one.app?#/sObject/'+ v.backlogRecord.Project__c + '/view'}" target="_blank">
+                    {!v.projectName}
+                </a>
+                <button onclick="{!c.inlineEdit}" class="slds-button slds-button_icon slds-cell-edit__button slds-m-left_x-small" tabindex="0" title="Edit Project" data-value="projectEditMode">
+                    <lightning:icon iconName="utility:edit" size="xx-small" alternativeText="edit project"/>
+                </button>
+                         
+                <aura:set attribute="else">
+                    <lightning:select aura:id="projectInput" label="Choose a new Project" onblur="{!c.inlineClose}" onchange="{!c.projectChange}">
+                        <aura:iteration items="{!v.projects}" var="project" >
+                            <option text="{!project}" data-value="projectEditMode"></option>
+                        </aura:iteration>
+                    </lightning:select>
+                </aura:set>
+            </aura:if>
+        </div>
+        <!--
+        when it comes to date and times here are some important things to remember:
+        1 the user will see the date/time as whatever their settings in salesforce are, supposedly 
+        theyre supposed to see their client systems time but that isn't accurate to reality 
+        2 when editing JUST the date for a date/time object, the datepicker will display one day ahead of
+        the actual day if the time is in PM-->
+        <div class="slds-col slds-size_1-of-6" title="{!v.backlogRecord.StartDateTime__c}">
+            <aura:if isTrue="{!v.startEditMode == false}">    
+                <lightning:formattedDateTime value = "{!v.backlogRecord.StartDateTime__c}" year="numeric" month="numeric" day="numeric" hour="2-digit" minute="2-digit" hour12="true" />
+                <button onclick="{!c.inlineEdit}" class="slds-button slds-button_icon slds-cell-edit__button slds-m-left_x-small" tabindex="0" title="Edit Start Date" data-value="startEditMode">
+                        <lightning:icon iconName="utility:edit" size="xx-small" alternativeText="edit start date"/>
+                </button>
+                             
+                <aura:set attribute="else">
+                    <lightning:input type="datetime" aura:id="startInput" value="{!v.backlogRecord.StartDateTime__c}" onblur="{!c.inlineClose}" onchange="{!c.alwaysChange}"/>
+                </aura:set>
+            </aura:if>
+        </div>
+        <div class="slds-col slds-size_1-of-6" title="{!v.backlogRecord.EndDateTime__c}">
+            <aura:if isTrue="{!v.endEditMode == false}">    
+                <lightning:formattedDateTime value = "{!v.backlogRecord.EndDateTime__c}" year="numeric" month="numeric" day="numeric" hour="2-digit" minute="2-digit" hour12="true"/>
+                <button onclick="{!c.inlineEdit}" class="slds-button slds-button_icon slds-cell-edit__button slds-m-left_x-small" tabindex="0" title="Edit End Date" data-value="endEditMode">
+                        <lightning:icon iconName="utility:edit" size="xx-small" alternativeText="edit end date"/>
+                </button>
+
+                <aura:set attribute="else">
+                    <lightning:input type="datetime" aura:id="endInput" value="{!v.backlogRecord.EndDateTime__c}" onblur="{!c.inlineClose}" onchange="{!c.alwaysChange}"/>
+                </aura:set>
+            </aura:if>
+        </div>
+        <div class="slds-col slds-size_1-of-6">
+            <aura:if isTrue="{!v.dueEditMode == false}">    
+                
+                <lightning:formattedDateTime value = "{!v.backlogRecord.DueDate__c}" year="numeric" month="numeric" day="numeric" hour="2-digit" minute="2-digit" hour12="true" />
+                <button onclick="{!c.inlineEdit}" class="slds-button slds-button_icon slds-cell-edit__button slds-m-left_x-small" tabindex="0" title="Edit due Date" data-value="dueEditMode">
+                        <lightning:icon iconName="utility:edit" size="xx-small" alternativeText="edit due date"/>
+                </button>
+
+                <aura:set attribute="else">
+                    <lightning:input type="date" aura:id="dueInput" value="{!v.backlogRecord.DueDate__c}" onblur="{!c.inlineClose}" onchange="{!c.alwaysChange}" label="Date"/>
+                </aura:set>
+            </aura:if>
+        </div>
+    </div>
+</aura:component>	
