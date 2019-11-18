@@ -133,6 +133,7 @@
             var c1 = component.get('v.color1');
             var c2 = component.get('v.color2');
             var c3 = component.get('v.color3');
+            var project = component.get('v.project');
 
             console.log('Stage: ' + stage);
             console.log('Story: ' + story);
@@ -143,21 +144,7 @@
             console.log('Color 2: ' + c2);
             console.log('Color 3: ' + c3);
 
-            // newBacklog.Story__c = story;
 
-            // console.log('Backlog: ' + newBacklog);
-
-            // newBacklog.Stage = stage;
-            // newBacklog.CardLabel1 = l1;
-            // newBacklog.CardLabel2 = l2;
-            // newBacklog.CardLabel3 = l3;
-
-
-
-
-            // component.set('v.savingNewbacklog',newBacklog);
-
-            console.log('almost....');
 
             var savingBacklogAction = component.get('c.addNewBacklog');
 
@@ -172,6 +159,7 @@
                 "c1": c1,
                 "c2": c2,
                 "c3": c3,
+                "project": project
             });
 
 
@@ -181,14 +169,26 @@
                 var state = response.getState();
 
                 if (state === "SUCCESS"){
-                    alert("success");
+
+                    var toastEvent = $A.get("e.force:showToast");
+                    toastEvent.setParams({
+                        "title": "Success",
+                        "message": "New card added to kanban board."
+                    });
+                    toastEvent.fire();
+                    
                     helper.closeModel(component);
                     $A.get("e.force:refreshView").fire();
                 }
 
                 else 
                 {
-                    alert("failed")
+                    var toastEvent = $A.get("e.force:showToast");
+                    toastEvent.setParams({
+                        "title": "Failed",
+                        "message": "New card could not be added to kanban board"
+                    });
+                    toastEvent.fire();
                 }
 
             });
