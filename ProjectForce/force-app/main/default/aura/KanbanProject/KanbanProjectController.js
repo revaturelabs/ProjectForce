@@ -1,6 +1,5 @@
 ({
     doInit: function (component, event, helper) {
-        component.set("v.project", "a0321000003asAQAAY");
         // store apex controller method to a variable
         var action = component.get("c.getBacklogs");
         // store given project to a variable

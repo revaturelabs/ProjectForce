@@ -1,5 +1,5 @@
 <aura:application extends="force:slds"> 
-    <aura:attribute name="project" type="String" default="a016g0000026MfpAAE"/>
+    <aura:attribute name="project" type="String" default=""/>
     <div class="slds-m-around_medium">
         <lightning:tabset selectedTabId="Tasks">
             <lightning:tab label="Tasks" id="Tasks" onactive="{!c.refresh}">
