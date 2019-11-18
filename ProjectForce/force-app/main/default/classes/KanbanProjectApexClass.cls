@@ -27,17 +27,18 @@ public with sharing class KanbanProjectApexClass {
         Backlog__c backlog = new Backlog__c();
 
         if (l1 == null){
-            System.debug('No Label');
+            // System.debug('No Label');
             
             backlog.Story__c = story;
             backlog.Stage__c = stage;
+            backlog.Project__c = project;
 
             insert backlog;
          
         }
 
         else if (l2 == null){
-            System.debug('One Label');
+            // System.debug('One Label');
 
             CardLabel__c cl1 =  new CardLabel__c();
             cl1.Text__c = l1;
@@ -50,6 +51,7 @@ public with sharing class KanbanProjectApexClass {
             backlog.Story__c = story;
             backlog.Stage__c = stage;
             backlog.CardLabel1__c = cl1.Id;
+            backlog.Project__c = project;
 
             insert backlog;
 
@@ -57,7 +59,7 @@ public with sharing class KanbanProjectApexClass {
         }
 
         else if (l3 == null){
-            System.debug('Two Labels');
+            // System.debug('Two Labels');
 
             List<sObject> labels = new List<sObject>();
 
@@ -80,13 +82,14 @@ public with sharing class KanbanProjectApexClass {
             backlog.Stage__c = stage;
             backlog.CardLabel1__c = cl1.Id;
             backlog.CardLabel2__c = cl2.Id;
+            backlog.Project__c = project;
 
             insert backlog;
 
         }
 
         else {
-            System.debug('Three Labels');
+            // System.debug('Three Labels');
 
 
             List<sObject> labels = new List<sObject>();
@@ -117,32 +120,14 @@ public with sharing class KanbanProjectApexClass {
             backlog.CardLabel1__c = cl1.Id;
             backlog.CardLabel2__c = cl2.Id;
             backlog.CardLabel3__c = cl3.Id;
+            backlog.Project__c = project;
 
             insert backlog;
 
 
 
-
-            // Backlog__c backlog = new Backlog__c();
-            // backlog.Story__c = story;
-            // backlog.Stage__c = stage;
-            // backlog.CardLabel1__c = l1;
-
-            // insert backlog;
-            // return backlog;
-
         }
         
-        // Backlog__c backlog = new Backlog__c();
-
-
-        // backlog.Story__c = story;
-        // backlog.Stage__c = stage;
-        // // backlog.CardLabel1__c = l1;
-        // // backlog.CardLabel2__c = l2;
-        // // backlog.CardLabel3__c = l3;
-
-        // insert backlog;
 
         return backlog;
 
