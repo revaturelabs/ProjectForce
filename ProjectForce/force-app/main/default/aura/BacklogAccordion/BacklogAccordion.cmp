@@ -38,9 +38,6 @@
         </div>
         <aura:iteration items="{!v.categories}" var="category">
             <lightning:accordionSection name="{!category}" label="{!category}">
-                <aura:set attribute="actions">
-                    <lightning:button label="New" onclick="{!c.selectNew}"/>
-                </aura:set>
                 <aura:set attribute="body">
                     <aura:iteration items="{!v.records}" var="record" > 
                         <aura:if isTrue="{!record.Stage__c == category}"> 
