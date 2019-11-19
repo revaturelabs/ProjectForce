@@ -276,6 +276,10 @@
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>
+        <tab>Backlog</tab>
+        <visibility>DefaultOn</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
         <tab>ProjectForce</tab>
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
