@@ -105,7 +105,7 @@
 .THIS .slds-form-element__control {
     /*slds-border__bottom*/
     height: 100px;
-    overflow: scroll;
+    overflow: auto;
 }
 
 .THIS div{
