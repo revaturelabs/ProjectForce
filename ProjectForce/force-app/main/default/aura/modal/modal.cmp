@@ -15,6 +15,7 @@
 
      <!--Attribute for the selected value-->
     <aura:attribute name="updateProject" type="String"/>
+    <aura:attribute name="projectId" type="String"/>
   
     <!--Attribute for list-->
     <aura:attribute name="batchProjectsList" type="String"/>

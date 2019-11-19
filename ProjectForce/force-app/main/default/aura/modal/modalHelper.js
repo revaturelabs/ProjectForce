@@ -265,6 +265,7 @@
 				component.set("v.batchTrack", batchInformation.Track__r.Name);
 				component.set("v.batchProjectDate", batchInformation.ProjectStartDate__c);
 				component.set("v.updateProject", batchInformation.Project__r.Name);
+				component.set("v.projectId", batchInformation.Project__r.Id);
 				component.set("v.updateTrainer", batchInformation.Trainer__r.Name);
 				component.set("v.batchRoom", batchInformation.Room__r.Name);
 				component.set("v.batchLocation", batchInformation.Room__r.Location__r.Name);
