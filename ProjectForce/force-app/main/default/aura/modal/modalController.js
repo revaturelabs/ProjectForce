@@ -59,4 +59,11 @@
         x.style.display = "block";
       }
     },   
+    openKanban : function(component, event, helper) {
+      var navService = component.find("navService");
+      // Uses the pageReference definition in the init handler
+      var pageReference = component.get("v.pageReference");
+      event.preventDefault();
+      navService.navigate(pageReference);
+    }
 })

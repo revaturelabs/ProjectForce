@@ -16,6 +16,8 @@
      <!--Attribute for the selected value-->
     <aura:attribute name="updateProject" type="String"/>
     <aura:attribute name="projectId" type="String"/>
+    <aura:attribute name="pageReference" type="Object"/>
+    <lightning:navigation aura:id="navService"/>
   
     <!--Attribute for list-->
     <aura:attribute name="batchProjectsList" type="String"/>
@@ -154,7 +156,7 @@
         
                 <!--</lightning:card>-->
                 <footer class="slds-modal__footer slds-modal__footer_directional">
-                    <lightning:button class="slds-button_brand button" label="Kanban" onclick="{!c.hideModal}"/>
+                    <lightning:button class="slds-button_brand button" label="Kanban" onclick="{!c.openKanban}"/>
                     <lightning:button class="slds-button_brand button" label="Cancel"  onclick="{!c.hideModal}"/>
                     <lightning:button class="slds-button_brand button" label="Save" onclick="{!c.save}"/>
                 </footer>

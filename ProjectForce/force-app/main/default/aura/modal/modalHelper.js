@@ -258,6 +258,17 @@
 		action.setCallback (this, function (response) {
 			var state = response.getState();
 			let batchInformation = response.getReturnValue();
+			let projectId = component.get('v.projectId');
+			var pageReference = {
+				type: 'standard__navItemPage',
+				attributes: {
+					apiName: "Backlog"
+				},
+				state: {
+					c__project: projectId
+				}
+			};
+			component.set("v.pageReference", pageReference);
 
 			if(state === "SUCCESS"){
 				component.set("v.batchNumber", batchInformation.Batch_Number__c);
