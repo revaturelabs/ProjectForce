@@ -9,7 +9,7 @@
     <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
     <aura:method name="refresh" action="{!c.doInit}" access="PUBLIC"/> 
 
-    <lightning:accordion aura:id="accordion" allowMultipleSectionsOpen="true">
+    <lightning:accordion aura:id="accordion" allowMultipleSectionsOpen="true" class="slds-m-around_medium">
         <div class="slds-grid">
             <lightning:select class="slds-col" name="Filter" label="Filter:" value="{!v.criteria}" onchange="{!c.filter}">
                 <option value="">- None -</option>

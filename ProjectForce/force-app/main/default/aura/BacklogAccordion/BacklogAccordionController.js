@@ -79,7 +79,12 @@
                 var storeResponse = response.getReturnValue();
                 component.set("v.records", storeResponse); 
                 component.set("v.showSaveCancelBtn",false);
-                alert('Updated...');
+                var toastEvent = $A.get("e.force:showToast");
+                toastEvent.setParams({
+                    "title": "Success!",
+                    "message": "The record has been updated successfully."
+                });
+                toastEvent.fire();
                 var sorter = component.get('c.sort');
                 var filterer = component.get('c.filter');
                 $A.enqueueAction(sorter);
