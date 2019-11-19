@@ -96,6 +96,7 @@
         <members>Backlog__c</members>
         <members>ProjectForce</members>
         <members>ManageProjectKanban</members>
+        <members>Backlog</members>
         <members>CardLabel__c</members>
         <name>CustomTab</name>
     </types>
