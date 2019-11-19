@@ -156,7 +156,7 @@
         
                 <!--</lightning:card>-->
                 <footer class="slds-modal__footer slds-modal__footer_directional">
-                    <lightning:button class="slds-button_brand button" label="Kanban" onclick="{!c.openKanban}"/>
+                    <lightning:button class="slds-button_brand button" label="View Backlogs" onclick="{!c.openKanban}"/>
                     <lightning:button class="slds-button_brand button" label="Cancel"  onclick="{!c.hideModal}"/>
                     <lightning:button class="slds-button_brand button" label="Save" onclick="{!c.save}"/>
                 </footer>
