@@ -60,19 +60,39 @@
                 theBacklog.EndDateTime__c = null;
                 // if a card is dragged to the "Done" column
             } else if (title == "Done") {
-                // if a card is dragged to the Done Column without having startdatetime
-                if (theBacklog.StartDateTime__c == null) {
-                    // set start date to today
-                    theBacklog.StartDateTime__c = today;
+                var pr = theBacklog.PullRequest__c;
+                //if pr contains any value
+                if (pr) {
+                    var prContainsPull = pr.includes('pull');
+
+                    if (prContainsPull) {
+                        // if a card is dragged to the Done Column without having startdatetime
+                        if (theBacklog.StartDateTime__c == null) {
+                            // set start date to today
+                                theBacklog.StartDateTime__c = today;
+                            }  
+                            // set end date to today
+                            theBacklog.EndDateTime__c = today;
+                    }else{
+                        console.log('pull request is',theBacklog.PullRequest__c);
+                        theBacklog.Stage__c="Doing";
+                        alert('Add the pull request url');
+                        component.set("v.backlogs", listOfBacklogs);
+
+
+                    }
+                } else {
+                    console.log('pull request is',theBacklog.PullRequest__c);
+                    theBacklog.Stage__c="Doing";
+                    alert('Add the pull request url');
+                    component.set("v.backlogs", listOfBacklogs);
                 }
-                // set end date to today
-                theBacklog.EndDateTime__c = today;
+
                // if a card is dragged to "To Do", it should  have start and end date
             } else if (title == "To Do") {
                 theBacklog.StartDateTime__c = null;
                 theBacklog.EndDateTime__c = null;
             }
-
             // update database
             var action = component.get("c.saveBacklog");
             action.setParams({
