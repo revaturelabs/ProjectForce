@@ -26,7 +26,7 @@
     <aura:attribute name="updateTrainer" type="String"/>  
 
     <!-- Comments added in the modal are displayed above the input field -->
-<aura:attribute name="updateComment" type="String" />
+    <aura:attribute name="updateComment" type="String" />
 
     
     <!-- Attributes for the entire Batch modal -->

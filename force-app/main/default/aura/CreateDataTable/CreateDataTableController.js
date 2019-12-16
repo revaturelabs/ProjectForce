@@ -1,9 +1,6 @@
 ({
     /**
      * create the datatable
-     * @param {*} component 
-     * @param {*} event 
-     * @param {*} helper 
      */
     init : function(component, event, helper) {
         helper.setColumns(component, helper);
@@ -13,9 +10,6 @@
     /**
      * When an item in the table is selected fire an event that includes the
      * object the table references and the rows that were selected
-     * @param {*} component 
-     * @param {*} event 
-     * @param {*} helper 
      */
     fireSelectedTableItemsEvent : function(component, event, helper){
         var selectedTableItemsEvent = component.getEvent("TableItemSelectedEvent");
@@ -27,10 +21,7 @@
     },
 
     /**
-     * when an inline edit is made fire an event that contains the items that were changed
-     * @param {*} component 
-     * @param {*} event 
-     * @param {*} helper 
+     * When an inline edit is made fire an event that contains the items that were changed
      */
     save : function(component, event, helper){
        var saveInlineEdits = component.getEvent("saveInlineEdits");

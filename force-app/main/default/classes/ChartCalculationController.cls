@@ -1,6 +1,6 @@
 public without sharing class ChartCalculationController {
-    static List<training__c> trainingList = [SELECT Id, project__c, Start_Date__c FROM training__c];
-    static List<project__c> projectList = [SELECT Id, (SELECT projectStartDate__c FROM trainings__r ORDER BY projectStartDate__c ASC) FROM project__c];
+    static List<Training__c> trainingList = [SELECT Id, project__c, Start_Date__c FROM Training__c];
+    static List<Project__c> projectList = [SELECT Id, (SELECT projectStartDate__c FROM Trainings__r ORDER BY projectStartDate__c ASC) FROM Project__c];
 
     //Get the number of trainings with a project
     @AuraEnabled
