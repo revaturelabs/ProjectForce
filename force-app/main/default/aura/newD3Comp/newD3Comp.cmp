@@ -1,0 +1,35 @@
+<aura:component controller="GantController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickActionWithoutHeader" access="global">
+
+        <c:modal aura:id="modalComp"/>
+        <c:modal/>
+    <!--This grabs the Chart.js library from the static resources, 
+		and runs the chart creation function when finished.-->
+    <ltng:require scripts="{!$Resource.ChartJS}" afterScriptsLoaded="{!c.myAction}" />
+    <!--These are variables being used to store data relevant to the chart.
+		It's how we  can maintain values being passed between js functions and apex functions as well. -->
+    <aura:attribute name="qTraining" type="List"/>
+    <aura:attribute name="tempList" type="List"/>
+    <aura:attribute name="dasChart" type = "Object"/>
+    <aura:attribute name="Tracks" type="Set"/>
+    <aura:attribute name="StartDates" type="List"/>
+    <aura:attribute name="Locations" type = "Set"/>
+    <aura:attribute name ="UserColors" type="List"/>
+    <aura:attribute name = "DisplayColors" type = "List" />
+    <aura:attribute name="today" type="Date" default=""/>
+
+    <aura:handler event="c:BatchInformationEvent" action="{!c.handleBatchInformationEvent}" />
+    
+    
+    <c:BatchAndProjectTables />
+    <div class = "THIS">
+        <!--Holds the Chart -->
+        <div aura:id="chartIdThing" class="Chart">
+            <div class="chartAreaWrapper">
+                <canvas aura:id="myChart" onclick= "{!c.showmodal}"></canvas>
+            </div>
+            <c:ChartCalculation />
+        </div>
+    </div>
+       
+
+</aura:component>

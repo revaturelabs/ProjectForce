@@ -1,0 +1,75 @@
+.THIS {
+    font-family: Futura;
+    /* background-color: white; */
+}
+
+.THIS.graph_container{
+  display:block;
+  width:600px;
+}
+
+/*applies to the box around the manipulations*/
+.THIS .chartmanip {
+    border-bottom: 2px solid #474C55;
+    border-left: 2px solid #474C55;
+    border-right: 2px solid #474C55;
+    border-top: 10px solid #474C55; 
+    border-radius: 5px;
+    
+    display:flex;
+    width: 80%;
+    margin-left:5%;
+    margin-right:5%;
+    background-color: white;
+    
+    
+}
+/*Begin Styling for each individual box.
+	This is more so they don't stack on top of each other.*/
+
+.THIS #Colors {
+    float: right;
+    width: 30%;
+    margin-left:5%;
+    margin-right: 5%;}
+
+.THIS #Sorting {
+    float: right;
+    width:30%;
+    margin-left:5%;
+    margin-right: 5%;    
+}
+
+.THIS .slds-modal__header {
+    color: #474C55;
+    font-size: 1rem;
+    font-family: Sans-Serif;
+ }
+
+.THIS #Filters {
+    float: left;
+    width:30%;
+    margin-left:5%;
+    margin-right: 5%;
+}
+
+/*Styling for the Chart */
+.THIS .Chart {
+    width:95%;
+    border-bottom: 2px solid #474C55;
+    border-left: 2px solid #474C55;
+    border-right: 2px solid #474C55;
+    border-top: 10px solid #474C55; 
+    border-radius: 2.5%;
+    margin: 0px 25px 5px 25px;
+    background-color: white;
+}
+.THIS button{
+    border-radius: 5px;
+	background-color: #F26925;
+    color: white;
+    margin: 3px;
+}
+.THIS .chartAreaWrapper {
+    overflow: auto;
+}

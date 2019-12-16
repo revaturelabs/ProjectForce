@@ -1,0 +1,6 @@
+.THIS.a{
+    display: grid;
+    width: 95%;
+    margin:2%;
+    grid-template-columns: 50% 50%;
+}

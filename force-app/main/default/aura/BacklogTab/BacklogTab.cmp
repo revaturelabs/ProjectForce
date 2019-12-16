@@ -1,0 +1,14 @@
+<aura:component implements="force:appHostable,lightning:isUrlAddressable" access="global">
+    <aura:attribute name="project" type="String" default="a016g0000026MfpAAE"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <div class="slds-m-around_medium slds-card">
+        <lightning:tabset selectedTabId="Tasks">
+            <lightning:tab label="Tasks" id="Tasks" onactive="{!c.refresh}">
+                <c:BacklogAccordion project="{!v.project}" aura:id="accordionView"/>
+            </lightning:tab>
+            <lightning:tab label="Backlog" id="Backlog">
+                <c:KanbanProject project="{!v.project}"/>
+            </lightning:tab>
+        </lightning:tabset>
+    </div>
+</aura:component>
