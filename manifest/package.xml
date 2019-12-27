@@ -106,6 +106,7 @@
     </types>
     <types>
         <members>Admin</members>
+        <members>Project Manager</members>
         <name>Profile</name>
     </types>
     <version>47.0</version>
