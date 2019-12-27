@@ -15,7 +15,7 @@
 
 public class TestDataFactory {
     public static void createTestData(integer numOfRecords){
-       
+		deleteTestData();       
         //Insert Trainer records
         list<trainer__c> TrainerList= new list<trainer__c>();
         for(integer i = 0; i<numOfRecords-1; i++){
@@ -134,18 +134,46 @@ public class TestDataFactory {
                                             BatchDuration__c=batchDuration, Color__c='#F26925', BatchSize__c=batchSize);
             TrainingList.add(t);
         }
-        Insert TrainingList; 
+        Insert TrainingList;
+        createTasks(); 
     }
 
     public static void deleteTestData(){
         List<track__c> trackList = [SELECT Id FROM track__c];
         List<trainer__c> trainerList = [SELECT Id FROM trainer__c];
         List<location__c> locationList = [SELECT Id FROM location__c];
+        List<Backlog__c> backlogList = [SELECT Id FROM Backlog__c];
         if(trackList.size() > 0)
             delete trackList;
         if(trainerList.size() > 0)
             delete trainerList;
         if(locationList.size() > 0)
             delete locationList;
+        if(backlogList.size() > 0)
+            delete backlogList;
+    }
+
+    private static void createTasks() {
+        List<Project__c> projects = [SELECT Id FROM Project__c];
+        List<Backlog__c> backlogsToInsert = new List<Backlog__c>();
+
+        for (Project__c p: projects) {
+            Double randomToDo = Math.random() * 5.0;
+            for (Integer i = 0; i < randomToDo; i++) {
+                backlogsToInsert.add(new Backlog__c(Project__c=p.Id, Story__c='Test', Stage__c='To Do'));
+            }
+
+            Double randomDoing = Math.random() * 5.0;
+            for (Integer i = 0; i < randomDoing; i++) {
+                backlogsToInsert.add(new Backlog__c(Project__c=p.Id, Story__c='Test', Stage__c='Doing'));
+            }
+
+            Double randomDone = Math.random() * 5.0;
+            for (Integer i = 0; i < randomDone; i++) {
+                backlogsToInsert.add(new Backlog__c(Project__c=p.Id, Story__c='Test', Stage__c='Done'));
+            }
+        }
+
+        insert backlogsToInsert;
     }
 }
