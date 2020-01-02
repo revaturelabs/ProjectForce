@@ -9,9 +9,7 @@
 //    any questions, email at ma444699160@gmail.com to Ying Ma
 ////////////////////////////////////////////
 
-
-
-
+// Consider making direct test class for datafactory
 
 public class TestDataFactory {
     public static void createTestData(integer numOfRecords){

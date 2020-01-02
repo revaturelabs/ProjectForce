@@ -22,6 +22,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>KanbanProjectTest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ModalController</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -31,6 +35,10 @@
     </classAccesses>
     <classAccesses>
         <apexClass>TableApexController</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>TableControllerTest</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
@@ -83,6 +91,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Backlog__c.PullRequest__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Backlog__c.Stage__c</field>
         <readable>true</readable>
@@ -123,11 +136,6 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
-        <field>Training__c.BatchSize__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>false</editable>
         <field>Training__c.BatchSize__c</field>
         <readable>false</readable>
@@ -139,7 +147,7 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Training__c.BatchSize__c</field>
+        <field>Training__c.Comments__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -260,6 +268,10 @@
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
     <tabVisibilities>
+        <tab>Backlog</tab>
+        <visibility>DefaultOn</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
         <tab>Backlog__c</tab>
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
@@ -273,10 +285,6 @@
     </tabVisibilities>
     <tabVisibilities>
         <tab>ManageProjectKanban</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>Backlog</tab>
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>
@@ -438,11 +446,19 @@
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
+        <name>CreatePackaging</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>true</enabled>
         <name>CreateReportFolders</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
         <name>CreateTopics</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>true</enabled>
+        <name>CreateWorkBadgeDefinition</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
@@ -475,6 +491,10 @@
     <userPermissions>
         <enabled>true</enabled>
         <name>EditActivatedOrders</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>true</enabled>
+        <name>EditBillingInfo</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
@@ -799,6 +819,10 @@
     <userPermissions>
         <enabled>true</enabled>
         <name>PrivacyDataAccess</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>true</enabled>
+        <name>PublishPackaging</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
