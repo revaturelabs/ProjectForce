@@ -10,6 +10,8 @@
         <members>TableApexController</members>
         <members>DataFactory</members>
         <members>TestGantController</members>
+        <members>TableControllerTest</members>
+        <members>KanbanProjectTest</members>
         <name>ApexClass</name>
     </types>
     <types>
