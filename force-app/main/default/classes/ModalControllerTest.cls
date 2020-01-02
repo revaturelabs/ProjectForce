@@ -3,7 +3,7 @@ public class ModalControllerTest {
     // put user creation in setup
 	@TestSetup
     static void setupData(){
-        TestDataFactory.createTestData(50);
+        DataFactory.createTestData(50);
     }
     // New Stuff
     @isTest
