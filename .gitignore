@@ -27,4 +27,6 @@ ehthumbs.db
 [Dd]esktop.ini
 $RECYCLE.BIN/
 
+# Custom ignore files
 ProjectForce/.vscode/
+.vscode/settings.json
