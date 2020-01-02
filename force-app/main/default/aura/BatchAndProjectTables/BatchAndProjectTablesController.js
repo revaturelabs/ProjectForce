@@ -32,5 +32,25 @@
         var tableAuraId = helper.getTableAuraId(event);
         var updatedData = helper.getUpdatedData(component, event, tableAuraId); 
         helper.saveInlineEdits(component, helper, updatedData);
+    },
+
+    /**
+     * initalize the tables to have current projects selected by default
+     * @param {} component 
+     * @param {*} event 
+     * @param {*} helper 
+     */
+    initSelections : function(component,event,helper){
+        let tableName='batch';
+        if(event.getParam('TableName')==tableName){
+            let updateList=[];
+            
+            let tableData=component.find(tableName).get('v.data');
+            for(let i=0;i<tableData.length;i++){
+                console.log(tableData[i]);
+
+            }
+            //markTableItemsAsSelected(list of IDs,tableName,component);
+        }
     }
 })
