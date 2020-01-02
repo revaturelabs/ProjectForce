@@ -8,7 +8,7 @@
         <members>ModalController</members>
         <members>ModalControllerTest</members>
         <members>TableApexController</members>
-        <members>TestDataFactory</members>
+        <members>DataFactory</members>
         <members>TestGantController</members>
         <name>ApexClass</name>
     </types>

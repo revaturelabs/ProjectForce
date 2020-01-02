@@ -13,7 +13,7 @@
 
 
 
-public class TestDataFactory {
+public class DataFactory {
     public static void createTestData(integer numOfRecords){
 		deleteTestData();       
         //Insert Trainer records
