@@ -4,12 +4,16 @@
      * @param {*} component 
      * @param {*} helper 
      */
+
     setColumns : function(component, helper){
         var fields = helper.getColumns(component.get("v.queryFields"));
         var columns = [];
         for(var i=0;i<fields.length;i++){
+            if(fields[i][3]==null){
+                fields[i][3]=fields[i][0];
+            }
             columns.push({
-                        label:fields[i][0], 
+                        label:fields[i][3], 
                         fieldName:fields[i][0], 
                         type:fields[i][1],
                         editable:fields[i][2],
