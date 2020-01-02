@@ -46,11 +46,20 @@
             let updateList=[];
             
             let tableData=component.find(tableName).get('v.data');
+            
+            let today=new Date();
+            
             for(let i=0;i<tableData.length;i++){
                 console.log(tableData[i]);
+                console.log(tableData[i].ProjectStartDate__c);
+                let startDate=new Date(tableData[i].ProjectStartDate__c);
+                let endDate=new Date(tableData[i].end_time__c);
+                if(startDate.getTime()<=today.getTime() && tableData[i].end_time__c.getTime()>=today.getTime()){
+                    updateList.add(tableData[i].id);
+                }
 
             }
-            //markTableItemsAsSelected(list of IDs,tableName,component);
+            helper.markTableItemsAsSelected(updateList,tableName,component);
         }
     }
 })

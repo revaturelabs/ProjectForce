@@ -15,7 +15,7 @@
             queryObject="Training__c" 
             tableHeader="Batch Table"
             tableName="batch" 
-            queryFields="[['Name','text', false], ['Color__c', 'text', true], ['ProjectStartDate__c', 'date', false], ['BatchDuration__c','number',false], ['Trainer__r.Name', false], ['Project__r.Name', false], ['Room__r.Location__r.Name', false], ['Room__r.Room_Number__c', false], ['Track__r.Name', false]]" />
+            queryFields="[['Name','text', false], ['Color__c', 'text', true], ['ProjectStartDate__c', 'date', false], ['End_date__c','number',false], ['Trainer__r.Name', false], ['Project__r.Name', false], ['Room__r.Location__r.Name', false], ['Room__r.Room_Number__c', false], ['Track__r.Name', false]]" />
             <!-- tableHeader is the visible label for the table. TableName is for internal reference. Changing tablename may cause issues -->
             <!-- query field is a list of lists each inner list consists of [row, type, editable] if type is false dont display that column-->
 
