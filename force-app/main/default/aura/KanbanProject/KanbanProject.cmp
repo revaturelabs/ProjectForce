@@ -2,6 +2,8 @@
     <ltng:require styles="{!$Resource.bulma}" />
     <!-- attributes -->
     <aura:attribute name="backlogs" type="Backlog__c[]" />
+    <!-- added by fw -->
+    <aura:attribute name="kColumns" type="KanbanColumn__c[]" />
     <!-- project id stored as a string -->
     <aura:attribute name="project" type="String" />
     <!-- event handlers -->
@@ -12,21 +14,16 @@
             <div class="slds-col ">
                     <c:KanbanColumn title="To Do" backlogs="{!v.backlogs}"></c:KanbanColumn>
             </div>
-            <!-- added by fw -->
-            <div aura:id="kColumns">
-
-                
-
-
-                <!-- 
-                <div class="slds-col ">
-                    <c:KanbanColumn title="Doing" backlogs="{!v.backlogs}"></c:KanbanColumn>
-                </div>
-                <div class="slds-col ">
-                    <c:KanbanColumn title="Done" backlogs="{!v.backlogs}"></c:KanbanColumn>
-                </div> 
-                -->
+        
+            <!-- 
+            <div class="slds-col ">
+                <c:KanbanColumn title="Doing" backlogs="{!v.backlogs}"></c:KanbanColumn>
             </div>
+            <div class="slds-col ">
+                <c:KanbanColumn title="Done" backlogs="{!v.backlogs}"></c:KanbanColumn>
+            </div> 
+            -->
+            
             <aura:set attribute="else">
                 <div class="demo-only" style="padding:0.5rem;background:#16325c">
                     <div class="slds-text-color_inverse">No Backlogs found</div>
