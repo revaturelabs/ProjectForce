@@ -15,9 +15,133 @@
 
 public class DataFactory 
 {
-    private static list<Track__c> trackList;
-    private static list<Location__c> locList;
+    // Initialize all lists of sObjects for us to insert in the createData() method
+    private static list<Track__c> trackList = new list<Track__c>();
+    private static list<Location__c> locList = new list<Location__c>();
+    private static list<Trainer__c> TrainerList = new list<trainer__c>();
+    private static list<TrainerTrack__c> TrainerTrackList= new list<trainerTrack__c>();
+    private static list<Room__c> RoomList= new list<Room__c>();
+    private static list<Project__c> ProjectList= new list<project__c>();
+    private static list<Training__c> TrainingList= new list<Training__c>();
+    private static list<Backlog__c> BacklogList = new List<Backlog__c>();
     
+    public static void createTestData(integer numOfRecords)
+    {   
+        // Insert tracks and locations if you haven't already (only necessary on 1st run)
+       	if ( trackList == null ) createTracks();     
+		if ( locList == null ) createLocs();
+        
+        // Insert Trainer records
+        for ( integer i = 0 ; i < numOfRecords-1 ; i++ )
+        {	trainerList.add(new Trainer__c(name='Test Trainer '+i));
+        }
+        trainerList.add(new trainer__c(name='External'));  // Not sure yet what this is for
+        insert trainerList;
+
+
+        // Insert Trainer Track Records
+        // Add one for each trainer, dividing the trainers evenly among the tracks
+        for( integer i = 0 ; i < numOfRecords ; i++ )
+        {   trainerTrack__c t = new trainerTrack__c
+            (	name='Test Trainer Track '+i, 
+             	trackTrainer__c = trackList[ math.mod( i, trackList.size() ) ].id,
+             	trainerTrack__c = trainerList[i].id
+            );
+            trainerTrackList.add(t);
+        }
+        Insert trainerTrackList;
+
+        //Insert Room records
+        for(integer i = 0; i < numOfRecords-1 ; i++ )
+        {   Room__c r = new Room__c
+                (	name = 'Test Room ' + i, 
+                 	location__c = locList[math.mod( i, locList.size() )].id, 
+                 	Room_Number__c = 100 + i, 
+                 	Capacity__c = 20
+                );
+            RoomList.add(r);
+        }
+        Room__c online = new Room__c(	name = 'Online', location__c = locList[0].id, 
+             							Room_Number__c = 0, Capacity__c = 0
+            						);	// Not sure what this is for
+        RoomList.add(online);
+        Insert RoomList;
+
+        //Insert Project Records
+        
+        for(integer i = 0; i < numOfRecords/2 ; i++ )
+        {	Project__c p = new project__c(	name = 'Test Project '+i, 
+                                          	track__c = TrainerTrackList[i].trackTrainer__c, 
+                                          	Details__c = 'Test Detail '+i
+                                         );
+            ProjectList.add(p);
+        }
+        Insert ProjectList;  
+
+        // Get full list of dummy projects for each track mapped to the track's name
+        Map<String, List<Project__c> > projectsByTrack = new Map<String, List<Project__c> > ();
+        for ( Track__c t : trackList )
+        	projectsByTrack.put(t.Name, [	SELECT Id, Name, Track__c, Track__r.name 
+                                            FROM Project__c 
+                                            WHERE Name LIKE 'Test Project %'
+                                            AND Track__r.name =: t.Name
+                                        ]
+                               );
+        // Get a list of all trainertracks with associated track names
+        list<trainerTrack__c> TrackTrainers = [	SELECT Id, trackTrainer__r.name 
+                                               	FROM trainerTrack__c
+                                              ];
+        
+        // Insert Training Records
+        for ( integer i = 0 ; i < numOfRecords ; i++ )
+        {   // Assign the right project list based on the track for this trainer
+            List<project__c> ProjectIDAssign = new list<project__c>();
+         	ProjectIDAssign = projectsByTrack.get(TrackTrainers[i].trackTrainer__r.name);
+         	Training__c t = new Training__c
+                (	name='Test Training ' + i, 
+					Trainer__c = trainerList[i].id, 
+					Track__c = TrainerTrackList[i].trackTrainer__c,
+                	Room__c = RoomList[i].id, 
+					Project__c = ProjectIDAssign[Math.mod(i, ProjectIDAssign.size())].id, 
+					Batch_Number__c = 1000+i, 
+                 	Start_Date__c = system.today().addDays(5 + i), 
+                    BatchDuration__c = 10 + Math.mod(i, 3), 
+                 	Color__c = '#F26925', 
+                 	BatchSize__c = 10 + Math.mod(i, 10)
+                );
+            TrainingList.add(t);
+        }
+        Insert TrainingList;
+        
+		// Insert task records
+        for ( integer i = 0 ; i < numOfRecords ; i++ )
+        {	for ( integer j = 0 ; j < Math.mod(i+6, 10) + 1 ; j++ )
+            {	backlogList.add	(	new Backlog__c
+                                 	(	Project__c=ProjectList[i].Id, 
+                                     	Story__c='Test', 
+                                     	Stage__c='To Do'
+                                    )
+                				);
+            }
+            for ( integer j = 0 ; j < Math.mod(i+2, 10) + 1 ; j++ )
+            {	backlogList.add	(	new Backlog__c
+                                 	(	Project__c=ProjectList[i].Id, 
+                                     	Story__c='Test', 
+                                     	Stage__c='Doing'
+                                    )
+                				);
+            }
+         	for ( integer j = 0 ; j < Math.mod(i, 10) + 1 ; j++ )
+            {	backlogList.add	(	new Backlog__c
+                                 	(	Project__c=ProjectList[i].Id, 
+                                     	Story__c='Test', 
+                                     	Stage__c='Done'
+                                    )
+                				);
+            }
+        }
+        insert backlogList;
+    }
     private static void createTracks()
     {	trackList = new list<track__c>();
      	// Make dummy tracks with three plausible sample names
@@ -30,8 +154,7 @@ public class DataFactory
     }
     
     private static void createLocs()
-    {
-        locList= new list<location__c>();
+    {	locList= new list<location__c>();
         // Make dummy locations at four plausible spots
         list<string> lnames = new list<string> { 'Online', 'Reston', 'Florida', 'Texas' };
         for(integer i = 0 ; i < lnames.size() ; i++ )
@@ -40,148 +163,15 @@ public class DataFactory
         }
         Insert locList;
     }
-    
-    public static void createTestData(integer numOfRecords)
-    {    
-        // Insert Trainer records
-        list<trainer__c> TrainerList = new list<trainer__c>();
-        for ( integer i = 0 ; i < numOfRecords-1 ; i++ )
-        {	Trainer__c t = new Trainer__c(name='Test Trainer '+i);
-            TrainerList.add(t);
-        }
-        TrainerList.add(new trainer__c(name='External'));  // Not sure yet what this is for
-        Insert TrainerList;
 
-		if ( trackList == null ) createTracks();     
-		if ( locList == null ) createLocs();
-
-        //Insert Trainer Track Records
-        list<trainerTrack__c> TrainerTrackList= new list<trainerTrack__c>();
-        // list<track__c> trackIdList = [SELECT id, name FROM track__c];
-
-        // Add n trainers split evenly between the 3 tracks
-        for( integer i = 0 ; i < numOfRecords ; i++ )
-        {   trainerTrack__c t = new trainerTrack__c
-            (	name='Test Trainer Track '+i, 
-             	trackTrainer__c = trackList[ math.mod( i, trackList.size() ) ].id,
-             	trainerTrack__c = trainerList[i].id
-            );
-            trainerTrackList.add(t);
-        }
-        Insert trainerTrackList;
-
-        //Insert Room records
-        list<Room__c> RoomList= new list<Room__c>();
-        list<Location__c> LocIdList = [SELECT id, name FROM location__c];
-
-        for(integer i = 0; i<numOfRecords-1; i++){
-            Integer randomNumber = Integer.valueof((Math.random() * (LocIdList.size()-1))+1);
-            Room__c r = new Room__c(name='Test Room '+i, location__c=LocIdList[randomNumber].id, Room_Number__c= 100+i, Capacity__c=20);
-            RoomList.add(r);
-        }
-        Room__c online = new Room__c(name='Online', location__c=LocIdList[0].id, Room_Number__c=0, Capacity__c=0);
-        RoomList.add(online);
-        Insert RoomList;
-
-        //Insert Project Records
-        list<project__c> ProjectList= new list<project__c>();
-        list<trainerTrack__c> TrainerTrackIdList = [SELECT trackTrainer__r.name FROM trainerTrack__c];
-
-        for(integer i = 0; i<numOfRecords/2; i++){
-            project__c t = new project__c(name='Test Project '+i, track__c=TrainerTrackIdList[i].trackTrainer__c, Details__c='Test Detail '+i);
-            ProjectList.add(t);
-        }
-        Insert ProjectList;  
-
-        //Insert Training Records
-        list<Training__c> TrainingList= new list<Training__c>();
-        list<Project__c> ProjectIdList = [SELECT Id, name, track__c, track__r.name FROM Project__c];
-        list<Room__c> RoomIdList = [SELECT Id, name from Room__c];
-
-        //Generate three lists of projects based on tracks
-        list<project__c> SalesforceProject = new list<project__c>();
-        list<project__c> JavaEEProject = new list<project__c>();
-        list<project__c> BigDataProject = new list<project__c>();
-        for(project__c p : ProjectIDList){
-            if(p.track__r.name == 'Salesforce'){
-                SalesforceProject.add(p);
-            }else if(p.track__r.name == 'Java EE'){
-                JavaEEProject.add(p);
-            }else if(p.track__r.name == 'Big Data'){
-                BigDataProject.add(p);
-            }
-        }
-
-        //Assign the right project list based on the track
-        for(integer i = 0; i<numOfRecords; i++){
-            list<project__c> ProjectIDAssign = new list<project__c>();
-            integer randomProject;
-            if(TrainerTrackIdList[i].trackTrainer__r.name == 'Salesforce'){
-                Integer randomProjectNumber = SalesforceProject.size();
-                randomProject = Integer.valueof((Math.random() * randomProjectNumber));
-                ProjectIDAssign = SalesforceProject;
-
-            }else if (TrainerTrackIdList[i].trackTrainer__r.name == 'Java EE'){
-                Integer randomProjectNumber = JavaEEProject.size();
-                randomProject = Integer.valueof((Math.random() * randomProjectNumber));
-                ProjectIDAssign = JavaEEProject;
-
-            }else if(TrainerTrackIdList[i].trackTrainer__r.name == 'Big Data'){
-                Integer randomProjectNumber = BigDataProject.size();
-                randomProject = Integer.valueof((Math.random() * randomProjectNumber));
-                ProjectIDAssign = BigDataProject;
-            }
-
-            Integer randomDate = Integer.valueof((Math.random() * 60));
-            Integer batchDuration = Integer.valueof((Math.random() * 3)+10);
-            Integer batchSize = Integer.valueof((Math.random() * 20));
-            Date day = system.today();
-            Date someDate = day.addDays(randomDate); 
-            Training__c t = new Training__c(name='Test Training '+i, Trainer__c=trainerList[i].id, Track__c=TrainerTrackIdList[i].trackTrainer__c,
-                                            Room__c=RoomIdList[i].id, Project__c=ProjectIDAssign[randomProject].id, Batch_Number__c=1000+i, Start_Date__c = someDate, 
-                                            BatchDuration__c=batchDuration, Color__c='#F26925', BatchSize__c=batchSize);
-            TrainingList.add(t);
-        }
-        Insert TrainingList;
-        createTasks(); 
-    }
-
-    public static void deleteTestData(){
-        List<track__c> trackList = [SELECT Id FROM track__c];
-        List<trainer__c> trainerList = [SELECT Id FROM trainer__c];
-        List<location__c> locationList = [SELECT Id FROM location__c];
-        List<Backlog__c> backlogList = [SELECT Id FROM Backlog__c];
-        if(trackList.size() > 0)
-            delete trackList;
-        if(trainerList.size() > 0)
-            delete trainerList;
-        if(locationList.size() > 0)
-            delete locationList;
-        if(backlogList.size() > 0)
-            delete backlogList;
-    }
-
-    private static void createTasks() {
-        List<Project__c> projects = [SELECT Id FROM Project__c];
-        List<Backlog__c> backlogsToInsert = new List<Backlog__c>();
-
-        for (Project__c p: projects) {
-            Double randomToDo = Math.random() * 5.0;
-            for (Integer i = 0; i < randomToDo; i++) {
-                backlogsToInsert.add(new Backlog__c(Project__c=p.Id, Story__c='Test', Stage__c='To Do'));
-            }
-
-            Double randomDoing = Math.random() * 5.0;
-            for (Integer i = 0; i < randomDoing; i++) {
-                backlogsToInsert.add(new Backlog__c(Project__c=p.Id, Story__c='Test', Stage__c='Doing'));
-            }
-
-            Double randomDone = Math.random() * 5.0;
-            for (Integer i = 0; i < randomDone; i++) {
-                backlogsToInsert.add(new Backlog__c(Project__c=p.Id, Story__c='Test', Stage__c='Done'));
-            }
-        }
-
-        insert backlogsToInsert;
+    public static void deleteTestData ()
+    {	delete TrackList; 
+     	delete LocList; 
+     	delete TrainerList; 
+     	delete TrainerTrackList; 
+     	delete RoomList;
+     	delete ProjectList;
+     	delete TrainingList;
+     	delete BacklogList;
     }
 }
