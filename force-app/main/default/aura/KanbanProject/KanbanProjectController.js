@@ -132,14 +132,16 @@
     saveCard: function (component, event, helper) {
 
         var story = component.get('v.story');
-
+        
         if (story === undefined || story === "" ){
             var toastEvent = $A.get("e.force:showToast");
             toastEvent.setParams({
                 "title": "Save Failed",
                 "message": "Please make sure you have filled story."
             });
+        
             toastEvent.fire();
+            
         }
 
         else {
@@ -214,8 +216,6 @@
             });
 
             $A.enqueueAction(savingBacklogAction);
-            
-            
         }
         
 
@@ -223,6 +223,21 @@
         
     },
 
+    //Added by fw
+    //start by adding a new column to the view ??
+    addColumn : function (component, event, helper)
+    {
+        var newColumn = '<div class=\"slds-col \">' +
+        '<c:KanbanColumn title=\"To Do\" backlogs=\"{!v.backlogs}\"></c:KanbanColumn>' +
+        '</div>';
+        //just add 1 to the size of the array for now
+        var obj = component.find("kColumns");
+        alert("line 232" + obj);
+        obj.innerHTML += newColumn;
+       
+        alert("line 234" + (obj));
+        
 
+    },
     
 })

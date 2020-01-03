@@ -39,6 +39,8 @@
         <name>ApexTrigger</name>
     </types>
     <types>
+    <!-- added by fw -->
+        <members>BacklogApp</members>
         <members>BacklogAccordion</members>
         <members>BacklogTab</members>
         <members>BacklogInline</members>

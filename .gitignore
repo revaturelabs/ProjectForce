@@ -28,3 +28,7 @@ ehthumbs.db
 $RECYCLE.BIN/
 
 ProjectForce/.vscode/
+
+#added by fw
+force-app/main/default/aura/NewKanbanCardModal
+manifest/customPackage.xml
