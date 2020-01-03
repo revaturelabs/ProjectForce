@@ -16,8 +16,8 @@
 public class DataFactory 
 {
     // Initialize all lists of sObjects for us to insert in the createData() method
-    private static list<Track__c> trackList = new list<Track__c>();
-    private static list<Location__c> locList = new list<Location__c>();
+    private static list<Track__c> trackList;
+    private static list<Location__c> locList;
     private static list<Trainer__c> TrainerList = new list<trainer__c>();
     private static list<TrainerTrack__c> TrainerTrackList= new list<trainerTrack__c>();
     private static list<Room__c> RoomList= new list<Room__c>();
@@ -114,7 +114,7 @@ public class DataFactory
         Insert TrainingList;
         
 		// Insert task records
-        for ( integer i = 0 ; i < numOfRecords ; i++ )
+        for ( integer i = 0 ; i < numOfRecords / 2 ; i++ )
         {	for ( integer j = 0 ; j < Math.mod(i+6, 10) + 1 ; j++ )
             {	backlogList.add	(	new Backlog__c
                                  	(	Project__c=ProjectList[i].Id, 

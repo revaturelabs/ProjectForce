@@ -19,14 +19,6 @@ public without sharing class ModalController
     public static Training__c getBatch(String trainingID) 
     {   // Training__c selectedBatch = new Training__c();
         try {
-<<<<<<< HEAD
-            if (schema.SObjectType.location__c.isAccessible()) {
-                List<Training__c> batch = [SELECT Id, Batch_Number__c, BatchSize__c, Track__r.Name, ProjectStartDate__c, Project__r.Name, Project__r.Id, Trainer__r.Name, Room__r.Name, Room__r.Location__r.Name FROM Training__c WHERE Id =: Id.valueOf(trainingID) LIMIT 1];
-
-                selectedBatch = batch[0];
-                return selectedBatch;
-            } else { 
-=======
             if (schema.SObjectType.location__c.isAccessible()) 
             {	Training__c batch = [SELECT 	Id, Batch_Number__c, BatchSize__c, Track__r.Name, ProjectStartDate__c, Project__r.Name, 
                                            		Project__r.Id, Trainer__r.Name, Room__r.Name, Room__r.Location__r.Name 
@@ -36,7 +28,6 @@ public without sharing class ModalController
                                     ];
                 return batch;
             } else {
->>>>>>> 24c421f75083053cc5d58b9c98dc0563857a9d3c
                 return null;
             }
         } catch(Exception e) {
