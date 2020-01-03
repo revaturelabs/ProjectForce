@@ -13,7 +13,7 @@
 
 public class TestDataFactory {
     public static void createTestData(integer numOfRecords){
-		deleteTestData();       
+		deleteTestData();
         //Insert Trainer records
         list<trainer__c> TrainerList= new list<trainer__c>();
         for(integer i = 0; i<numOfRecords-1; i++){

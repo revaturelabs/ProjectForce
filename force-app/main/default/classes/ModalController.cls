@@ -14,7 +14,7 @@ public without sharing class ModalController {
 
                 selectedBatch = batch[0];
                 return selectedBatch;
-            } else {
+            } else { 
                 return null;
             }
         } catch(Exception e) {
