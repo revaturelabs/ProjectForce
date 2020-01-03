@@ -33,6 +33,7 @@
         var updatedData = helper.getUpdatedData(component, event, tableAuraId); 
         helper.saveInlineEdits(component, helper, updatedData);
 <<<<<<< HEAD
+<<<<<<< HEAD
     },
 
     /**
@@ -61,6 +62,8 @@
             helper.markTableItemsAsSelected(updateList,tableName,component);
         	helper.fireBatchInfoEvent(component);
         }
+=======
+>>>>>>> parent of 195d3cd... Added event and event throwing for when tables finish loading
 =======
 >>>>>>> parent of 195d3cd... Added event and event throwing for when tables finish loading
     }
