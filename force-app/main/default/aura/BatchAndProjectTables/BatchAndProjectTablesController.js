@@ -50,16 +50,15 @@
             let today=new Date();
             
             for(let i=0;i<tableData.length;i++){
-                console.log(tableData[i]);
-                console.log(tableData[i].ProjectStartDate__c);
                 let startDate=new Date(tableData[i].ProjectStartDate__c);
-                let endDate=new Date(tableData[i].end_time__c);
-                if(startDate.getTime()<=today.getTime() && tableData[i].end_time__c.getTime()>=today.getTime()){
-                    updateList.add(tableData[i].id);
+                let endDate=new Date(tableData[i].End_Date__c);
+                if(startDate.getTime()<=today.getTime() && endDate.getTime()>=today.getTime()){
+                    updateList.push(tableData[i].Id);
                 }
 
             }
             helper.markTableItemsAsSelected(updateList,tableName,component);
+        	helper.fireBatchInfoEvent(component);
         }
     }
 })
