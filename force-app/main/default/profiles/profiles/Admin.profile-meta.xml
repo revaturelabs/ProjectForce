@@ -14,6 +14,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>DataFactory</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>GantController</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -39,10 +43,6 @@
     </classAccesses>
     <classAccesses>
         <apexClass>TableControllerTest</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>TestDataFactory</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>

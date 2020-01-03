@@ -8,7 +8,7 @@
         <members>ModalController</members>
         <members>ModalControllerTest</members>
         <members>TableApexController</members>
-        <members>TestDataFactory</members>
+        <members>DataFactory</members>
         <members>TestGantController</members>
         <members>TableControllerTest</members>
         <members>KanbanProjectTest</members>
@@ -57,10 +57,8 @@
         <members>modal</members>
         <members>newD3App</members>
         <members>newD3Comp</members>
-        <members>NewKanbanCardModal</members>
         <members>SaveInlineEditsEvent</members>
         <members>TableItemSelectedEvent</members>
-        <members>test</members>
         <name>AuraDefinitionBundle</name>
     </types>
     <types>
