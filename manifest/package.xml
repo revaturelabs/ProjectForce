@@ -57,6 +57,7 @@
         <members>newD3Comp</members>
         <members>NewKanbanCardModal</members>
         <members>SaveInlineEditsEvent</members>
+        <members>TableInitCompleteEvent</members>
         <members>TableItemSelectedEvent</members>
         <members>test</members>
         <name>AuraDefinitionBundle</name>
