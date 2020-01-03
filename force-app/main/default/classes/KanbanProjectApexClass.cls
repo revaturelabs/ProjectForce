@@ -159,5 +159,37 @@ public with sharing class KanbanProjectApexClass {
         return project.Id;
     }
 
+    //Added by fw
+     @AuraEnabled
+    public static List<KanbanColumn__c> getColumnsFromDB(){
+        List<KanbanColumn__c> kans;
+        try 
+        {
+            kans = [SELECT Name FROM KanbanColumn__c];
+            
+            
+        } catch (Exception e) {
+            System.debug(e);
+        }
+        return kans;
+    }
+    
+
+    @AuraEnabled
+    public static List<KanbanColumn__c> addColumnToDB(){
+        List<KanbanColumn__c> ret;
+        try 
+        {
+            Integer count = [SELECT COUNT() FROM KanbanColumn__c];
+
+            KanbanColumn__c col = new KanbanColumn__c();
+            col.Name = 'Name'+count; 
+            insert col;
+            
+        } catch (Exception e) {
+            System.debug(e);
+        }
+        return getColumnsFromDB();
+    }
     
 }

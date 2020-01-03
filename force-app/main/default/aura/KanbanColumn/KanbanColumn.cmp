@@ -2,6 +2,9 @@
     <!-- Attributes -->
 	<aura:attribute name="title" type="String" required="true"></aura:attribute>
     <aura:attribute name="backlogs" type="Backlog__c[]"/>
+    <!-- added by fw-->
+    <aura:attribute name="value" type="Integer"/>
+    <!-- <aura:attribute name="idx" type="Integer"/> -->
     
     <!-- Custom Events -->
     <aura:registerEvent name="droppedOnColumn" type="c:droppedOnColumn"/>
@@ -20,6 +23,7 @@
                       
                 </aura:iteration>
             </div>
+            
         </div>
     </div>
 </aura:component>

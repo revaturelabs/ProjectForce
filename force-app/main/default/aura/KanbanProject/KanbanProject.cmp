@@ -4,17 +4,36 @@
     <aura:attribute name="backlogs" type="Backlog__c[]" />
     <!-- added by fw -->
     <aura:attribute name="kColumns" type="KanbanColumn__c[]" />
+    <aura:attribute name="selectedKcolumnId" type="String" />
+
     <!-- project id stored as a string -->
     <aura:attribute name="project" type="String" />
     <!-- event handlers -->
     <aura:handler name="init" action="{!c.doInit}" value="{!this}"></aura:handler>
+    <!-- added by fw-->
+    <aura:handler name="init" action="{!c.displayColumns}" value="{!this}"></aura:handler>
     <aura:handler name="droppedOnColumn" event="c:droppedOnColumn" action="{!c.droppedHandler}"></aura:handler>
     <div  class="slds-col columns">
-        <aura:if isTrue="{!v.backlogs.length}">
-            <div class="slds-col ">
-                    <c:KanbanColumn title="To Do" backlogs="{!v.backlogs}"></c:KanbanColumn>
+            <div>
+                    <button label="Add Column" variant="success" onclick="{!c.addColumn}"/>
             </div>
-        
+        <aura:if isTrue="{!v.backlogs.length}" > 
+            <aura:iteration items="{!v.kColumns}"  var="col">
+              <div class="slds-col" > 
+                       <c:KanbanColumn title="To Do" value="{!col / !v.kColumns.length}" backlogs="{!v.backlogs}" ></c:KanbanColumn>
+                       <div>
+                            <button aura:id="{!col.id}" label="Remove Column" variant="success" onclick="{!c.removeColumn}"/>
+                        </div>
+              </div>
+              
+           </aura:iteration>
+            <!-- added by fw-->
+            <!--
+            <aura:iteration items="{!v.kColumns}" var="col">
+                <c:KanbanColumn title="To Do" backlogs="{!v.backlogs}"></c:KanbanColumn>
+            </aura:iteration>
+            -->
+
             <!-- 
             <div class="slds-col ">
                 <c:KanbanColumn title="Doing" backlogs="{!v.backlogs}"></c:KanbanColumn>
@@ -29,9 +48,10 @@
                     <div class="slds-text-color_inverse">No Backlogs found</div>
                 </div>
             </aura:set>
-            <button label="Add Column" variant="success" onclick="{!c.addColumn}"/>
-        </aura:if>
+            
+        </aura:if> 
     </div>
+    
 
 
     

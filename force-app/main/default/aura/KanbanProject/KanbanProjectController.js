@@ -1,5 +1,13 @@
 ({
+    
+    
+
+
     doInit: function (component, event, helper) {
+        //added by fw
+        
+        
+
         // store apex controller method to a variable
         var action = component.get("c.getBacklogs");
         // store given project to a variable
@@ -20,6 +28,9 @@
 
         $A.enqueueAction(action);
         component.set('v.EndDate','10/10/2019');
+
+        
+
     },
 
     /*
@@ -223,21 +234,59 @@
         
     },
 
+    
+
+    
+    //Added by fw
     //Added by fw
     //start by adding a new column to the view ??
+    displayColumns : function (component, event, helper)
+    {
+        var getCols = component.get('c.getColumnsFromDB');
+        
+        
+        getCols.setCallback(this, function (response) {
+            var state = response.getState();
+            if (state === "SUCCESS") {
+                component.set("v.kColumns", response.getReturnValue());
+            } else {
+                console.log("Failed with state: " + state);
+            }
+        });
+
+        $A.enqueueAction(getCols);
+    },
+
     addColumn : function (component, event, helper)
     {
-        var newColumn = '<div class=\"slds-col \">' +
-        '<c:KanbanColumn title=\"To Do\" backlogs=\"{!v.backlogs}\"></c:KanbanColumn>' +
-        '</div>';
-        //just add 1 to the size of the array for now
-        var obj = component.find("kColumns");
-        alert("line 232" + obj);
-        obj.innerHTML += newColumn;
-       
-        alert("line 234" + (obj));
+        var addCol = component.get('c.addColumnToDB');
         
+        
+        addCol.setCallback(this, function (response) {
+            var state = response.getState();
+            if (state === "SUCCESS") {
+                component.set("v.kColumns", response.getReturnValue());
+            } else {
+                console.log("Failed with state: " + state);
+            }
+        });
 
+        $A.enqueueAction(addCol);
+
+        //this.displayColumns();
+        
+    },
+
+    removeColumn : function (component, event, helper)
+    {
+        //get attribute for id of kanban column selected
+        var target = event.target;
+
+	    var dataEle = Number.parseInt(target.getAttribute("id"));
+
+	    alert(dataEle);
+       
+        
     },
     
 })
