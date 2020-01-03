@@ -62,5 +62,23 @@ public with sharing class TableControllerTest {
         catch(DmlException e) {
                 System.assertEquals(e.getMessage(),'Update failed. First exception on row 0; first error: MISSING_ARGUMENT, Id not specified in an update call: []');     
             }
+        
+        insert trainer;
+        trainerList.clear();
+        TableApexController.updateTableData(trainerList);
+    }
+    
+    @isTest
+    public static void testBulkItemUpdateTableData() {
+        List<Trainer__c> trainerList = new List<Trainer__c>();
+        for (Integer i=0; i<25; i++)
+            {
+               	Trainer__c trainer = new Trainer__c();
+        		trainer.Name = 'Test Trainer' +i;
+                trainerList.add(trainer);
+            } 
+        insert trainerList;
+        System.debug(trainerList);
+        TableApexController.updateTableData(trainerList);
     }
 }
