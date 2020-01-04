@@ -27,4 +27,4 @@ ehthumbs.db
 [Dd]esktop.ini
 $RECYCLE.BIN/
 
-ProjectForce/.vscode/
+.vscode/*
