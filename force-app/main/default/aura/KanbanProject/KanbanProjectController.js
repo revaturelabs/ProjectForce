@@ -262,5 +262,19 @@
         lst.splice(id,1);
         
         component.set("v.kColumns",lst);
+
+        var deleteCol = component.get('c.deleteColumnFromDB');
+        deleteCol.setParams({'id' : lst[id].Id });
+
+        deleteCol.setCallback(this, function (response) {
+            var state = response.getState();
+            if (state === "SUCCESS") {
+                //component.set("v.kColumns", response.getReturnValue());
+            } else {
+                console.log("Failed with state: " + state);
+            }
+        });
+
+        $A.enqueueAction(deleteCol);
     }, 
 })

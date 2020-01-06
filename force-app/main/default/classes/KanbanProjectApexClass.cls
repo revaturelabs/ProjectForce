@@ -160,7 +160,7 @@ public with sharing class KanbanProjectApexClass {
     }
 
     //Added by fw
-     @AuraEnabled
+    @AuraEnabled
     public static List<KanbanColumn__c> getColumnsFromDB(){
         List<KanbanColumn__c> kans;
         try 
@@ -188,6 +188,20 @@ public with sharing class KanbanProjectApexClass {
             System.debug(e);
         }
         return getColumnsFromDB();
+    }
+
+    //Added by fw
+    @AuraEnabled
+    public static List<KanbanColumn__c> deleteColumnFromDB(String id){
+        List<KanbanColumn__c> kans;
+        try 
+        {
+            kans = [SELECT Id FROM KanbanColumn__c WHERE Id=:id];        
+            delete kans;
+        } catch (Exception e) {
+            System.debug(e);
+        }
+        return kans;
     }
     
 }
