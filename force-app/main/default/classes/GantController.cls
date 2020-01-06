@@ -1,5 +1,4 @@
 public with sharing class GantController {
-    
     //getting a list of trainings
     @AuraEnabled
     public static List<SimpleTraining> getTrainings(){
@@ -11,8 +10,9 @@ public with sharing class GantController {
             'Trainer__c',
             'projectstartdate__c'
             };
-                // Obtain the field name/token map for the Expense object
-                Map<String,Schema.SObjectField> m = Schema.SObjectType.Training__c.fields.getMap();
+                
+		// Obtain the field name/token map for the Expense object
+		Map<String,Schema.SObjectField> m = Schema.SObjectType.Training__c.fields.getMap();
         
         for (String fieldToCheck : trainingAccessFields) {
             
@@ -22,8 +22,7 @@ public with sharing class GantController {
                 // Pass error to client
                 throw new System.NoAccessException();
             }
-        }
-        
+        }        
         //Simpletraining wrapper apex class
         List<SimpleTraining> simpleTrainings = new List<SimpleTraining>();
         
@@ -32,9 +31,7 @@ public with sharing class GantController {
         for(Training__c tc: trainings){
             simpleTrainings.add(new SimpleTraining(tc.id, tc.name, tc.project__r.Name, tc.room__r.Room_Number__c, tc.trainer__r.Name, tc.projectstartdate__c, tc.room__r.Location__r.Name, tc.Track__r.Name));
         }
-        
         return simpleTrainings;
-        
     }
     
     //getters and setters
@@ -59,10 +56,6 @@ public with sharing class GantController {
             this.location = location;
             this.trackName = trackName;
         }
-        
-        public SimpleTraining(){}
-        
-        
-    }
-    
+        public SimpleTraining(){}   
+    }   
 }
