@@ -131,13 +131,10 @@
         var dataToUpdate = [];
         var keys = Object.keys(newTableData[0]);
         
-        //new variable to check for correct Color__c field hexadecimal values, Keaton C. 01/05/2020
-        var selectedElements = event.getParam("selectedRows");
-        
         //See: <c:CreateDataTable aura:id="batch" ... /> inside BatchAndProjectTables.cmp Aura Component file
         //check for correct range of Color__c field hexadecimal values inside the cObject Training__c, Keaton C. 01/05/2020
-        for(let i=0;i<selectedElements.length;i++){
-			var colorValue = selectedElements[i].Trainings__r.Color__c;
+        for(let i=0;i<modifiedElements.length;i++){
+			var colorValue = modifiedElements[i].Trainings__r.Color__c;
             dataToUpdate[i] = {};
             //check for validity of hexadecimal string in colorValue
             let test = RegExp('^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$');
