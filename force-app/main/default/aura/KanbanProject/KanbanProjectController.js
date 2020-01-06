@@ -1,13 +1,6 @@
-({
-    
-    
-
+({    
 
     doInit: function (component, event, helper) {
-        //added by fw
-        
-        
-
         // store apex controller method to a variable
         var action = component.get("c.getBacklogs");
         // store given project to a variable
@@ -28,9 +21,6 @@
 
         $A.enqueueAction(action);
         component.set('v.EndDate','10/10/2019');
-
-        
-
     },
 
     /*
@@ -227,24 +217,14 @@
             });
 
             $A.enqueueAction(savingBacklogAction);
-        }
-        
-
-
-        
+        }   
     },
-
-    
-
-    
+   
     //Added by fw
-    //Added by fw
-    //start by adding a new column to the view ??
     displayColumns : function (component, event, helper)
     {
         var getCols = component.get('c.getColumnsFromDB');
-        
-        
+             
         getCols.setCallback(this, function (response) {
             var state = response.getState();
             if (state === "SUCCESS") {
@@ -260,8 +240,7 @@
     addColumn : function (component, event, helper)
     {
         var addCol = component.get('c.addColumnToDB');
-        
-        
+                
         addCol.setCallback(this, function (response) {
             var state = response.getState();
             if (state === "SUCCESS") {
@@ -272,21 +251,16 @@
         });
 
         $A.enqueueAction(addCol);
-
-        //this.displayColumns();
-        
     },
 
     removeColumn : function (component, event, helper)
     {
-        //get attribute for id of kanban column selected
-        var target = event.target;
-
-	    var dataEle = Number.parseInt(target.getAttribute("id"));
-
-	    alert(dataEle);
+        //For now just delete element from the view
+        var id = event.getSource().get("v.name");
+        var lst = component.get("v.kColumns");
        
+        lst.splice(id,1);
         
-    },
-    
+        component.set("v.kColumns",lst);
+    }, 
 })

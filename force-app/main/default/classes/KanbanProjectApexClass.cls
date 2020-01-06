@@ -165,9 +165,7 @@ public with sharing class KanbanProjectApexClass {
         List<KanbanColumn__c> kans;
         try 
         {
-            kans = [SELECT Name FROM KanbanColumn__c];
-            
-            
+            kans = [SELECT Name FROM KanbanColumn__c];        
         } catch (Exception e) {
             System.debug(e);
         }
