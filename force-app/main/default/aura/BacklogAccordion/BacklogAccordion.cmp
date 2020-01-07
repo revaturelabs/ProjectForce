@@ -1,7 +1,9 @@
 <aura:component controller="KanbanProjectApexClass" implements="flexipage:availableForAllPageTypes,force:hasRecordId,force:appHostable">
     <aura:attribute name="records" type="List" default="[]"/>
     <aura:attribute name="recordsBackup" type="List" default="[]"/>
-    <aura:attribute name="categories" type="String[]" default="['To Do', 'Doing', 'Done']"/>
+    <!-- <aura:attribute name="categories" type="String[]" default="['To Do', 'Doing', 'Done']"/> -->
+    <!-- aded by fw-->
+    <aura:attribute name="categories" type="Backlog__c[]"/>
     <aura:attribute name="project" type="String"/>
     <aura:attribute name="criteria" type="String"/>
     <aura:attribute name="order" type="String"/>
@@ -36,7 +38,7 @@
                 <div class="slds-col slds-size_1-of-6">Due Date</div>
             </div>
         </div>
-        <aura:iteration items="{!v.categories}" var="category">
+        <aura:iteration items="{!v.categories.Name}" var="category">
             <lightning:accordionSection name="{!category}" label="{!category}">
                 <aura:set attribute="body">
                     <aura:iteration items="{!v.records}" var="record" > 

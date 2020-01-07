@@ -21,11 +21,24 @@ public with sharing class KanbanProjectApexClass {
         return backlog;
     }
 
+    //this is adding a new column
     @AuraEnabled
     public static Backlog__c addNewBacklog(String stage, String story, String l1, String l2, String l3, String c1, String c2, String c3, String project){
 
-
+        //added by fw
+        //check for existing backlog first
         Backlog__c backlog = new Backlog__c();
+        List<Backlog__c> existingBlogs = getBacklogs( project );
+
+        for(Backlog__c obj : existingBlogs)
+        {
+            if(obj.Stage__c == stage)
+            {
+                backlog = obj;
+            }
+        }
+
+        //Backlog__c backlog = new Backlog__c();
 
         if (l1 == null){
             // System.debug('No Label');
@@ -34,7 +47,11 @@ public with sharing class KanbanProjectApexClass {
             backlog.Stage__c = stage;
             backlog.Project__c = project;
 
-            insert backlog;
+            //changed by fw
+            upsert backlog;
+            //fw
+            //List<Backlog__c> bLogs = [SELECT Id, Name FROM Backlog__c WHERE Project__c=:project LIMIT 1];
+            //addColumnToDB(project, bLogs.get(0).Id);
          
         }
 
@@ -54,7 +71,11 @@ public with sharing class KanbanProjectApexClass {
             backlog.CardLabel1__c = cl1.Id;
             backlog.Project__c = project;
 
-            insert backlog;
+            //changed by fw
+            upsert backlog;
+            //fw
+            //List<Backlog__c> bLogs = [SELECT Id, Name FROM Backlog__c WHERE Project__c=:project LIMIT 1];
+            //addColumnToDB(project, bLogs.get(0).Id);
 
 
         }
@@ -85,8 +106,11 @@ public with sharing class KanbanProjectApexClass {
             backlog.CardLabel2__c = cl2.Id;
             backlog.Project__c = project;
 
-            insert backlog;
-
+            //changed by fw
+            upsert backlog;
+            //fw
+            //List<Backlog__c> bLogs = [SELECT Id, Name FROM Backlog__c WHERE Project__c=:project LIMIT 1];
+            //addColumnToDB(project, bLogs.get(0).Id);
         }
 
         else {
@@ -123,9 +147,12 @@ public with sharing class KanbanProjectApexClass {
             backlog.CardLabel3__c = cl3.Id;
             backlog.Project__c = project;
 
-            insert backlog;
-
-
+            //changed by fw
+            upsert backlog;
+            //fw
+            //List<Backlog__c> bLogs = [SELECT Id, Name FROM Backlog__c WHERE Project__c=:project LIMIT 1];
+            //ddColumnToDB(project, bLogs.get(0).Id);
+            
 
         }
         
@@ -175,11 +202,19 @@ public with sharing class KanbanProjectApexClass {
     
 
     @AuraEnabled
-    public static List<KanbanColumn__c> addColumnToDB(String projectId){
+    public static List<KanbanColumn__c> addColumnToDB(String projectId, String bLogId){
         List<KanbanColumn__c> ret;
         try 
         {
-            
+            Backlog__c b;
+            if(null == bLogId){
+                //get the backlog from the project if no backlogs are passed to this function
+                b = [SELECT Id, Name FROM Backlog__c WHERE Project__c=:projectId LIMIT 1];
+                bLogId = b.Id;
+            }
+            //need to actually add new backlog here ??
+            //addNewBacklog();
+
             Integer count = [SELECT COUNT() FROM KanbanColumn__c];
             
             List<KanbanColumn__c> backLogLst = [SELECT Backlog__c FROM KanbanColumn__c WHERE Project__r.Id=:projectId LIMIT 1];
@@ -191,28 +226,40 @@ public with sharing class KanbanProjectApexClass {
                 backlogId = existingKcol.Backlog__c;
             }
             KanbanColumn__c col = new KanbanColumn__c();
+            //need multiple backlogs here ? array of backlog id's ??
             System.debug('backlogId -> ' + backlogId);
-            col.Backlog__c = backlogId;
-            col.Name = 'Name'+count; 
+            col.Backlog__c = (null != backlogId ? backlogId : bLogId);//backlogId;
+            col.Name = 'Column' + count; 
             col.Project__c = projectId;
             insert col;
             
-        } catch (Exception e) {
-            System.debug(e);
+        }
+        catch(DmlException dmle)
+        {
+            //no backlog found ?
+            System.debug(dmle.getMessage());
+            //say that there aren't any backlogs
+            ret = new List<KanbanColumn__c>();
+            return ret; // ?
+        } 
+        catch (Exception e) {
+            System.debug(e.getMessage());
         }
         return getColumnsFromDB(projectId);
     }
 
     //Added by fw
+    // delete backlog ?
     @AuraEnabled
-    public static List<KanbanColumn__c> deleteColumnFromDB(String id, String projectId){
-        List<KanbanColumn__c> kans;
+    public static List<Backlog__c> deleteBacklogFromDB(String id, String projectId){
+        List<Backlog__c> kans;
         try 
         {
-            Integer count = [SELECT COUNT() FROM KanbanColumn__c WHERE Project__r.Id=:projectId];
-            if(count > 1)
+            Integer count = [SELECT COUNT() FROM Backlog__c WHERE Project__r.Id=:projectId];
+            if(count >= 0)
             {
-                kans = [SELECT Name FROM KanbanColumn__c WHERE Id=:id LIMIT 1];        
+                //kans = [SELECT Name FROM KanbanColumn__c WHERE Id=:id LIMIT 1];        
+                kans = [SELECT Name FROM Backlog__c WHERE Id=:id LIMIT 1];        
                 delete kans;
             }
         } catch (Exception e) {

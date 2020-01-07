@@ -4,6 +4,8 @@
     <aura:attribute name="backlogs" type="Backlog__c[]"/>
     <!-- added by fw-->
     <aura:attribute name="value" type="Integer"/>
+    <aura:attribute name="cardTasks" type="KanbanCardStory__c[]"/>
+
     <!-- <aura:attribute name="idx" type="Integer"/> -->
     
     <!-- Custom Events -->
@@ -16,10 +18,10 @@
             </div>
             <div class="panel-block column" style="background-color:transparent;">
                 <aura:iteration items="{!v.backlogs}" var="blog">
-                    <aura:if isTrue="{!blog.Stage__c == v.title}">
+                    <aura:if isTrue="{!blog.Stage__c == v.title}"> 
                         <c:KanbanCard backlog="{!blog}"></c:KanbanCard>
                         <br/>     
-                    </aura:if>
+                     </aura:if>
                       
                 </aura:iteration>
             </div>

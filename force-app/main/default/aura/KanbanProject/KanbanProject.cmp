@@ -11,19 +11,23 @@
     <!-- event handlers -->
     <aura:handler name="init" action="{!c.doInit}" value="{!this}"></aura:handler>
     <!-- added by fw-->
-    <aura:handler name="init" action="{!c.displayColumns}" value="{!this}"></aura:handler>
+    <!-- <aura:handler name="init" action="{!c.displayColumns}" value="{!this}"></aura:handler> -->
     <aura:handler name="droppedOnColumn" event="c:droppedOnColumn" action="{!c.droppedHandler}"></aura:handler>
     <div  class="slds-col columns">
         <div>
-                <lightning:button class="slds-size_full" label="Add Column" variant="success" onclick="{!c.addColumn}"/>
+            <!-- not sure if needed -->
+                <lightning:button class="slds-size_full" label="Add Column +" variant="success" onclick="{!c.openModel}"/> 
         </div>
         <aura:if isTrue="{!v.backlogs.length}" > 
-            <aura:iteration items="{!v.kColumns}"  var="col" indexVar="i">
-              <div class="slds-col"  > 
-                  
-                    <c:KanbanColumn title="To Do" value="{!col / !v.kColumns.length}" backlogs="{!v.backlogs}" ></c:KanbanColumn>
+            <!-- could be <aura:iteration items="{!v.kColumns}"  var="col" indexVar="i">-->
+            <aura:iteration items="{!v.backlogs}"  var="col" indexVar="i">
+              <div class="slds-col"  >
+                    <!-- moved button to add a card here is this correct ??--> 
+                    <lightning:button variant="success" label="Add Card +" title="Success" onclick="" /> 
+                                                <!-- could be v.kColumns.length-->              <!-- not sure about the below line-->
+                    <c:KanbanColumn title="{!col.Stage__c}" value="{!col / !v.backlogs.length}" backlogs="{!v.backlogs}" ></c:KanbanColumn>
                     <div >
-                        <lightning:button name="{!i}" class="slds-size_full" label="Remove Column" variant="destructive" onclick="{!c.removeColumn}"/>
+                        <lightning:button name="{!i}" class="slds-size_full" label="Remove Column" variant="destructive" onclick="{!c.removeBacklog}"/>
                     </div>
               
               </div>
@@ -47,7 +51,7 @@
     <aura:attribute name="showDates" type="boolean" default="true"/>
     <aura:attribute name="startDate" type="String"/>
     <aura:attribute name="endDate" type="String"/>
-    <aura:attribute name="stage" type="String"/>
+    <aura:attribute name="stage" type="String" />
     <aura:attribute name="story" type="String" />
     <aura:attribute name="label1" type="String" />
     <aura:attribute name="label2" type="String" />
@@ -82,20 +86,23 @@
                         <lightning:buttonIcon iconName="utility:close" onclick="{! c.closeModel }"
                             alternativeText="close" variant="bare-inverse" class="slds-modal__close" />
                         <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">
-                            Adding Card..
+                            Adding Card.. or Column really ?
                         </h2>
                     </header>
                     <!-- MODAL BODY Part START-->
                     <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
                         <!-- modal content-->
                         <!-- drop down for stage-->
+                        <lightning:textarea aura:id="inputStage" label="Enter a stage for backlog" class="field" value="{!v.stage}"/>
+                        <!--
                             <lightning:select name="status-select" label="Stage" value="{!v.stage}">
                                 <option value="To do">To do</option>
                                 <option value="Doing">Doing</option>
                                 <option value="Done">Done</option>
                             </lightning:select>
-
+                            -->
                             <!-- Story textarea-->
+                            
                             <lightning:textarea name="story-input" value="{!v.story}" placeholder=""
                                 label="Story"
                                 maxlength="250" messageWhenTooLong="A maximum of 250 characters are allowed."
@@ -208,6 +215,6 @@
         </aura:if>
     </div>
 
-    <!-- Button to add new backlog. -->
-    <lightning:button variant="success" label="Add Card +" title="Success" onclick="{!c.openModel}" />
+    <!-- Button to add new backlog. ????? -->
+    <!-- <lightning:button variant="success" label="Add Backlog +" title="Success" onclick="{!c.openModel}" />  -->
 </aura:component>

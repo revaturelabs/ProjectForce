@@ -9,7 +9,7 @@
         var project = component.get("v.project");
         // set paramters to the apex controller method
         // and execute the action
-        action.setParams({ project: project });
+        action.setParams({ 'project': project });
         action.setCallback(this, function (response) {
             var state = response.getState();
             if (state === "SUCCESS") {
@@ -146,9 +146,9 @@
         }
 
         else {
-
+            //changed by fw
             var stage = component.get('v.stage');
-
+           // alert(stage);
             var l1 = component.get('v.label1');
             var l2 = component.get('v.label2');
             var l3 = component.get('v.label3');
@@ -245,7 +245,8 @@
         var projectId = component.get('v.project');
         alert(projectId);
         //add project name in params
-        addCol.setParams({'projectId' : projectId });
+        addCol.setParams({'projectId' : projectId,
+                            });
         
         addCol.setCallback(this, function (response) {
             var state = response.getState();
@@ -259,44 +260,43 @@
         $A.enqueueAction(addCol);
     },
 
-    removeColumn : function (component, event, helper)
+    removeBacklog : function (component, event, helper)
     {
-        //For now just delete element from the view
         try
         {
             var id = event.getSource().get("v.name");
-            var lst = component.get("v.kColumns");
+            var lst = component.get("v.backlogs");
             var projectId = component.get('v.project');
             
-            if(id > 0)
+            if(id >= 0)
             {
-            var elemToRemove = lst[id];
-            alert('name : ' + elemToRemove.Name);
-            alert('id : ' + elemToRemove.Id)
-            lst.splice(id,1);
-            
-            component.set("v.kColumns",lst);
+                var elemToRemove = lst[id];
+                alert('name : ' + elemToRemove.Name);
+                alert('id : ' + elemToRemove.Id)
+                lst.splice(id,1);
+                
+                component.set("v.backlogs",lst);
 
-            var deleteCol = component.get('c.deleteColumnFromDB');
-            deleteCol.setParams({'id' : elemToRemove.Id,
-                                'projectId' :  projectId });
+                var deleteCol = component.get('c.deleteBacklogFromDB');
+                deleteCol.setParams({'id' : elemToRemove.Id,
+                                    'projectId' :  projectId });
 
-            deleteCol.setCallback(this, function (response) {
-                var state = response.getState();
-                if (state === "SUCCESS") {
-                    //var toBeRemoved = response.getReturnValue();
-                    //component.set("v.kColumns", response.getReturnValue());
-                    alert('Deleted # ' + id);
-                } else {
-                    console.log("Failed with state: " + state);
+                deleteCol.setCallback(this, function (response) {
+                    var state = response.getState();
+                    if (state === "SUCCESS") {
+                        //var toBeRemoved = response.getReturnValue();
+                        //component.set("v.kColumns", response.getReturnValue());
+                        alert('Deleted # ' + id);
+                    } else {
+                        console.log("Failed with state: " + state);
+                    }
+                });
+
+                    $A.enqueueAction(deleteCol);
                 }
-            });
-
-                $A.enqueueAction(deleteCol);
-            }
             else
             {
-                alert('Cannot delete last column');
+                alert("No backlogs left to delete");
             }
         }
         catch(Exc)
