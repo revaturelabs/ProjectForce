@@ -312,7 +312,7 @@
 		});
 		$A.enqueueAction(action);
 	},
-
+	//Task for 01/06/2020 This function contains logic for the Save Functionality
 	saveModal : function(component, event) {
 		var action = component.get("c.Save");
 

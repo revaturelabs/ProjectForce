@@ -76,7 +76,7 @@
                     </div>
 
                     <div class="column">
-                        <div class="slds-form-element">
+                        <div class="slds-form-element"><!--Next Task For SAVE functionality 01/06/2020, Save value of 'Completed' Checkbox-->
                             <label class="slds-checkbox_toggle slds-grid">
                                 <input type="checkbox" name="checkbox-toggle-17" value="checkbox-toggle-17" aria-describedby="checkbox-toggle-17" />
                                 <span id="checkbox-toggle-17" class="slds-checkbox_faux_container" aria-live="assertive">
