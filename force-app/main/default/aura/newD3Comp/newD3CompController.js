@@ -249,6 +249,9 @@
           response.getReturnValue()
         );
         component.set("v.dasChart", newChart);
+        let completeEvent= $A.get("e.c:TableInitCompleteEvent");
+        completeEvent.setParams({"TableName":'chart'});
+        completeEvent.fire();
       } else {
         console.log("Failed with state: " + state);
       }

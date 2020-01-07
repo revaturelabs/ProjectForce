@@ -42,7 +42,12 @@
      */
     initSelections : function(component,event,helper){
         let tableName='batch';
-        if(event.getParam('TableName')==tableName){
+        let otherTableName='project';
+        let chartName='chart';
+        if(event.getParam('TableName')==tableName || event.getParam('TableName')==otherTableName ||event.getParam('TableName')==chartName){
+            component.set('v.tableReadyStatus',component.get('v.tableReadyStatus')+1);
+        }
+        if(component.get('v.tableReadyStatus')==3){
             let updateList=[];
             
             let tableData=component.find(tableName).get('v.data');
@@ -58,7 +63,7 @@
 
             }
             helper.markTableItemsAsSelected(updateList,tableName,component);
-        	helper.fireBatchInfoEvent(component);
+            helper.fireBatchInfoEvent(component);      
         }
     }
 })
