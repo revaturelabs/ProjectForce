@@ -160,12 +160,13 @@ public with sharing class KanbanProjectApexClass {
     }
 
     //Added by fw
+    //3 new functions to Create/Read/Delete Kanban columns
     @AuraEnabled
-    public static List<KanbanColumn__c> getColumnsFromDB(){
+    public static List<KanbanColumn__c> getColumnsFromDB(String projectId){
         List<KanbanColumn__c> kans;
         try 
         {
-            kans = [SELECT Name FROM KanbanColumn__c];        
+            kans = [SELECT Id, Name FROM KanbanColumn__c WHERE Project__r.Id=:projectId];        
         } catch (Exception e) {
             System.debug(e);
         }
@@ -174,30 +175,46 @@ public with sharing class KanbanProjectApexClass {
     
 
     @AuraEnabled
-    public static List<KanbanColumn__c> addColumnToDB(){
+    public static List<KanbanColumn__c> addColumnToDB(String projectId){
         List<KanbanColumn__c> ret;
         try 
         {
+            
             Integer count = [SELECT COUNT() FROM KanbanColumn__c];
-
+            
+            List<KanbanColumn__c> backLogLst = [SELECT Backlog__c FROM KanbanColumn__c WHERE Project__r.Id=:projectId LIMIT 1];
+            KanbanColumn__c existingKcol;
+            Id backlogId;
+            if(backLogLst.size() > 0) 
+            { 
+                existingKcol = backLogLst.get(0);
+                backlogId = existingKcol.Backlog__c;
+            }
             KanbanColumn__c col = new KanbanColumn__c();
+            System.debug('backlogId -> ' + backlogId);
+            col.Backlog__c = backlogId;
             col.Name = 'Name'+count; 
+            col.Project__c = projectId;
             insert col;
             
         } catch (Exception e) {
             System.debug(e);
         }
-        return getColumnsFromDB();
+        return getColumnsFromDB(projectId);
     }
 
     //Added by fw
     @AuraEnabled
-    public static List<KanbanColumn__c> deleteColumnFromDB(String id){
+    public static List<KanbanColumn__c> deleteColumnFromDB(String id, String projectId){
         List<KanbanColumn__c> kans;
         try 
         {
-            kans = [SELECT Id FROM KanbanColumn__c WHERE Id=:id];        
-            delete kans;
+            Integer count = [SELECT COUNT() FROM KanbanColumn__c WHERE Project__r.Id=:projectId];
+            if(count > 1)
+            {
+                kans = [SELECT Name FROM KanbanColumn__c WHERE Id=:id LIMIT 1];        
+                delete kans;
+            }
         } catch (Exception e) {
             System.debug(e);
         }

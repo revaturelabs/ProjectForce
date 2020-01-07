@@ -20,12 +20,12 @@
         <aura:if isTrue="{!v.backlogs.length}" > 
             <aura:iteration items="{!v.kColumns}"  var="col" indexVar="i">
               <div class="slds-col"  > 
-                   <!-- <span name="{$i}"> -->
+                  
                     <c:KanbanColumn title="To Do" value="{!col / !v.kColumns.length}" backlogs="{!v.backlogs}" ></c:KanbanColumn>
                     <div >
                         <lightning:button name="{!i}" class="slds-size_full" label="Remove Column" variant="destructive" onclick="{!c.removeColumn}"/>
                     </div>
-               <!--  </span> -->
+              
               </div>
            </aura:iteration>
             

@@ -224,6 +224,8 @@
     displayColumns : function (component, event, helper)
     {
         var getCols = component.get('c.getColumnsFromDB');
+        var projectId = component.get('v.project');
+        getCols.setParams({'projectId': projectId});
              
         getCols.setCallback(this, function (response) {
             var state = response.getState();
@@ -240,7 +242,11 @@
     addColumn : function (component, event, helper)
     {
         var addCol = component.get('c.addColumnToDB');
-                
+        var projectId = component.get('v.project');
+        alert(projectId);
+        //add project name in params
+        addCol.setParams({'projectId' : projectId });
+        
         addCol.setCallback(this, function (response) {
             var state = response.getState();
             if (state === "SUCCESS") {
@@ -256,25 +262,46 @@
     removeColumn : function (component, event, helper)
     {
         //For now just delete element from the view
-        var id = event.getSource().get("v.name");
-        var lst = component.get("v.kColumns");
-       
-        lst.splice(id,1);
-        
-        component.set("v.kColumns",lst);
+        try
+        {
+            var id = event.getSource().get("v.name");
+            var lst = component.get("v.kColumns");
+            var projectId = component.get('v.project');
+            
+            if(id > 0)
+            {
+            var elemToRemove = lst[id];
+            alert('name : ' + elemToRemove.Name);
+            alert('id : ' + elemToRemove.Id)
+            lst.splice(id,1);
+            
+            component.set("v.kColumns",lst);
 
-        var deleteCol = component.get('c.deleteColumnFromDB');
-        deleteCol.setParams({'id' : lst[id].Id });
+            var deleteCol = component.get('c.deleteColumnFromDB');
+            deleteCol.setParams({'id' : elemToRemove.Id,
+                                'projectId' :  projectId });
 
-        deleteCol.setCallback(this, function (response) {
-            var state = response.getState();
-            if (state === "SUCCESS") {
-                //component.set("v.kColumns", response.getReturnValue());
-            } else {
-                console.log("Failed with state: " + state);
+            deleteCol.setCallback(this, function (response) {
+                var state = response.getState();
+                if (state === "SUCCESS") {
+                    //var toBeRemoved = response.getReturnValue();
+                    //component.set("v.kColumns", response.getReturnValue());
+                    alert('Deleted # ' + id);
+                } else {
+                    console.log("Failed with state: " + state);
+                }
+            });
+
+                $A.enqueueAction(deleteCol);
             }
-        });
-
-        $A.enqueueAction(deleteCol);
+            else
+            {
+                alert('Cannot delete last column');
+            }
+        }
+        catch(Exc)
+        {
+            //alert(exc);
+        }
     }, 
 })
