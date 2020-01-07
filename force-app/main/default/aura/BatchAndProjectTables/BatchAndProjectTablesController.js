@@ -63,7 +63,15 @@
 
             }
             helper.markTableItemsAsSelected(updateList,tableName,component);
-            helper.fireBatchInfoEvent(component);      
+
+            let selectionIds = [];
+            for(let i=0;i<tableData.length;i++){
+                if(tableData[i].Project__c){
+                    selectionIds.push(tableData[i].Project__c);
+                }
+            }
+            helper.markTableItemsAsSelected(selectionIds, 'project', component);
+            helper.fireBatchInfoEvent(component);  
         }
     }
 })
