@@ -14,11 +14,19 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>DataFactory</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>GantController</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>KanbanProjectApexClass</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>KanbanProjectTest</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
@@ -34,7 +42,7 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>TestDataFactory</apexClass>
+        <apexClass>TableControllerTest</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
