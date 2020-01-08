@@ -21,7 +21,7 @@ public with sharing class KanbanProjectApexClass {
                 CardLabel1__c, CardLabel1__r.Text__c, CardLabel1__r.Color__c, 
                 CardLabel2__c, CardLabel2__r.Text__c, CardLabel2__r.Color__c,
                 CardLabel3__c, CardLabel3__r.Text__c, CardLabel3__r.Color__c,
-                DateLogged__c, PullRequest__c, /*Stage__c,*/ Project__c, Project__r.Name, 
+                DateLogged__c, PullRequest__c, Stage__c, Project__c, Project__r.Name, 
                 StartDateTime__c, EndDateTime__c, DueDate__c  
             FROM  Backlog__c
             WHERE Project__c =: project
@@ -60,7 +60,7 @@ public with sharing class KanbanProjectApexClass {
         if (l1 == null){
             // System.debug('No Label');
             backlog.Story__c = story;
-            //backlog.Stage__c = stage;
+            backlog.Stage__c = stage;
             backlog.Project__c = project;
 
             //fw
@@ -79,7 +79,7 @@ public with sharing class KanbanProjectApexClass {
             System.debug(cl1);
 
             backlog.Story__c = story;
-            //backlog.Stage__c = stage;
+            backlog.Stage__c = stage;
             backlog.CardLabel1__c = cl1.Id;
             backlog.Project__c = project;
 
@@ -106,7 +106,7 @@ public with sharing class KanbanProjectApexClass {
             insert labels;
 
             backlog.Story__c = story;
-            //backlog.Stage__c = stage;
+            backlog.Stage__c = stage;
             backlog.CardLabel1__c = cl1.Id;
             backlog.CardLabel2__c = cl2.Id;
             backlog.Project__c = project;
@@ -138,7 +138,7 @@ public with sharing class KanbanProjectApexClass {
             insert labels;
 
             backlog.Story__c = story;
-            //backlog.Stage__c = stage;
+            backlog.Stage__c = stage;
             backlog.CardLabel1__c = cl1.Id;
             backlog.CardLabel2__c = cl2.Id;
             backlog.CardLabel3__c = cl3.Id;
