@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Hexadecimal_colors_only</fullName>
+    <active>true</active>
+    <errorConditionFormula>REGEX( Color__c , &quot;^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$&quot;)</errorConditionFormula>
+    <errorDisplayField>Color__c</errorDisplayField>
+    <errorMessage>Not a valid hexadecimal color</errorMessage>
+</ValidationRule>
