@@ -1,21 +1,18 @@
-//change without sharing to with sharing when deploying
+//change "without sharing" to "with sharing" when deploying; commented out all ProjectStartDate__c field references, 01/08/2020
 public without sharing class ModalController {
     //All queries are done when modal is loaded
-    static List<Project__c> ProjectList = [select Name, ProjectComplete__c, track__r.name,(SELECT projectStartDate__c FROM trainings__r ORDER BY projectStartDate__c desc LIMIT 1) from Project__c];
+    static List<Project__c> ProjectList = [select Name, ProjectComplete__c, track__r.name /*,(SELECT ProjectStartDate__c FROM Trainings__r ORDER BY projectStartDate__c desc LIMIT 1)*/ FROM Project__c];
     static List<training__c> trainingList = [SELECT Id, batchsize__c, room__r.location__r.name, track__r.Name, room__r.Name, trainer__r.Name, Project__r.Name FROM training__c];
 
     @AuraEnabled
-    public static Training__c getBatch(String trainingID) 
-    {   // Training__c selectedBatch = new Training__c();
+    public static Training__c getBatch(String trainingID){
+        Training__c selectedBatch = new Training__c();
         try {
-            if (schema.SObjectType.location__c.isAccessible()) 
-            {	Training__c batch = [SELECT 	Id, Batch_Number__c, BatchSize__c, Track__r.Name, ProjectStartDate__c, Project__r.Name, 
-                                           		Project__r.Id, Trainer__r.Name, Room__r.Name, Room__r.Location__r.Name 
-                                     FROM Training__c 
-                                     WHERE Id =: Id.valueOf(trainingID) 
-                                     LIMIT 1
-                                    ];
-                return batch;
+            if (schema.SObjectType.location__c.isAccessible()) {
+                List<Training__c> batch = [SELECT Id, Batch_Number__c, BatchSize__c, Track__r.Name, /*ProjectStartDate__c,*/ Project__r.Name, Project__r.Id, Trainer__r.Name, Room__r.Name, Room__r.Location__r.Name FROM Training__c WHERE Id =: Id.valueOf(trainingID) LIMIT 1];
+
+                selectedBatch = batch[0];
+                return selectedBatch;
             } else {
                 return null;
             }
@@ -26,15 +23,12 @@ public without sharing class ModalController {
 
     // Gets Projects based on the Batch's training track (e.g. Salesforce)
 	@AuraEnabled
-    public static List<Project__c> getProject(String trackName, Date startDateName)
-    {	try {
-            if (schema.SObjectType.Project__c.isAccessible())
-            {   List<Project__c> projectListByTrack = [SELECT Name, ProjectComplete__c, Track__r.Name 
-                                                       FROM Project__c 
-                                                       WHERE Track__r.Name =: trackName
-                                                      ];
+    public static List<Project__c> getProject(String trackName, Date startDateName){
+        try{
+            if (schema.SObjectType.Project__c.isAccessible()){
+                List<Project__c> projectListByTrack = [SELECT Name, ProjectComplete__c, Track__r.Name FROM Project__c WHERE Track__r.Name =: trackName];
                 return projectListByTrack;
-            } else {
+            }else{
                 return null;
             }
         //Catch logic below
@@ -63,8 +57,8 @@ public without sharing class ModalController {
     //Task for 01/07/2020: update Project__r.ProjectComplete__c and later Training__r.Review__c; NOTE: commented code is pending on Ben
     //Need 1 new Apex Method in order to insert the values into the Project__c and Training__c objects
     @auraEnabled
-    public static void insertCheckBoxStatusRecord(Project__c projectStatusToInsert /*, Training__c reviewStatusToInsert*/){
-        INSERT projectStatusToInsert;
-        //INSERT reviewStatusToInsert
+    public static void updateCheckBoxStatusRecord(Project__c projectStatusToUpdate /*, Training__c reviewStatusToUpdate*/){
+        UPDATE projectStatusToUpdate;
+        //UPDATE reviewStatusToUpdate
     }
 }

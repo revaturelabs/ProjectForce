@@ -345,17 +345,17 @@
         var selectProjectCheckBox = component.get("v.updateProjectComplete");
         
         if(selectProjectCheckBox === TRUE){
-            component.set("v.projectStatus.ProjectComplete__c", 'Unchecked');
+            component.set("v.projectStatus.ProjectComplete__c", 'Checked');
         }
         
         //call Save Apex Method to updated fields in Project__c and Training__c Objects
-        var insertCheckBoxRecord = component.get("c.insertCheckBoxStatusRecord");
+        var updateCheckBoxRecord = component.get("c.updateCheckBoxStatusRecord");
         //checkbox params to pass
-        insertCheckBoxRecord.setParams({
-			"projectComplete": component.get("v.projectStatus")
-            //,"reviewTraining": component.get("v.trainingStatus")
+        updateCheckBoxRecord.setParams({
+			"projectStatusToUpdate": component.get("v.projectStatus")
+            //,"reviewStatusToUpdate": component.get("v.trainingStatus")
         });
-        insertCheckBoxRecord.setCallback(this, function(response){});  
+        updateCheckBoxRecord.setCallback(this, function(response){});  
       	
         $A.enqueueAction(insertCheckBoxRecord);
 		$A.enqueueAction(action);
