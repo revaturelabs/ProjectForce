@@ -21,7 +21,6 @@
 
     <aura:handler event="c:BatchInformationEvent" action="{!c.handleBatchInformationEvent}" />
     
-    
     <c:BatchAndProjectTables />
     <div class = "THIS">
         <!--Holds the Chart -->
@@ -32,6 +31,4 @@
             <c:ChartCalculation />
         </div>
     </div>
-       
-
 </aura:component>

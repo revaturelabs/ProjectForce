@@ -31,12 +31,12 @@ public without sharing class ChartCalculationController {
             }
         }
 
-        for(project__c p: projectsAfterToday)
-        {
-            if(p.trainings__r.size()>1)
-            {
-                for(Integer i = 0; i < p.trainings__r.size()-1; i++)
-                {
+        for(project__c p: projectsAfterToday){
+            if(p.trainings__r.size()<=1){
+                continue;
+            }
+            else {
+                for(Integer i = 0; i < p.trainings__r.size()-1; i++){
                     Date ProjectDate = p.trainings__r[i].projectStartDate__c;
                     Date nextProjectDate = p.trainings__r[i+1].projectStartDate__c;
                     if((nextProjectDate >= ProjectDate) &&  (nextProjectDate <= (ProjectDate+21)))
@@ -65,6 +65,5 @@ public without sharing class ChartCalculationController {
             }
         }
         return projectsAfterToday.size();
-        
     }
 }

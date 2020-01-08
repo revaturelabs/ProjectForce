@@ -23,16 +23,16 @@ public with sharing class KanbanProjectApexClass {
 
     // Refactor String Names
     @AuraEnabled
-    public static Backlog__c addNewBacklog(String stage, String story, String l1, 
-                                           String l2, String l3, String c1, 
-                                           String c2, String c3, String project){
+    public static Backlog__c addNewBacklog(String stage, String story, String l1, String l2, String l3, String c1, String c2, String c3, String project){
+
         Backlog__c backlog = new Backlog__c();
         if (l1 == null){
             // System.debug('No Label');
             backlog.Story__c = story;
             backlog.Stage__c = stage;
             backlog.Project__c = project;
-            insert backlog;         
+
+            insert backlog; 
         }
 
         else if (l2 == null){
@@ -52,7 +52,8 @@ public with sharing class KanbanProjectApexClass {
 
             insert backlog;
         }
-        else if (l3 == null){
+
+        else if (l3 == null) {
             // System.debug('Two Labels');
 
             List<sObject> labels = new List<sObject>();
@@ -107,7 +108,7 @@ public with sharing class KanbanProjectApexClass {
 
             insert backlog;
         }
-        return backlog;
+        return backlog; 
     }
 
     @AuraEnabled
@@ -136,5 +137,5 @@ public with sharing class KanbanProjectApexClass {
     public static Id findProject(String name){
         Project__c project = [SELECT Id FROM Project__c WHERE Name =:name];
         return project.Id;
-    } 
+    }  
 }

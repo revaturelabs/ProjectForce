@@ -166,7 +166,7 @@
 	
 	$A.enqueueAction(action);
 	},
-	//Funcation for the project drop down
+	//Function for the project drop down
 	//sets the list of projects by calling the server- side controller	
 	project : function(component, event) {
 		
@@ -288,7 +288,7 @@
 		$A.enqueueAction(action);
 	},
 
-	//Funcation for the project drop down
+	//Function for the project drop down
 	//sets the list of projects by calling the server- side controller	
 	listOfTrackProject : function(component, event) {
 		var action = component.get("c.getProject");
@@ -312,37 +312,52 @@
 		});
 		$A.enqueueAction(action);
 	},
-
+    //Task for 01/07/2020: Need to pass param to upadate ProjectComplete checkbox value and Review checkbox value into 2 new Apex Methods
 	saveModal : function(component, event) {
+        //verify Save Action by user is completed successfully, returns boolean
 		var action = component.get("c.Save");
-
-		//how many params do we need to pass
+		
+        //how many params do we need to pass
         action.setParams({
 			"trainingId": component.get("v.saveTrainingID"),
 			"newProjectName": component.get("v.updateProject"),
 			"newComment" : component.get("v.updateComment")
 		});
-
+        
 		action.setCallback(this, function(response){
 			var state = response.getState();
 			let saveComplete = response.getReturnValue();
 
 			if(state === "SUCCESS"){
-				if(saveComplete)
-				{
+				if(saveComplete){
 					this.hideModal(component,event);
 					this.successToast(component,event);
-				}
-
-				else
-				{
+				}else{
 					this.failToast(component,event);
-				}
+                }
 			}
 			else{
-				console.log("Failed with state: "+state);
+				console.log("Failed with state: "+ state);
 			}
 		});
+        
+        // add the status of ProjectCompleted CheckBox to SOQL
+        var selectProjectCheckBox = component.get("v.updateProjectComplete");
+        
+        if(selectProjectCheckBox === TRUE){
+            component.set("v.projectStatus.ProjectComplete__c", 'Unchecked');
+        }
+        
+        //call Save Apex Method to updated fields in Project__c and Training__c Objects
+        var insertCheckBoxRecord = component.get("c.insertCheckBoxStatusRecord");
+        //checkbox params to pass
+        insertCheckBoxRecord.setParams({
+			"projectComplete": component.get("v.projectStatus")
+            //,"reviewTraining": component.get("v.trainingStatus")
+        });
+        insertCheckBoxRecord.setCallback(this, function(response){});  
+      	
+        $A.enqueueAction(insertCheckBoxRecord);
 		$A.enqueueAction(action);
 	},
 
