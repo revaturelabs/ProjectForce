@@ -26,7 +26,7 @@
     <c:BatchAndProjectTables />
     <div class='slds-grid '>
       <div class='slds-col slds-size_1-of-4 alignment picklist'>
-        <lightning:select class="option-padding" name="chartSelect" label="Chart - Batch Start Date" value="{!v.status}" onselect="{!v.updateData}">
+        <lightning:select class="option-padding" name="chartSelect" label="Chart - Batch Start Date" value="{!v.status}" onchange ="{!v.updateData}">
           <option value="batchStart">From project start date</option>
           <option value="projectStart">From batch start date</option>
           </lightning:select>
