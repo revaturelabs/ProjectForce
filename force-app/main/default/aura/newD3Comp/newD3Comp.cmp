@@ -15,6 +15,7 @@
     <aura:attribute name="Locations" type = "Set"/>
     <aura:attribute name ="UserColors" type="List"/>
     <aura:attribute name = "DisplayColors" type = "List" />
+    <aura:attribute name="ChartStartFilter" type="String"/>
     <aura:attribute name="today" type="Date" default=""/>
 
     <aura:registerEvent name="TableInitCompleteEvent" type="c:TableInitCompleteEvent"/>
@@ -23,6 +24,14 @@
     
     
     <c:BatchAndProjectTables />
+    <div class='slds-grid '>
+      <div class='slds-col slds-size_1-of-4 alignment picklist'>
+        <lightning:select class="option-padding" name="chartSelect" label="Chart - Batch Start Date" value="{!v.status}" onselect="{!v.updateData}">
+          <option value="batchStart">From project start date</option>
+          <option value="projectStart">From batch start date</option>
+          </lightning:select>
+      </div>
+    </div>
     <div class = "THIS">
         <!--Holds the Chart -->
         <div aura:id="chartIdThing" class="Chart">
