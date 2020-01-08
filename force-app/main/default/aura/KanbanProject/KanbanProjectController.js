@@ -143,8 +143,8 @@
 
     },
 
-    saveCard: function (component, event, helper) {
-
+    saveColumn: function (component, event, helper) {
+        /*
         var story = component.get('v.story');
 
         if (story === undefined || story === "" ){
@@ -157,33 +157,67 @@
         }
 
         else {
-
+*/
             var stage = component.get('v.stage');
 
-            var l1 = component.get('v.label1');
-            var l2 = component.get('v.label2');
-            var l3 = component.get('v.label3');
+           // var l1 = component.get('v.label1');
+           // var l2 = component.get('v.label2');
+           // //var l3 = component.get('v.label3');
 
-            var c1 = component.get('v.color1');
-            var c2 = component.get('v.color2');
-            var c3 = component.get('v.color3');
+            //var c1 = component.get('v.color1');
+           // var c2 = component.get('v.color2');
+            //var c3 = component.get('v.color3');
             var project = component.get('v.project');
 
             console.log('Stage: ' + stage);
-            console.log('Story: ' + story);
-            console.log('Label 1: ' + l1);
-            console.log('Label 2: ' + l2);
-            console.log('Label 3: ' + l3);
-            console.log('Color 1: ' + c1);
-            console.log('Color 2: ' + c2);
-            console.log('Color 3: ' + c3);
+            //console.log('Story: ' + story);
+            //console.log('Label 1: ' + l1);
+            //console.log('Label 2: ' + l2);
+            //console.log('Label 3: ' + l3);
+            //console.log('Color 1: ' + c1);
+           // console.log('Color 2: ' + c2);
+            //console.log('Color 3: ' + c3);
 
 
 
-            var savingBacklogAction = component.get("c.addNewBacklog");
+            //var savingBacklogAction = component.get("c.addNewBacklog");
+            var savingColumnAction = component.get("c.addNewColumn");
 
-            console.log(savingBacklogAction);
+            savingColumnAction.setParams({
+                "stage" : stage,
+                "project": project
+            });
 
+            savingColumnAction.setCallback(this, function (response) {
+
+                var state = response.getState();
+
+                if (state === "SUCCESS"){
+
+                    var toastEvent = $A.get("e.force:showToast");
+                    toastEvent.setParams({
+                        "title": "Success",
+                        "message": "New column added to kanban board."
+                    });
+                    toastEvent.fire();
+                    
+                    helper.closeModel(component);
+                    $A.get("e.force:refreshView").fire();
+                }
+
+                else 
+                {
+                    var toastEvent = $A.get("e.force:showToast");
+                    toastEvent.setParams({
+                        "title": "Failed",
+                        "message": "New column could not be added to kanban board"
+                    });
+                    toastEvent.fire();
+                }
+
+            });
+            //console.log(savingBacklogAction);
+/*
             savingBacklogAction.setParams({
                 "stage" : stage,
                 "story" : story,
@@ -228,9 +262,14 @@
             });
 
             $A.enqueueAction(savingBacklogAction);
+            */
+
+
+
+           $A.enqueueAction(savingColumnAction);  
             
             
-        }
+       // }
         
 
 

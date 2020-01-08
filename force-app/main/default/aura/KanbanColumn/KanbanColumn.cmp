@@ -2,6 +2,8 @@
     <!-- Attributes -->
 	<aura:attribute name="title" type="String" required="true"></aura:attribute>
     <aura:attribute name="backlogs" type="Backlog__c[]"/>
+    <aura:attribute name="index" type="Integer"/>
+    
     
     <!-- Custom Events -->
     <aura:registerEvent name="droppedOnColumn" type="c:droppedOnColumn"/>

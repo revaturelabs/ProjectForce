@@ -10,8 +10,8 @@
     <aura:handler name="droppedOnColumn" event="c:droppedOnColumn" action="{!c.droppedHandler}"></aura:handler>
     <div class="slds-col columns">
         <!-- <aura:if isTrue="{!v.backlogs.length}"> -->
-            <aura:iteration items="{!v.kanbanColumns}" var="col">
-                   <c:KanbanColumn title="{!col.Label__c}" backlogs="{!v.backlogs}">
+            <aura:iteration items="{!v.kanbanColumns}" var="col" indexVar="i">
+                   <c:KanbanColumn index="{!i}" title="{!col.Label__c}" backlogs="{!v.backlogs}">
                         
                    </c:KanbanColumn>
             <!--
@@ -78,7 +78,7 @@
                         <lightning:buttonIcon iconName="utility:close" onclick="{! c.closeModel }"
                             alternativeText="close" variant="bare-inverse" class="slds-modal__close" />
                         <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">
-                            Adding Card..
+                            Adding Column...
                         </h2>
                     </header>
                     <!-- MODAL BODY Part START-->
@@ -90,13 +90,14 @@
                             </lightning:textarea>
 
                             <!-- Story textarea-->
+                            <!--
                             <lightning:textarea name="story-input" value="{!v.story}" placeholder=""
                                 label="Story"
                                 maxlength="250" messageWhenTooLong="A maximum of 250 characters are allowed."
                                 messageWhenValueMissing="Story Required">
                             </lightning:textarea>
-
-                            <!-- Dates section. ONLY renders if attributes showdates is true. -->
+                        -->
+                            <!-- Dates section. ONLY renders if attributes showdates is true. 
                             <aura:if isTrue="{!v.showDates}">
                                 <div class="slds-grid slds-gutters slds-p-around_medium">
                                         <div class="slds-col">
@@ -124,8 +125,8 @@
                                         </div>
                                 </div>
                             </aura:if>
-
-                            <!-- Labels section-->
+                                -->
+                            <!-- Labels section
                             <div class="slds-grid slds-gutters slds-p-around_medium">
                                 <div class="slds-col">
                                     <span>
@@ -156,8 +157,8 @@
                                     
                                 </div>
                             </div>
-
-                            <!-- Colors section -->
+                            -->
+                            <!-- Colors section 
                             <div class="slds-grid slds-gutters slds-p-around_medium">
                                 <div class="slds-col">
                                     <span>
@@ -188,12 +189,13 @@
                                     </aura:if>
                                 </div>
                             </div>
+                            -->
                     </div>
                           
                     <!-- MODAL FOOTER  Start -->
                     <footer class="slds-modal__footer slds-modal_footer_directional">
                         <lightning:button class="slds-button_brand button" label="Cancel" title="Cancel" onclick="{! c.closeModel }" />
-                        <lightning:button class ="slds-button_brand button" label="Save" onclick="{! c.saveCard }" />
+                        <lightning:button class ="slds-button_brand button" label="Save" onclick="{! c.saveColumn }" />
                     </footer>
                 </div>
             </section>

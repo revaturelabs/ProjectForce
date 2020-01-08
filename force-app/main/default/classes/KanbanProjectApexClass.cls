@@ -12,6 +12,21 @@ public with sharing class KanbanProjectApexClass {
         ];
     }
 
+    @AuraEnabled
+    public static KanbanColumn__c addNewColumn(String stage, String project){
+        KanbanColumn__c kan;
+        try 
+        {
+            kan = new KanbanColumn__c();
+            kan.Label__c = stage;
+            kan.Project__c = project;
+            insert kan;  
+        } catch (Exception e) 
+        {
+            System.debug(e.getMessage());
+        }
+        return kan;
+    }
     
     @AuraEnabled
     public static List<Backlog__c> getBacklogs(String project) {
