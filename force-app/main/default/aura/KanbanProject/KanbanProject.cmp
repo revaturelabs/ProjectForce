@@ -11,7 +11,9 @@
     <div class="slds-col columns">
         <!-- <aura:if isTrue="{!v.backlogs.length}"> -->
             <aura:iteration items="{!v.kanbanColumns}" var="col">
-                   <c:KanbanColumn title="{!col.Label__c}" backlogs="{!v.backlogs}"></c:KanbanColumn>
+                   <c:KanbanColumn title="{!col.Label__c}" backlogs="{!v.backlogs}">
+                        
+                   </c:KanbanColumn>
             <!--
             <div class="slds-col slds-size_1-of-3">
                 <c:KanbanColumn title="To Do" backlogs="{!v.backlogs}"></c:KanbanColumn>
@@ -24,6 +26,7 @@
             </div> 
             -->
             </aura:iteration>
+            
             <aura:set attribute="else">
                 <div class="demo-only" style="padding:0.5rem;background:#16325c">
                     <div class="slds-text-color_inverse">No Backlogs found</div>
@@ -200,5 +203,5 @@
     </div>
 
     <!-- Button to add new backlog. -->
-    <lightning:button variant="success" label="Add Card +" title="Success" onclick="{!c.openModel}" />
+    <lightning:button variant="success" label="+ Column" title="Success" onclick="{!c.openModel}" />
 </aura:component>

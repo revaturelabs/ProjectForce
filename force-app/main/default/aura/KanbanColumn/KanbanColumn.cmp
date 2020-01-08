@@ -11,6 +11,10 @@
             <div class="panel-heading">
                 {! v.title }
             </div>
+            <!-- fw add a button for adding a card -->
+            <!-- Button to add new backlog aka card. -->
+            <lightning:button variant="success" label="+ Card" title="Success" onclick="" />
+
             <div class="panel-block column" style="background-color:transparent;">
                 <aura:iteration items="{!v.backlogs}" var="blog">
                     <aura:if isTrue="{!blog.Stage__c == v.title}">
@@ -20,6 +24,11 @@
                       
                 </aura:iteration>
             </div>
+            <!-- fw added a button to remove column-->
+            
+                    <lightning:button variant="Destructive" label="- Column" title="Success" onclick="" />
+            
         </div>
     </div>
+    
 </aura:component>

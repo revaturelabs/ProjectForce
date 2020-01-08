@@ -54,7 +54,7 @@ public with sharing class KanbanProjectApexClass {
         if(columnList.size() > 0)
         {
             columnId = columnList.get(0).Id;
-        }                                                                                        
+        }                                                                                  
 
         Backlog__c backlog = new Backlog__c();
         if (l1 == null){
