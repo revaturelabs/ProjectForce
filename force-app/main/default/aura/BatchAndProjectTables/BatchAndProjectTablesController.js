@@ -63,10 +63,9 @@
 
             }
             helper.markTableItemsAsSelected(updateList,tableName,component);
-
             let selectionIds = [];
             for(let i=0;i<tableData.length;i++){
-                if(tableData[i].Project__c){
+                if(updateList.indexOf(tableData[i].Id) != -1){
                     selectionIds.push(tableData[i].Project__c);
                 }
             }

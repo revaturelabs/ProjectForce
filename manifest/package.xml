@@ -65,6 +65,10 @@
         <name>CustomApplication</name>
     </types>
     <types>
+        <members>Set_Default_Project_Date</members>
+        <name>Flow</name>
+    </types>
+    <types>
         <members>*</members>
         <name>LightningComponentBundle</name>
     </types>
