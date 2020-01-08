@@ -180,7 +180,7 @@
 
 
 
-            var savingBacklogAction = component.get('c.addNewBacklog');
+            var savingBacklogAction = component.get("c.addNewBacklog");
 
             console.log(savingBacklogAction);
 

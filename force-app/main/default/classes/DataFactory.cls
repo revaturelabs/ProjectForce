@@ -119,24 +119,24 @@ public class DataFactory
         {	for ( integer j = 0 ; j < Math.mod(i+6, 10) + 1 ; j++ )
             {	backlogList.add	(	new Backlog__c
                                  	(	Project__c=ProjectList[i].Id, 
-                                     	Story__c='Test', 
-                                     	Stage__c='To Do'
+                                     	Story__c='Test'//, 
+                                     	//Stage__c='To Do'
                                     )
                 				);
             }
             for ( integer j = 0 ; j < Math.mod(i+2, 10) + 1 ; j++ )
             {	backlogList.add	(	new Backlog__c
                                  	(	Project__c=ProjectList[i].Id, 
-                                     	Story__c='Test', 
-                                     	Stage__c='Doing'
+                                     	Story__c='Test'//, 
+                                     	//Stage__c='Doing'
                                     )
                 				);
             }
          	for ( integer j = 0 ; j < Math.mod(i, 10) + 1 ; j++ )
             {	backlogList.add	(	new Backlog__c
                                  	(	Project__c=ProjectList[i].Id, 
-                                     	Story__c='Test', 
-                                     	Stage__c='Done'
+                                     	Story__c='Test'//, 
+                                     	//Stage__c='Done'
                                     )
                 				);
             }
