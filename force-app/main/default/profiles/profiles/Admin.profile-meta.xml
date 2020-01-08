@@ -109,6 +109,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>CardLabel__c.KanbanCardStory__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>CardLabel__c.Text__c</field>
         <readable>true</readable>
     </fieldPermissions>

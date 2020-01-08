@@ -38,8 +38,6 @@ public with sharing class KanbanProjectApexClass {
             }
         }
 
-        //Backlog__c backlog = new Backlog__c();
-
         if (l1 == null){
             // System.debug('No Label');
             

@@ -221,6 +221,8 @@
     },
    
     //Added by fw
+    //following method not being used currently
+    /*
     displayColumns : function (component, event, helper)
     {
         var getCols = component.get('c.getColumnsFromDB');
@@ -238,12 +240,15 @@
 
         $A.enqueueAction(getCols);
     },
+    */
 
+    //following method not being used currently
+    /*
     addColumn : function (component, event, helper)
     {
         var addCol = component.get('c.addColumnToDB');
         var projectId = component.get('v.project');
-        alert(projectId);
+        //alert(projectId);
         //add project name in params
         addCol.setParams({'projectId' : projectId,
                             });
@@ -259,7 +264,9 @@
 
         $A.enqueueAction(addCol);
     },
+    */
 
+    //remove a column
     removeBacklog : function (component, event, helper)
     {
         try
@@ -271,8 +278,6 @@
             if(id >= 0)
             {
                 var elemToRemove = lst[id];
-                alert('name : ' + elemToRemove.Name);
-                alert('id : ' + elemToRemove.Id)
                 lst.splice(id,1);
                 
                 component.set("v.backlogs",lst);
@@ -286,7 +291,6 @@
                     if (state === "SUCCESS") {
                         //var toBeRemoved = response.getReturnValue();
                         //component.set("v.kColumns", response.getReturnValue());
-                        alert('Deleted # ' + id);
                     } else {
                         console.log("Failed with state: " + state);
                     }
@@ -296,7 +300,7 @@
                 }
             else
             {
-                alert("No backlogs left to delete");
+                
             }
         }
         catch(Exc)
