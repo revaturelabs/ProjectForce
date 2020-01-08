@@ -32,33 +32,5 @@
         var tableAuraId = helper.getTableAuraId(event);
         var updatedData = helper.getUpdatedData(component, event, tableAuraId); 
         helper.saveInlineEdits(component, helper, updatedData);
-    },
-
-    /**
-     * initalize the tables to have current projects selected by default
-     * @param {} component 
-     * @param {*} event 
-     * @param {*} helper 
-     */
-    initSelections : function(component,event,helper){
-        let tableName='batch';
-        if(event.getParam('TableName')==tableName){
-            let updateList=[];
-            
-            let tableData=component.find(tableName).get('v.data');
-            
-            let today=new Date();
-            
-            for(let i=0;i<tableData.length;i++){
-                let startDate=new Date(tableData[i].ProjectStartDate__c);
-                let endDate=new Date(tableData[i].End_Date__c);
-                if(startDate.getTime()<=today.getTime() && endDate.getTime()>=today.getTime()){
-                    updateList.push(tableData[i].Id);
-                }
-
-            }
-            helper.markTableItemsAsSelected(updateList,tableName,component);
-        	helper.fireBatchInfoEvent(component);
-        }
     }
 })

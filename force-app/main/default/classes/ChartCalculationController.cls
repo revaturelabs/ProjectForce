@@ -35,7 +35,7 @@ public without sharing class ChartCalculationController {
             if(p.trainings__r.size()<=1){
                 continue;
             }
-            else{
+            else {
                 for(Integer i = 0; i < p.trainings__r.size()-1; i++){
                     Date ProjectDate = p.trainings__r[i].projectStartDate__c;
                     Date nextProjectDate = p.trainings__r[i+1].projectStartDate__c;
@@ -63,6 +63,5 @@ public without sharing class ChartCalculationController {
             }
         }
         return projectsAfterToday.size();
-        
     }
 }

@@ -1,7 +1,7 @@
 ////////////////////////////////////////////
 //    Test Data Factory
 //    Created by: Ying Ma, Frank Yang
-//    Created date: 9/24
+//    Created date: 9/24/2019
 //    Instruction:
 //    Run the method createTestData(integer numOfRecords) to generate data in the org
 //    Run the method deleteTestData() to delete all test data within the org.  Warning: this will also delete existing data
@@ -102,7 +102,7 @@ public class TestDataFactory {
         }
 
         //Assign the right project list based on the track
-        for(integer i = 0; i<numOfRecords; i++){
+        for(integer i = 0; i<=numOfRecords-1; i++){
             list<project__c> ProjectIDAssign = new list<project__c>();
             integer randomProject;
             if(TrainerTrackIdList[i].trackTrainer__r.name == 'Salesforce'){
@@ -130,7 +130,7 @@ public class TestDataFactory {
             Date day = system.today();
             Date someDate = day.addDays(randomDate); 
             Training__c t = new Training__c(name='Test Training '+i, Trainer__c=trainerIdList[i].id, Track__c=TrainerTrackIdList[i].trackTrainer__c,
-                                            Room__c=RoomIdList[i].id, Project__c=ProjectIDAssign[randomProject].id, Batch_Number__c=1000+i, Start_Date__c = someDate, 
+                                            Room__c=RoomIdList[i].id, Project__c=ProjectIDAssign[randomProject].id, Batch_Number__c=10+i, Start_Date__c = someDate, 
                                             BatchDuration__c=batchDuration, Color__c='#F26925', BatchSize__c=batchSize);
             TrainingList.add(t);
         }

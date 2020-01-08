@@ -1,8 +1,7 @@
 //change without sharing to with sharing when deploying
 public without sharing class ModalController {
-
     //All queries are done when modal is loaded
-    static List<Project__c> ProjectList = [select name, projectcomplete__c, track__r.name,(SELECT projectStartDate__c FROM trainings__r ORDER BY projectStartDate__c desc LIMIT 1) from Project__c];
+    static List<Project__c> ProjectList = [select Name, ProjectComplete__c, track__r.name,(SELECT projectStartDate__c FROM trainings__r ORDER BY projectStartDate__c desc LIMIT 1) from Project__c];
     static List<training__c> trainingList = [SELECT Id, batchsize__c, room__r.location__r.name, track__r.Name, room__r.Name, trainer__r.Name, Project__r.Name FROM training__c];
 
     @AuraEnabled
@@ -40,10 +39,10 @@ public without sharing class ModalController {
         }
     } 
 
-    //Saves changes to selected batch (training)
+    //Saves changes to selected batch (training) 
     @auraEnabled
     public static boolean Save(String trainingId, string newProjectName, String newComment){
-        id newProjectId = [SELECT Id FROM Project__c WHERE name = :newProjectName LIMIT 1].id;
+        id newProjectId = [SELECT Id, ProjectComplete__c FROM Project__c WHERE name = :newProjectName LIMIT 1].id;
         Training__c newTraining=[SELECT id, Project__c, Comments__c FROM Training__c WHERE id = : Id.valueOf(trainingID) LIMIT 1];
 
         if (newTraining.Comments__c==null){
@@ -54,5 +53,12 @@ public without sharing class ModalController {
 
         database.saveResult result = Database.update(newTraining);
         return result.isSuccess();
+    }
+    //Task for 01/07/2020: update Project__r.ProjectComplete__c and later Training__r.Review__c; NOTE: commented code is pending on Ben
+    //Need 1 new Apex Method in order to insert the values into the Project__c and Training__c objects
+    @auraEnabled
+    public static void insertCheckBoxStatusRecord(Project__c projectStatusToInsert /*, Training__c reviewStatusToInsert*/){
+        INSERT projectStatusToInsert;
+        //INSERT reviewStatusToInsert
     }
 }

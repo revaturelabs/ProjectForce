@@ -128,7 +128,7 @@
         helper.closeModel(component);
 
     },
-
+//
     saveCard: function (component, event, helper) {
 
         var story = component.get('v.story');
@@ -149,10 +149,11 @@
             var l1 = component.get('v.label1');
             var l2 = component.get('v.label2');
             var l3 = component.get('v.label3');
-
+			//Franchessco will deal with this user input validation
             var c1 = component.get('v.color1');
             var c2 = component.get('v.color2');
             var c3 = component.get('v.color3');
+            
             var project = component.get('v.project');
 
             console.log('Stage: ' + stage);
@@ -163,8 +164,6 @@
             console.log('Color 1: ' + c1);
             console.log('Color 2: ' + c2);
             console.log('Color 3: ' + c3);
-
-
 
             var savingBacklogAction = component.get('c.addNewBacklog');
 
@@ -181,8 +180,6 @@
                 "c3": c3,
                 "project": project
             });
-
-
 
             savingBacklogAction.setCallback(this, function (response) {
 
@@ -214,15 +211,6 @@
             });
 
             $A.enqueueAction(savingBacklogAction);
-            
-            
-        }
-        
-
-
-        
-    },
-
-
-    
+        }        
+    },   
 })
