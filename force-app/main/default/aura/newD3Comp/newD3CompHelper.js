@@ -197,14 +197,22 @@
     // duplicate population of previously selected projects.
     var currentData = [];
 
+
     //flatten the JSON into a compatible object.
     for (var i = 0; i < projectsToAdd.length; i++) {
+      let startDateSelect;
+      console.log(component.get("v.ChartStartFilter"));
+      if(component.get("v.ChartStartFilter")=="projectStart")
+        startDateSelect=projectsToAdd[i].ProjectStartDate__c;
+      else
+        startDateSelect=projectsToAdd[i].Start_Date__c;
       var newData = {
         location: projectsToAdd[i].Room__r.Location__r.Name,
         name: projectsToAdd[i].Name,
         project: projectsToAdd[i].Project__r.Name,
         room: projectsToAdd[i].Room__r.Room_Number__c,
-        startDate: projectsToAdd[i].ProjectStartDate__c,
+        
+          startDate: startDateSelect,
         trackName: projectsToAdd[i].Track__r.Name,
         trainer: projectsToAdd[i].Trainer__r.Name,
         trainingId: projectsToAdd[i].Id,
