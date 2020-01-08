@@ -5,14 +5,17 @@ public without sharing class ModalController {
     static List<training__c> trainingList = [SELECT Id, batchsize__c, room__r.location__r.name, track__r.Name, room__r.Name, trainer__r.Name, Project__r.Name FROM training__c];
 
     @AuraEnabled
-    public static Training__c getBatch(String trainingID) {
-        Training__c selectedBatch = new Training__c();
+    public static Training__c getBatch(String trainingID) 
+    {   // Training__c selectedBatch = new Training__c();
         try {
-            if (schema.SObjectType.location__c.isAccessible()) {
-                List<Training__c> batch = [SELECT Id, Batch_Number__c, BatchSize__c, Track__r.Name, ProjectStartDate__c, Project__r.Name, Project__r.Id, Trainer__r.Name, Room__r.Name, Room__r.Location__r.Name FROM Training__c WHERE Id =: Id.valueOf(trainingID) LIMIT 1];
-
-                selectedBatch = batch[0];
-                return selectedBatch;
+            if (schema.SObjectType.location__c.isAccessible()) 
+            {	Training__c batch = [SELECT 	Id, Batch_Number__c, BatchSize__c, Track__r.Name, ProjectStartDate__c, Project__r.Name, 
+                                           		Project__r.Id, Trainer__r.Name, Room__r.Name, Room__r.Location__r.Name 
+                                     FROM Training__c 
+                                     WHERE Id =: Id.valueOf(trainingID) 
+                                     LIMIT 1
+                                    ];
+                return batch;
             } else {
                 return null;
             }
@@ -23,12 +26,15 @@ public without sharing class ModalController {
 
     // Gets Projects based on the Batch's training track (e.g. Salesforce)
 	@AuraEnabled
-    public static List<Project__c> getProject(String trackName, Date startDateName){
-        try{
-            if (schema.SObjectType.Project__c.isAccessible()){
-                List<Project__c> projectListByTrack = [SELECT Name, ProjectComplete__c, Track__r.Name FROM Project__c WHERE Track__r.Name =: trackName];
+    public static List<Project__c> getProject(String trackName, Date startDateName)
+    {	try {
+            if (schema.SObjectType.Project__c.isAccessible())
+            {   List<Project__c> projectListByTrack = [SELECT Name, ProjectComplete__c, Track__r.Name 
+                                                       FROM Project__c 
+                                                       WHERE Track__r.Name =: trackName
+                                                      ];
                 return projectListByTrack;
-            }else{
+            } else {
                 return null;
             }
         //Catch logic below

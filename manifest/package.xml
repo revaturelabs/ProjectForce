@@ -8,8 +8,10 @@
         <members>ModalController</members>
         <members>ModalControllerTest</members>
         <members>TableApexController</members>
-        <members>TestDataFactory</members>
+        <members>DataFactory</members>
         <members>TestGantController</members>
+        <members>TableControllerTest</members>
+        <members>KanbanProjectTest</members>
         <name>ApexClass</name>
     </types>
     <types>
@@ -63,6 +65,10 @@
     <types>
         <members>ProjectForce</members>
         <name>CustomApplication</name>
+    </types>
+    <types>
+        <members>Set_Default_Project_Date</members>
+        <name>Flow</name>
     </types>
     <types>
         <members>*</members>
