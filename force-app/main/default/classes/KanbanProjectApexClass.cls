@@ -1,5 +1,18 @@
 public with sharing class KanbanProjectApexClass {
-    /*
+
+    //Added by B.D. and F.W
+    //get the kanban columns in the DB
+    @AuraEnabled
+    public static List<KanbanColumn__c> getKanbanColumns(String project) {
+        return [
+            SELECT 
+                Id, Name
+            FROM  KanbanColumn__c
+            WHERE Project__c =: project
+        ];
+    }
+
+    
     @AuraEnabled
     public static List<Backlog__c> getBacklogs(String project) {
         return [
@@ -110,7 +123,7 @@ public with sharing class KanbanProjectApexClass {
         }
         return backlog;
     }
-
+    /*
     @AuraEnabled
     public static List<String> getProjects(Id backlog){
         List<Project__c> rawProjects =[SELECT Name 

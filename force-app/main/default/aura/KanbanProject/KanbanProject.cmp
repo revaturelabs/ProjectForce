@@ -4,11 +4,14 @@
     <aura:attribute name="backlogs" type="Backlog__c[]" />
     <!-- project id stored as a string -->
     <aura:attribute name="project" type="String" />
+    <aura:attribute name="kanbanColumns" type="KanbanColumn__c[]" />
     <!-- event handlers -->
     <aura:handler name="init" action="{!c.doInit}" value="{!this}"></aura:handler>
     <aura:handler name="droppedOnColumn" event="c:droppedOnColumn" action="{!c.droppedHandler}"></aura:handler>
     <div class="slds-col columns">
-        <aura:if isTrue="{!v.backlogs.length}">
+        <!-- <aura:if isTrue="{!v.backlogs.length}"> -->
+            <aura:iteration items="{!v.kanbanColumns}" var="col">
+                   <c:KanbanColumn title="{!col.Label__c}" backlogs="{!v.backlogs}"></c:KanbanColumn>
             <!--
             <div class="slds-col slds-size_1-of-3">
                 <c:KanbanColumn title="To Do" backlogs="{!v.backlogs}"></c:KanbanColumn>
@@ -20,12 +23,13 @@
                 <c:KanbanColumn title="Done" backlogs="{!v.backlogs}"></c:KanbanColumn>
             </div> 
             -->
+            </aura:iteration>
             <aura:set attribute="else">
                 <div class="demo-only" style="padding:0.5rem;background:#16325c">
                     <div class="slds-text-color_inverse">No Backlogs found</div>
                 </div>
             </aura:set>
-        </aura:if>
+      <!--  </aura:if>-->
     </div>
 
 

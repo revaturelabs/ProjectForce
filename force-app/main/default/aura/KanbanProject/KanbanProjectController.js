@@ -2,13 +2,16 @@
     doInit: function (component, event, helper) {
         // store apex controller method to a variable
         var action = component.get("c.getBacklogs");
+
+
+        var actionGetColumns = component.get("c.getKanbanColumns");
         // store given project to a variable
         // a kanban project controller shows the backlog of one project
         // v.project is a required attribute
         var project = component.get("v.project");
         // set paramters to the apex controller method
         // and execute the action
-        action.setParams({ project: project });
+        action.setParams({ 'project': project });
         action.setCallback(this, function (response) {
             var state = response.getState();
             if (state === "SUCCESS") {
@@ -18,7 +21,18 @@
             }
         });
 
+        actionGetColumns.setParams({ 'project': project });
+        actionGetColumns.setCallback(this, function (response) {
+            var state = response.getState();
+            if (state === "SUCCESS") {
+                component.set("v.kanbanColumns", response.getReturnValue());
+            } else {
+                console.log("Failed with state: " + state);
+            }
+        });
+
         $A.enqueueAction(action);
+        $A.enqueueAction(actionGetColumns);
         component.set('v.EndDate','10/10/2019');
     },
 
