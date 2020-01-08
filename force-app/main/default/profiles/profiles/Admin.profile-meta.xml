@@ -87,13 +87,13 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Backlog__c.PullRequest__c</field>
+        <field>Backlog__c.Project__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
-        <field>Backlog__c.Stage__c</field>
-        <readable>true</readable>
+        <editable>false</editable>
+        <field>Backlog__c.PullRequest__c</field>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>

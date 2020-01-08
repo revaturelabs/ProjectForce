@@ -82,15 +82,8 @@
                     <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
                         <!-- modal content-->
                         <!-- drop down for stage-->
-                        <!--
-                            <lightning:select name="status-select" label="Stage" value="{!v.stage}">
-                                <option value="To do">To do</option>
-                                <option value="Doing">Doing</option>
-                                <option value="Done">Done</option>
-                            </lightning:select>
-                            -->
-                            <lightning:textarea label="Stage" value="{!v.stage}">
-
+                            <lightning:textarea name="status-select" label="Stage" value="{!v.stage}">
+                                
                             </lightning:textarea>
 
                             <!-- Story textarea-->
