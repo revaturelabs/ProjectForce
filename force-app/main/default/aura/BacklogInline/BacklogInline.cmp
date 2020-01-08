@@ -2,7 +2,9 @@
 <aura:component controller="KanbanProjectApexClass" implements="flexipage:availableForAllPageTypes,force:hasRecordId" access="global">
     <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
     <aura:attribute name="showSaveCancelBtn" type="boolean"/>
-    <aura:attribute name="projects" type="string[]" description="store picklist options values"/> 
+    <aura:attribute name="projects" type="string[]" description="store picklist options values"/>
+    
+    <!-- fw changes made 
     <aura:attribute name="backlogRecord" type="sobject" default="{'sobjectType' : 'Backlog__c',
     'Id' : '',
     'Story__c' : '',
@@ -10,6 +12,7 @@
     'StartDateTime__c' : '',
     'EndDateTime__c' : '',
     'DueDate__c' : ''}"/>
+	-->
     <aura:attribute name="storyEditMode" type="boolean" default="false" />
     <aura:attribute name="projectEditMode" type="boolean" default="false" />
     <aura:attribute name="startEditMode" type="boolean" default="false" />

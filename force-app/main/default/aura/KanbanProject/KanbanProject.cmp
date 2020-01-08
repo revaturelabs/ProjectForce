@@ -9,6 +9,7 @@
     <aura:handler name="droppedOnColumn" event="c:droppedOnColumn" action="{!c.droppedHandler}"></aura:handler>
     <div class="slds-col columns">
         <aura:if isTrue="{!v.backlogs.length}">
+            <!--
             <div class="slds-col slds-size_1-of-3">
                 <c:KanbanColumn title="To Do" backlogs="{!v.backlogs}"></c:KanbanColumn>
             </div>
@@ -18,6 +19,7 @@
             <div class="slds-col slds-size_1-of-3">
                 <c:KanbanColumn title="Done" backlogs="{!v.backlogs}"></c:KanbanColumn>
             </div> 
+            -->
             <aura:set attribute="else">
                 <div class="demo-only" style="padding:0.5rem;background:#16325c">
                     <div class="slds-text-color_inverse">No Backlogs found</div>

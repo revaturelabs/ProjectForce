@@ -1,4 +1,5 @@
 public with sharing class KanbanProjectApexClass {
+    /*
     @AuraEnabled
     public static List<Backlog__c> getBacklogs(String project) {
         return [
@@ -137,4 +138,5 @@ public with sharing class KanbanProjectApexClass {
         Project__c project = [SELECT Id FROM Project__c WHERE Name =:name];
         return project.Id;
     } 
+*/
 }
