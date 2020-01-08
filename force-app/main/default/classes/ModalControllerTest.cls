@@ -1,36 +1,69 @@
 @isTest
-public class ModalControllerTest {
+public class ModalControllerTest 
+{
+    static Profile STANDARD_USER = [SELECT Id FROM Profile WHERE Name='Standard User'];
+    
     // put user creation in setup
 	@TestSetup
-    static void setupData(){
+    static void setupData()
+    {	// make some data
         DataFactory.createTestData(50);
+        // make a user who can't access the records
+        String uniqueUserName = 'standarduser' + DateTime.now().getTime() + '@testorg.com';
+        User baduser = new User
+            (	Alias = 'standt', Email = 'standarduser@testorg.com',
+        		EmailEncodingKey = 'UTF-8', LastName='Testing', LanguageLocaleKey = 'en_US',
+        		LocaleSidKey = 'en_US', ProfileId = STANDARD_USER.id, 
+             	TimeZoneSidKey = 'America/Los_Angeles', UserName = uniqueUserName
+            );
+        insert baduser;
     }
     // New Stuff
     @isTest
     static void testBatch() 
-    {
-        
+    {	User baduser = [ SELECT ID FROM User WHERE Lastname='Testing' ][0];
+        Training__c sampleTraining = [	SELECT 	Id, Batch_Number__c, BatchSize__c, Track__r.Name, ProjectStartDate__c, Project__r.Name, 
+                                           		Project__r.Id, Trainer__r.Name, Room__r.Name, Room__r.Location__r.Name 
+                                     	FROM Training__c
+                                      	WHERE Name='Test Training 0' 
+                                     ][0];		// test positive
+     	System.assertEquals( sampleTraining, ModalController.getBatch(sampleTraining.Id) );
+     	try { ModalController.getBatch(null); }	// test negative
+     	catch (AuraHandledException ahe) 
+        {	System.assertEquals( 'Script-thrown exception', ahe.getMessage() ); 
+        }
+     	System.runAs(baduser) 					// test security
+        {	System.assertEquals( null, ModalController.getBatch(sampleTraining.Id) );
+     	}
     }
     
     @isTest
     static void testProject() 
-    {
-        
+    {	User baduser = [ SELECT ID FROM User WHERE Lastname='Testing' ][0];
+     	System.debug( ModalController.getProject('Salesforce', null).size() );	// test positive
+     	System.debug( ModalController.getProject(null, null) );					// test negative
+     	System.runAs(baduser) 													// test security
+        {	System.assertEquals( null, ModalController.getProject('Salesforce', null) );
+     	}
     }
     
     @isTest
-    static void testSave(){
+    static void testSave()
+    {
         Id trainingID = [SELECT Id 
                          FROM training__c 
                          WHERE name='Test Training 0' 
-                         LIMIT 1].Id;
+                         LIMIT 1
+                        ].Id;
         Training__c newTraining=[SELECT id, name, Start_Date__c, Trainer__c, Project__c, Room__c, Track__c 
                                  FROM Training__c 
                                  WHERE id = :trainingID 
-                                 LIMIT 1];
+                                 LIMIT 1
+                                ];
         project__c newProject=[SELECT id, name 
                                FROM project__c 
-                               LIMIT 1];
+                               LIMIT 1
+                              ];
         String comment = 'Hello Im am a Project';
         ModalController.Save(String.valueOf(trainingID), newProject.name, comment);
         System.debug(newTraining.name);
