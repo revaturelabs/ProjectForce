@@ -1,7 +1,7 @@
 <!--Project 3-->
 <!--Server side controller is set to ModalController-->
 <aura:component controller = "ModalController"
-                implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickActionWithoutHeader" access="global" >
+                implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,forceCommunity:availableForAllPageTypes,force:lightningQuickActionWithoutHeader" access="global" >
 
     <!--Allows the container component to call a method in this component-->
     <aura:method name="showModal" action="{!c.showModal}" access="PUBLIC">
