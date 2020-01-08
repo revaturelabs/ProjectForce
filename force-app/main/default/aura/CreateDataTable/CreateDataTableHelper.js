@@ -43,6 +43,9 @@
             component.find("TableDiv").getElement().style.gridTemplateRows = `auto ${height}px`;
             if(state==="SUCCESS"){
                 component.set("v.data", response.getReturnValue());
+                let completeEvent=$A.get("e.c:TableInitCompleteEvent");
+                completeEvent.setParams({"TableName":component.get("v.tableName")});
+                completeEvent.fire();
             }
             else if(state==="ERROR"){
                 let errors = response.getError();
