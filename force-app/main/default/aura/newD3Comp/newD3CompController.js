@@ -376,5 +376,8 @@
   handleBatchInformationEvent: function(component, event, helper) {
     var batchInfo = event.getParam("batchInfo"); //all selected projects
     helper.addToChart(component, batchInfo);
+  },
+  updateData : function(component,event,helper){
+    helper.updateData(component);
   }
 });
