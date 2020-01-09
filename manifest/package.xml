@@ -88,6 +88,7 @@
         <members>Training__c</members>
         <members>Backlog__c</members>
         <members>CardLabel__c</members>
+        <members>KanbanColumn__c</members>
         <name>CustomObject</name>
     </types>
     <types>
