@@ -67,6 +67,7 @@
         <name>CustomApplication</name>
     </types>
     <types>
+        <members>Default_Kanban_Column_Creation</members>
         <members>Set_Default_Project_Date</members>
         <name>Flow</name>
     </types>
@@ -88,6 +89,7 @@
         <members>Training__c</members>
         <members>Backlog__c</members>
         <members>CardLabel__c</members>
+        <members>KanbanColumn__c</members>
         <name>CustomObject</name>
     </types>
     <types>

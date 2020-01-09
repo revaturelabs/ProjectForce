@@ -1,4 +1,50 @@
 public with sharing class KanbanProjectApexClass {
+
+    //Added by B.D. and F.W
+    //get the kanban columns in the DB
+    @AuraEnabled
+    public static List<KanbanColumn__c> getKanbanColumns(String project) {
+        return [
+            SELECT 
+                Id, Name, Label__c
+            FROM  KanbanColumn__c
+            WHERE Project__c =: project
+        ];
+    }
+
+    @AuraEnabled
+    public static KanbanColumn__c addNewColumn(String stage, String project){
+        KanbanColumn__c kan;
+        try 
+        {
+            kan = new KanbanColumn__c();
+            kan.Label__c = stage;
+            kan.Project__c = project;
+            insert kan;  
+        } catch (Exception e) 
+        {
+            System.debug(e.getMessage());
+        }
+        return kan;
+    }
+
+    @AuraEnabled
+    public static void removeColumn(String label, String project){
+        List<KanbanColumn__c> kan;
+        try 
+        {
+            kan = new List<KanbanColumn__c>([SELECT Id, Name FROM KanbanColumn__c WHERE Label__c=:label AND Project__c=:project]);
+            if(kan.size() > 0)
+            {
+                delete kan.get(0);  
+            }
+            
+        } catch (Exception e) 
+        {
+            System.debug(e.getMessage());
+        }
+    }
+    
     @AuraEnabled
     public static List<Backlog__c> getBacklogs(String project) {
         return [
@@ -26,12 +72,31 @@ public with sharing class KanbanProjectApexClass {
     public static Backlog__c addNewBacklog(String stage, String story, String l1, 
                                            String l2, String l3, String c1, 
                                            String c2, String c3, String project){
+
+        //fw added
+        List<KanbanColumn__c> columnList = [
+                                         SELECT Id, 
+                                                Name,
+                                                Label__c 
+                                         FROM KanbanColumn__c 
+                                         WHERE Project__c =: project 
+                                         AND Label__c =: stage
+                                        ];
+        Id columnId;
+        if(columnList.size() > 0)
+        {
+            columnId = columnList.get(0).Id;
+        }                                                                                  
+
         Backlog__c backlog = new Backlog__c();
         if (l1 == null){
             // System.debug('No Label');
             backlog.Story__c = story;
             backlog.Stage__c = stage;
             backlog.Project__c = project;
+
+            //fw
+            backlog.KanbanColumn__c = columnId;
             insert backlog;         
         }
 
@@ -49,6 +114,9 @@ public with sharing class KanbanProjectApexClass {
             backlog.Stage__c = stage;
             backlog.CardLabel1__c = cl1.Id;
             backlog.Project__c = project;
+
+            //fw
+            backlog.KanbanColumn__c = columnId;
 
             insert backlog;
         }
@@ -74,6 +142,9 @@ public with sharing class KanbanProjectApexClass {
             backlog.CardLabel1__c = cl1.Id;
             backlog.CardLabel2__c = cl2.Id;
             backlog.Project__c = project;
+
+            //fw
+            backlog.KanbanColumn__c = columnId;
 
             insert backlog;
         }
@@ -105,11 +176,14 @@ public with sharing class KanbanProjectApexClass {
             backlog.CardLabel3__c = cl3.Id;
             backlog.Project__c = project;
 
+            //fw
+            backlog.KanbanColumn__c = columnId;
+
             insert backlog;
         }
         return backlog;
     }
-
+    
     @AuraEnabled
     public static List<String> getProjects(Id backlog){
         List<Project__c> rawProjects =[SELECT Name 
@@ -137,4 +211,5 @@ public with sharing class KanbanProjectApexClass {
         Project__c project = [SELECT Id FROM Project__c WHERE Name =:name];
         return project.Id;
     } 
+
 }
