@@ -17,10 +17,7 @@
     <aura:attribute name = "DisplayColors" type = "List" />
     <aura:attribute name="today" type="Date" default=""/>
 
-    <aura:registerEvent name="TableInitCompleteEvent" type="c:TableInitCompleteEvent"/>
-
     <aura:handler event="c:BatchInformationEvent" action="{!c.handleBatchInformationEvent}" />
-    
     
     <c:BatchAndProjectTables />
     <div class = "THIS">
@@ -32,6 +29,4 @@
             <c:ChartCalculation />
         </div>
     </div>
-       
-
 </aura:component>

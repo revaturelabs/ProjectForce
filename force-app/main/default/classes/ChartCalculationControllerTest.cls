@@ -26,11 +26,13 @@ public with sharing class ChartCalculationControllerTest {
         }
         Insert trainerTrackList;
 
+
         list<Location__c> LocIdList = [SELECT id, name FROM location__c];
         Room__c newRoom1 = new Room__c(name='Test Room 1', location__c=LocIdList[0].id, Room_Number__c= 100, Capacity__c=20);
         Room__c newRoom2 = new Room__c(name='Test Room 2', location__c=LocIdList[0].id, Room_Number__c= 101, Capacity__c=20);
         list<room__c> RoomList = new list<room__c> {newRoom1, newRoom2};
         insert RoomList;
+
 
         list<trainerTrack__c> TrainerTrackIdList = [SELECT trackTrainer__r.name FROM trainerTrack__c];
         list<project__c> ProjectList = new list<project__c>();

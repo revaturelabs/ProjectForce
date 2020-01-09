@@ -43,11 +43,6 @@
     <aura:attribute name="color2" type="String" />
     <aura:attribute name="color3" type="String" />
 
-
-
-
-
-
     <!-- event handlers -->
     <!-- <aura:handler name="init" action="{!c.doInit}" value="{!this}"></aura:handler> -->
     <aura:handler name="droppedOnColumn" event="c:droppedOnColumn" action="{!c.droppedHandler}"></aura:handler>
@@ -112,7 +107,7 @@
 
                                         <div class="slds-col">
                                             <span>
-                                                <ui:outputText value="10/10/2019"/>
+                                                <ui:outputText value="10/11/2019"/>
                                             </span>
                                         </div>
                                 </div>
@@ -150,36 +145,36 @@
                                 </div>
                             </div>
 
-                            <!-- Colors section -->
+                            <!-- COLORS SECTION -->
                             <div class="slds-grid slds-gutters slds-p-around_medium">
                                 <div class="slds-col">
                                     <span>
                                         Colors:
-                                    </span>
-                                </div>
+                                    </span><!--Franchessco will deal with fixing this user input validation-->
+                                </div><!--Line 162: Potential CSS/JS Injection Issue with Color Label 1-->
                                 <div class="slds-col">
                                     <span>
-                                        <lightning:input type="text" aura:id="color1" label="Label 1 Color"
+                                       <lightning:input type="text" aura:id="color1" label="Label 1 Color"
                                                 value="{!v.color1}" />
                                     </span>
-                                </div>
-                                <div class="slds-col">
+                                </div><!--End Line 162: Potential CSS/JS Injection Issue with Color Label 1-->
+                                <div class="slds-col"><!--Line 169: Franchessco will deal-->
                                     <aura:if isTrue="{!not(empty(v.label1))}">
                                     <span>
                                         <lightning:input type="text" aura:id="color2" label="Label 2 Color"
-                                            value="{!v.color2}"  />
+                                            value="{!v.color2}" />
                                     </span>
                                     </aura:if>
                                     
-                                </div>
-                                <div class="slds-col">
+                                </div><!--End Line 169: Potential CSS/JS Injection Issue with Color Label 2-->
+                                <div class="slds-col"><!--Line 178: Potential CSS/JS Injection Issue with Color Label 3-->
                                     <aura:if isTrue="{!and(not(empty(v.label1)),not(empty(v.label2)))}">
                                     <span>
                                         <lightning:input type="text" aura:id="color3" label="Label 3 Color"
                                             value="{!v.color3}"  />
                                     </span>
                                     </aura:if>
-                                </div>
+                                </div><!--End Line 178: Potential CSS/JS Injection Issue with Color Label 3-->
                             </div>
                     </div>
                           

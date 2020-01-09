@@ -259,6 +259,7 @@
     chart.data.datasets[1].backgroundColor = component.get("v.UserColors");
     chart.data.labels = holdLabels;
     // console.log(chart.controller.getDatasetMeta(0));
+
     //update. Until this command is run, none of the changes are actually applied to the chart.
     chart.update();
   },
