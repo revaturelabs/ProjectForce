@@ -90,7 +90,7 @@
 	$A.enqueueAction(action);
 },
 
-	//Funcation for the track drop down
+	//Function for the track drop down
 	//sets the list of tracks by calling the server- side controller
 	trackByID : function(component, event) {
 		
@@ -182,7 +182,6 @@
 		if(!selectedTrack)
 		{
 			selectedTrack = params.paramTrack;
-
 		}
 		
 		action.setParams({
@@ -190,26 +189,26 @@
             "startDateName": selectedDate
 		});
 		
-		action.setCallback(this, function(response){
-		
-		var state = response.getState();
-
-		let project= response.getReturnValue();
-		
-		
-		if(state === "SUCCESS"){
-			component.set("v.updateProjects", project);
-			
-			if(project.length !=0)
-			{
-				component.set("v.updateProject", project[0].Name);
-			}
-		}
-		else{
-			console.log("Failed with state: "+state);
-		}
-		
-	});
+        action.setCallback(this, function(response){
+            
+            var state = response.getState();
+            
+            let project= response.getReturnValue();
+            
+            
+            if(state === "SUCCESS"){
+                component.set("v.updateProjects", project);
+                
+                if(project.length !=0)
+                {
+                    component.set("v.updateProject", project[0].Name);
+                }
+            }
+            else{
+                console.log("Failed with state: "+state);
+            }
+            
+        });
 	
 	$A.enqueueAction(action);
 },
@@ -341,23 +340,66 @@
 			}
 		});
         
-        // add the status of ProjectCompleted CheckBox to SOQL
+        // use boolean value of checkbox to determine field status
         var selectProjectCheckBox = component.get("v.updateProjectComplete");
+        var selectTrainingCheckBox = component.get("v.updateReview");
         
+        //call Save Apex Method to updated checkbox status fields in Project__c and Training__c Objects, and get the user selected Record from Org
+        var updateCheckBoxRecord = component.get("c.updateCheckBoxStatusRecord");
+        var selectProjectRecord = component.get("c.getProject");
+        var selectTrainingReviewRecord = component.get("c.getBatch"); //get the training record the user selected
+        
+        //get the Project Record that the User Selected from Aura Component UI
+        selectProjectRecord.setCallback(this, function(response){
+            var state = response.getState();
+            let project= response.getReturnValue();
+            
+            
+            if(state === "SUCCESS"){
+                component.set("v.updateProjects", project);
+                if(project.length !=0){
+                    component.set("v.updateProject", project[0].ID);
+                }
+            }else{
+                console.log("Failed with state: "+state);
+            }
+            
+        });
+        
+        //get the Training Record the User Selected from Aura Component UI
+        selectTrainingReviewRecord.setCallback(this, function(response){
+			var state = response.getState();
+            let training= response.getReturnValue();
+            
+            
+            if(state === "SUCCESS"){
+                component.set("v.updateProjects", training);
+                if(training.length !=0){
+                    component.set("v.updateProject", training[0].ID);
+                }
+            }else{
+                console.log("Failed with state: "+state);
+            }
+        });
+        
+        /**need to reference the ID of Project Record that the User Selected from UI Menu Calendar and then assign the value of 'Checked'**/
         if(selectProjectCheckBox === TRUE){
+           	component.set("v.projectStatus.ID", selectProjectRecord);
             component.set("v.projectStatus.ProjectComplete__c", 'Checked');
         }
+        if(selectTrainingCheckBox === TRUE){
+            component.set("v.trainingStatus.ID", selectTrainingReviewRecord);
+            component.set("v.trainingStatus.Review_Completed__c", 'Checked');
+        }
         
-        //call Save Apex Method to updated fields in Project__c and Training__c Objects
-        var updateCheckBoxRecord = component.get("c.updateCheckBoxStatusRecord");
         //checkbox params to pass
         updateCheckBoxRecord.setParams({
-			"projectStatusToUpdate": component.get("v.projectStatus")
-            //,"reviewStatusToUpdate": component.get("v.trainingStatus")
+			"projectStatusToUpdate": component.get("v.projectStatus"),
+            "reviewStatusToUpdate": component.get("v.trainingStatus")
         });
         updateCheckBoxRecord.setCallback(this, function(response){});  
       	
-        $A.enqueueAction(insertCheckBoxRecord);
+        $A.enqueueAction(updateCheckBoxRecord);
 		$A.enqueueAction(action);
 	},
 

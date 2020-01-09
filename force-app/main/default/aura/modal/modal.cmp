@@ -32,11 +32,13 @@
     <aura:attribute name="updateProjectComplete" type="Boolean" default="false" />
 	<aura:attribute name="updateReview" type="Boolean" default="false" />
     
-    <!--Attributes for inserting the field values inside the Project__c and Training__c Objects-->
+    <!--Attributes for inserting the checkbox field values inside the Project__c and Training__c Objects-->
     <aura:attribute name="projectStatus" type="Project__c" 
                     default="{'cobjectType' : 'Project__c',
                              'ProjectComplete__c' : 'Unchecked'}" />
-    <aura:attribute name="trainingStatus" type="Training__c" /><!--Cannot use this attribute until Ben creates 'Review' field in Training__c-->
+    <aura:attribute name="trainingStatus" type="Training__c" 
+                    default="{'cobjectType' : 'Training__c',
+                             'Review_Completed__c' : 'Unchecked'}" />
     
     <!-- Attributes for the entire Batch modal -->
     <aura:attribute name="batchNumber" type="String"/>
@@ -92,6 +94,19 @@
                                         <span class="slds-checkbox_faux"></span>
                                         <span class="slds-checkbox_on">Completed</span>
                                         <span class="slds-checkbox_off">Not Complete</span>
+                                    </span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="column"><!--Review field update from this toggle-checkbox-->
+                            <div class="slds-form-element"><!--Next Task For SAVE functionality 01/09/2020, Save value of 'Reviewed' Checkbox-->
+                                <label class="slds-checkbox_toggle slds-grid">
+                                    <input type="checkbox" name="checkbox-toggle-17" value="{!v.updateReview}" aria-describedby="checkbox-toggle-17" />
+                                    <span id="checkbox-toggle-17" class="slds-checkbox_faux_container" aria-live="assertive">
+                                        <span class="slds-checkbox_faux"></span>
+                                        <span class="slds-checkbox_on">Reviewed</span>
+                                        <span class="slds-checkbox_off">Not Reviewed</span>
                                     </span>
                                 </label>
                             </div>
