@@ -6,6 +6,8 @@
     <aura:attribute name="project" type="String" />
     <aura:attribute name="kanbanColumns" type="KanbanColumn__c[]" />
     <aura:attribute name="selectedValue" type="String" />
+    <aura:attribute name="kanbanOrder" type="String[]" />
+    <aura:attribute name="selectedOrderValue" type="String" />
     <!-- event handlers -->
     <aura:handler name="init" action="{!c.doInit}" value="{!this}"></aura:handler>
     <!-- <aura:handler name="change" value="{!v.kanbanColumns}" action="{!c.doInit}"/> -->
@@ -14,7 +16,6 @@
         <!-- <aura:if isTrue="{!v.backlogs.length}"> -->
             <aura:iteration items="{!v.kanbanColumns}" var="col" indexVar="i">
                    <c:KanbanColumn projectId="{!v.project}" id="{!col.Id}" title="{!col.Label__c}" backlogs="{!v.backlogs}">
-                        
                    </c:KanbanColumn>
             </aura:iteration>
             
@@ -44,12 +45,14 @@
     <!-- <aura:handler name="init" action="{!c.doInit}" value="{!this}"></aura:handler> -->
     <aura:handler name="droppedOnColumn" event="c:droppedOnColumn" action="{!c.droppedHandler}"></aura:handler>
 
+    <!--Boolean values that set the add column and delete column models-->
     <aura:attribute name="isOpenAddColumn" type="boolean" default="false" />
     <aura:attribute name="isOpenDeleteColumn" type="boolean" default="false" />
 
     <!--Use "slds-m-around_xx-large" class to add standard X-Large padding to the component-->
     <div class="slds-m-around_xx-large">
 
+        <!-- Model for Adding a Column-->
         <!--aura:if displays modal if attribute isOpen is true. -->
         <aura:if isTrue="{!v.isOpenAddColumn}">
 
@@ -68,9 +71,14 @@
                     <!-- MODAL BODY Part START-->
                     <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
                         <!-- modal content-->
-                        <!-- drop down for stage-->
-                            <lightning:textarea name="status-select" label="Column Name" value="{!v.stage}">      
+                        <!-- User Input for adding a Column Name and the order of the Column-->
+                            <lightning:textarea name="status-select" label="Column Name" value="{!v.stage}">
                             </lightning:textarea>
+                            <lightning:select name="Order-select" label="Column Order" value="{!v.selectedOrderValue}">
+                                <aura:iteration items="{!v.kanbanOrder}" var="order">
+                                    <option value="{!order}" text="{!order}"></option>
+                                </aura:iteration>
+                        </lightning:select>
                     </div>
                           
                     <!-- MODAL FOOTER  Start -->
@@ -84,7 +92,7 @@
             <!-- MODAL END  -->
         </aura:if>
 
-        <!-- fw added this -->
+        <!-- Model for Deleting a column -->
         <!--aura:if displays modal if attribute isOpen is true. -->
         <aura:if isTrue="{!v.isOpenDeleteColumn}">
 
@@ -103,7 +111,7 @@
                     <!-- MODAL BODY Part START-->
                     <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
                         <!-- modal content-->
-                        <!-- drop down for stage-->
+                        <!-- drop down for Columns-->
                         <lightning:select name="status-select" label="Column Name" value="{!v.selectedValue}">
                             <aura:iteration items="{!v.kanbanColumns}" var="col">
                                 <option value="{!col.Label__c}" text="{!col.Label__c}"></option>

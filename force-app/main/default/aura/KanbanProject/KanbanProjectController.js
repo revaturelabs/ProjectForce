@@ -2,15 +2,15 @@
     doInit: function (component, event, helper) {
         // store apex controller method to a variable
         var action = component.get("c.getBacklogs");
-
-
         var actionGetColumns = component.get("c.getKanbanColumns");
+
         // store given project to a variable
         // a kanban project controller shows the backlog of one project
         // v.project is a required attribute
+
         var project = component.get("v.project");
-        // set paramters to the apex controller method
-        // and execute the action
+        // set paramter: project ID
+        // Call Apex Method to return list of backlogs
         action.setParams({ 'project': project });
         action.setCallback(this, function (response) {
             var state = response.getState();
@@ -21,6 +21,7 @@
             }
         });
 
+        // Call Apex method to return Kanban Columns
         actionGetColumns.setParams({ 'project': project });
         actionGetColumns.setCallback(this, function (response) {
             var state = response.getState();
@@ -34,11 +35,24 @@
         $A.enqueueAction(action);
         $A.enqueueAction(actionGetColumns);
         component.set('v.EndDate','10/10/2019');
+        
+        // Call Apex and get the list of Order Options
+        // Set v.kanbanOrder 
+        var getOrderAction = component.get("c.getOrderOptions");
+        getOrderAction.setCallback(this, function (response) {
+            var state = response.getState();
+            if (state === "SUCCESS") {
+                component.set("v.kanbanOrder", response.getReturnValue());
+            } else {
+                //console.log("Failed with state: " + state);
+            }
+        })
+
+        $A.enqueueAction(getOrderAction);
     },
 
     /*
     * Handles the event fired by a Kanban Column. A Kanban column fires this event whena card is dragged over it
-    *
     */
     droppedHandler: function (component, event, helper) {
         // get event parameters
@@ -92,8 +106,6 @@
                         theBacklog.Stage__c="Doing";
                         alert('Add the pull request url');
                         component.set("v.backlogs", listOfBacklogs);
-
-
                     }
                 } else {
                     console.log('pull request is',theBacklog.PullRequest__c);
@@ -121,30 +133,32 @@
             console.log("Could not find this ", backlog);
         }
     },
+
+    // Model for adding a column
     openModel: function (component, event, helper) {
-            // for Display Model,set the "isOpen" attribute to "true"
+        // for Display Model,set the "isOpen" attribute to "true"
+        helper.openModel(component);
 
-            helper.openModel(component);
+        var lab2 = component.find("label2");
+        console.log(lab2);
 
-            var lab2 = component.find("label2");
-            console.log(lab2);
+        $A.util.addClass(lab2, 'toggle');
+        // component.get("label3").className = "slds-hidden";
+        // console.log(component.find("label2"));
+        
+        
+    },
 
-            $A.util.addClass(lab2, 'toggle');
-
-
-            // component.get("label3").className = "slds-hidden";
-            // console.log(component.find("label2"));
-
-        },
 
     closeModel: function (component, event, helper) {
         // for Hide/Close Model,set the "isOpen" attribute to "Fasle"  
         helper.closeModel(component);
 
     },
-    //added for delte column
+
+    // Model for deleting a column
     openModelDeleteTheColumn: function (component, event, helper) {
-        // for Display Model,set the "isOpen" attribute to "true"
+        // for Display Model,set the "isOpenDeleteColumn" attribute to "true"
 
         helper.openModelDelCol(component);
 
@@ -152,15 +166,13 @@
         console.log(lab2);
 
         $A.util.addClass(lab2, 'toggle');
-
-
         // component.get("label3").className = "slds-hidden";
         // console.log(component.find("label2"));
 
     },
 
     closeModelDeleteTheColumn: function (component, event, helper) {
-        // for Hide/Close Model,set the "isOpen" attribute to "Fasle"  
+        // for Hide/Close Model,set the "isOpenDeleteColumn" attribute to "Fasle"  
         helper.closeModelDelCol(component);
 
     },
@@ -169,14 +181,16 @@
         
             var stage = component.get('v.stage');
             var project = component.get('v.project');
+            var order = component.get('v.selectedOrderValue');
 
             console.log('Stage: ' + stage);
           
             var savingColumnAction = component.get("c.addNewColumn");
 
             savingColumnAction.setParams({
-                "stage" : stage,
-                "project": project
+                "stage": stage,
+                "project": project,
+                "order": order
             });
 
             savingColumnAction.setCallback(this, function (response) {
@@ -184,7 +198,6 @@
                 var state = response.getState();
 
                 if (state === "SUCCESS"){
-
                     var toastEvent = $A.get("e.force:showToast");
                     toastEvent.setParams({
                         "title": "Success",
@@ -195,7 +208,6 @@
                     helper.closeModel(component);
                     $A.get("e.force:refreshView").fire();
                 }
-
                 else 
                 {
                     var toastEvent = $A.get("e.force:showToast");
@@ -205,9 +217,7 @@
                     });
                     toastEvent.fire();
                 }
-
             });
-
 
            $A.enqueueAction(savingColumnAction);  
     },
@@ -237,6 +247,4 @@
     
         $A.enqueueAction(action);
     },
-    
-    
 })

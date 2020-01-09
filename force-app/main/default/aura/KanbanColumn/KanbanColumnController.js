@@ -11,7 +11,6 @@
             'backlog': JSON.parse(event.dataTransfer.getData('DraggedBacklog'))
         });
         droppedOnColumnEvent.fire();
-        
     },
 
     

@@ -5,22 +5,66 @@ public with sharing class KanbanProjectApexClass {
     @AuraEnabled
     public static List<KanbanColumn__c> getKanbanColumns(String project) {
         return [
-            SELECT 
-                Id, Name, Label__c
+            SELECT Id, Name, Label__c
             FROM  KanbanColumn__c
             WHERE Project__c =: project
+            ORDER BY Order__c ASC
         ];
     }
 
+    // Return list of options for the order picklist
+    // To increase number of Columns add to order picklist
     @AuraEnabled
-    public static KanbanColumn__c addNewColumn(String stage, String project){
-        KanbanColumn__c kan;
+    public static List<String> getOrderOptions(String project) {
+        // Query for the count of related Columns
+        Integer ColumnCount = [Select Count()
+            From KanbanColumn__c
+            Where Project__c =: project];
+        // Add the order values to the list 
+        // Also add the size of the list plus one
+        List<String> orderOptions = new List<String>();
+        for (Integer i=1; i<=(ColumnCount+1); i++ ) {
+            orderOptions.add(String.valueOf(i));
+        }
+        return orderOptions;
+    }
+
+    // Add new column and reorder related columns
+    @AuraEnabled
+    public static KanbanColumn__c addNewColumn(String stage, String project, String order){
+        KanbanColumn__c kan = new KanbanColumn__c();
+        List<KanbanColumn__c> kanbanList = new List<KanbanColumn__c>();
+        
+        // Query for related Columns based on Project ID
+        kanbanList = [ SELECT Id, Name, Label__c, Order__c
+            FROM  KanbanColumn__c
+            WHERE Project__c =: project
+            ORDER BY Order__c ASC ];
+        
+        // Insert new Column
         try 
         {
-            kan = new KanbanColumn__c();
             kan.Label__c = stage;
             kan.Project__c = project;
+            kan.order__c = order;
             insert kan;  
+        } catch (Exception e) 
+        {
+            System.debug(e.getMessage());
+        }
+
+        // Iterate Through list and change the order
+        // Because Query is run before the insert of the new column
+        // the new column is not included in the list
+        // This makes the new column the only column with this order value
+        try 
+        {
+            for (KanbanColumn__c kanban : kanbanList) {
+                if (kanban.order__c == order) {
+                    kanban.order__c = order + 1;
+                }
+            }
+            update kanbanList;
         } catch (Exception e) 
         {
             System.debug(e.getMessage());
@@ -28,17 +72,19 @@ public with sharing class KanbanProjectApexClass {
         return kan;
     }
 
+    //
     @AuraEnabled
     public static void removeColumn(String label, String project){
-        List<KanbanColumn__c> kan;
+        List<KanbanColumn__c> kan= new List<KanbanColumn__c>();
         try 
         {
-            kan = new List<KanbanColumn__c>([SELECT Id, Name FROM KanbanColumn__c WHERE Label__c=:label AND Project__c=:project]);
+            kan = [SELECT Id, Name 
+                FROM KanbanColumn__c 
+                WHERE Label__c=:label AND Project__c=:project ];
             if(kan.size() > 0)
             {
                 delete kan.get(0);  
-            }
-            
+            } 
         } catch (Exception e) 
         {
             System.debug(e.getMessage());
