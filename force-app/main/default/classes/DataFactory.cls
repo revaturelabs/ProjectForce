@@ -15,7 +15,6 @@
 
 public class DataFactory 
 {
-    
     // Initialize all lists of sObjects for us to insert in the createData() method
     private static list<Track__c> trackList;
     private static list<Location__c> locList;
@@ -25,7 +24,7 @@ public class DataFactory
     private static list<Project__c> ProjectList= new list<project__c>();
     private static list<Training__c> TrainingList= new list<Training__c>();
     private static list<Backlog__c> BacklogList = new List<Backlog__c>();
-   
+    
     public static void createTestData(integer numOfRecords)
     {   
         // Insert tracks and locations if you haven't already (only necessary on 1st run)
@@ -143,7 +142,6 @@ public class DataFactory
         }
         insert backlogList;
     }
-
     private static void createTracks()
     {	trackList = new list<track__c>();
      	// Make dummy tracks with three plausible sample names
@@ -176,5 +174,4 @@ public class DataFactory
      	delete TrainingList;
      	delete BacklogList;
     }
-
 }
