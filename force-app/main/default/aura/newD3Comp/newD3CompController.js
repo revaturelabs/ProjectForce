@@ -1,8 +1,9 @@
 ({
     ////////////////////////////////////////////
-    //    Gantt Chart Javascript Controller Class
+    //    newD3Comp Javascript Controller Class (originally Gantt Chart Javascript Controller Class)
     //    Created by: William Brown, Chao Chen, Auroiah Morgan, Geoffrey Murray
     //    First Published: 9/24
+    //    Updated/Modified by: Ben Learn, January 2020
     //    Purpose: To Provide the direct functionality for the ProjectForce Gantt Chart.
     //    *********************Functions included:****************************
     //    	myAction(component, event, helper)
@@ -24,58 +25,48 @@
     //    If you have any questions, please email Geoffrey Murray @ geoffrey.murray.1995@gmail.com
     ////////////////////////////////////////////
     myAction: function(component, event, helper) {
-        //creating a variable.
-        var yLabels = [];
-        //This gets the current date.
-        var date = new Date();
-        //only the current year
-        var year = date.getUTCFullYear();
+        // array to hold labels for x axis of chart, will contain all dates for the 
+        // previous three months and next six months
+        var xLabels = [];
+        var currentDate = new Date();
+        var year = currentDate.getUTCFullYear();
+        var threeMonthsBefore = new Date();
+        threeMonthsBefore.setMonth(threeMonthsBefore.getMonth() - 3);
+        var sixMonthsAfter = new Date();
+        sixMonthsAfter.setMonth(sixMonthsAfter.getMonth() + 6);
+        console.log(threeMonthsBefore);
+        console.log(currentDate);
+        console.log(sixMonthsAfter);
         
-        /*  Making an array with 2 years worth of days. Taking into account if this year or the next are leap years or not.
-     *  The First index of the array is Jan 1 and every +1 added to the index goes up 1 day.
-     *  The reason for this is because the x-axis of the the chart only takes in an integer as data; Chart JS limitations
-     *  The data(integer) that gets passed into the chart then calls the array in x-axis ticks and the index of the array returns the date.
-     */
-      var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-      var monthDays = [31, 28, 31, 30, 31, 31, 31, 31, 30, 31, 30, 31];
-      
-      //checking if this year is a leap year
-      if (year % 400 == 0 || (year % 4 == 0 && year % 100 != 0)) {
-          //february gets an extra day
-          monthDays[1] = 29;
-      }
-      
-      //initializing
-      var labelIndex = 0;
-      var month = 0;
-      var day = 1;
-      
-      var lastYear = year + 2;
-      //labels for next 2 years
-      while (year < lastYear) {
-          //label shown as:month day year
-          yLabels.push(monthNames[month] + " " + day + " " + year);
-          labelIndex++;
-          day++;
-          
-          //check if day passes end of the month
-          if (day > monthDays[month]) {
-              //reaches end of the year
-              if (month == 11) {
-                  year++;
-                  //checking if this year is a leap year
-                  if (year % 400 == 0 || (year % 4 == 0 && year % 100 != 0)) {
-                      //febraury gets an extra day
-                      monthDays[1] = 29;
-                  } else {
-                      monthDays[1] = 28;
-                  }
-              }
-              
-              month = (month + 1) % 12;
-              day = 1;
-          }
-      }
+        // make arrays for the names of the months and the number of days in those
+        // months (check if its a leap year, if so February will have 29 days)
+        var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        var daysInMonths = [31, 28, 31, 30, 31, 31, 31, 31, 30, 31, 30, 31];
+        if (year % 400 == 0 || (year % 4 == 0 && year % 100 != 0)) {
+            // February gets an extra day
+            daysInMonths[1] = 29;
+        }
+        
+        /* Populate the xlabels array. Each index of this array will sequentially
+         * contain the days from three months before today's date to six months after
+         * today's date. We need to populate the array in this way because the x-axis
+         * of Chart JS can only take in integer values. The integer that gets passed
+         * to the x-axis of the chart will later call the xlabels array to display a 
+         * nicely formatted date to label the x-axis in the form of e.g. Jan 1 2020
+       	 */
+        
+        // iteration date
+        var iterationDate = threeMonthsBefore;
+
+        // populate xlabels
+        // it is important to note that the getMonth function in the Javascript Date
+        // class is zero indexed (i.e. January is zero), but the getDate function is
+        // not
+        while(iterationDate < sixMonthsAfter){
+            xLabels.push(monthNames[iterationDate.getMonth()] + " " + 
+                         iterationDate.getDate() + " " + iterationDate.getFullYear());
+			iterationDate.setDate(iterationDate.getDate() + 1);
+        }
       
       //Once you click on the chart, you're able to modify and save/update the modifications
       component.find("myChart").getElement().onclick = function(evt) {
@@ -97,23 +88,17 @@
       
       var myChartComponent = component.find("myChart").getElement();
       //the charts options such as x-axis, y-axis, if hover/no hover
-      var barOptions_stacked = {hover: {
-          animationDuration: 10,
+      var barOptions_stacked = {hover: {animationDuration: 10,
           onHover: function(e, elements) {
               myChartComponent.style.cursor = e[0] ? "pointer" : "default";
           }},
-                                
-                                events: {events: ["onClick"]
-                                        },
-                                
-                                animation: {onComplete: function() {
-                                    var ctx = this.chart.ctx;
-                                    var chartInstance = this.chart;
-                                    ctx.font = Chart.helpers.fontString(
-                                        Chart.defaults.global.defaultFontFamily,
-                                        "normal",
-                                        Chart.defaults.global.defaultFontFamily
-                                    );
+
+          events: {events: ["onClick"]},
+          
+          animation: {onComplete: function() {
+              var ctx = this.chart.ctx;
+              var chartInstance = this.chart;
+              ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontFamily, "normal", Chart.defaults.global.defaultFontFamily);
                                     ctx.textAlign = "left";
                                     ctx.fillStyle = "black"; // label color
                                     
@@ -148,7 +133,7 @@
                                                       fontFamily: "'Futura', sans-serif", fontSize: 11,
                                                       //does a call back to the array and returns the array index of the data(integer) inputed
                                                       callback: function(value, index, values) {
-                                                          return yLabels[value];
+                                                          return xLabels[value];
                                                       }},
                                                   //x-axis label name
                                                   scaleLabel: {display: true, labelString: "Month"},
