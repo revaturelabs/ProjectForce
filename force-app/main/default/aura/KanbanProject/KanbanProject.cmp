@@ -16,17 +16,6 @@
                    <c:KanbanColumn projectId="{!v.project}" id="{!col.Id}" title="{!col.Label__c}" backlogs="{!v.backlogs}">
                         
                    </c:KanbanColumn>
-            <!--
-            <div class="slds-col slds-size_1-of-3">
-                <c:KanbanColumn title="To Do" backlogs="{!v.backlogs}"></c:KanbanColumn>
-            </div>
-            <div class="slds-col slds-size_1-of-3">
-                <c:KanbanColumn title="Doing" backlogs="{!v.backlogs}"></c:KanbanColumn>
-            </div>
-            <div class="slds-col slds-size_1-of-3">
-                <c:KanbanColumn title="Done" backlogs="{!v.backlogs}"></c:KanbanColumn>
-            </div> 
-            -->
             </aura:iteration>
             
             <aura:set attribute="else">
@@ -36,9 +25,6 @@
             </aura:set>
       <!--  </aura:if>-->
     </div>
-
-
-    
 
     <!-- modal attributes -->
     <!-- attributes to store modal field information. -->
@@ -53,11 +39,6 @@
     <aura:attribute name="color1" type="String" />
     <aura:attribute name="color2" type="String" />
     <aura:attribute name="color3" type="String" />
-
-
-
-
-
 
     <!-- event handlers -->
     <!-- <aura:handler name="init" action="{!c.doInit}" value="{!this}"></aura:handler> -->
