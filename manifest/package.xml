@@ -58,12 +58,17 @@
         <members>newD3App</members>
         <members>newD3Comp</members>
         <members>SaveInlineEditsEvent</members>
+        <members>TableInitCompleteEvent</members>
         <members>TableItemSelectedEvent</members>
         <name>AuraDefinitionBundle</name>
     </types>
     <types>
         <members>ProjectForce</members>
         <name>CustomApplication</name>
+    </types>
+    <types>
+        <members>Set_Default_Project_Date</members>
+        <name>Flow</name>
     </types>
     <types>
         <members>*</members>
