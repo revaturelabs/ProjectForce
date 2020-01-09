@@ -9,13 +9,12 @@
 //    any questions, email at ma444699160@gmail.com to Ying Ma
 ////////////////////////////////////////////
 
+// Consider making direct test class for datafactory
+// Note from Brady: Deprecated as of 1/8/2020, use the new datafactory class I modified
 
-
-
-
-public class TestDataFactory {
+public class DataFactory {
     public static void createTestData(integer numOfRecords){
-		deleteTestData();       
+		deleteTestData();
         //Insert Trainer records
         list<trainer__c> TrainerList= new list<trainer__c>();
         for(integer i = 0; i<numOfRecords-1; i++){

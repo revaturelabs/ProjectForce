@@ -249,6 +249,9 @@
           response.getReturnValue()
         );
         component.set("v.dasChart", newChart);
+        let completeEvent= $A.get("e.c:TableInitCompleteEvent");
+        completeEvent.setParams({"TableName":'chart'});
+        completeEvent.fire();
       } else {
         console.log("Failed with state: " + state);
       }
@@ -296,37 +299,32 @@
   },
   showmodal: function(component, event, helper){
     var activePoints = component.get('v.dasChart').getElementsAtEvent(event);
-        if(activePoints.length > 0 )
-        {
-            var currIndex = activePoints[0]._index;                
-            var currSimpleTraining = component.get('v.tempList')[currIndex];
-            console.log('here is the current simple training: ');
-            console.log(currSimpleTraining);
+    var currSimpleTraining = component.get('v.tempList')[currIndex];
+    if(!currSimpleTraining) 
+      return;
+    if(activePoints.length > 0 )
+    {
+        var currIndex = activePoints[0]._index;                
+        var currSimpleTraining = component.get('v.tempList')[currIndex];
 
-            var childCmp = component.find("modalComp");
+        var childCmp = component.find("modalComp");
 
-            let location = currSimpleTraining.location;
-            JSON.stringify(location);
-            let track = currSimpleTraining.trackName;
-            JSON.stringify(track);
-            console.log("track:"+track);
-            
-            let projectStartDate = currSimpleTraining.startDate;
-            JSON.stringify(projectStartDate);
-            console.log("projectStartDate:"+projectStartDate);
+        let location = currSimpleTraining.location;
+        JSON.stringify(location);
+        let track = currSimpleTraining.trackName;
+        JSON.stringify(track);
+        
+        let projectStartDate = currSimpleTraining.startDate;
+        JSON.stringify(projectStartDate);
 
-            //let newLocation = location.replace(/"/location,"");
-            //console.log(newLocation);
-            childCmp.showModal(currSimpleTraining.trainingId, track, projectStartDate);
-            
-            /*
-        */
-        }
+        //let newLocation = location.replace(/"/location,"");
+        childCmp.showModal(currSimpleTraining.trainingId, track, projectStartDate);
+    }
 
-      let track = currSimpleTraining.trackName;
-      JSON.stringify(track);
+    let track = currSimpleTraining.trackName;
+    JSON.stringify(track);
 
-      childCmp.showModal(currSimpleTraining.trainingId, location, track);
+    childCmp.showModal(currSimpleTraining.trainingId, location, track);
   },
 
   modalUpdate: function(component, event, helper) {

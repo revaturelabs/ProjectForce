@@ -1,4 +1,4 @@
-<aura:component controller="GantController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickActionWithoutHeader" access="global">
+<aura:component controller="GantController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,forceCommunity:availableForAllPageTypes,force:lightningQuickActionWithoutHeader" access="global">
 
         <c:modal aura:id="modalComp"/>
         <c:modal/>
@@ -16,6 +16,8 @@
     <aura:attribute name ="UserColors" type="List"/>
     <aura:attribute name = "DisplayColors" type = "List" />
     <aura:attribute name="today" type="Date" default=""/>
+
+    <aura:registerEvent name="TableInitCompleteEvent" type="c:TableInitCompleteEvent"/>
 
     <aura:handler event="c:BatchInformationEvent" action="{!c.handleBatchInformationEvent}" />
     
