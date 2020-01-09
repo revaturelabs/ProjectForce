@@ -1,5 +1,5 @@
 <!--http://sfdcmonkey.com/2017/12/08/lightning-data-table-inline-editing/-->
-<aura:component controller="KanbanProjectApexClass" implements="flexipage:availableForAllPageTypes,force:hasRecordId" access="global">
+<aura:component controller="KanbanProjectApexClass" implements="flexipage:availableForAllPageTypes" access="global">
     <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
     <aura:attribute name="showSaveCancelBtn" type="boolean"/>
     <aura:attribute name="projects" type="string[]" description="store picklist options values"/>
