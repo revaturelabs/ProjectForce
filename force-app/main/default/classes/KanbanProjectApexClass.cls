@@ -27,6 +27,23 @@ public with sharing class KanbanProjectApexClass {
         }
         return kan;
     }
+
+    @AuraEnabled
+    public static void removeColumn(String label, String project){
+        List<KanbanColumn__c> kan;
+        try 
+        {
+            kan = new List<KanbanColumn__c>([SELECT Id, Name FROM KanbanColumn__c WHERE Label__c=:label AND Project__c=:project]);
+            if(kan.size() > 0)
+            {
+                delete kan.get(0);  
+            }
+            
+        } catch (Exception e) 
+        {
+            System.debug(e.getMessage());
+        }
+    }
     
     @AuraEnabled
     public static List<Backlog__c> getBacklogs(String project) {

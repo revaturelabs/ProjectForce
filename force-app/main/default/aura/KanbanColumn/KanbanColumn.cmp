@@ -1,8 +1,10 @@
 <aura:component >
     <!-- Attributes -->
-	<aura:attribute name="title" type="String" required="true"></aura:attribute>
+    <aura:attribute name="title" type="String" required="true"></aura:attribute>
     <aura:attribute name="backlogs" type="Backlog__c[]"/>
-    <aura:attribute name="index" type="Integer"/>
+    <aura:attribute name="Id" type="String"/>
+    <aura:attribute name="projectId" type="String"/>
+
     
     
     <!-- Custom Events -->
@@ -26,9 +28,7 @@
                       
                 </aura:iteration>
             </div>
-            <!-- fw added a button to remove column-->
             
-                    <lightning:button variant="Destructive" label="- Column" title="Success" onclick="" />
             
         </div>
     </div>
