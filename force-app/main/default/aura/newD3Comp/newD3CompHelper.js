@@ -2,6 +2,7 @@
     ////////////////////////////////////////////
     //    Gantt Chart Javascript Helper Class
     //    Created by: William Brown, Chao Chen, Auroiah Morgan, Geoffrey Murray
+    //    Modified by: Brady Achterberg, Ben Learn
     //    First Published: 9/24
     //    Purpose: To Provide abstracted functionality for the ProjectForce Gantt Chart.
     //    *********************Functions included:****************************
@@ -36,18 +37,27 @@
     //    If you have any questions, please email Geoffrey Murray @ geoffrey.murray.1995@gmail.com
     ////////////////////////////////////////////
     
-    //Bubble Sort based on Sort By Filter
-    sortArray: function(sortThis, sortColors, sortBy) {
-        //Bubble sort each item in the array
-        for (var currItem = 0; currItem < sortThis.length; currItem++) {
-            for (var j = 0; j < sortThis.length - 1; j++)
+    // Bubble Sort based on a field (trackName, project, startDate, trainer) passed as a param
+    // To Do: Figure out where it's being called and make sortBy param align to new field conventions
+    sortArray: function(array, colorArray, sortBy) 
+    {   //Bubble sort each item in the array
+        for (var i = 0; i < array.length; i++)
+            for (var j = 0; j < array.length - 1; j++)
+                if ( JSON.stringify(array[j][sortBy]) > JSON.stringify(array[j + 1][sortBy] ) ) 
+                {   var temp = array[j];
+                    array[j] = array[j+1];
+                    array[j+1] = temp;
+                    var tempColor = colorArray[j];
+                    colorArray[j] = colorArray[j+1];
+                    colorArray[j+1] = tempColor;
+                }
+        return array;
+    },
                 //compare the field on the SimpleTraining object with the category selected
-                switch (sortBy) {
-                    case "Track":
-                        if (JSON.stringify(sortThis[j].trackName) > JSON.stringify(
-                            sortThis[j + 1].trackName)) {
-                            // swap arr[j+1] and arr[i]
-                            var temp = sortThis[j];
+                /*switch (sortBy)     // we could do away with this switch and just plop sortBy in as a member
+                {   case "Track":   // iirc in javascript the name of a member is also its string key
+                        if ( JSON.stringify(sortThis[j].trackName) > JSON.stringify(sortThis[j + 1].trackName) ) 
+                        {   var temp = sortThis[j];
                             sortThis[j] = sortThis[j + 1];
                             sortThis[j + 1] = temp;
                             var tempColor = sortColors[j];
@@ -90,15 +100,11 @@
                             sortColors[j] = sortColors[j + 1];
                             sortColors[j + 1] = tempColor;
                         }
-                        break;
-                }
-        }
-        return sortThis;
-    },
+                        break;*/
     
     //creating the chart and passing in data
-    createChart: function(ctx, options, dataSet) {
-        //First, sort the data passed in according to the value in sortBy
+    createChart: function(ctx, options, dataSet) 
+    {   // First, sort the data passed in according to the value in sortBy
         // dataSet = this.sortArray(dataSet, sortBy);
         
         //Here we take the dataset and split it into several different arrays to make it easier to use.
@@ -107,7 +113,8 @@
         var trainers = [];
         var projects = [];
         var rooms = [];
-        for (let i = 0; i < dataSet.length; i++) {
+        for (let i = 0; i < dataSet.length; i++) 
+        {   // Populate each array with the fields of the dataset items
             startTimes[i] = dataSet[i].startDate;
             tracks[i] = dataSet[i].name;
             projects[i] = dataSet[i].project;
@@ -122,22 +129,19 @@
         
         //currently no reason to believe the duration of a project will be longer than 3 weeks.
         var batchDuration = [];
-        var defaultDuration = 21;
+        const defaultDuration = 21;
+        
         for (var i = 0; i < days.length; i++){
             batchDuration[i] = defaultDuration;
         }
         
-        //Setting the minimum date and maximum date displayed by the chart.
-        //This is based on the first and last dates in the data passed in.
+        // Set the minimum date and maximum date displayed by the chart.
+        // This is based on the first and last dates in the data passed in.
         var minDate = days[0];
         var maxDate = days[0];
-        for (var i = 0; i < days.length - 1; i++) {
-            if (days[i] >= maxDate) {
-                maxDate = days[i];
-            }
-            if (days[i] <= minDate) {
-                minDate = days[i];
-            }
+        for (var i = 0; i < days.length - 1; i++) 
+        {   if (days[i] >= maxDate) maxDate = days[i];
+            if (days[i] <= minDate) minDate = days[i];
         }
         maxDate += defaultDuration;
         
