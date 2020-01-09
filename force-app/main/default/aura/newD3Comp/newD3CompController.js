@@ -29,7 +29,6 @@
         // previous three months and next six months
         var xLabels = [];
         var currentDate = new Date();
-        var year = currentDate.getUTCFullYear();
         var threeMonthsBefore = new Date();
         threeMonthsBefore.setMonth(threeMonthsBefore.getMonth() - 3);
         var sixMonthsAfter = new Date();
@@ -38,14 +37,8 @@
         console.log(currentDate);
         console.log(sixMonthsAfter);
         
-        // make arrays for the names of the months and the number of days in those
-        // months (check if its a leap year, if so February will have 29 days)
+        // make arrays for the names of the months for pretty labels
         var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-        var daysInMonths = [31, 28, 31, 30, 31, 31, 31, 31, 30, 31, 30, 31];
-        if (year % 400 == 0 || (year % 4 == 0 && year % 100 != 0)) {
-            // February gets an extra day
-            daysInMonths[1] = 29;
-        }
         
         /* Populate the xlabels array. Each index of this array will sequentially
          * contain the days from three months before today's date to six months after
@@ -183,14 +176,11 @@
     runSort: function(component, event, helper) {
         var sortBy = component.find("select").get("v.value");
         var allTrainings = component.get("v.tempList");
-        var myChart = component.get("v.dasChart");
-        
         var getColors = component.get('v.DisplayColors');
         helper.sortArray(allTrainings, getColors, sortBy);
         helper.updateData(component);
         helper.sortArray(allTrainings, getColors, sortBy); 
-        helper.updateData(component); 
-        
+        helper.updateData(component);   
     },
     
     runFilter: function(component, event, helper) {
