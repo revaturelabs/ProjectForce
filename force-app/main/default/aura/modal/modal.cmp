@@ -1,8 +1,8 @@
 <!--Project 3-->
 <!--Server side controller is set to ModalController-->
 <aura:component controller = "ModalController"
-                implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickActionWithoutHeader" access="global" >
-    
+                implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,forceCommunity:availableForAllPageTypes,force:lightningQuickActionWithoutHeader" access="global" >
+
     <!--Allows the container component to call a method in this component-->
     <aura:method name="showModal" action="{!c.showModal}" access="PUBLIC">
         <aura:attribute name="trainingID" type="String"/>
@@ -47,7 +47,8 @@
     <aura:attribute name="batchProjectDate" type="Date"/>
     <aura:attribute name="batchRoom" type="String"/>
     <aura:attribute name="batchLocation" type="String"/>
-    
+    <aura:attribute name="batchComments" type="String"/>
+	
     <section aura:id = "modalSection" role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open hideModal slds-modal_small"> 
         <!--Changed font to default-->
         <div class="font">
