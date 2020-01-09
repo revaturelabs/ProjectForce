@@ -39,10 +39,11 @@
     
     // Bubble Sort based on a field (trackName, project, startDate, trainer) passed as a param
     // To Do: Figure out where it's being called and make sortBy param align to new field conventions
-    sortArray: function(array, colorArray, sortBy) 
+    sortArray: function (array, colorArray, sortBy) 
     {   //Bubble sort each item in the array
         for (var i = 0; i < array.length; i++)
             for (var j = 0; j < array.length - 1; j++)
+                // if literal value of field sortBy of array element j is greater than that of j+1
                 if ( JSON.stringify(array[j][sortBy]) > JSON.stringify(array[j + 1][sortBy] ) ) 
                 {   var temp = array[j];
                     array[j] = array[j+1];
@@ -53,86 +54,38 @@
                 }
         return array;
     },
-                //compare the field on the SimpleTraining object with the category selected
-                /*switch (sortBy)     // we could do away with this switch and just plop sortBy in as a member
-                {   case "Track":   // iirc in javascript the name of a member is also its string key
-                        if ( JSON.stringify(sortThis[j].trackName) > JSON.stringify(sortThis[j + 1].trackName) ) 
-                        {   var temp = sortThis[j];
-                            sortThis[j] = sortThis[j + 1];
-                            sortThis[j + 1] = temp;
-                            var tempColor = sortColors[j];
-                            sortColors[j] = sortColors[j + 1];
-                            sortColors[j + 1] = tempColor;
-                        }
-                        break;
-                    case "Project":
-                        if (JSON.stringify(sortThis[j].project) > JSON.stringify(
-                            sortThis[j + 1].project)) {
-                            // swap arr[j+1] and arr[i]
-                            var temp = sortThis[j];
-                            sortThis[j] = sortThis[j + 1];
-                            sortThis[j + 1] = temp;
-                            var tempColor = sortColors[j];
-                            sortColors[j] = sortColors[j + 1];
-                            sortColors[j + 1] = tempColor;
-                        }
-                        break;
-                    case "Date":
-                        if (JSON.stringify(sortThis[j].startDate) > JSON.stringify(
-                            sortThis[j + 1].startDate)) {
-                            // swap arr[j+1] and arr[i]
-                            var temp = sortThis[j];
-                            sortThis[j] = sortThis[j + 1];
-                            sortThis[j + 1] = temp;
-                            var tempColor = sortColors[j];
-                            sortColors[j] = sortColors[j + 1];
-                            sortColors[j + 1] = tempColor;
-                        }
-                        break;
-                    case "Trainer":
-                        if (JSON.stringify(sortThis[j].trainer) > JSON.stringify(
-                            sortThis[j + 1].trainer)) {
-                            // swap arr[j+1] and arr[i]
-                            var temp = sortThis[j];
-                            sortThis[j] = sortThis[j + 1];
-                            sortThis[j + 1] = temp;
-                            var tempColor = sortColors[j];
-                            sortColors[j] = sortColors[j + 1];
-                            sortColors[j + 1] = tempColor;
-                        }
-                        break;*/
     
     //creating the chart and passing in data
-    createChart: function(ctx, options, dataSet) 
+    createChart: function (ctx, options, dataSet) 
     {   // First, sort the data passed in according to the value in sortBy
         // dataSet = this.sortArray(dataSet, sortBy);
+        let projLength = 21;
         
         //Here we take the dataset and split it into several different arrays to make it easier to use.
         var startTimes = [];
         var tracks = [];
         var trainers = [];
         var projects = [];
-        var rooms = [];
+        // var rooms = [];
         for (let i = 0; i < dataSet.length; i++) 
-        {   // Populate each array with the fields of the dataset items
+        {   // Populate each array with respective fields of the dataset items
             startTimes[i] = dataSet[i].startDate;
             tracks[i] = dataSet[i].name;
             projects[i] = dataSet[i].project;
             trainers[i] = dataSet[i].trainer;
-            rooms[i] = dataSet[i].room; // not on Training__c pagelayout
+            // rooms[i] = dataSet[i].room; // not on Training__c pagelayout
         }
         
         // location, name, project, room, startDate, trackName, trainer, trainingId
         
-        //Once we have the startDates, we need it as an int.
+        // Once we have the startDates, we need them as ints.
         var days = this.convertDate(startTimes);
         
         //currently no reason to believe the duration of a project will be longer than 3 weeks.
         var batchDuration = [];
-        const defaultDuration = 21;
         
-        for (var i = 0; i < days.length; i++){
-            batchDuration[i] = defaultDuration;
+        for (var i = 0; i < days.length; i++)
+        {   batchDuration[i] = projLength;
         }
         
         // Set the minimum date and maximum date displayed by the chart.
@@ -140,44 +93,48 @@
         var minDate = days[0];
         var maxDate = days[0];
         for (var i = 0; i < days.length - 1; i++) 
-        {   if (days[i] >= maxDate) maxDate = days[i];
-            if (days[i] <= minDate) minDate = days[i];
+        {   if (days[i] > maxDate) maxDate = days[i];
+            if (days[i] < minDate) minDate = days[i];
         }
-        maxDate += defaultDuration;
+        maxDate += projLength;  // add the default batch duration
         
-        //Set the keys in the options Javascript Object equal to the values just generated
+        // Set the keys in the options Javascript Object equal to the values just generated
         options.scales.xAxes[0].ticks.max = maxDate;
         options.scales.xAxes[0].ticks.min = minDate;
         options.scales.xAxes[0].offset = false;
         
-        //Create the labels that show up on the sides and when hovered over.
+        // Create the labels that show up on the sides and when hovered over.
         let tracksAndProjects = [];
-        for (let i = 0; i < days.length; i++) {
-            var some = `${tracks[i]} - ${projects[i]} - ${trainers[i]}`;
-            tracksAndProjects[i] = some;
+        for (let i = 0; i < days.length; i++)
+        {   // This label usually runs over the actual card width - Brady
+            var label = `${tracks[i]} - ${projects[i]} - ${trainers[i]}`;
+            tracksAndProjects[i] = label;
         }
         
-        //This is going to build the Chart. By this point the data has been brought in through dataSet
-        //and it's been split into separate arrays, so that way it's easier to use in the Chart creation.
-        return new Chart(ctx, {
-            type: "horizontalBar",
-            events: [],
-            data: {labels: tracksAndProjects,
-                   datasets: [{
-                       //example of how to reference something in here: chart.data.datasets[0].data[i]
-                       //This data is when the project is supposed to start
-                       data: [],
-                       backgroundColor: "rgba(63,103,126,0)"},
-                              {
-                                  //example of how to reference something in here: chart.data.datasets[1].data[i]
-                                  //Data here is the duration of the project
-                                  data: [],
-                                  backgroundColor: "orange"}
-                             ]
-                  },
-            //This is where we describe the axes. Check the barOptions_stacked variable to see what we are setting here.
-            options: options
-        });
+        // This is going to build the Chart. By this point the data has been brought in through dataSet
+        // and it's been split into separate arrays, so that way it's easier to use in the Chart creation.
+        return new Chart(ctx, 
+            {   type: "horizontalBar",
+                events: [],
+                data: 
+                    {   labels: tracksAndProjects,
+                        datasets:   
+                        [   // example call of element i in data: chart.data.datasets[0].data[i]
+                            // This data is when the project is supposed to start
+                            {   data: [],
+                                backgroundColor: "rgba(63,103,126,0)"
+                            },
+                            {   // example call of element i in data: chart.data.datasets[1].data[i]
+                                //Data here is the duration of the project
+                                data: [],
+                                backgroundColor: "orange"
+                            }       
+                        ]
+                    },
+                // This is where we describe the axes. 
+                // Check the barOptions_stacked variable to see what we are setting here.
+                options: options
+            }           );
     },
     
     /*
@@ -185,16 +142,15 @@
         into the correct JSON Format, then adds it to the views v.tempList for 
         this.updateData() to populate the gantt chart with the v.tempList.
     */
-    addToChart: function(component, batchInfo) {
-        var projectsToAdd = batchInfo;
-        // Sweep clean the current Data on the gantt chart to avoid
+    addToChart : function (component, projectsToAdd) 
+    {   // Sweep clean the current Data on the gantt chart to avoid
         // duplicate population of previously selected projects.
         var currentData = [];
         
-        //flatten the JSON into a compatible object.
-        for (var i = 0; i < projectsToAdd.length; i++) {
-            var newData = {
-                location: projectsToAdd[i].Room__r.Location__r.Name,
+        // flatten the JSON into a compatible object and add it to currentData
+        for (var i = 0; i < projectsToAdd.length; i++) 
+        {   var newData = 
+            {   location: projectsToAdd[i].Room__r.Location__r.Name,
                 name: projectsToAdd[i].Name,
                 project: projectsToAdd[i].Project__r.Name,
                 room: projectsToAdd[i].Room__r.Room_Number__c,
@@ -208,62 +164,60 @@
             currentData.push(newData);
         }
         
-        //set temporary list of currently selected data
+        // Populate the tempList controller with newly loaded project data
         component.set("v.tempList", currentData);
         this.updateData(component);
     },
     
-    //When a user selects a sort by filter, it will automatically sort the
-    //chart
-    updateData: function(component) {
-        //grabbing the attributes from the component that we will be
-        //either using or updating
+    // When a user selects a sort by filter, it will automatically sort the chart
+    updateData : function (component) 
+    {   // Get the batch length
+        let projLength = 21;
+        // Grabbing the attributes from the component that we will be either using or updating
         var chart = component.get("v.dasChart");
         var data = component.get("v.tempList");
         // var currColors = component.get('v.DisplayColors');
         
-        //declare arrays to hold new data being passed in
+        // Declare arrays to hold new data being passed in
         var startDates = [];
+        var labels = [];
+        var durations = [];
+        var colors = [];
         var holdBatchName = [];
         var holdProject = [];
-        var holdLabels = [];
         var holdTrainers = [];
         // var holdColors = [];
-        var holdTest = [];
-        var holdTestColor = [];
         
-        for (var i = 0; i < data.length; i++) {
-            holdBatchName[i] = data[i].name;
-            holdProject[i] = data[i].project;
-            holdTrainers[i] = data[i].trainer;
-            holdTestColor[i] = data[i].color;
+        for (var i = 0; i < data.length; i++) 
+        {   // Populate arrays with the fields of the tempList we passed in
+            /*holdBatchName[i] = data[i].name;  // There was seemingly no purpose to using these arrays,
+            holdProject[i] = data[i].project;   // except code readability, which doesn't exist anyway
+            holdTrainers[i] = data[i].trainer;*/
+            colors[i] = data[i].color;
         }
-        
-        let startDateSelect;
-        if(component.get("v.ChartStartFilter")=="projectStart")
-            for (let i=0;i<data.length;i++){
+        // set start dates to batch start date, or project start date project is selected
+        if ( component.get("v.ChartStartFilter") == "projectStart" )
+            for (let i=0 ; i<data.length ; i++ ) 
                 startDates[i]=data[i].projectStartDate;
-            }
         else
-            for (let i=0;i<data.length;i++){
+            for ( let i=0 ; i<data.length ; i++ ) 
                 startDates[i]=data[i].startDate;
-            }
         
-        for (let i = 0; i < holdBatchName.length; i++) {
-            var some = `${holdBatchName[i]} - ${holdProject[i]} - ${holdTrainers[i]}`;
-            holdLabels[i] = some;
-            holdTest[i] = 21;
+        for (let i = 0; i < data.length; i++) 
+        {   var label = `${data[i].name} - ${data[i].project} - ${data[i].trainer}`;
+            labels[i] = label;
+            durations[i] = projLength;
         }
-        //comment here
-        component.set("v.UserColors", holdTestColor);
+        // set the color of the bars to user-selected color
+        component.set("v.UserColors", colors);
         
-        //assign new values to the chart properties
+        // Assign new values to the chart properties
         chart.data.datasets[0].data = this.convertDate(startDates);
-        chart.data.datasets[1].data = holdTest;
+        chart.data.datasets[1].data = durations;
         chart.data.datasets[1].backgroundColor = component.get("v.UserColors");
-        chart.data.labels = holdLabels;
+        chart.data.labels = labels;
         // console.log(chart.controller.getDatasetMeta(0));
-        //update. Until this command is run, none of the changes are actually applied to the chart.
+        // Update the chart
         chart.update();
     },
     
@@ -559,3 +513,53 @@
         );
     }
 });
+
+// Leftover from sortArray
+//compare the field on the SimpleTraining object with the category selected
+                /*switch (sortBy)     // we could do away with this switch and just plop sortBy in as a member
+                {   case "Track":   // iirc in javascript the name of a member is also its string key
+                        if ( JSON.stringify(sortThis[j].trackName) > JSON.stringify(sortThis[j + 1].trackName) ) 
+                        {   var temp = sortThis[j];
+                            sortThis[j] = sortThis[j + 1];
+                            sortThis[j + 1] = temp;
+                            var tempColor = sortColors[j];
+                            sortColors[j] = sortColors[j + 1];
+                            sortColors[j + 1] = tempColor;
+                        }
+                        break;
+                    case "Project":
+                        if (JSON.stringify(sortThis[j].project) > JSON.stringify(
+                            sortThis[j + 1].project)) {
+                            // swap arr[j+1] and arr[i]
+                            var temp = sortThis[j];
+                            sortThis[j] = sortThis[j + 1];
+                            sortThis[j + 1] = temp;
+                            var tempColor = sortColors[j];
+                            sortColors[j] = sortColors[j + 1];
+                            sortColors[j + 1] = tempColor;
+                        }
+                        break;
+                    case "Date":
+                        if (JSON.stringify(sortThis[j].startDate) > JSON.stringify(
+                            sortThis[j + 1].startDate)) {
+                            // swap arr[j+1] and arr[i]
+                            var temp = sortThis[j];
+                            sortThis[j] = sortThis[j + 1];
+                            sortThis[j + 1] = temp;
+                            var tempColor = sortColors[j];
+                            sortColors[j] = sortColors[j + 1];
+                            sortColors[j + 1] = tempColor;
+                        }
+                        break;
+                    case "Trainer":
+                        if (JSON.stringify(sortThis[j].trainer) > JSON.stringify(
+                            sortThis[j + 1].trainer)) {
+                            // swap arr[j+1] and arr[i]
+                            var temp = sortThis[j];
+                            sortThis[j] = sortThis[j + 1];
+                            sortThis[j + 1] = temp;
+                            var tempColor = sortColors[j];
+                            sortColors[j] = sortColors[j + 1];
+                            sortColors[j + 1] = tempColor;
+                        }
+                        break;*/
