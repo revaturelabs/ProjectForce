@@ -4,7 +4,7 @@
     <externalId>false</externalId>
     <inlineHelpText>If no Project Start Date is entered when creating a Training object, this field will default to three weeks before the end date of the training.</inlineHelpText>
     <label>ProjectStartDate</label>
-    <required>false</required>
+    <required>true</required>
     <trackHistory>false</trackHistory>
     <trackTrending>false</trackTrending>
     <type>Date</type>
