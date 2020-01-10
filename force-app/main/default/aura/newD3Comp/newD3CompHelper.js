@@ -123,38 +123,17 @@
       rooms[i] = dataSet[i].room; // not on Training__c pagelayout
     }
 
-    // location, name, project, room, startDate, trackName, trainer, trainingId
-
     //Once we have the startDates, we need it as an int.
-    var days = this.convertDate(startTimes);
-
-    //currently no reason to believe the duration of a project will be longer than 3 weeks.
-    var batchDuration = [];
-    var defaultDuration = 21;
-    for (var i = 0; i < days.length; i++) batchDuration[i] = defaultDuration;
-
-    //Setting the minimum date and maximum date displayed by the chart.
-    //This is based on the first and last dates in the data passed in.
-    var minDate = days[0];
-    var maxDate = days[0];
-    for (var i = 0; i < days.length - 1; i++) {
-      if (days[i] >= maxDate) {
-        maxDate = days[i];
-      }
-      if (days[i] <= minDate) {
-        minDate = days[i];
-      }
-    }
-    maxDate += defaultDuration;
+    var minMaxDates = this.calcChartAxisLabels(startTimes);
 
     //Set the keys in the options Javascript Object equal to the values just generated
-    options.scales.xAxes[0].ticks.max = maxDate;
-    options.scales.xAxes[0].ticks.min = minDate;
+    options.scales.xAxes[0].ticks.max = minMaxDates[1];
+    options.scales.xAxes[0].ticks.min = minMaxDates[0];
     options.scales.xAxes[0].offset = false;
 
     //Create the labels that show up on the sides and when hovered over.
     let tracksAndProjects = [];
-    for (let i = 0; i < days.length; i++) {
+    for (let i = 0; i < startTimes.length; i++) {
       var some = `${tracks[i]} - ${projects[i]} - ${trainers[i]}`;
       tracksAndProjects[i] = some;
     }
@@ -273,7 +252,14 @@
     chart.data.datasets[1].data = holdTest;
     chart.data.datasets[1].backgroundColor = component.get("v.UserColors");
     chart.data.labels = holdLabels;
-    // console.log(chart.controller.getDatasetMeta(0));
+
+    //Once we have the startDates, we need it as an int.
+    var minMaxDates = this.calcChartAxisLabels(startDates);
+    //Set the keys in the options Javascript Object equal to the values just generated
+    chart.options.scales.xAxes[0].ticks.max = minMaxDates[1];
+    chart.options.scales.xAxes[0].ticks.min = minMaxDates[0];
+    chart.options.scales.xAxes[0].offset = true;
+
     //update. Until this command is run, none of the changes are actually applied to the chart.
     chart.update();
   },
@@ -618,5 +604,29 @@
       "v.today",
       today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate()
     );
+  },
+  calcChartAxisLabels:function(startTimes, endTimes) {
+    var days = this.convertDate(startTimes);
+    let defaultDuration=21;
+    //Setting the minimum date and maximum date displayed by the chart.
+    //This is based on the first and last dates in the data passed in.
+    var minDate = days[0];
+    var maxDate = days[0];
+    for (var i = 0; i < days.length - 1; i++) {
+      if (days[i] >= maxDate) {
+        maxDate = days[i];
+      }
+      if (days[i] <= minDate) {
+        minDate = days[i];
+      }
+    }
+    maxDate += defaultDuration;
+    
+    console.log('min'+minDate);
+    console.log('max'+maxDate);
+    
+    return { minDate, maxDate,days};
   }
 });
+
+
