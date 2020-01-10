@@ -9,6 +9,7 @@
         <members>ModalControllerTest</members>
         <members>TableApexController</members>
         <members>DataFactory</members>
+        <members>DataFactoryTest</members>
         <members>TestGantController</members>
         <members>TableControllerTest</members>
         <members>KanbanProjectTest</members>
