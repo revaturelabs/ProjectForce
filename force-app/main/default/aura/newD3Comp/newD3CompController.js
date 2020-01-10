@@ -176,8 +176,34 @@
         var getColors = component.get('v.DisplayColors');
         helper.sortArray(allTrainings, getColors, sortBy);
         helper.updateData(component);
-        helper.sortArray(allTrainings, getColors, sortBy); 
-        helper.updateData(component);   
+        helper.sortArray(allTrainings, getColors, sortBy);
+        
+        // change options of what to color bars by
+        var fieldToSortBy = component.get('v.fieldToSortBy');
+        switch(sortBy){
+            case "Track":
+                break;
+            case "Project":
+                break;
+            
+                /*
+            case "Date":
+                break;
+                */
+                
+                //
+            case "Review Completed":
+                break;
+                //
+                
+            case "Location":
+                break;
+            case "Trainer":
+                break;
+            default:
+                // if it made it this far, then the user has selected choose one from
+                // Sort By, do nothing
+        }
     },
     
     runFilter: function(component, event, helper) {
@@ -266,7 +292,6 @@
     */
     handleBatchInformationEvent: function(component, event, helper) {
         var batchInfo = event.getParam("batchInfo"); //all selected projects
-        console.log(batchInfo);
         helper.addToChart(component, batchInfo);
     },
     
