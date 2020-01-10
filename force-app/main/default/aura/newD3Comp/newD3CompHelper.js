@@ -207,6 +207,7 @@
         room: projectsToAdd[i].Room__r.Room_Number__c,
         startDate: projectsToAdd[i].Start_Date__c,
         projectStartDate:projectsToAdd[i].ProjectStartDate__c,
+        endDate: projectsToAdd[i].End_Date__c,
         trackName: projectsToAdd[i].Track__r.Name,
         trainer: projectsToAdd[i].Trainer__r.Name,
         trainingId: projectsToAdd[i].Id,
@@ -239,14 +240,6 @@
     var holdTest = [];
     var holdTestColor = [];
 
-
-    for (var i = 0; i < data.length; i++) {
-      holdBatchName[i] = data[i].name;
-      holdProject[i] = data[i].project;
-      holdTrainers[i] = data[i].trainer;
-      holdTestColor[i] = data[i].color;
-    }
-    
     let startDateSelect;
     if(component.get("v.ChartStartFilter")=="projectStart")
       for (let i=0;i<data.length;i++){
@@ -257,10 +250,20 @@
         startDates[i]=data[i].startDate;
       }
 
+    for (var i = 0; i < data.length; i++) {
+      holdBatchName[i] = data[i].name;
+      holdProject[i] = data[i].project;
+      holdTrainers[i] = data[i].trainer;
+      holdTestColor[i] = data[i].color;
+      let startDate = new Date(startDates[i]);
+      let endDate=new Date(data[i].endDate);
+      holdTest[i] = Math.ceil((endDate.getTime()-startDate.getTime()) / 86400000);
+    }
+
     for (let i = 0; i < holdBatchName.length; i++) {
       var some = `${holdBatchName[i]} - ${holdProject[i]} - ${holdTrainers[i]}`;
       holdLabels[i] = some;
-      holdTest[i] = 21;
+      
     }
     //comment here
     component.set("v.UserColors", holdTestColor);
