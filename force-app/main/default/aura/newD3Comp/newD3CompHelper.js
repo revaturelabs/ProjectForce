@@ -38,7 +38,7 @@
     ////////////////////////////////////////////
     
     // Bubble Sort based on a field (trackName, project, startDate, trainer) passed as a param
-    // To Do: Figure out where it's being called and make sortBy param align to new field conventions
+    // Deprecated: The only function that calls it has no way of being fired
     sortArray: function (array, colorArray, sortBy) 
     {   //Bubble sort each item in the array
         for (var i = 0; i < array.length; i++)
@@ -59,7 +59,6 @@
     createChart: function (ctx, options, dataSet) 
     {   // First, sort the data passed in according to the value in sortBy
         // dataSet = this.sortArray(dataSet, sortBy);
-        let projLength = 21;
         
         //Here we take the dataset and split it into several different arrays to make it easier to use.
         var startTimes = [];
@@ -79,33 +78,34 @@
         // location, name, project, room, startDate, trackName, trainer, trainingId
         
         // Once we have the startDates, we need them as ints.
-        var days = this.convertDate(startTimes);
+        var startTimesConverted = this.convertDate(startTimes);
         
         //currently no reason to believe the duration of a project will be longer than 3 weeks.
         var batchDuration = [];
+        let projLength = 21;
         
-        for (var i = 0; i < days.length; i++)
+        for (var i = 0; i < startTimesConverted.length; i++)
         {   batchDuration[i] = projLength;
         }
         
         // Set the minimum date and maximum date displayed by the chart.
         // This is based on the first and last dates in the data passed in.
-        var minDate = days[0];
-        var maxDate = days[0];
-        for (var i = 0; i < days.length - 1; i++) 
-        {   if (days[i] > maxDate) maxDate = days[i];
-            if (days[i] < minDate) minDate = days[i];
+        var earliest = startTimesConverted[0];
+        var latest = startTimesConverted[0];
+        for (var i = 0; i < startTimesConverted.length - 1; i++) 
+        {   if (startTimesConverted[i] > latest) latest = startTimesConverted[i];
+            if (startTimesConverted[i] < earliest) earliest = startTimesConverted[i];
         }
-        maxDate += projLength;  // add the default batch duration
+        latest += projLength;  // add the default batch duration
         
         // Set the keys in the options Javascript Object equal to the values just generated
-        options.scales.xAxes[0].ticks.max = maxDate;
-        options.scales.xAxes[0].ticks.min = minDate;
+        options.scales.xAxes[0].ticks.max = latest;
+        options.scales.xAxes[0].ticks.min = earliest;
         options.scales.xAxes[0].offset = false;
         
         // Create the labels that show up on the sides and when hovered over.
         let tracksAndProjects = [];
-        for (let i = 0; i < days.length; i++)
+        for ( let i = 0; i < startTimesConverted.length; i++ )
         {   // This label usually runs over the actual card width - Brady
             var label = `${tracks[i]} - ${projects[i]} - ${trainers[i]}`;
             tracksAndProjects[i] = label;
@@ -183,19 +183,12 @@
         var labels = [];
         var durations = [];
         var colors = [];
-        var holdBatchName = [];
-        var holdProject = [];
-        var holdTrainers = [];
         // var holdColors = [];
         
         for (var i = 0; i < data.length; i++) 
-        {   // Populate arrays with the fields of the tempList we passed in
-            /*holdBatchName[i] = data[i].name;  // There was seemingly no purpose to using these arrays,
-            holdProject[i] = data[i].project;   // except code readability, which doesn't exist anyway
-            holdTrainers[i] = data[i].trainer;*/
-            colors[i] = data[i].color;
+        {   colors[i] = data[i].color;
         }
-        // set start dates to batch start date, or project start date project is selected
+        // set start dates to batch start date, or project start date if project filter is selected
         if ( component.get("v.ChartStartFilter") == "projectStart" )
             for (let i=0 ; i<data.length ; i++ ) 
                 startDates[i]=data[i].projectStartDate;
@@ -221,15 +214,14 @@
         chart.update();
     },
     
-    /*	convert date method used for converting the date into a integer because the chart only takes in integers as data and not actual date
-   */
+    /*	convert date method used for converting the date into an integer
+    */
     convertDate: function(data) {
         //declare necessary variables
         var arraySize = data.length;
         var d = [];
-        var dIntoInt = [];
         
-        //for all the data being passed in, take the string, and turn it into a number
+        // for all the data being passed in, take the string, and turn it into a number
         for (let currTI = 0; currTI < arraySize; currTI++) {
             //take the string and make it a date string readable by JS, then seperating it into month day and year
             var date = new Date(data[currTI]);
@@ -244,10 +236,11 @@
        * 	The chart only takes in integers as data, thus, the work around is taking the date and generate it into an integer
        * 	then in the x-axis tick, it'll do a callback with the integer value as the index of the array already set and return the value date.
        */
-        if (year >= currentYear && year <= currentYear + 1) {
+        if (year >= currentYear && year <= currentYear + 1) 
+        {
             //if this the date year is this current year
             if (year == currentYear) {
-                /*	Checking the date year is a leap year; 366 days
+            /*	Checking the date year is a leap year; 366 days
            * 	1-31 is jan 1-31, 32-60 is feb 1-29, etc.
            * 	Takes the date and generate it into a integer within 366 days for leap year or 365 for normal year
            */
@@ -337,7 +330,7 @@
                     d[currTI] = day + 31 + 29 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31 + 
                         30 + 365;
                 }
-                //checks if the previous year is a leap year, because if the previous year was a leap year then the current data year cannot be a leap year.
+            //checks if the previous year is a leap year, which means current data year cannot be a leap year.
             } else {
                 if ((year - 1) % 4 == 0) {
                     if (month == 1) {
@@ -437,7 +430,7 @@
         
         //For each record, determine if it meets the Filter Criteria.
         for (var currData = 0; currData < allData.length; currData++) {
-            //**********************Filter Logic*****************
+            /**********************Filter Logic*****************/
             
             //If either selectbox had an actual value, the code enters this if statement
             if (selectedTrack != "All" || selectedLocation != "All") {
