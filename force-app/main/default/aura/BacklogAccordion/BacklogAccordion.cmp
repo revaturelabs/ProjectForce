@@ -1,4 +1,4 @@
-<aura:component controller="KanbanProjectApexClass" implements="flexipage:availableForAllPageTypes,force:hasRecordId,force:appHostable">
+<aura:component controller="KanbanProjectApexClass" implements="flexipage:availableForAllPageTypes,force:appHostable">
     <aura:attribute name="records" type="List" default="[]"/>
     <aura:attribute name="recordsBackup" type="List" default="[]"/>
     <aura:attribute name="categories" type="String[]" default="['To Do', 'Doing', 'Done']"/>
