@@ -1,4 +1,3 @@
-//commented out all instances of ProjectStartDate__c field in Trainings cObject being used, 01/08/2020
 public with sharing class GantController {
     //getting a list of trainings
     @AuraEnabled
@@ -8,8 +7,8 @@ public with sharing class GantController {
             'Name',
             'Project__c',
             'Room__c',
-            'Trainer__c'
-            //'projectstartdate__c'
+            'Trainer__c',
+            'Projectstartdate__c'
             };
                 
 		// Obtain the field name/token map for the Expense object
@@ -28,9 +27,9 @@ public with sharing class GantController {
         List<SimpleTraining> simpleTrainings = new List<SimpleTraining>();
         
         // Query the object safely
-        List<Training__c> trainings = [SELECT id, name, Track__r.Name, project__r.Name, room__r.Room_Number__c, trainer__r.Name, room__r.Location__r.Name /*,projectstartdate__c*/ FROM Training__c];
+        List<Training__c> trainings = [SELECT id, name, Track__r.Name, project__r.Name, room__r.Room_Number__c, trainer__r.Name, room__r.Location__r.Name, projectstartdate__c FROM Training__c];
         for(Training__c tc: trainings){
-            simpleTrainings.add(new SimpleTraining(tc.id, tc.name, tc.project__r.Name, tc.room__r.Room_Number__c, tc.trainer__r.Name, /*tc.projectstartdate__c,*/ tc.room__r.Location__r.Name, tc.Track__r.Name));
+            simpleTrainings.add(new SimpleTraining(tc.id, tc.name, tc.project__r.Name, tc.room__r.Room_Number__c, tc.trainer__r.Name, tc.projectstartdate__c, tc.room__r.Location__r.Name, tc.Track__r.Name));
         }
         return simpleTrainings;
     }
@@ -47,13 +46,13 @@ public with sharing class GantController {
         @AuraEnabled public String trackName {get;set;}
         
         //constructor
-        public SimpleTraining(String trainingID, String name, String project, Decimal room, String trainer /*,Date startDate*/, String location, String trackName){
+        public SimpleTraining(String trainingID, String name, String project, Decimal room, String trainer, Date startDate, String location, String trackName){
             this.trainingId = trainingId;
             this.name = name;
             this.project = project;
             this.room = room;
             this.trainer = trainer;
-            //this.startDate = startDate;
+            this.startDate = startDate;
             this.location = location;
             this.trackName = trackName;
         }

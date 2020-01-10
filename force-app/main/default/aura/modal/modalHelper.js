@@ -1,6 +1,4 @@
 ({
-
-
 	//Function for the trainer drop down
 	//sets the list of trainers by calling the server- side controller
 	trainer : function(component, event) {
@@ -279,7 +277,6 @@
 				component.set("v.updateTrainer", batchInformation.Trainer__r.Name);
 				component.set("v.batchRoom", batchInformation.Room__r.Name);
 				component.set("v.batchLocation", batchInformation.Room__r.Location__r.Name);
-				component.set("v.batchComments",batchInformation.Comments__c);
 			}
 			else{
 				console.log("Failed with state: "+state);
@@ -341,7 +338,7 @@
 			}
 		});
         
-        // use boolean value of checkbox to determine field status
+        //use boolean value of checkbox to determine field status
         var selectProjectCheckBox = component.get("v.updateProjectComplete");
         var selectTrainingCheckBox = component.get("v.updateReview");
         
@@ -419,7 +416,9 @@
 	showModal : function(component) {
 		var modal = component.find("modalSection");
 		var backdrop = component.find("backdrop");
+		console.log('Helper');
 		$A.util.removeClass(modal, 'hideModal');
+		console.log(`hideModal: ${$A.util.hasClass(modal, 'hideModal')}`);
 		$A.util.addClass(backdrop, 'slds-backdrop slds-backdrop_open');
 		return;
 	},

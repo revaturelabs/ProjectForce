@@ -1,7 +1,7 @@
-//change "without sharing" to "with sharing" when deploying; commented out all ProjectStartDate__c field references, 01/08/2020
+//change "without sharing" to "with sharing" when deploying
 public without sharing class ModalController {
     //All queries are done when modal is loaded
-    static List<Project__c> ProjectList = [select Name, ProjectComplete__c, track__r.name /*,(SELECT ProjectStartDate__c FROM Trainings__r ORDER BY projectStartDate__c desc LIMIT 1)*/ FROM Project__c];
+    static List<Project__c> ProjectList = [SELECT Name, ProjectComplete__c, track__r.name, (SELECT ProjectStartDate__c FROM Trainings__r ORDER BY projectStartDate__c desc LIMIT 1) FROM Project__c];
     static List<training__c> trainingList = [SELECT Id, batchsize__c, room__r.location__r.name, track__r.Name, room__r.Name, trainer__r.Name, Project__r.Name FROM training__c];
 
     @AuraEnabled
@@ -9,7 +9,7 @@ public without sharing class ModalController {
         Training__c selectedBatch = new Training__c();
         try {
             if (schema.SObjectType.location__c.isAccessible()) {
-                List<Training__c> batch = [SELECT ID, Batch_Number__c, BatchSize__c, Track__r.Name, /*ProjectStartDate__c,*/ Project__r.Name, Project__r.Id, Trainer__r.Name, Room__r.Name, Room__r.Location__r.Name FROM Training__c WHERE Id =: Id.valueOf(trainingID) LIMIT 1];
+                List<Training__c> batch = [SELECT ID, Batch_Number__c, BatchSize__c, Track__r.Name, ProjectStartDate__c, Project__r.Name, Project__r.Id, Trainer__r.Name, Room__r.Name, Room__r.Location__r.Name FROM Training__c WHERE Id =: Id.valueOf(trainingID) LIMIT 1];
 
                 selectedBatch = batch[0];
                 return selectedBatch;
