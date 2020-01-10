@@ -1,42 +1,39 @@
-////////////////////////////////////////////
-//    Test Data Factory
-//    Created by: Ying Ma, Frank Yang
-//    V2 created by: Brady Achterberg, Bailey Dawson
-//    Created date: 9/24/2019
-//    V2 creation date: 1/3/2020
-//    Instructions:
-//    
-//    Run the method createTestData(integer numOfRecords) to generate data in the org.
-//    It creates the following records:
-//    
-//    	- 3 predetermined Tracks if you don't have them already
-//    	- 4 predetermined Locations if you don't have them already
-//    	- N-1 Trainers with names "Test Trainer (0-n)" and one with name "External"
-//    	- N TrainerTracks, one connecting to each trainer, N/3 connected to each Track (using math.mod)
-//    	- N Rooms, N/4 connected to each Location (using math.mod), numbered 100+(0-n)
-//    	- N/2 Projects with names "Test Project (0-n/2)", N/6 connected to each Track (indexed via TrainerTrack)
-//    	- N Trainings with the following attributes:
-//    		> Name "Test Training (0-n)"
-//    		> Connected to one trainer
-//    		> Connected to that trainer's track
-//    		> Connected to a project in that track (we map a list of projects to a track to ensure this)
-//    		> Batch Number between 1000 and 1000+n
-//    		> Start Date between 5 days from today and 5+n days from today
-//    		> Batch Size between 10 and 20 (N/10 evenly in each amount, using math.mod)
-//    		> Color and Batch Duration are set to defaults, e.g. orange and 10 weeks respectively
-//    	- Three lists of Tasks for each project, to be exact:
-//    		> Between 0 and 10 (staggered, using math.mod) Tasks with stage "To Do" and story "Test"
-//    		> Between 0 and 10 (staggered, using math.mod) Tasks with stage "Doing" and story "Test"
-//    		> Between 0 and 10 (staggered, using math.mod) Tasks with stage "Done" and story "Test"
-//    		> A total of something like 16.5 tasks per project, with much variance
-//    		> 8.25*N tasks in total inserted in the org, with much variance
-//    	
-//    Run the method deleteTestData() to delete all records within the org that DataFactory created.
-//
-//    any questions, email at ma444699160@gmail.com to Ying Ma
-////////////////////////////////////////////
+/* Test Data Factory
+   Created by: Ying Ma, Frank Yang
+   V2 created by: Brady Achterberg, Bailey Dawson
+   Created date: 9/24/2019
+   V2 creation date: 1/3/2020
+   Instructions:
+   
+   Run the method createTestData(integer numOfRecords) to generate data in the org.
+   It creates the following records:
+   
+   	- 3 predetermined Tracks if you don't have them already
+   	- 4 predetermined Locations if you don't have them already
+   	- N-1 Trainers with names "Test Trainer (0-n)" and one with name "External"
+   	- N TrainerTracks, one connecting to each trainer, N/3 connected to each Track (using math.mod)
+   	- N Rooms, N/4 connected to each Location (using math.mod), numbered 100+(0-n)
+   	- N/2 Projects with names "Test Project (0-n/2)", N/6 connected to each Track (indexed via TrainerTrack)
+   	- N Trainings with the following attributes:
+   		> Name "Test Training (0-n)"
+   		> Connected to one trainer
+   		> Connected to that trainer's track
+   		> Connected to a project in that track (we map a list of projects to a track to ensure this)
+   		> Batch Number between 1000 and 1000+n
+   		> Start Date between 5 days from today and 5+n days from today
+   		> Batch Size between 10 and 20 (N/10 evenly in each amount, using math.mod)
+   		> Color and Batch Duration are set to defaults, e.g. orange and 10 weeks respectively
+   	- Three lists of Tasks for each project, to be exact:
+   		> Between 0 and 10 (staggered, using math.mod) Tasks with stage "To Do" and story "Test"
+   		> Between 0 and 10 (staggered, using math.mod) Tasks with stage "Doing" and story "Test"
+   		> Between 0 and 10 (staggered, using math.mod) Tasks with stage "Done" and story "Test"
+   		> A total of something like 16.5 tasks per project, with much variance
+   		> 8.25*N tasks in total inserted in the org, with much variance
+   	
+   Run the method deleteTestData() to delete all records within the org that DataFactory created.
 
-// Consider making direct test class for datafactory
+   any questions, email at ma444699160@gmail.com to Ying Ma
+*/
 
 public class DataFactory 
 {
@@ -86,10 +83,6 @@ public class DataFactory
                 );
             RoomList.add(r);
         }
-        /*Room__c online = new Room__c(	name = 'Online', location__c = locList[0].id, 
-             							Room_Number__c = 0, Capacity__c = 0
-            						);	// Not sure what this is for
-        RoomList.add(online);*/
         Insert RoomList;
 
         //Insert Project Records
@@ -188,21 +181,14 @@ public class DataFactory
         }
         Insert locList;
     }
-
+    
+	// TODO : Refactor to delete records based SOQL queries and known dummy fields (maybe)
     public static void deleteTestData ()
-    {	// N.B. : Refactor to delete all records based on some field
-        List<String> tnames = new List<String> { 'Salesforce', 'Java EE', 'Big Data' }; 
-        List<string> lnames = new list<string> { 'Online', 'Reston', 'Florida', 'Texas' };
-        try 
-    	{	/*if (TrackList != null ) delete TrackList; 
-            if (LocList != null ) delete LocList;
-            delete TrainerTrackList;
-            delete TrainerList; 
-            delete RoomList;
-            delete ProjectList;
-            delete TrainingList;
-            delete BacklogList;*/
-        } catch (DMLException dmle) { System.debug('Entity is already deleted!'); }
-        
+    {	// We only need to delete these four lists from the org
+        // Everything else gets cascade deleted and will throw a DMLException if you try
+    	if (TrackList != null ) delete TrackList; 
+        if (LocList != null ) delete LocList;
+        delete TrainerList; 
+        delete BacklogList;
     }
 }
