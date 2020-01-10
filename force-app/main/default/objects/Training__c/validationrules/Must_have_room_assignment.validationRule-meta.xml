@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Must_have_room_assignment</fullName>
+    <active>true</active>
+    <description>A room must be assigned for reporting functionality</description>
+    <errorConditionFormula>OR( ISNULL(  Room__c  ) ,  ISNULL(  Room__r.Id  ) )</errorConditionFormula>
+    <errorDisplayField>Room__c</errorDisplayField>
+    <errorMessage>A valid room is required</errorMessage>
+</ValidationRule>
