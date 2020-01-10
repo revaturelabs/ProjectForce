@@ -27,6 +27,8 @@
     <aura:attribute name="locationString" type="String" default="Location"/>
     <aura:attribute name="trainerString" type="String" default="Trainer"/>
     <aura:attribute name="sortByOptions" type="String[]"/>
+    <!-- init handler to load options for sortByOptions -->
+    <aura:handler name="init" value="{!this}" action="{!c.loadSortByOptions}"/>
     
     <!-- maybe you want to add the ability to color by date later, but we felt that
 was best saved for a future sprint so all legacy code/functionality for filtering by 
@@ -84,10 +86,9 @@ reflect the duration of the project or the duration of the entire training have 
                 <!--Select what to sort by, and when it changes, run the runSort function in the controller. -->
                 <lightning:select aura:id="select" name="select" label="Sort By: "  onchange="{!c.runSort}">
                     <option value="">choose one...</option>
-                    <option value="Track"  >Track</option>
-                    <option value="Project">Project</option>
-                    <option value="Date">Date</option>
-                    <option value="Trainer">Trainer</option>
+                    <aura:iteration items="{!v.sortByOptions}" var="option">
+                        <option value="{!option}" text="{!option}"/>
+                    </aura:iteration>
                 </lightning:select>
             </div>
             <!--Beginning of the Colors section -->
@@ -116,6 +117,4 @@ reflect the duration of the project or the duration of the entire training have 
             <c:ChartCalculation />
         </div>
     </div>
-    
-    {!v.sortByOptions}
 </aura:component>
