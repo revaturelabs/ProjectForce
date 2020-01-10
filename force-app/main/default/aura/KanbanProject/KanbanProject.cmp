@@ -9,6 +9,11 @@
     <aura:attribute name="selectedValue" type="String" />
     <aura:attribute name="kanbanOrder" type="String[]" />
     <aura:attribute name="selectedOrderValue" type="String" />
+
+    <!-- modal attributes -->
+    <!-- attributes to store modal field information. -->
+    <aura:attribute name="stage" type="String"/>
+
     <!-- event handlers -->
     <aura:handler name="init" action="{!c.doInit}" value="{!this}"></aura:handler>
     <!-- <aura:handler name="change" value="{!v.kanbanColumns}" action="{!c.doInit}"/> -->
@@ -16,7 +21,7 @@
     <div class="slds-col columns">
         <!-- <aura:if isTrue="{!v.backlogs.length}"> -->
             <aura:iteration items="{!v.kanbanColumns}" var="col" indexVar="i">
-                   <c:KanbanColumn projectId="{!v.project}" id="{!col.Id}" title="{!col.Label__c}" backlogs="{!v.backlogs}">
+                   <c:KanbanColumn projectId="{!v.project}" colId="{!col.Id}" title="{!col.Label__c}" backlogs="{!v.backlogs}">
                    </c:KanbanColumn>
             </aura:iteration>
             
@@ -28,19 +33,7 @@
       <!--  </aura:if>-->
     </div>
 
-    <!-- modal attributes -->
-    <!-- attributes to store modal field information. -->
-    <aura:attribute name="showDates" type="boolean" default="true"/>
-    <aura:attribute name="startDate" type="String"/>
-    <aura:attribute name="endDate" type="String"/>
-    <aura:attribute name="stage" type="String"/>
-    <aura:attribute name="story" type="String" />
-    <aura:attribute name="label1" type="String" />
-    <aura:attribute name="label2" type="String" />
-    <aura:attribute name="label3" type="String" />
-    <aura:attribute name="color1" type="String" />
-    <aura:attribute name="color2" type="String" />
-    <aura:attribute name="color3" type="String" />
+    
 
     <!-- event handlers -->
     <!-- <aura:handler name="init" action="{!c.doInit}" value="{!this}"></aura:handler> -->

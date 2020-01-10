@@ -1,10 +1,26 @@
-<aura:component >
+<aura:component controller="KanbanProjectApexClass">
     <!-- Attributes -->
     <aura:attribute name="title" type="String" required="true"></aura:attribute>
     <aura:attribute name="backlogs" type="Backlog__c[]"/>
-    <aura:attribute name="Id" type="String"/>
+    <aura:attribute name="colId" type="String"/>
     <aura:attribute name="projectId" type="String"/>
+
     
+    <!-- modal attributes -->
+    <!-- attributes to store modal field information. -->
+    <aura:attribute name="showDates" type="boolean" default="true"/>
+    <aura:attribute name="startDate" type="String"/>
+    <aura:attribute name="endDate" type="String"/>
+    <!-- <aura:attribute name="stage" type="String"/> -->
+    <aura:attribute name="story" type="String" />
+    <aura:attribute name="label1" type="String" />
+    <aura:attribute name="label2" type="String" />
+    <aura:attribute name="label3" type="String" />
+    <aura:attribute name="color1" type="String" />
+    <aura:attribute name="color2" type="String" />
+    <aura:attribute name="color3" type="String" />
+
+
     <!-- Custom Events -->
     <aura:registerEvent name="droppedOnColumn" type="c:droppedOnColumn"/>
     
@@ -14,7 +30,7 @@
                 {! v.title }
                 <!-- fw add a button for adding a card -->
                 <!-- Button to add new backlog aka card. -->
-                <lightning:button variant="success" label="+ Card" title="Success" onclick="" />
+                <lightning:button variant="success" label="+ Card" title="Success" onclick="{!c.openModelAddCard}" />
             </div>           
 
             <div class="panel-block column" style="background-color:transparent;">
@@ -27,4 +43,143 @@
             </div>
         </div>
     </div>   
+
+    <!--Boolean values that set the add card and delete card modals-->
+    <aura:attribute name="isOpenAddCard" type="boolean" default="false" />
+
+
+    <div class="slds-m-around_xx-large">
+    <!-- Modal for Adding a Column-->
+        <!--aura:if displays modal if attribute isOpen is true. -->
+        <aura:if isTrue="{!v.isOpenAddCard}">
+        <!-- MODAL  START -->
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+        aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+        <div class="slds-modal__container">
+            <!--  MODAL HEADER START -->
+            <header class="slds-modal__header">
+                <lightning:buttonIcon iconName="utility:close" onclick="{! c.closeModelAddCard }"
+                    alternativeText="close" variant="bare-inverse" class="slds-modal__close" />
+                <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">
+                    Adding Card..
+                </h2>
+            </header>
+            <!-- MODAL BODY Part START-->
+            <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                <!-- modal content-->
+                <!-- drop down for stage-->
+                    
+
+                    <!-- Story textarea-->
+                    <lightning:textarea name="story-input" value="{!v.story}" placeholder=""
+                        label="Story"
+                        maxlength="250" messageWhenTooLong="A maximum of 250 characters are allowed."
+                        messageWhenValueMissing="Story Required">
+                    </lightning:textarea>
+
+                    <!-- Dates section. ONLY renders if attributes showdates is true. -->
+                    <aura:if isTrue="{!v.showDates}">
+                        <div class="slds-grid slds-gutters slds-p-around_medium">
+                                <div class="slds-col">
+                                    <span>
+                                        Start Date: 
+                                    </span>
+                                </div>
+
+                                <div class="slds-col">
+                                    <span>
+                                            <ui:outputText value="10/10/2019" />
+                                    </span>
+                                </div>
+
+                                <div class="slds-col">
+                                    <span>
+                                        End Date:
+                                    </span>
+                                </div>
+
+                                <div class="slds-col">
+                                    <span>
+                                        <ui:outputText value="10/10/2019"/>
+                                    </span>
+                                </div>
+                        </div>
+                    </aura:if>
+
+                    <!-- Labels section-->
+                    <div class="slds-grid slds-gutters slds-p-around_medium">
+                        <div class="slds-col">
+                            <span>
+                                Labels:
+                            </span>
+                        </div>
+                        <div class="slds-col">
+                            <span>
+                                <lightning:input type="text" aura:id="label1" label="Label 1"
+                                    value="{!v.label1}"  />
+                            </span>
+                        </div>
+                        <div class="slds-col">
+                            <aura:if isTrue="{!not(empty(v.label1))}">
+                            <span>
+                                <lightning:input type="text" aura:id="label2" label="Label 2"
+                                    value="{!v.label2}"  />
+                            </span>
+                            </aura:if>
+                        </div>
+                        <div class="slds-col">
+                            <aura:if isTrue="{!and(not(empty(v.label1)),not(empty(v.label2)))}">
+                            <span>
+                                <lightning:input type="text" aura:id="label3" label="Label 3"
+                                    value="{!v.label3}"  />
+                            </span>
+                            </aura:if>
+                            
+                        </div>
+                    </div>
+
+                    <!-- Colors section -->
+                    <div class="slds-grid slds-gutters slds-p-around_medium">
+                        <div class="slds-col">
+                            <span>
+                                Colors:
+                            </span>
+                        </div>
+                        <div class="slds-col">
+                            <span>
+                                <lightning:input type="text" aura:id="color1" label="Label 1 Color"
+                                        value="{!v.color1}" />
+                            </span>
+                        </div>
+                        <div class="slds-col">
+                            <aura:if isTrue="{!not(empty(v.label1))}">
+                            <span>
+                                <lightning:input type="text" aura:id="color2" label="Label 2 Color"
+                                    value="{!v.color2}"  />
+                            </span>
+                            </aura:if>
+                            
+                        </div>
+                        <div class="slds-col">
+                            <aura:if isTrue="{!and(not(empty(v.label1)),not(empty(v.label2)))}">
+                            <span>
+                                <lightning:input type="text" aura:id="color3" label="Label 3 Color"
+                                    value="{!v.color3}"  />
+                            </span>
+                            </aura:if>
+                        </div>
+                    </div>
+            </div>
+                  
+            <!-- MODAL FOOTER  Start -->
+            <footer class="slds-modal__footer slds-modal_footer_directional">
+                <lightning:button class="slds-button_brand button" label="Cancel" title="Cancel" onclick="{! c.closeModelAddCard }" />
+                <lightning:button class ="slds-button_brand button" label="Save" onclick="{! c.saveCard }" />
+            </footer>
+        </div>
+    </section>
+    <div class="slds-backdrop slds-backdrop_open"></div>
+    <!-- MODAL END  -->
+    </aura:if>
+    </div>
 </aura:component>

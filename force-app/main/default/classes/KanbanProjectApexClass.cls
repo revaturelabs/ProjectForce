@@ -144,30 +144,16 @@ public with sharing class KanbanProjectApexClass {
 
     // Refactor String Names
     @AuraEnabled
-    public static Backlog__c addNewBacklog(String stage, String story, String l1, 
+    public static Backlog__c addNewBacklog(String columnId, String story, String l1, 
                                            String l2, String l3, String c1, 
-                                           String c2, String c3, String project){
-
-        //fw added
-        List<KanbanColumn__c> columnList = [
-                                         SELECT Id, 
-                                                Name,
-                                                Label__c 
-                                         FROM KanbanColumn__c 
-                                         WHERE Project__c =: project 
-                                         AND Label__c =: stage
-                                        ];
-        Id columnId;
-        if(columnList.size() > 0)
-        {
-            columnId = columnList.get(0).Id;
-        }                                                                                  
+                                           String c2, String c3, String project)
+    {
 
         Backlog__c backlog = new Backlog__c();
         if (l1 == null){
             // System.debug('No Label');
             backlog.Story__c = story;
-            backlog.Stage__c = stage;
+            //backlog.Stage__c = stage;
             backlog.Project__c = project;
 
             //fw
@@ -186,7 +172,7 @@ public with sharing class KanbanProjectApexClass {
             System.debug(cl1);
 
             backlog.Story__c = story;
-            backlog.Stage__c = stage;
+            //backlog.Stage__c = stage;
             backlog.CardLabel1__c = cl1.Id;
             backlog.Project__c = project;
 
@@ -213,7 +199,7 @@ public with sharing class KanbanProjectApexClass {
             insert labels;
 
             backlog.Story__c = story;
-            backlog.Stage__c = stage;
+            //backlog.Stage__c = stage;
             backlog.CardLabel1__c = cl1.Id;
             backlog.CardLabel2__c = cl2.Id;
             backlog.Project__c = project;
@@ -245,7 +231,7 @@ public with sharing class KanbanProjectApexClass {
             insert labels;
 
             backlog.Story__c = story;
-            backlog.Stage__c = stage;
+            //backlog.Stage__c = stage;
             backlog.CardLabel1__c = cl1.Id;
             backlog.CardLabel2__c = cl2.Id;
             backlog.CardLabel3__c = cl3.Id;
@@ -287,4 +273,61 @@ public with sharing class KanbanProjectApexClass {
         return project.Id;
     } 
 
+
+    //@fw
+    //////////////////////
+    //@fw add card + story
+    ////////////////////// 
+    @AuraEnabled
+    public static List<Backlog__c> addNewCard(String project, String stage){
+    
+        List<KanbanColumn__c> lst;
+        try
+        {
+            lst = [SELECT Id, Name, Label__c FROM KanbanColumn__c WHERE Project__c=:project AND Label__c=:stage LIMIT 1];
+            if(lst.size() > 0)
+            {
+                Backlog__c card = new Backlog__c();
+                card.Stage__c = stage;
+                card.Project__c = project;
+                card.KanbanColumn__c = lst.get(0).Id;
+                insert card;
+            }
+        }
+        catch(Exception e)
+        {
+            System.debug(e.getMessage());
+        }
+        return getBacklogs(project);
+    }
+
+    @AuraEnabled
+    public static void addNewStoryToCard(String project, String colId, String story)
+    {
+        List<KanbanColumn__c> lst;
+        List<Backlog__c> cardList;
+        try
+        {
+            lst = [SELECT Id, Name, Label__c FROM KanbanColumn__c WHERE Id=:colId AND Project__c=:project LIMIT 1];
+            if(lst.size() > 0)
+            {
+                cardList = [SELECT Id, Story__c FROM Backlog__c WHERE Project__c=:project AND KanbanColumn__c =:lst.get(0).Id LIMIT 1];
+                if(cardList.size() > 0)
+                {
+                    Backlog__c card = cardList.get(0);
+                    card.Story__c = story;
+                    update card;
+                }
+                
+            }
+        }
+        catch(Exception e)
+        {
+            System.debug(e.getMessage());
+        }
+        
+    }
+    //////////////////////
+    //@fw add card + story
+    //////////////////////
 }
