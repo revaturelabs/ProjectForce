@@ -63,6 +63,10 @@
         <name>AuraDefinitionBundle</name>
     </types>
     <types>
+        <members>Training__c</members>
+        <name>Workflow</name>
+    </types>
+    <types>
         <members>ProjectForce</members>
         <name>CustomApplication</name>
     </types>
