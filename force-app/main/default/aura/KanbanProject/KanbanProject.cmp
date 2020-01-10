@@ -3,6 +3,7 @@
     <!-- attributes -->
     <aura:attribute name="backlogs" type="Backlog__c[]" />
     <!-- project id stored as a string -->
+    <!-- Taken in by the backlogTab component-->
     <aura:attribute name="project" type="String" />
     <aura:attribute name="kanbanColumns" type="KanbanColumn__c[]" />
     <aura:attribute name="selectedValue" type="String" />

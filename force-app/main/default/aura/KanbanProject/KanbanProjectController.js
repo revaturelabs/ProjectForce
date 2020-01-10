@@ -8,10 +8,9 @@
         // a kanban project controller shows the backlog of one project
         // v.project is a required attribute
 
-        var project = component.get("v.project");
         // set paramter: project ID
         // Call Apex Method to return list of backlogs
-        action.setParams({ 'project': project });
+        action.setParams({ 'project' : component.get("v.project") });
         action.setCallback(this, function (response) {
             var state = response.getState();
             if (state === "SUCCESS") {
@@ -22,7 +21,7 @@
         });
 
         // Call Apex method to return Kanban Columns
-        actionGetColumns.setParams({ 'project': project });
+        actionGetColumns.setParams({ 'project' : component.get("v.project") });
         actionGetColumns.setCallback(this, function (response) {
             var state = response.getState();
             if (state === "SUCCESS") {
@@ -32,22 +31,23 @@
             }
         });
 
-        $A.enqueueAction(action);
-        $A.enqueueAction(actionGetColumns);
         component.set('v.EndDate','10/10/2019');
         
         // Call Apex and get the list of Order Options
         // Set v.kanbanOrder 
         var getOrderAction = component.get("c.getOrderOptions");
+        getOrderAction.setParams({ 'project' : component.get("v.project") });
         getOrderAction.setCallback(this, function (response) {
             var state = response.getState();
             if (state === "SUCCESS") {
                 component.set("v.kanbanOrder", response.getReturnValue());
             } else {
-                //console.log("Failed with state: " + state);
+                console.log("Failed with state: " + state);
             }
         })
 
+        $A.enqueueAction(action);
+        $A.enqueueAction(actionGetColumns);
         $A.enqueueAction(getOrderAction);
     },
 
@@ -149,7 +149,7 @@
         
     },
 
-
+    // action for closing the add column model
     closeModel: function (component, event, helper) {
         // for Hide/Close Model,set the "isOpen" attribute to "Fasle"  
         helper.closeModel(component);
@@ -171,6 +171,7 @@
 
     },
 
+    // action for closing the delete column model
     closeModelDeleteTheColumn: function (component, event, helper) {
         // for Hide/Close Model,set the "isOpenDeleteColumn" attribute to "Fasle"  
         helper.closeModelDelCol(component);
@@ -194,7 +195,6 @@
             });
 
             savingColumnAction.setCallback(this, function (response) {
-
                 var state = response.getState();
 
                 if (state === "SUCCESS"){

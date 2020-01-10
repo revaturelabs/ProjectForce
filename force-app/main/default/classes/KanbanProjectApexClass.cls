@@ -5,7 +5,7 @@ public with sharing class KanbanProjectApexClass {
     @AuraEnabled
     public static List<KanbanColumn__c> getKanbanColumns(String project) {
         return [
-            SELECT Id, Name, Label__c
+            SELECT Id, Name, Label__c, Order__c
             FROM  KanbanColumn__c
             WHERE Project__c =: project
             ORDER BY Order__c ASC
@@ -19,7 +19,8 @@ public with sharing class KanbanProjectApexClass {
         // Query for the count of related Columns
         Integer ColumnCount = [Select Count()
             From KanbanColumn__c
-            Where Project__c =: project];
+            Where Project__c =: project
+            ];
         // Add the order values to the list 
         // Also add the size of the list plus one
         List<String> orderOptions = new List<String>();
@@ -57,11 +58,13 @@ public with sharing class KanbanProjectApexClass {
         // Because Query is run before the insert of the new column
         // the new column is not included in the list
         // This makes the new column the only column with this order value
+        Integer newOrder = Integer.ValueOf(order);
         try 
         {
             for (KanbanColumn__c kanban : kanbanList) {
-                if (kanban.order__c == order) {
-                    kanban.order__c = order + 1;
+                if (kanban.order__c == String.ValueOf(newOrder)) {
+                    newOrder++;
+                    kanban.order__c = String.ValueOf(newOrder);
                 }
             }
             update kanbanList;
@@ -72,21 +75,47 @@ public with sharing class KanbanProjectApexClass {
         return kan;
     }
 
-    //
+    // Delete a column and reorder the other columns
     @AuraEnabled
     public static void removeColumn(String label, String project){
-        List<KanbanColumn__c> kan= new List<KanbanColumn__c>();
+        KanbanColumn__c kanban= new KanbanColumn__c();
+        List<KanbanColumn__c> kanbanList = new List<KanbanColumn__c>();
         try 
         {
-            kan = [SELECT Id, Name 
+            // Query for single Column based on the label
+            // Think about using Column ID instead
+            kanban = [SELECT Id, Name, Order__c 
                 FROM KanbanColumn__c 
-                WHERE Label__c=:label AND Project__c=:project ];
-            if(kan.size() > 0)
+                WHERE Label__c=:label AND Project__c=:project 
+                Limit 1];
+
+            // The spot where the Column about to be deleted is in the order
+            Integer DeletedOrderSpot = Integer.Valueof(kanban.Order__c);
+            
+            // Delete column if theres no label duplicates
+            // Add in error message 
+            /* if(kanban.size() > 0)
             {
-                delete kan.get(0);  
-            } 
-        } catch (Exception e) 
-        {
+                  
+            } */
+            delete kanban;
+
+            // Query all related Columns to reorder
+            kanbanList = [ SELECT Id, Name, Label__c, Order__c
+                FROM  KanbanColumn__c
+                WHERE Project__c =: project
+                ORDER BY Order__c ASC ];
+            // set Updated OrderSpot one above the deleted column
+            Integer UpdatedOrderSpot = DeletedOrderSpot + 1;
+            for (KanbanColumn__c kanbanSingle : kanbanList) {
+                if (kanbanSingle.order__c == String.ValueOf(UpdatedOrderSpot)) {
+                    kanbanSingle.order__c = String.ValueOf(DeletedOrderSpot);
+                    UpdatedOrderSpot++;
+                    DeletedOrderSpot++;
+                }
+            }
+            update kanbanList;
+        } catch (Exception e) {
             System.debug(e.getMessage());
         }
     }
