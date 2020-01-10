@@ -248,7 +248,9 @@
         for (let i = 0; i < holdBatchName.length; i++) {
             var some = `${holdBatchName[i]} - ${holdProject[i]} - ${holdTrainers[i]}`;
             holdLabels[i] = some;
+            console.log(holdLabels[i]);
             holdTest[i] = 21;
+            console.log(holdTest[i]);
         }
         //comment here
         component.set("v.UserColors", holdTestColor);
@@ -258,6 +260,7 @@
         chart.data.datasets[1].data = holdTest;
         chart.data.datasets[1].backgroundColor = component.get("v.UserColors");
         chart.data.labels = holdLabels;
+        console.log(holdLabels);
         // console.log(chart.controller.getDatasetMeta(0));
         //update. Until this command is run, none of the changes are actually applied to the chart.
         chart.update();

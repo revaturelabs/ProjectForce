@@ -88,21 +88,21 @@
               var ctx = this.chart.ctx;
               var chartInstance = this.chart;
               ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontFamily, "normal", Chart.defaults.global.defaultFontFamily);
-                                    ctx.textAlign = "left";
-                                    ctx.fillStyle = "black"; // label color
-                                    
-                                    this.data.datasets.forEach(function(dataset, i) {
-                                        var meta = chartInstance.controller.getDatasetMeta(i);
+              ctx.textAlign = "left";
+              ctx.fillStyle = "black"; // text color in bar label
+              //console.log(this.data.datasets);
+              this.data.datasets.forEach(function(dataset, i) {
+                  var meta = chartInstance.controller.getDatasetMeta(i);
                                         
                                         meta.data.forEach(function(bar, index) {
                                             // only fillText for the first bar, otherwise we get double label overflow
                                             // Also hide the first bar so it cannot be hovered over and clicked.
-                                            if (bar._datasetIndex === 0) {
+                                            //if (bar._datasetIndex === 0) {
                                                 var model = dataset._meta[Object.keys(dataset._meta)[0]].data[index]._model;
-                                                var label = model.label;
+                                               // var label = model.label;
                                                 // meta.hidden = true;
-                                                ctx.fillText(label, bar._model.x + 2, bar._model.y);
-                                            }
+                                                ctx.fillText('label', bar._model.x + 2, bar._model.y);
+                                           // }
                                         });
                                     });
                                 }},
@@ -114,7 +114,7 @@
                                              horizontal: true, dataLabels: {position: "top"}
                                          }},
                                          
-                                         dataLabels: {enabled: true, offsetX: -6, style: {colors: ["#FFFFFF"]}},
+                                         //dataLabels: {enabled: true, offsetX: -6, style: {colors: ["#FFFFFF"]}},
                                          
                                          xAxes: [{barPercentage: 0.4,
                                                   ticks: {
@@ -266,6 +266,30 @@
     */
     handleBatchInformationEvent: function(component, event, helper) {
         var batchInfo = event.getParam("batchInfo"); //all selected projects
+        console.log(batchInfo);
         helper.addToChart(component, batchInfo);
+    },
+    
+    updateData : function(component,event,helper){
+        helper.updateData(component);
+    },
+    
+    applyColors:function(component, event, helper)
+{
+    var myChart = component.get('v.dasChart');
+    var currTrainings = component.get('v.tempList');
+    var allTracks = [];
+    var allColors = [];
+    var colorElements = component.find('colors');
+    console.log('colorElements length is: ' + colorElements.length);
+    for(let i=0; i<colorElements.length; i++)
+    {
+        allTracks[i] = colorElements[i].get('v.id');
+        allColors[i] = colorElements[i].get('v.value');
     }
+    var newColors = helper.applyColors(allTracks, allColors, currTrainings);
+    component.set('v.DisplayColors', newColors);
+    helper.updateData(component);
+    
+},
 });
