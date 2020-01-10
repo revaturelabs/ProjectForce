@@ -15,7 +15,7 @@
             <name>Set_default_value</name>
             <type>FieldUpdate</type>
         </actions>
-        <active>false</active>
+        <active>true</active>
         <formula>ISNULL( BatchDuration__c )</formula>
         <triggerType>onCreateOrTriggeringUpdate</triggerType>
     </rules>

@@ -27,7 +27,7 @@
                 <field>Start_Date__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Required</behavior>
+                <behavior>Edit</behavior>
                 <field>ProjectStartDate__c</field>
             </layoutItems>
             <layoutItems>
@@ -41,7 +41,7 @@
                 <field>BatchSize__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Required</behavior>
+                <behavior>Edit</behavior>
                 <field>BatchDuration__c</field>
             </layoutItems>
             <layoutItems>

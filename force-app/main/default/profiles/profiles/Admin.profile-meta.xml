@@ -131,6 +131,11 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Training__c.BatchDuration__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Training__c.BatchSize__c</field>
         <readable>false</readable>
@@ -153,6 +158,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Training__c.Location__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Training__c.ProjectStartDate__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
