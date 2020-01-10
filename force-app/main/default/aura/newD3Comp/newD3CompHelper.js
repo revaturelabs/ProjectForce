@@ -495,6 +495,7 @@
           }
         }
       }
+      d[currTI]=d[currTI]-1;
     }
     return d;
   },
