@@ -28,14 +28,10 @@
         // array to hold labels for x axis of chart, will contain all dates for the 
         // previous three months and next six months
         var xLabels = [];
-        var currentDate = new Date();
         var threeMonthsBefore = new Date();
         threeMonthsBefore.setMonth(threeMonthsBefore.getMonth() - 3);
         var sixMonthsAfter = new Date();
         sixMonthsAfter.setMonth(sixMonthsAfter.getMonth() + 6);
-        console.log(threeMonthsBefore);
-        console.log(currentDate);
-        console.log(sixMonthsAfter);
         
         // make arrays for the names of the months for pretty labels
         var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -80,7 +76,7 @@
       };
       
       var myChartComponent = component.find("myChart").getElement();
-      //the charts options such as x-axis, y-axis, if hover/no hover
+      //the chart's options such as x-axis, y-axis, if hover/no hover
       var barOptions_stacked = {hover: {animationDuration: 10,
           onHover: function(e, elements) {
               myChartComponent.style.cursor = e[0] ? "pointer" : "default";
@@ -148,18 +144,19 @@
       var getTracks = component.get("c.getTrainings");
       //run a callback
       getTracks.setCallback(this, function(response) {
-          //gets the response state; fail,success
+          //gets the response state; fail, success
           var state = response.getState();
           if (state === "SUCCESS") {
+
               //place the response info somewhere safe :O
               component.set("v.qTraining", response.getReturnValue());
               // component.set("v.tempList", response.getReturnValue());
               helper.setInitFilterValues(component, event);
+
               //pass the results to the chart creator.
               var ctx = component.find("myChart").getElement();
               // var theseColors = component.get('v.UserColors');
               // var theseSortBys = component.find('select').get('v.value');
-              // putting params on newlines for readability
               var newChart = helper.createChart(ctx, barOptions_stacked, 
                                                 response.getReturnValue());
               component.set("v.dasChart", newChart);
@@ -270,9 +267,5 @@
     handleBatchInformationEvent: function(component, event, helper) {
         var batchInfo = event.getParam("batchInfo"); //all selected projects
         helper.addToChart(component, batchInfo);
-    },
-    
-    updateData : function(component,event,helper){
-        helper.updateData(component);
     }
 });
