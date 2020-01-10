@@ -96,6 +96,8 @@
 
                 if (state === "SUCCESS"){
 
+                    component.set("v.backlogs", response.getReturnValue());
+
                     var toastEvent = $A.get("e.force:showToast");
                     toastEvent.setParams({
                         "title": "Success",

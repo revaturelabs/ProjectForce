@@ -129,7 +129,7 @@ public with sharing class KanbanProjectApexClass {
                 CardLabel2__c, CardLabel2__r.Text__c, CardLabel2__r.Color__c,
                 CardLabel3__c, CardLabel3__r.Text__c, CardLabel3__r.Color__c,
                 DateLogged__c, PullRequest__c, Stage__c, Project__c, Project__r.Name, 
-                StartDateTime__c, EndDateTime__c, DueDate__c  
+                StartDateTime__c, EndDateTime__c, DueDate__c, KanbanColumn__c 
             FROM  Backlog__c
             WHERE Project__c =: project
         ];
@@ -144,11 +144,13 @@ public with sharing class KanbanProjectApexClass {
 
     // Refactor String Names
     @AuraEnabled
-    public static Backlog__c addNewBacklog(String columnId, String story, String l1, 
+    public static List<Backlog__c> addNewBacklog(String columnId, String story, String l1, 
                                            String l2, String l3, String c1, 
                                            String c2, String c3, String project)
     {
 
+       
+                                                                            
         Backlog__c backlog = new Backlog__c();
         if (l1 == null){
             // System.debug('No Label');
@@ -242,7 +244,7 @@ public with sharing class KanbanProjectApexClass {
 
             insert backlog;
         }
-        return backlog;
+        return getBacklogs(project);
     }
     
     @AuraEnabled

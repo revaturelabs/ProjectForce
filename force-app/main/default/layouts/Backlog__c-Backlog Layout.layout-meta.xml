@@ -19,7 +19,7 @@
                 <field>Story__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Required</behavior>
+                <behavior>Edit</behavior>
                 <field>Stage__c</field>
             </layoutItems>
             <layoutItems>

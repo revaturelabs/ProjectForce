@@ -96,6 +96,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Backlog__c.Stage__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Backlog__c.StartDateTime__c</field>
         <readable>true</readable>
@@ -118,6 +123,16 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>KanbanColumn__c.Label__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>KanbanColumn__c.Order__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>KanbanColumn__c.autoId__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
