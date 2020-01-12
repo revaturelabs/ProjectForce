@@ -145,7 +145,7 @@ public with sharing class KanbanProjectApexClass {
 
     // Refactor String Names
     @AuraEnabled
-    public static void addNewBacklog(String columnId, String story, String l1, String l2, String l3, String c1, String c2, String c3, String project) {
+    public static List<Backlog__c> addNewBacklog(String columnId, String story, String l1, String l2, String l3, String c1, String c2, String c3, String project) {
 
         try {
             Backlog__c backlog = new Backlog__c();
@@ -236,6 +236,7 @@ public with sharing class KanbanProjectApexClass {
             //backlog.Project__c = project;
             insert backlog;
         } */
+        return getBacklogs(columnId);
     }
     
     @AuraEnabled

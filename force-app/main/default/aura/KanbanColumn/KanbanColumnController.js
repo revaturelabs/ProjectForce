@@ -103,7 +103,7 @@
                 var state = response.getState();
                 if (state === "SUCCESS"){
 
-                    //component.set("v.backlogs", response.getReturnValue());
+                    component.set("v.backlogs", response.getReturnValue());
                     // rerender the board or column
                     var toastEvent = $A.get("e.force:showToast");
                     toastEvent.setParams({
