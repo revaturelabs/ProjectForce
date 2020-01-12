@@ -4,6 +4,8 @@
     <aura:attribute name="Story" type="String" />
     <ltng:require styles="{!$Resource.bulma}" />
     <aura:handler name="init" action="{!c.doInit}" value="{!this}" />
+    <aura:handler name="change" action="{!c.updateStory}" value="{!v.Story}" />
+    
     <div class="slds-card card draggable" draggable="true" ondragstart="{!c.onDragStart}">
         <lightning:button variant="Destructive" label="- Card" title="Success" onclick="{!c.deleteCard}" />
         <aura:iteration end="{!v.backlog.NumberOfCardLabels__c}" items="0,1,2" var="item" indexVar="index">
@@ -11,7 +13,7 @@
             
         </aura:iteration>
         <div class="slds-card__body slds-card__body_inner card-content">
-            <ui:inputTextArea value="{! v.Story }"></ui:inputTextArea> 
+            <ui:inputTextArea value="{! v.Story }" updateOn="change"></ui:inputTextArea> 
         </div>  
     </div>
 </aura:component>

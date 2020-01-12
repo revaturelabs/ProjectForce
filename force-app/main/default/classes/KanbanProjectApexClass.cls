@@ -268,21 +268,54 @@ public with sharing class KanbanProjectApexClass {
     } 
 
     @AuraEnabled
-    public static void removeCard(String card, String story){
+    public static /*List<Backlog__c>*/void removeCard(String card, String story){
         Backlog__c obj;
+        //ID colId;
         try 
         {
-            obj = [SELECT Id, Name FROM Backlog__c WHERE Id=:card AND Story__c=:story LIMIT 1];
+            obj = [SELECT Id, Name, KanbanColumn__c FROM Backlog__c WHERE Id=:card AND Story__c=:story LIMIT 1];
+            //colId = obj.KanbanColumn__c;
             delete obj;
         } catch (Exception e) 
         {
             System.debug(e.getMessage());
         }
-        
+        //return getBacklogs(colId);
+    }
+
+    @AuraEnabled
+    public static void updateColumn(String stage, String title, String projectId){
+        KanbanColumn__c obj;
+        //ID colId;
+        try 
+        {
+            obj = [SELECT Id, Name FROM KanbanColumn__c WHERE Id=:stage AND Project__c=:projectId LIMIT 1];
+            obj.Label__c = title;
+            update obj;
+        } catch (Exception e) 
+        {
+            System.debug(e.getMessage());
+        }
+    }
+
+    @AuraEnabled
+    public static void updateCard(String card, String story){
+        Backlog__c obj;
+        //ID colId;
+        try 
+        {
+            obj = [SELECT Id, Name, KanbanColumn__c FROM Backlog__c WHERE Id=:card LIMIT 1];
+            obj.Story__c = story;
+            update obj;
+        } catch (Exception e) 
+        {
+            System.debug(e.getMessage());
+        }
     }
 
     //@fw add card + story
     ////////////////////// 
+    /*
     @AuraEnabled
     public static List<Backlog__c> addNewCard(String project, String stage){
     
@@ -332,6 +365,7 @@ public with sharing class KanbanProjectApexClass {
         }
         
     }
+    */
     //////////////////////
     //@fw add card + story
     //////////////////////

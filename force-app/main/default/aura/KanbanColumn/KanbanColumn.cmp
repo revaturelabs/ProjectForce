@@ -8,6 +8,7 @@
 
     <!-- event handlers -->
     <aura:handler name="init" action="{!c.doInit}" value="{!this}" />
+    <aura:handler name="change" action="{!c.updateStage}" value="{!v.title}" />
     
     <!-- modal attributes -->
     <!-- attributes to store modal field information. -->
@@ -32,7 +33,8 @@
     <div class="column" ondrop="{!c.onDrop}" ondragover="{!c.allowDrop}">          
         <div class="panel">
             <div class="panel-heading">
-                <ui:inputText value="{! v.title }"></ui:inputText>
+                
+                <ui:inputText value="{! v.title }" updateOn="change" ></ui:inputText>
                 <!-- fw add a button for adding a card -->
                 <!-- Button to add new backlog aka card. -->
                 <lightning:button variant="success" label="+ Card" title="Success" onclick="{!c.openModelAddCard}" />
