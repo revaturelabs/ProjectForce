@@ -514,7 +514,7 @@
     },
     
     setInitFilterValues: function(component, event) {
-        var allTrainings = component.get("v.qTraining");
+        var allTrainings = component.get("v.tempList");
         
         //Creating the Track List
         var TrackSet = new Set();

@@ -160,7 +160,7 @@
             if (state === "SUCCESS") {
                 
                 //place the response info somewhere safe :O
-                component.set("v.qTraining", response.getReturnValue());
+                component.set("v.tempList", response.getReturnValue());
                 // component.set("v.tempList", response.getReturnValue());
                 helper.setInitFilterValues(component, event);
                 
@@ -219,7 +219,7 @@
     
     runFilter: function(component, event, helper) {
         //Grabbing Relevant data
-        var allTrainings = component.get("v.qTraining");
+        var allTrainings = component.get("v.tempList");
         var myChart = component.get("v.dasChart");
         var selectedTrack = component.find("TrackFilter").get("v.value");
         var selectedLocation = component.find("LocationFilter").get("v.value");
@@ -275,7 +275,7 @@
             let state = response.getState();
             if (state === "SUCCESS") {
                 let returnedList = response.getReturnValue();
-                component.set("v.qTraining", returnedList);
+                component.set("v.tempList", returnedList);
                 let displayList = component.get("v.tempList");
                 for (let currRecord = 0; currRecord < displayList.length; currRecord++) {
                     for (let currReturned = 0; currReturned < returnedList.length; 
