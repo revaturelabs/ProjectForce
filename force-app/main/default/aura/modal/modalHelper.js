@@ -371,7 +371,7 @@
             
             
             if(state === "SUCCESS"){
-                component.set("v.updateProjects", training);
+                component.set("v.updateProjects", training); //this may need to be re-evaluated, "v.updateProjects may not have training ID"
                 if(training.length !=0){
                     component.set("v.updateProject", training[0].ID);
                 }

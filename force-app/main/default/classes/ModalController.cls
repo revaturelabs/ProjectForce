@@ -1,7 +1,7 @@
 //change "without sharing" to "with sharing" when deploying
 public without sharing class ModalController {
     //All queries are done when modal is loaded
-    static List<Project__c> ProjectList = [SELECT Name, ProjectComplete__c, track__r.name, (SELECT ProjectStartDate__c FROM Trainings__r ORDER BY projectStartDate__c desc LIMIT 1) FROM Project__c];
+    static List<Project__c> ProjectList = [SELECT Name, ProjectComplete__c, track__r.name, (SELECT ProjectStartDate__c FROM Trainings__r ORDER BY ProjectStartDate__c desc LIMIT 1) FROM Project__c];
     static List<training__c> trainingList = [SELECT Id, batchsize__c, room__r.location__r.name, track__r.Name, room__r.Name, trainer__r.Name, Project__r.Name FROM training__c];
 
     @AuraEnabled

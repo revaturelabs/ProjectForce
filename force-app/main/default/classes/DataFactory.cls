@@ -38,7 +38,6 @@ public class DataFactory
         trainerList.add(new trainer__c(name='External'));  // Not sure yet what this is for
         insert trainerList;
 
-
         // Insert Trainer Track Records
         // Add one for each trainer, dividing the trainers evenly among the tracks
         for( integer i = 0 ; i < numOfRecords ; i++ )
