@@ -120,8 +120,9 @@ public with sharing class KanbanProjectApexClass {
         }
     }
     
+    // Return list of Backlogs related to a Column
     @AuraEnabled
-    public static List<Backlog__c> getBacklogs(String project) {
+    public static List<Backlog__c> getBacklogs(String columnId) {
         return [
             SELECT 
                 Id, Name, Story__c, NumberOfCardLabels__c,
@@ -131,7 +132,7 @@ public with sharing class KanbanProjectApexClass {
                 DateLogged__c, PullRequest__c, Stage__c, Project__c, Project__r.Name, 
                 StartDateTime__c, EndDateTime__c, DueDate__c, KanbanColumn__c 
             FROM  Backlog__c
-            WHERE Project__c =: project
+            WHERE KanbanColumn__c =: columnId
         ];
     }
 
@@ -144,22 +145,23 @@ public with sharing class KanbanProjectApexClass {
 
     // Refactor String Names
     @AuraEnabled
-    public static List<Backlog__c> addNewBacklog(String columnId, String story, String l1, 
-                                           String l2, String l3, String c1, 
-                                           String c2, String c3, String project)
-    {
+    public static void addNewBacklog(String columnId, String story, String l1, String l2, String l3, String c1, String c2, String c3, String project) {
 
-       
-                                                                            
-        Backlog__c backlog = new Backlog__c();
-        if (l1 == null){
-            // System.debug('No Label');
-            backlog.Story__c = story;
-            //backlog.Stage__c = stage;
-            backlog.Project__c = project;
-
-            //fw
+        try {
+            Backlog__c backlog = new Backlog__c();
             backlog.KanbanColumn__c = columnId;
+            backlog.Story__c = story;
+            insert backlog;
+        } 
+        catch(Exception e)
+        {
+            System.debug(e.getMessage());
+        }
+        
+        /* if (l1 == null){
+            // System.debug('No Label');
+            
+            //backlog.Project__c = project;
             insert backlog;         
         }
 
@@ -176,10 +178,7 @@ public with sharing class KanbanProjectApexClass {
             backlog.Story__c = story;
             //backlog.Stage__c = stage;
             backlog.CardLabel1__c = cl1.Id;
-            backlog.Project__c = project;
-
-            //fw
-            backlog.KanbanColumn__c = columnId;
+            //backlog.Project__c = project;
 
             insert backlog;
         }
@@ -204,10 +203,7 @@ public with sharing class KanbanProjectApexClass {
             //backlog.Stage__c = stage;
             backlog.CardLabel1__c = cl1.Id;
             backlog.CardLabel2__c = cl2.Id;
-            backlog.Project__c = project;
-
-            //fw
-            backlog.KanbanColumn__c = columnId;
+            //backlog.Project__c = project;
 
             insert backlog;
         }
@@ -237,14 +233,9 @@ public with sharing class KanbanProjectApexClass {
             backlog.CardLabel1__c = cl1.Id;
             backlog.CardLabel2__c = cl2.Id;
             backlog.CardLabel3__c = cl3.Id;
-            backlog.Project__c = project;
-
-            //fw
-            backlog.KanbanColumn__c = columnId;
-
+            //backlog.Project__c = project;
             insert backlog;
-        }
-        return getBacklogs(project);
+        } */
     }
     
     @AuraEnabled
@@ -275,9 +266,6 @@ public with sharing class KanbanProjectApexClass {
         return project.Id;
     } 
 
-
-    //@fw
-    //////////////////////
     //@fw add card + story
     ////////////////////// 
     @AuraEnabled

@@ -1,10 +1,13 @@
 <aura:component controller="KanbanProjectApexClass">
     <!-- Attributes -->
-    <aura:attribute name="title" type="String" required="true"></aura:attribute>
+    <aura:attribute name="title" type="String" required="true" />
     <aura:attribute name="backlogs" type="Backlog__c[]"/>
-    <aura:attribute name="colId" type="String"/>
+    <aura:attribute name="columnId" type="String"/>
+    <aura:attribute name="backlogId" type="String"/>
     <aura:attribute name="projectId" type="String"/>
 
+    <!-- event handlers -->
+    <aura:handler name="init" action="{!c.doInit}" value="{!this}" />
     
     <!-- modal attributes -->
     <!-- attributes to store modal field information. -->
@@ -34,11 +37,9 @@
             </div>           
 
             <div class="panel-block column" style="background-color:transparent;">
-                <aura:iteration items="{!v.backlogs}" var="blog">
-                     <aura:if isTrue="{!blog.KanbanColumn__r == colId}">
-                        <c:KanbanCard backlog="{!blog}"></c:KanbanCard>
-                        <br/> 
-                    </aura:if>  
+                <aura:iteration items="{!v.backlogs}" var="backlog">
+                    <c:KanbanCard backlogId="{!backlog.Id}" backlog="{!backlog}" Story="{!backlog.Story__c}" />
+                    <br/>
                 </aura:iteration>
             </div>
         </div>
@@ -69,7 +70,6 @@
                 <!-- modal content-->
                 <!-- drop down for stage-->
                     
-
                     <!-- Story textarea-->
                     <lightning:textarea name="story-input" value="{!v.story}" placeholder=""
                         label="Story"
@@ -85,19 +85,16 @@
                                         Start Date: 
                                     </span>
                                 </div>
-
                                 <div class="slds-col">
                                     <span>
                                             <ui:outputText value="10/10/2019" />
                                     </span>
                                 </div>
-
                                 <div class="slds-col">
                                     <span>
                                         End Date:
                                     </span>
                                 </div>
-
                                 <div class="slds-col">
                                     <span>
                                         <ui:outputText value="10/10/2019"/>

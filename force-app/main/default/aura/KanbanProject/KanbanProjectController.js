@@ -8,18 +8,6 @@
         // a kanban project controller shows the backlog of one project
         // v.project is a required attribute
 
-        // set paramter: project ID
-        // Call Apex Method to return list of backlogs
-        action.setParams({ 'project' : component.get("v.project") });
-        action.setCallback(this, function (response) {
-            var state = response.getState();
-            if (state === "SUCCESS") {
-                component.set("v.backlogs", response.getReturnValue());
-            } else {
-                console.log("Failed with state: " + state);
-            }
-        });
-
         // Call Apex method to return Kanban Columns
         actionGetColumns.setParams({ 'project' : component.get("v.project") });
         actionGetColumns.setCallback(this, function (response) {
@@ -237,11 +225,21 @@
         action.setCallback(this, function (response) {
             var state = response.getState();
             if (state === "SUCCESS") {
-                //component.set("v.backlogs", response.getReturnValue());
+                var toastEvent = $A.get("e.force:showToast");
+                    toastEvent.setParams({
+                        "title": "Success",
+                        "message": "Column deleted from kanban board."
+                    });
+                    toastEvent.fire();
                 helper.closeModel(component);
                 $A.get("e.force:refreshView").fire();
             } else {
-                console.log("Failed with state: " + state);
+                var toastEvent = $A.get("e.force:showToast");
+                    toastEvent.setParams({
+                        "title": "Failed",
+                        "message": "Column could not be deleted to kanban board"
+                    });
+                    toastEvent.fire();
             }
         });
     

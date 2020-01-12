@@ -1,7 +1,6 @@
 <aura:component controller="KanbanProjectApexClass" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:lightningQuickAction" access="global">
     <ltng:require styles="{!$Resource.bulma}" />
     <!-- attributes -->
-    <aura:attribute name="backlogs" type="Backlog__c[]" />
     <!-- project id stored as a string -->
     <!-- Taken in by the backlogTab component-->
     <aura:attribute name="project" type="String" />
@@ -12,6 +11,7 @@
 
     <!-- modal attributes -->
     <!-- attributes to store modal field information. -->
+    <!-- Stage is the Column Name-->
     <aura:attribute name="stage" type="String"/>
 
     <!-- event handlers -->
@@ -21,8 +21,7 @@
     <div class="slds-col columns">
         <!-- <aura:if isTrue="{!v.backlogs.length}"> -->
             <aura:iteration items="{!v.kanbanColumns}" var="col" indexVar="i">
-                   <c:KanbanColumn projectId="{!v.project}" colId="{!col.Id}" title="{!col.Label__c}" backlogs="{!v.backlogs}">
-                   </c:KanbanColumn>
+                   <c:KanbanColumn projectId="{!v.project}" columnId="{!col.Id}" title="{!col.Label__c}" />
             </aura:iteration>
             
             <aura:set attribute="else">
@@ -32,8 +31,6 @@
             </aura:set>
       <!--  </aura:if>-->
     </div>
-
-    
 
     <!-- event handlers -->
     <!-- <aura:handler name="init" action="{!c.doInit}" value="{!this}"></aura:handler> -->

@@ -1,4 +1,22 @@
 ({
+    doInit: function(component, event, helper) {
+        var getBacklogsaction = component.get("c.getBacklogs");
+
+        // set paramter: column ID
+        // Call Apex Method to return list of backlogs
+        getBacklogsaction.setParams({ 'columnId' : component.get("v.columnId") });
+        getBacklogsaction.setCallback(this, function (response) {
+            var state = response.getState();
+            if (state === "SUCCESS") {
+                component.set("v.backlogs", response.getReturnValue());
+            } else {
+                console.log("Failed with state: " + state);
+            }
+        });
+
+        $A.enqueueAction(getBacklogsaction); 
+    },
+
 	allowDrop: function(component, event, helper) {
         event.preventDefault();
     },
@@ -23,10 +41,8 @@
 
         $A.util.addClass(lab2, 'toggle');
 
-
         // component.get("label3").className = "slds-hidden";
         // console.log(component.find("label2"));
-
     },
 
     closeModelAddCard: function (component, event, helper) {
@@ -37,8 +53,7 @@
 
     saveCard: function (component, event, helper) {
 
-        var story = component.get('v.story');
-
+        var story = component.get('v.columnId');
         if (story === undefined || story === "" ){
             var toastEvent = $A.get("e.force:showToast");
             toastEvent.setParams({
@@ -70,14 +85,12 @@
             console.log('Color 2: ' + c2);
             console.log('Color 3: ' + c3);
 
-
-
             var savingBacklogAction = component.get('c.addNewBacklog');
 
             console.log(savingBacklogAction);
 
             savingBacklogAction.setParams({
-                "columnId" : column,
+                "columnId" : component.get('v.columnId'),
                 "story" : story,
                 "l1" : l1,
                 "l2": l2,
@@ -85,19 +98,13 @@
                 "c1": c1,
                 "c2": c2,
                 "c3": c3,
-                "project": project
-            });
-
-
-
+                "project": project });
             savingBacklogAction.setCallback(this, function (response) {
-
                 var state = response.getState();
-
                 if (state === "SUCCESS"){
 
-                    component.set("v.backlogs", response.getReturnValue());
-
+                    //component.set("v.backlogs", response.getReturnValue());
+                    // rerender the board or column
                     var toastEvent = $A.get("e.force:showToast");
                     toastEvent.setParams({
                         "title": "Success",
@@ -108,7 +115,6 @@
                     helper.closeModelAddTheCard(component);
                     $A.get("e.force:refreshView").fire();
                 }
-
                 else 
                 {
                     var toastEvent = $A.get("e.force:showToast");
@@ -121,13 +127,7 @@
 
             });
 
-            $A.enqueueAction(savingBacklogAction);
-            
-            
-        }
-        
-
-
-        
+            $A.enqueueAction(savingBacklogAction);         
+        }  
     },
 })
