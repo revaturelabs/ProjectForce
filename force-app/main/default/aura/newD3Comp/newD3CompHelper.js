@@ -139,132 +139,169 @@
                 minDate = days[i];
             }
         }
-        maxDate += defaultDuration;
-        
-        //Set the keys in the options Javascript Object equal to the values just generated
-        options.scales.xAxes[0].ticks.max = maxDate;
-        options.scales.xAxes[0].ticks.min = minDate;
-        options.scales.xAxes[0].offset = false;
-        
-        //Create the labels that show up on the sides and when hovered over.
-        let tracksAndProjects = [];
-        for (let i = 0; i < days.length; i++) {
-            var some = `${tracks[i]} - ${projects[i]} - ${trainers[i]}`;
-            tracksAndProjects[i] = some;
-        }
-        
-        //This is going to build the Chart. By this point the data has been brought in through dataSet
-        //and it's been split into separate arrays, so that way it's easier to use in the Chart creation.
-        return new Chart(ctx, {
-            type: "horizontalBar",
-            events: [],
-            data: {labels: tracksAndProjects,
-                   datasets: [{
-                       //example of how to reference something in here: chart.data.datasets[0].data[i]
-                       //This data is when the project is supposed to start
-                       data: [],
-                       backgroundColor: "rgba(63,103,126,0)"},
-                              {
-                                  //example of how to reference something in here: chart.data.datasets[1].data[i]
-                                  //Data here is the duration of the project
-                                  data: [],
-                                  backgroundColor: "orange"}
-                             ]
-                  },
-            //This is where we describe the axes. Check the barOptions_stacked variable to see what we are setting here.
-            options: options
-        });
-    },
-    
-    /*
+    return sortThis;
+  },
+
+  //creating the chart and passing in data
+  createChart: function(ctx, options, dataSet) {
+    //First, sort the data passed in according to the value in sortBy
+    // dataSet = this.sortArray(dataSet, sortBy);
+
+    //Here we take the dataset and split it into several different arrays to make it easier to use.
+    var startTimes = [];
+    var tracks = [];
+    var trainers = [];
+    var projects = [];
+    var rooms = [];
+    for (let i = 0; i < dataSet.length; i++) {
+      startTimes[i] = dataSet[i].startDate;
+      tracks[i] = dataSet[i].name;
+      projects[i] = dataSet[i].project;
+      trainers[i] = dataSet[i].trainer;
+      rooms[i] = dataSet[i].room; // not on Training__c pagelayout
+    }
+
+    //Once we have the startDates, we need it as an int.
+    var minMaxDates = this.calcChartAxisLabels(startTimes);
+
+    //Set the keys in the options Javascript Object equal to the values just generated
+    options.scales.xAxes[0].ticks.max = minMaxDates[1];
+    options.scales.xAxes[0].ticks.min = minMaxDates[0];
+    options.scales.xAxes[0].offset = false;
+
+    //Create the labels that show up on the sides and when hovered over.
+    let tracksAndProjects = [];
+    for (let i = 0; i < startTimes.length; i++) {
+      var some = `${tracks[i]} - ${projects[i]} - ${trainers[i]}`;
+      tracksAndProjects[i] = some;
+    }
+
+    //This is going to build the Chart. By this point the data has been brought in through dataSet
+    //and it's been split into separate arrays, so that way it's easier to use in the Chart creation.
+    return new Chart(ctx, {
+      type: "horizontalBar",
+      events: [],
+      data: {
+        labels: tracksAndProjects,
+        datasets: [
+          {
+            //example of how to reference something in here: chart.data.datasets[0].data[i]
+            //This data is when the project is supposed to start
+            data: [],
+            backgroundColor: "rgba(63,103,126,0)"
+          },
+          {
+            //example of how to reference something in here: chart.data.datasets[1].data[i]
+            //Data here is the duration of the project
+            data: [],
+            backgroundColor: "orange"
+          }
+        ]
+      },
+      //This is where we describe the axes. Check the barOptions_stacked variable to see what we are setting here.
+      options: options
+    });
+  },
+
+  /*
         addToChart clears the current gantt chart, formats each selected project
         into the correct JSON Format, then adds it to the views v.tempList for 
         this.updateData() to populate the gantt chart with the v.tempList.
     */
-    addToChart: function(component, batchInfo) {
-        var projectsToAdd = batchInfo;
-        // Sweep clean the current Data on the gantt chart to avoid
-        // duplicate population of previously selected projects.
-        var currentData = [];
-        
-        //flatten the JSON into a compatible object.
-        for (var i = 0; i < projectsToAdd.length; i++) {
-            var newData = {
-                location: projectsToAdd[i].Room__r.Location__r.Name,
-                name: projectsToAdd[i].Name,
-                project: projectsToAdd[i].Project__r.Name,
-                room: projectsToAdd[i].Room__r.Room_Number__c,
-                startDate: projectsToAdd[i].Start_Date__c,
-                projectStartDate:projectsToAdd[i].ProjectStartDate__c,
-                trackName: projectsToAdd[i].Track__r.Name,
-                trainer: projectsToAdd[i].Trainer__r.Name,
-                trainingId: projectsToAdd[i].Id,
-                color: projectsToAdd[i].Color__c
-            };
-            currentData.push(newData);
-        }
-        
-        //set temporary list of currently selected data
-        component.set("v.tempList", currentData);
-        this.updateData(component);
-    },
-    
-    //When a user selects a sort by filter, it will automatically sort the
-    //chart
-    updateData: function(component) {
-        //grabbing the attributes from the component that we will be
-        //either using or updating
-        var chart = component.get("v.dasChart");
-        var data = component.get("v.tempList");
-        // var currColors = component.get('v.DisplayColors');
-        
-        //declare arrays to hold new data being passed in
-        var startDates = [];
-        var holdBatchName = [];
-        var holdProject = [];
-        var holdLabels = [];
-        var holdTrainers = [];
-        // var holdColors = [];
-        var holdTest = [];
-        var holdTestColor = [];
-        
-        for (var i = 0; i < data.length; i++) {
-            holdBatchName[i] = data[i].name;
-            holdProject[i] = data[i].project;
-            holdTrainers[i] = data[i].trainer;
-            holdTestColor[i] = data[i].color;
-        }
-        
-        let startDateSelect;
-        if(component.get("v.ChartStartFilter")=="projectStart")
-            for (let i=0;i<data.length;i++){
-                startDates[i]=data[i].projectStartDate;
-            }
-        else
-            for (let i=0;i<data.length;i++){
-                startDates[i]=data[i].startDate;
-            }
-        
-        for (let i = 0; i < holdBatchName.length; i++) {
-            var some = `${holdBatchName[i]} - ${holdProject[i]} - ${holdTrainers[i]}`;
-            holdLabels[i] = some;
-            holdTest[i] = 21;
-        }
-        //comment here
-        component.set("v.UserColors", holdTestColor);
-        
-        //assign new values to the chart properties
-        chart.data.datasets[0].data = this.convertDate(startDates);
-        chart.data.datasets[1].data = holdTest;
-        chart.data.datasets[1].backgroundColor = component.get("v.UserColors");
-        chart.data.labels = holdLabels;
+  addToChart: function(component, batchInfo) {
+    var projectsToAdd = batchInfo;
+    // Sweep clean the current Data on the gantt chart to avoid
+    // duplicate population of previously selected projects.
+    var currentData = [];
 
-        // console.log(chart.controller.getDatasetMeta(0));
-        //update. Until this command is run, none of the changes are actually applied to the chart.
-        chart.update();
-    },
-    
-    /*	convert date method used for converting the date into a integer because the chart only takes in integers as data and not actual date
+
+    //flatten the JSON into a compatible object.
+    for (var i = 0; i < projectsToAdd.length; i++) {
+      var newData = {
+        location: projectsToAdd[i].Room__r.Location__r.Name,
+        name: projectsToAdd[i].Name,
+        project: projectsToAdd[i].Project__r.Name,
+        room: projectsToAdd[i].Room__r.Room_Number__c,
+        startDate: projectsToAdd[i].Start_Date__c,
+        projectStartDate:projectsToAdd[i].ProjectStartDate__c,
+        endDate: projectsToAdd[i].End_Date__c,
+        trackName: projectsToAdd[i].Track__r.Name,
+        trainer: projectsToAdd[i].Trainer__r.Name,
+        trainingId: projectsToAdd[i].Id,
+        color: projectsToAdd[i].Color__c
+      };
+      currentData.push(newData);
+    }
+    //set temporary list of currently selected data
+    component.set("v.tempList", currentData);
+    this.updateData(component);
+  },
+
+  //When a user selects a sort by filter, it will automatically sort the
+  //chart
+  updateData: function(component) {
+    //grabbing the attributes from the component that we will be
+    //either using or updating
+    var chart = component.get("v.dasChart");
+    var data = component.get("v.tempList");
+    // var currColors = component.get('v.DisplayColors');
+
+    //declare arrays to hold new data being passed in
+    var startDates = [];
+    var holdBatchName = [];
+    var holdProject = [];
+    var holdLabels = [];
+    var holdTrainers = [];
+    // var holdColors = [];
+    var holdTest = [];
+    var holdTestColor = [];
+
+    let startDateSelect;
+    if(component.get("v.ChartStartFilter")=="projectStart")
+      for (let i=0;i<data.length;i++){
+        startDates[i]=data[i].projectStartDate;
+      }
+    else
+      for (let i=0;i<data.length;i++){
+        startDates[i]=data[i].startDate;
+      }
+
+    for (var i = 0; i < data.length; i++) {
+      holdBatchName[i] = data[i].name;
+      holdProject[i] = data[i].project;
+      holdTrainers[i] = data[i].trainer;
+      holdTestColor[i] = data[i].color;
+      let startDate = new Date(startDates[i]);
+      let endDate=new Date(data[i].endDate);
+      holdTest[i] = Math.ceil((endDate.getTime()-startDate.getTime()) / 86400000);
+    }
+
+    for (let i = 0; i < holdBatchName.length; i++) {
+      var some = `${holdBatchName[i]} - ${holdProject[i]} - ${holdTrainers[i]}`;
+      holdLabels[i] = some;
+      
+    }
+    //comment here
+    component.set("v.UserColors", holdTestColor);
+
+    //assign new values to the chart properties
+    chart.data.datasets[0].data = this.convertDate(startDates);
+    chart.data.datasets[1].data = holdTest;
+    chart.data.datasets[1].backgroundColor = component.get("v.UserColors");
+    chart.data.labels = holdLabels;
+
+    //Once we have the startDates, we need it as an int.
+    var minMaxDates = this.calcChartAxisLabels(startDates);
+    //Set the keys in the options Javascript Object equal to the values just generated
+    chart.options.scales.xAxes[0].ticks.max = minMaxDates[1];
+    chart.options.scales.xAxes[0].ticks.min = minMaxDates[0];
+    chart.options.scales.xAxes[0].offset = true;
+
+    //update. Until this command is run, none of the changes are actually applied to the chart.
+    chart.update();
+  },
+
+  /*	convert date method used for converting the date into a integer because the chart only takes in integers as data and not actual date
    */
     convertDate: function(data) {
         //declare necessary variables
@@ -444,6 +481,7 @@
             }
         }
       }
+      d[currTI]=d[currTI]-1;
     }
       return d;
   },
@@ -554,5 +592,39 @@
             "v.today",
             today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate()
         );
+
+    component.set("v.Locations", LocationList);
+    component.set("v.Tracks", TrackList);
+
+    //Setting Today's Date
+    var today = new Date();
+    component.set(
+      "v.today",
+      today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate()
+    );
+  },
+  calcChartAxisLabels:function(startTimes, endTimes) {
+    var days = this.convertDate(startTimes);
+    let defaultDuration=21;
+    //Setting the minimum date and maximum date displayed by the chart.
+    //This is based on the first and last dates in the data passed in.
+    var minDate = days[0];
+    var maxDate = days[0];
+    for (var i = 0; i < days.length - 1; i++) {
+      if (days[i] >= maxDate) {
+        maxDate = days[i];
+      }
+      if (days[i] <= minDate) {
+        minDate = days[i];
+      }
     }
+    maxDate += defaultDuration;
+    
+    console.log('min'+minDate);
+    console.log('max'+maxDate);
+    
+    return { minDate, maxDate,days};
+  }
 });
+
+
