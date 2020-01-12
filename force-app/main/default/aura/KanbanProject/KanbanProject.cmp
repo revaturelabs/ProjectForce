@@ -8,6 +8,7 @@
     <aura:attribute name="selectedValue" type="String" />
     <aura:attribute name="kanbanOrder" type="String[]" />
     <aura:attribute name="selectedOrderValue" type="String" />
+    <aura:attribute name="backlogs" type="Backlog__c[]" />
 
     <!-- modal attributes -->
     <!-- attributes to store modal field information. -->

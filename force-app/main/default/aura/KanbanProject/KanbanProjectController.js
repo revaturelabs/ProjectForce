@@ -1,7 +1,18 @@
 ({
     doInit: function (component, event, helper) {
         // store apex controller method to a variable
-        var action = component.get("c.getBacklogs");
+        var action = component.get("c.getBacklogsProject");
+        action.setParams({ 'projectId' : component.get("v.project") });
+        action.setCallback(this, function (response) {
+            var state = response.getState();
+            if (state === "SUCCESS") {
+                component.set("v.backlogs", response.getReturnValue());
+            } else {
+                console.log("Failed with state: " + state);
+            }
+        });
+
+
         var actionGetColumns = component.get("c.getKanbanColumns");
 
         // store given project to a variable
@@ -52,7 +63,7 @@
         // Get the backlog record that is currently dragged
         var backlog = event.getParam("backlog");
         // get the current list of back logs
-        var listOfBacklogs = component.get("v.backlogs");
+        var listOfBacklogs = component.get('v.backlogs');
         
         // try to find the backlog that is dragged in the current list of backlogs
         // if it is find theBacklog will contain the found object, otherwise theBacklog will be null
