@@ -1,11 +1,11 @@
-<aura:component>
+<aura:component controller="KanbanProjectApexClass">
     <aura:attribute name="backlogId" type="String" />
     <aura:attribute name="backlog" type="Backlog__c" />
     <aura:attribute name="Story" type="String" />
     <ltng:require styles="{!$Resource.bulma}" />
     <aura:handler name="init" action="{!c.doInit}" value="{!this}" />
     <div class="slds-card card draggable" draggable="true" ondragstart="{!c.onDragStart}">
-        <lightning:button variant="Destructive" label="- Card" title="Success" onclick="" />
+        <lightning:button variant="Destructive" label="- Card" title="Success" onclick="{!c.deleteCard}" />
         <aura:iteration end="{!v.backlog.NumberOfCardLabels__c}" items="0,1,2" var="item" indexVar="index">
             <c:KanbanCardLabel backlog="{!v.backlog}" labelIndex="{!index + 1}" />
             

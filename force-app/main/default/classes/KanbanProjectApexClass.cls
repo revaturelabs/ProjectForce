@@ -267,6 +267,20 @@ public with sharing class KanbanProjectApexClass {
         return project.Id;
     } 
 
+    @AuraEnabled
+    public static void removeCard(String card, String story){
+        Backlog__c obj;
+        try 
+        {
+            obj = [SELECT Id, Name FROM Backlog__c WHERE Id=:card AND Story__c=:story LIMIT 1];
+            delete obj;
+        } catch (Exception e) 
+        {
+            System.debug(e.getMessage());
+        }
+        
+    }
+
     //@fw add card + story
     ////////////////////// 
     @AuraEnabled
