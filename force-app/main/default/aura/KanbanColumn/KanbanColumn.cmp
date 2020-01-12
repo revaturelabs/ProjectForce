@@ -35,8 +35,6 @@
             <div class="panel-heading">
                 
                 <ui:inputText value="{! v.title }" updateOn="change" ></ui:inputText>
-                <!-- fw add a button for adding a card -->
-                <!-- Button to add new backlog aka card. -->
                 <lightning:button variant="success" label="+ Card" title="Success" onclick="{!c.openModelAddCard}" />
             </div>           
 
@@ -179,9 +177,4 @@
                 </aura:if>
                 </div>
     </div>   
-
-    
-
-
-    
 </aura:component>

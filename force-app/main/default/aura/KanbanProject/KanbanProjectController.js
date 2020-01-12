@@ -211,13 +211,11 @@
     },
 
     deleteColumn: function (component, event, helper) {
-        
-        //var idx = component.get('v.Id');
+    
         var project = component.get('v.project');
         var label = component.get('v.selectedValue');
         var action = component.get("c.removeColumn");
 
-        //alert(idx);
         action.setParams({ 
                             'label' : label,
                             'project': project 

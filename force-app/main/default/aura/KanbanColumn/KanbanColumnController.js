@@ -138,8 +138,6 @@
 
 		var updateStageAction = component.get('c.updateColumn');
 
-           
-
 		updateStageAction.setParams({
                 "stage" : stageId,
                 "title" : stage,
@@ -149,31 +147,8 @@
                 var state = response.getState();
                 if (state === "SUCCESS"){
 
-                    //component.set("v.backlogs", response.getReturnValue());
-					// rerender the board or column
-					/*
-                    var toastEvent = $A.get("e.force:showToast");
-                    toastEvent.setParams({
-                        "title": "Success",
-                        "message": "New card added to kanban board."
-                    });
-					toastEvent.fire();
-					*/
-                    
                     $A.get("e.force:refreshView").fire();
                 }
-                else 
-                {
-					/*
-                    var toastEvent = $A.get("e.force:showToast");
-                    toastEvent.setParams({
-                        "title": "Failed",
-                        "message": "New card could not be added to kanban board"
-                    });
-					toastEvent.fire();
-					*/
-                }
-
             });
 
             $A.enqueueAction(updateStageAction);  
