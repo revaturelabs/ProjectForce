@@ -66,7 +66,7 @@
         else {
 
             var column = component.get('v.colId');
-
+            var stage = component.get('v.stage');
             var l1 = component.get('v.label1');
             var l2 = component.get('v.label2');
             var l3 = component.get('v.label3');
@@ -98,7 +98,8 @@
                 "c1": c1,
                 "c2": c2,
                 "c3": c3,
-                "project": project });
+                "project": project,
+                "stage" : stage });
             savingBacklogAction.setCallback(this, function (response) {
                 var state = response.getState();
                 if (state === "SUCCESS"){

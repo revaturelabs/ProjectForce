@@ -160,7 +160,7 @@ public with sharing class KanbanProjectApexClass {
 
     // Refactor String Names
     @AuraEnabled
-    public static List<Backlog__c> addNewBacklog(String columnId, String story, String l1, String l2, String l3, String c1, String c2, String c3, String project) {
+    public static List<Backlog__c> addNewBacklog(String columnId, String story, String l1, String l2, String l3, String c1, String c2, String c3, String project, String stage) {
 
 
         Backlog__c backlog = new Backlog__c();
@@ -193,7 +193,7 @@ public with sharing class KanbanProjectApexClass {
             System.debug(cl1);
 
             backlog.Story__c = story;
-            //backlog.Stage__c = stage;
+            backlog.Stage__c = stage;
             backlog.CardLabel1__c = cl1.Id;
             //backlog.Project__c = project;
 
@@ -217,7 +217,7 @@ public with sharing class KanbanProjectApexClass {
             insert labels;
 
             backlog.Story__c = story;
-            //backlog.Stage__c = stage;
+            backlog.Stage__c = stage;
             backlog.CardLabel1__c = cl1.Id;
             backlog.CardLabel2__c = cl2.Id;
             //backlog.Project__c = project;
@@ -246,7 +246,7 @@ public with sharing class KanbanProjectApexClass {
             insert labels;
 
             backlog.Story__c = story;
-            //backlog.Stage__c = stage;
+            backlog.Stage__c = stage;
             backlog.CardLabel1__c = cl1.Id;
             backlog.CardLabel2__c = cl2.Id;
             backlog.CardLabel3__c = cl3.Id;

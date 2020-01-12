@@ -62,6 +62,7 @@
         var title = event.getParam("title");
         // Get the backlog record that is currently dragged
         var backlog = event.getParam("backlog");
+        //alert(backlog.Story__c);
         // get the current list of back logs
         var listOfBacklogs = component.get('v.backlogs');
         

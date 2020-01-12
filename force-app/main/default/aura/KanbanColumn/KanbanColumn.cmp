@@ -15,7 +15,7 @@
     <aura:attribute name="showDates" type="boolean" default="true"/>
     <aura:attribute name="startDate" type="String"/>
     <aura:attribute name="endDate" type="String"/>
-    <!-- <aura:attribute name="stage" type="String"/> -->
+    <aura:attribute name="stage" type="String"/>
     <aura:attribute name="story" type="String" />
     <aura:attribute name="label1" type="String" />
     <aura:attribute name="label2" type="String" />

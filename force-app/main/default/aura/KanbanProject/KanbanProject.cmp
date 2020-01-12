@@ -21,7 +21,7 @@
     <aura:handler name="droppedOnColumn" event="c:droppedOnColumn" action="{!c.droppedHandler}"></aura:handler>
     <div class="slds-col columns">
             <aura:iteration items="{!v.kanbanColumns}" var="col" indexVar="i">
-                   <c:KanbanColumn projectId="{!v.project}" columnId="{!col.Id}" title="{!col.Label__c}" />
+                   <c:KanbanColumn stage="{!v.stage}" projectId="{!v.project}" columnId="{!col.Id}" title="{!col.Label__c}" />
             </aura:iteration>
            
             <aura:set attribute="else">
