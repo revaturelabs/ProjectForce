@@ -53,7 +53,7 @@
 
     saveCard: function (component, event, helper) {
 
-        var story = component.get('v.columnId');
+        var story = component.get('v.story');
         if (story === undefined || story === "" ){
             var toastEvent = $A.get("e.force:showToast");
             toastEvent.setParams({
