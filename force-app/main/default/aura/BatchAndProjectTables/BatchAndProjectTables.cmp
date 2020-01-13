@@ -2,9 +2,11 @@
     <aura:attribute name="tableHeight" type="String" default="300" />
     <aura:attribute name="selectedBatchIds" type="List" />
     <aura:attribute name="color" type="String" default="C307C3" />
+    <aura:attribute name='tableReadyStatus' type='Integer' default='0'/>
 
     <aura:handler name="TableItemSelectedEvent" event="c:TableItemSelectedEvent" action="{!c.handleItemSelectedEvent}" />
     <aura:handler name="saveInlineEdits" event="c:SaveInlineEditsEvent" action="{!c.handleSaveInlineEditsEvent}" />
+    <aura:handler event="c:TableInitCompleteEvent" action="{!c.initSelections}"/>
 
     <aura:registerEvent name="BatchInformationEvent" type="c:BatchInformationEvent" />
 
@@ -14,8 +16,8 @@
             height="{!v.tableHeight}"
             queryObject="Training__c" 
             tableHeader="Batch Table"
-            queryFields="[['Name','text', false], ['Color__c', 'text', true], ['ProjectStartDate__c', 'date', false], 
-                         ['Trainer__r.Name', false], ['Project__r.Name', false], ['Room__r.Location__r.Name', false], 
+            queryFields="[['Name','text', false], ['Color__c', 'text', true, 'Color'], ['Start_Date__c','date', true,' Batch Start Date'], ['ProjectStartDate__c', 'date', false, 'Project Start Date'], 
+                        ['End_Date__c','date',false,'End Date'], ['Trainer__r.Name', false], ['Project__r.Name', false], ['Room__r.Location__r.Name', false], 
                          ['Room__r.Room_Number__c', false], ['Track__r.Name', false]]" />
         <!--Color Injection Error Fix Inside CreateDataTable Aura Component, from ['Color__c', 'text', true]
 			Keaton C. 01/05/2020, See: BatchAndProjectTablesHelper.js 
@@ -26,6 +28,7 @@
             height="{!v.tableHeight}"
             queryObject="Project__c" 
             tableHeader="Project Table" 
+            tableName="project"
             queryFields="[['Name','text', false], ['(SELECT Id FROM Trainings__r)', false]]" />
     </div>
 </aura:component>

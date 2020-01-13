@@ -8,8 +8,10 @@
         <members>ModalController</members>
         <members>ModalControllerTest</members>
         <members>TableApexController</members>
-        <members>TestDataFactory</members>
+        <members>DataFactory</members>
         <members>TestGantController</members>
+        <members>TableControllerTest</members>
+        <members>KanbanProjectTest</members>
         <name>ApexClass</name>
     </types>
     <types>
@@ -59,12 +61,22 @@
         <members>newD3App</members>
         <members>newD3Comp</members>
         <members>SaveInlineEditsEvent</members>
+        <members>TableInitCompleteEvent</members>
         <members>TableItemSelectedEvent</members>
         <name>AuraDefinitionBundle</name>
     </types>
     <types>
+        <members>Training__c</members>
+        <name>Workflow</name>
+    </types>
+    <types>
         <members>ProjectForce</members>
         <name>CustomApplication</name>
+    </types>
+    <types>
+        <members>Default_Kanban_Column_Creation</members>
+        <members>Set_Default_Project_Date</members>
+        <name>Flow</name>
     </types>
     <types>
         <members>*</members>
@@ -84,6 +96,7 @@
         <members>Training__c</members>
         <members>Backlog__c</members>
         <members>CardLabel__c</members>
+        <members>KanbanColumn__c</members>
         <name>CustomObject</name>
     </types>
     <types>

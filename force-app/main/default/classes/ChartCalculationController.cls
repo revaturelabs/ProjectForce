@@ -31,15 +31,16 @@ public without sharing class ChartCalculationController {
             }
         }
 
-        for(project__c p: projectsAfterToday){
-            if(p.trainings__r.size()<=1){
-                continue;
-            }
-            else {
-                for(Integer i = 0; i < p.trainings__r.size()-1; i++){
+        for(project__c p: projectsAfterToday)
+        {
+            if(p.trainings__r.size()>1)
+            {
+                for(Integer i = 0; i < p.trainings__r.size()-1; i++)
+                {
                     Date ProjectDate = p.trainings__r[i].projectStartDate__c;
                     Date nextProjectDate = p.trainings__r[i+1].projectStartDate__c;
-                    if((nextProjectDate >= ProjectDate) &&  (nextProjectDate <= (ProjectDate+21))){
+                    if((nextProjectDate >= ProjectDate) &&  (nextProjectDate <= (ProjectDate+21)))
+                    {
                         System.debug(overlapCount);
                         overlapCount++;
                         break;
@@ -55,7 +56,8 @@ public without sharing class ChartCalculationController {
     public static integer getNumProjects(){
         date today = System.today();
         list<project__c> projectsAfterToday=new list<project__c>();
-        for (project__c p:projectList){
+        for (project__c p:projectList)
+        {
             if(p.trainings__r.size()==0){
                 continue;
             }else if(p.trainings__r[p.trainings__r.size()-1].projectStartDate__c >= (today-21)){

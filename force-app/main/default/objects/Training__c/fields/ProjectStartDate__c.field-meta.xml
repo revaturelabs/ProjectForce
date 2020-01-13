@@ -2,9 +2,9 @@
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>ProjectStartDate__c</fullName>
     <externalId>false</externalId>
-    <formula>Start_Date__c +((BatchDuration__c -3)*7)</formula>
+    <inlineHelpText>If no Project Start Date is entered when creating a Training object, this field will default to three weeks before the end date of the training.</inlineHelpText>
     <label>ProjectStartDate</label>
-    <required>false</required>
+    <required>true</required>
     <trackHistory>false</trackHistory>
     <trackTrending>false</trackTrending>
     <type>Date</type>
