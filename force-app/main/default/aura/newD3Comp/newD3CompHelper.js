@@ -39,56 +39,34 @@
     
     // Bubble Sort based on a field (trackName, project, startDate, trainer) passed as a param
     sortArray: function (sortThis, sortColors, sortBy) {
+        switch (sortBy) {
+            case "Track":
+                sortBy="trackName";
+                break;
+            case "Project":
+                sortBy="project";
+                break;
+            case "Location":
+                sortBy="location";
+                break;
+            case "Trainer":
+                sortBy="trainer";
+                break;
+        }
         //Bubble sort each item in the array
         for (var i = 0; i < sortThis.length; i++)
             for (var j = 0; j < sortThis.length - 1; j++)
                 //compare the field on the SimpleTraining object with the category selected
-                switch (sortBy) {
-                    case "Track":
-                        if (sortThis[j].trackName > sortThis[j + 1].trackName) {
-                            // swap arr[j+1] and arr[i]
-                            var temp = sortThis[j];
-                            sortThis[j] = sortThis[j + 1];
-                            sortThis[j + 1] = temp;
-                            var tempColor = sortColors[j];
-                            sortColors[j] = sortColors[j + 1];
-                            sortColors[j + 1] = tempColor;
-                        }
-                        break;
-                    case "Project":
-                        if (sortThis[j].project > sortThis[j + 1].project) {
-                            // swap arr[j+1] and arr[i]
-                            var temp = sortThis[j];
-                            sortThis[j] = sortThis[j + 1];
-                            sortThis[j + 1] = temp;
-                            var tempColor = sortColors[j];
-                            sortColors[j] = sortColors[j + 1];
-                            sortColors[j + 1] = tempColor;
-                        }
-                        break;
-                    case "Date":
-                        if (sortThis[j].startDate > sortThis[j + 1].startDate) {
-                            // swap arr[j+1] and arr[i]
-                            var temp = sortThis[j];
-                            sortThis[j] = sortThis[j + 1];
-                            sortThis[j + 1] = temp;
-                            var tempColor = sortColors[j];
-                            sortColors[j] = sortColors[j + 1];
-                            sortColors[j + 1] = tempColor;
-                        }
-                        break;
-                    case "Trainer":
-                        if (sortThis[j].trainer > sortThis[j + 1].trainer) {
-                            // swap arr[j+1] and arr[i]
-                            var temp = sortThis[j];
-                            sortThis[j] = sortThis[j + 1];
-                            sortThis[j + 1] = temp;
-                            var tempColor = sortColors[j];
-                            sortColors[j] = sortColors[j + 1];
-                            sortColors[j + 1] = tempColor;
-                        }
-                        break;
+                if (sortThis[j][sortBy] > sortThis[j + 1][sortBy]) {
+                    // swap arr[j+1] and arr[i]
+                    var temp = sortThis[j];
+                    sortThis[j] = sortThis[j + 1];
+                    sortThis[j + 1] = temp;
+                    var tempColor = sortColors[j];
+                    sortColors[j] = sortColors[j + 1];
+                    sortColors[j + 1] = tempColor;
                 }
+
         return sortThis;
     },
     
@@ -253,7 +231,6 @@
         var durations = [];
         var colors = [];
         // var holdColors = [];
-        console.log(data);
         for (var i = 0; i < data.length; i++) 
         {   colors[i] = data[i].color;
         }
@@ -296,8 +273,7 @@
             var label = `${data[i].name} - ${data[i].project} - ${data[i].trainer}`;
             labels[i] = label;
             durations[i] = projLength;
-            if(colorByField && currColors){
-                
+            if(colorByField && currColors && currColors.size>0){
                 colors[i]=currColors.get(data[i][colorByField]);
             }
         }
