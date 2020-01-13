@@ -52,21 +52,6 @@
     <custom>false</custom>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Backlog__c.CardLabel1__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Backlog__c.CardLabel2__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Backlog__c.CardLabel3__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>Backlog__c.DateLogged__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -78,11 +63,6 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Backlog__c.EndDateTime__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Backlog__c.NumberOfCardLabels__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
