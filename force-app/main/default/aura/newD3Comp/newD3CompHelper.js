@@ -14,8 +14,8 @@
     //    	|	creates chart using barOptions, data, and colors, and puts it on the canvas
     //
     //    	updateData(component)
-    //    	|	find data in the tempList attribute and update the chart to display the data in tempList
-    //    	|	additionally, reapply colors, to ensure continuity.
+    //    	|	find data in the filteredTrainings attribute and update the chart to display the data in
+    //      |   filteredTrainings additionally, reapply colors, to ensure continuity.
     //
     //    	Array(Integers) = convertDate(array of strings)
     //    	|	converts given array into an array of integers for the x-axis
@@ -23,7 +23,7 @@
     //    	Array(SimpleTraining) = filterData(track string, Location string, Date string, chart, SimpleTraining array, component)
     //    	|	take selected filter values, and find any SimpleTraining objects which match either
     //    	|	the location or the track, and start after the date given. then store the data in
-    //    	|	tempList and run updateData to update the chart with the new tempList.
+    //    	|	filteredTrainings and run updateData to update the chart with the new filteredTrainings.
     //
     //    	setInitFilterValues(component, event)
     //    	|	set the initial values displayed and stored in the Filters, the SortBy, and the Color boxes
@@ -38,21 +38,58 @@
     ////////////////////////////////////////////
     
     // Bubble Sort based on a field (trackName, project, startDate, trainer) passed as a param
-    // Deprecated: The only function that calls it has no way of being fired
-    sortArray: function (array, colorArray, sortBy) 
-    {   //Bubble sort each item in the array
-        for (var i = 0; i < array.length; i++)
-            for (var j = 0; j < array.length - 1; j++)
-                // if literal value of field sortBy of array element j is greater than that of j+1
-                if ( JSON.stringify(array[j][sortBy]) > JSON.stringify(array[j + 1][sortBy] ) ) 
-                {   var temp = array[j];
-                    array[j] = array[j+1];
-                    array[j+1] = temp;
-                    var tempColor = colorArray[j];
-                    colorArray[j] = colorArray[j+1];
-                    colorArray[j+1] = tempColor;
+    sortArray: function (sortThis, sortColors, sortBy) {
+        //Bubble sort each item in the array
+        for (var i = 0; i < sortThis.length; i++)
+            for (var j = 0; j < sortThis.length - 1; j++)
+                //compare the field on the SimpleTraining object with the category selected
+                switch (sortBy) {
+                    case "Track":
+                        if (sortThis[j].trackName > sortThis[j + 1].trackName) {
+                            // swap arr[j+1] and arr[i]
+                            var temp = sortThis[j];
+                            sortThis[j] = sortThis[j + 1];
+                            sortThis[j + 1] = temp;
+                            var tempColor = sortColors[j];
+                            sortColors[j] = sortColors[j + 1];
+                            sortColors[j + 1] = tempColor;
+                        }
+                        break;
+                    case "Project":
+                        if (sortThis[j].project > sortThis[j + 1].project) {
+                            // swap arr[j+1] and arr[i]
+                            var temp = sortThis[j];
+                            sortThis[j] = sortThis[j + 1];
+                            sortThis[j + 1] = temp;
+                            var tempColor = sortColors[j];
+                            sortColors[j] = sortColors[j + 1];
+                            sortColors[j + 1] = tempColor;
+                        }
+                        break;
+                    case "Date":
+                        if (sortThis[j].startDate > sortThis[j + 1].startDate) {
+                            // swap arr[j+1] and arr[i]
+                            var temp = sortThis[j];
+                            sortThis[j] = sortThis[j + 1];
+                            sortThis[j + 1] = temp;
+                            var tempColor = sortColors[j];
+                            sortColors[j] = sortColors[j + 1];
+                            sortColors[j + 1] = tempColor;
+                        }
+                        break;
+                    case "Trainer":
+                        if (sortThis[j].trainer > sortThis[j + 1].trainer) {
+                            // swap arr[j+1] and arr[i]
+                            var temp = sortThis[j];
+                            sortThis[j] = sortThis[j + 1];
+                            sortThis[j + 1] = temp;
+                            var tempColor = sortColors[j];
+                            sortColors[j] = sortColors[j + 1];
+                            sortColors[j + 1] = tempColor;
+                        }
+                        break;
                 }
-        return array;
+        return sortThis;
     },
     
     //creating the chart and passing in data
@@ -167,8 +204,9 @@
     
     /*
         addToChart clears the current gantt chart, formats each selected project
-        into the correct JSON Format, then adds it to the views v.tempList for 
-        this.updateData() to populate the gantt chart with the v.tempList.
+        into the correct JSON Format, then adds it to the views v.selectedTrainings and 
+        v.filteredTrainings for 
+        this.updateData() to populate the gantt chart with the v.filteredTrainings.
     */
     addToChart : function (component, projectsToAdd) 
     {   // Sweep clean the current Data on the gantt chart to avoid
@@ -194,8 +232,9 @@
             currentData.push(newData);
         }
         
-        // Populate the tempList controller with newly loaded project data
-        component.set("v.tempList", currentData);
+        // Populate selectedTrainings and filteredTrainings with newly loaded project data
+        component.set("v.selectedTrainings", currentData);
+        component.set('v.filteredTrainings', currentData);
         this.updateData(component);
     },
     
@@ -205,7 +244,7 @@
         let projLength = 21;
         // Grabbing the attributes from the component that we will be either using or updating
         var chart = component.get("v.dasChart");
-        var data = component.get("v.tempList");
+        var data = component.get("v.filteredTrainings");
         // var currColors = component.get('v.DisplayColors');
         
         // Declare arrays to hold new data being passed in
@@ -343,7 +382,7 @@
         }
         
         //once the data has been selected, update the attributes on the page to stay current.
-        component.set("v.tempList", correctData);
+        component.set("v.filteredTrainings", correctData);
         component.set("v.DisplayColors", correctColors);
         this.updateData(component);
         
@@ -413,53 +452,3 @@
         return colorsApplied;
     }
 });
-
-// Leftover from sortArray
-//compare the field on the SimpleTraining object with the category selected
-                /*switch (sortBy)     // we could do away with this switch and just plop sortBy in as a member
-                {   case "Track":   // iirc in javascript the name of a member is also its string key
-                        if ( JSON.stringify(sortThis[j].trackName) > JSON.stringify(sortThis[j + 1].trackName) ) 
-                        {   var temp = sortThis[j];
-                            sortThis[j] = sortThis[j + 1];
-                            sortThis[j + 1] = temp;
-                            var tempColor = sortColors[j];
-                            sortColors[j] = sortColors[j + 1];
-                            sortColors[j + 1] = tempColor;
-                        }
-                        break;
-                    case "Project":
-                        if (JSON.stringify(sortThis[j].project) > JSON.stringify(
-                            sortThis[j + 1].project)) {
-                            // swap arr[j+1] and arr[i]
-                            var temp = sortThis[j];
-                            sortThis[j] = sortThis[j + 1];
-                            sortThis[j + 1] = temp;
-                            var tempColor = sortColors[j];
-                            sortColors[j] = sortColors[j + 1];
-                            sortColors[j + 1] = tempColor;
-                        }
-                        break;
-                    case "Date":
-                        if (JSON.stringify(sortThis[j].startDate) > JSON.stringify(
-                            sortThis[j + 1].startDate)) {
-                            // swap arr[j+1] and arr[i]
-                            var temp = sortThis[j];
-                            sortThis[j] = sortThis[j + 1];
-                            sortThis[j + 1] = temp;
-                            var tempColor = sortColors[j];
-                            sortColors[j] = sortColors[j + 1];
-                            sortColors[j + 1] = tempColor;
-                        }
-                        break;
-                    case "Trainer":
-                        if (JSON.stringify(sortThis[j].trainer) > JSON.stringify(
-                            sortThis[j + 1].trainer)) {
-                            // swap arr[j+1] and arr[i]
-                            var temp = sortThis[j];
-                            sortThis[j] = sortThis[j + 1];
-                            sortThis[j + 1] = temp;
-                            var tempColor = sortColors[j];
-                            sortColors[j] = sortColors[j + 1];
-                            sortColors[j + 1] = tempColor;
-                        }
-                        break;*/

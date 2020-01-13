@@ -76,7 +76,7 @@
                 if (activePoint._datasetIndex === 1) {
                     activePoint.hidden = true;
                     var currIndex = activePoints[0]._index;
-                    var currSimpleTraining = component.get("v.tempList")[currIndex];
+                    var currSimpleTraining = component.get("v.filteredTrainings")[currIndex];
                     var childCmp = component.find("modalComp");
                     let location = currSimpleTraining.location;
                     let track = currSimpleTraining.trackName;
@@ -181,11 +181,11 @@
     
     runSort: function(component, event, helper) {
         var sortBy = component.find("select").get("v.value");
-        var allTrainings = component.get("v.allTrainings");
+        var filteredTrainings = component.get("v.filteredTrainings");
         var getColors = component.get('v.DisplayColors');
-        helper.sortArray(allTrainings, getColors, sortBy);
+        helper.sortArray(filteredTrainings, getColors, sortBy);
         helper.updateData(component);
-        helper.sortArray(allTrainings, getColors, sortBy);
+        helper.sortArray(filteredTrainings, getColors, sortBy);
         
         // change options of what to color bars by
         switch(sortBy){
@@ -217,20 +217,13 @@
     
     runFilter: function(component, event, helper) {
         //Grabbing Relevant data
-        var allTrainings = component.get("v.allTrainings");
+        var filteredTrainings = component.get("v.filteredTrainings");
         var myChart = component.get("v.dasChart");
         var selectedTrack = component.find("TrackFilter").get("v.value");
         var selectedLocation = component.find("LocationFilter").get("v.value");
         var selectedDate = component.find("DateFilter").get("v.value");
         var newData = helper.filterData(selectedTrack, selectedLocation, selectedDate,
-                                        myChart, allTrainings, component);
-        console.log(allTrainings);
-        console.log(myChart);
-        console.log(selectedTrack);
-        console.log(selectedLocation);
-        console.log(selectedDate);
-        console.log(newData);
-        console.log(component.get('v.qTraining'));
+                                        myChart, filteredTrainings, component);
         
         //
         var a = component.get("c.applyColors");
@@ -249,7 +242,7 @@
         if(activePoints.length > 0 )
         {
             var currIndex = activePoints[0]._index;                
-            var currSimpleTraining = component.get('v.tempList')[currIndex];
+            var currSimpleTraining = component.get('v.filteredTrainings')[currIndex];
             console.log('here is the current simple training: ');
             console.log(currSimpleTraining);
             
@@ -282,8 +275,8 @@
             let state = response.getState();
             if (state === "SUCCESS") {
                 let returnedList = response.getReturnValue();
-                component.set("v.tempList", returnedList);
-                let displayList = component.get("v.tempList");
+                component.set("v.filteredTrainings", returnedList);
+                let displayList = component.get("v.filteredTrainings");
                 for (let currRecord = 0; currRecord < displayList.length; currRecord++) {
                     for (let currReturned = 0; currReturned < returnedList.length; 
                          currReturned++) {
@@ -293,7 +286,7 @@
                         }
                     }
                 }
-                component.set("v.tempList", displayList);
+                component.set("v.filteredTrainings", displayList);
                 helper.updateData(component);
             } else {
                 console.log("callout failed with state: " + state);
@@ -319,7 +312,7 @@
     
     applyColors:function(component, event, helper) {
         var myChart = component.get('v.dasChart');
-        var currTrainings = component.get('v.tempList');
+        var currTrainings = component.get('v.filteredTrainings');
         var allTracks = [];
         var allColors = [];
         var colorElements = component.find('colors');
