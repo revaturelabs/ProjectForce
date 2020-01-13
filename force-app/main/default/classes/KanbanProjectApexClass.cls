@@ -162,7 +162,6 @@ public with sharing class KanbanProjectApexClass {
     @AuraEnabled
     public static List<Backlog__c> addNewBacklog(String columnId, String story, String l1, String l2, String l3, String c1, String c2, String c3, String project, String stage) {
 
-
         Backlog__c backlog = new Backlog__c();
         try {
             
