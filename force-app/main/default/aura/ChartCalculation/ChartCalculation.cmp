@@ -3,6 +3,7 @@
 	<aura:attribute name="overlappedProjects" type="Integer"/>
 	<aura:attribute name="numberOfProjects" type="Integer"/>
 	<aura:handler name="init" value="{!this}" action="{!c.init}" />
+    
 	<div class="slds-p-vertical_x-large">
 	<div class="slds-align_absolute-center" style="justify-content:space-around">
 	<!--<lightning:card title=" " >-->
