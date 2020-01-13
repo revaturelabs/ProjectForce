@@ -23,7 +23,7 @@
             }
         });
 
-        var actionGetCards = component.get('c.getBacklogsProject');
+        /* var actionGetCards = component.get('c.getBacklogsProject');
         actionGetCards.setParams({'projectId': project });
         actionGetCards.setCallback(this, function(response2) {
             if (response2.getState() === 'SUCCESS') {
@@ -34,18 +34,21 @@
             }
         });
 
-        $A.enqueueAction(actionGetCards);         
+        $A.enqueueAction(actionGetCards);   */       
         $A.enqueueAction(action); 
         
     },
+
     selectNew : function() {
         alert("new backlog modal goes here");
     },
+
     handleOpenClose : function(component) {
         let button = component.find("accordion")
         let sections = button.get('v.activeSectionName') ? '' : component.get('v.categories');
         button.set('v.activeSectionName', sections);
     },
+
     filter : function(component, event, helper) {
         let criteria = component.get('v.criteria');
         let recordsBackup = component.get('v.recordsBackup');
@@ -65,6 +68,7 @@
                 component.set('v.records', recordsBackup);
         }
     },
+    
     sort : function(component, event, helper) {
         let order = component.get('v.order');
         let records = component.get('v.records');
@@ -110,5 +114,4 @@
         });
         $A.enqueueAction(action);
     }
-
 })

@@ -16,16 +16,15 @@
 		var deleteCardAction = component.get('c.removeCard');
 
 		deleteCardAction.setParams({
-                "card" : cardId,
-				"story" : story });
-				
-				deleteCardAction.setCallback(this, function (response) {
-                var state = response.getState();
-                if (state === "SUCCESS"){
+			"cardId" : cardId });
+			
+			deleteCardAction.setCallback(this, function (response) {
+			var state = response.getState();
+			if (state === "SUCCESS"){
 
-                    $A.get("e.force:refreshView").fire();
-                }
-            });
+				$A.get("e.force:refreshView").fire();
+			}
+		});
 
 		$A.enqueueAction(deleteCardAction);  
 	},

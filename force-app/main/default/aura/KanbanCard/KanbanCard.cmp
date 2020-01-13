@@ -3,16 +3,13 @@
     <aura:attribute name="backlog" type="Backlog__c" />
     <aura:attribute name="Story" type="String" />
     <ltng:require styles="{!$Resource.bulma}" />
-    <aura:handler name="init" action="{!c.doInit}" value="{!this}" />
     <aura:handler name="change" action="{!c.updateStory}" value="{!v.Story}" />
     
     <div class="slds-card card draggable" draggable="true" ondragstart="{!c.onDragStart}">
+        <!-- Button that deletes the Card-->
         <lightning:button variant="Destructive" label="- Card" title="Success" onclick="{!c.deleteCard}" />
-        <aura:iteration end="{!v.backlog.NumberOfCardLabels__c}" items="0,1,2" var="item" indexVar="index">
-            <c:KanbanCardLabel backlog="{!v.backlog}" labelIndex="{!index + 1}" />
-            
-        </aura:iteration>
         <div class="slds-card__body slds-card__body_inner card-content">
+            <!-- Updates teh story field when you change the text area-->
             <ui:inputTextArea value="{! v.Story }" updateOn="change"></ui:inputTextArea> 
         </div>  
     </div>
