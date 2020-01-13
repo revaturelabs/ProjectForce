@@ -1,14 +1,8 @@
 ({
     doInit: function (component, event, helper) {
         // store apex controller method to a variable
-        var action = component.get("c.getBacklogs");
-        // store given project to a variable
-        // a kanban project controller shows the backlog of one project
-        // v.project is a required attribute
-        var project = component.get("v.project");
-        // set paramters to the apex controller method
-        // and execute the action
-        action.setParams({ project: project });
+        var action = component.get("c.getBacklogsProject");
+        action.setParams({ 'projectId' : component.get("v.project") });
         action.setCallback(this, function (response) {
             var state = response.getState();
             if (state === "SUCCESS") {
@@ -18,13 +12,46 @@
             }
         });
 
-        $A.enqueueAction(action);
+
+        var actionGetColumns = component.get("c.getKanbanColumns");
+
+        // store given project to a variable
+        // a kanban project controller shows the backlog of one project
+        // v.project is a required attribute
+
+        // Call Apex method to return Kanban Columns
+        actionGetColumns.setParams({ 'project' : component.get("v.project") });
+        actionGetColumns.setCallback(this, function (response) {
+            var state = response.getState();
+            if (state === "SUCCESS") {
+                component.set("v.kanbanColumns", response.getReturnValue());
+            } else {
+                console.log("Failed with state: " + state);
+            }
+        });
+
         component.set('v.EndDate','10/10/2019');
+        
+        // Call Apex and get the list of Order Options
+        // Set v.kanbanOrder 
+        var getOrderAction = component.get("c.getOrderOptions");
+        getOrderAction.setParams({ 'project' : component.get("v.project") });
+        getOrderAction.setCallback(this, function (response) {
+            var state = response.getState();
+            if (state === "SUCCESS") {
+                component.set("v.kanbanOrder", response.getReturnValue());
+            } else {
+                console.log("Failed with state: " + state);
+            }
+        })
+
+        $A.enqueueAction(action);
+        $A.enqueueAction(actionGetColumns);
+        $A.enqueueAction(getOrderAction);
     },
 
     /*
     * Handles the event fired by a Kanban Column. A Kanban column fires this event whena card is dragged over it
-    *
     */
     droppedHandler: function (component, event, helper) {
         // get event parameters
@@ -35,8 +62,9 @@
         var title = event.getParam("title");
         // Get the backlog record that is currently dragged
         var backlog = event.getParam("backlog");
+        //alert(backlog.Story__c);
         // get the current list of back logs
-        var listOfBacklogs = component.get("v.backlogs");
+        var listOfBacklogs = component.get('v.backlogs');
         
         // try to find the backlog that is dragged in the current list of backlogs
         // if it is find theBacklog will contain the found object, otherwise theBacklog will be null
@@ -78,8 +106,6 @@
                         theBacklog.Stage__c="Doing";
                         alert('Add the pull request url');
                         component.set("v.backlogs", listOfBacklogs);
-
-
                     }
                 } else {
                     console.log('pull request is',theBacklog.PullRequest__c);
@@ -107,122 +133,126 @@
             console.log("Could not find this ", backlog);
         }
     },
+
+    // Model for adding a column
     openModel: function (component, event, helper) {
-            // for Display Model,set the "isOpen" attribute to "true"
+        // for Display Model,set the "isOpen" attribute to "true"
+        helper.openModel(component);
 
-            helper.openModel(component);
+        var lab2 = component.find("label2");
+        console.log(lab2);
 
-            var lab2 = component.find("label2");
-            console.log(lab2);
+        $A.util.addClass(lab2, 'toggle');
+        // component.get("label3").className = "slds-hidden";
+        // console.log(component.find("label2"));
+        
+        
+    },
 
-            $A.util.addClass(lab2, 'toggle');
-
-
-            // component.get("label3").className = "slds-hidden";
-            // console.log(component.find("label2"));
-
-        },
-
+    // action for closing the add column model
     closeModel: function (component, event, helper) {
         // for Hide/Close Model,set the "isOpen" attribute to "Fasle"  
         helper.closeModel(component);
 
     },
 
-    saveCard: function (component, event, helper) {
+    // Model for deleting a column
+    openModelDeleteTheColumn: function (component, event, helper) {
+        // for Display Model,set the "isOpenDeleteColumn" attribute to "true"
 
-        var story = component.get('v.story');
+        helper.openModelDelCol(component);
 
-        if (story === undefined || story === "" ){
-            var toastEvent = $A.get("e.force:showToast");
-            toastEvent.setParams({
-                "title": "Save Failed",
-                "message": "Please make sure you have filled story."
-            });
-            toastEvent.fire();
-        }
+        var lab2 = component.find("label2");
+        console.log(lab2);
 
-        else {
+        $A.util.addClass(lab2, 'toggle');
+        // component.get("label3").className = "slds-hidden";
+        // console.log(component.find("label2"));
 
+    },
+
+    // action for closing the delete column model
+    closeModelDeleteTheColumn: function (component, event, helper) {
+        // for Hide/Close Model,set the "isOpenDeleteColumn" attribute to "Fasle"  
+        helper.closeModelDelCol(component);
+
+    },
+
+    saveColumn: function (component, event, helper) {
+        
             var stage = component.get('v.stage');
-
-            var l1 = component.get('v.label1');
-            var l2 = component.get('v.label2');
-            var l3 = component.get('v.label3');
-
-            var c1 = component.get('v.color1');
-            var c2 = component.get('v.color2');
-            var c3 = component.get('v.color3');
             var project = component.get('v.project');
+            var order = component.get('v.selectedOrderValue');
 
             console.log('Stage: ' + stage);
-            console.log('Story: ' + story);
-            console.log('Label 1: ' + l1);
-            console.log('Label 2: ' + l2);
-            console.log('Label 3: ' + l3);
-            console.log('Color 1: ' + c1);
-            console.log('Color 2: ' + c2);
-            console.log('Color 3: ' + c3);
+          
+            var savingColumnAction = component.get("c.addNewColumn");
 
-
-
-            var savingBacklogAction = component.get('c.addNewBacklog');
-
-            console.log(savingBacklogAction);
-
-            savingBacklogAction.setParams({
-                "stage" : stage,
-                "story" : story,
-                "l1" : l1,
-                "l2": l2,
-                "l3": l3,
-                "c1": c1,
-                "c2": c2,
-                "c3": c3,
-                "project": project
+            savingColumnAction.setParams({
+                "stage": stage,
+                "project": project,
+                "order": order
             });
 
-
-
-            savingBacklogAction.setCallback(this, function (response) {
-
+            savingColumnAction.setCallback(this, function (response) {
                 var state = response.getState();
 
                 if (state === "SUCCESS"){
-
                     var toastEvent = $A.get("e.force:showToast");
                     toastEvent.setParams({
                         "title": "Success",
-                        "message": "New card added to kanban board."
+                        "message": "New column added to kanban board."
                     });
                     toastEvent.fire();
                     
                     helper.closeModel(component);
                     $A.get("e.force:refreshView").fire();
                 }
-
                 else 
                 {
                     var toastEvent = $A.get("e.force:showToast");
                     toastEvent.setParams({
                         "title": "Failed",
-                        "message": "New card could not be added to kanban board"
+                        "message": "New column could not be added to kanban board"
                     });
                     toastEvent.fire();
                 }
-
             });
 
-            $A.enqueueAction(savingBacklogAction);
-            
-            
-        }
-        
-
-
-        
+           $A.enqueueAction(savingColumnAction);  
     },
 
-
+    deleteColumn: function (component, event, helper) {
     
+        var project = component.get('v.project');
+        var label = component.get('v.selectedValue');
+        var action = component.get("c.removeColumn");
+
+        action.setParams({ 
+                            'label' : label,
+                            'project': project 
+                        });
+        action.setCallback(this, function (response) {
+            var state = response.getState();
+            if (state === "SUCCESS") {
+                var toastEvent = $A.get("e.force:showToast");
+                    toastEvent.setParams({
+                        "title": "Success",
+                        "message": "Column deleted from kanban board."
+                    });
+                    toastEvent.fire();
+                helper.closeModel(component);
+                $A.get("e.force:refreshView").fire();
+            } else {
+                var toastEvent = $A.get("e.force:showToast");
+                    toastEvent.setParams({
+                        "title": "Failed",
+                        "message": "Column could not be deleted to kanban board"
+                    });
+                    toastEvent.fire();
+            }
+        });
+    
+        $A.enqueueAction(action);
+    },
 })
