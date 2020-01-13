@@ -294,13 +294,6 @@
     
     //	convert date method used for converting the date into an integer
     convertDate: function(data) {
-        // sort so dates are arranged earliest date to latest date and declare 
-        // populate date variables, we're leveraging built-in JavaScript date methods
-        // to find the difference in days between the minimum date and every other
-        // date, but JavaScript doesn't know that these are dates (thinks they're 
-        // strings), so we have to declare new dates
-        data = data.sort();
-        
         // we've arbitrarily decided that our chart should run from three months
         // prior to six months after today's date, so set the date three months
         // before today
