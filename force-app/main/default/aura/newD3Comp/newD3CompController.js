@@ -182,7 +182,10 @@
     runSort: function(component, event, helper) {
         var sortBy = component.find("select").get("v.value");
         var filteredTrainings = component.get("v.filteredTrainings");
-        var getColors = component.get('v.DisplayColors');
+        var getColors={};
+        for (let i=0;i<filteredTrainings.length;i++)
+            getColors[i]=filteredTrainings[i].color;
+        
         helper.sortArray(filteredTrainings, getColors, sortBy);
         helper.updateData(component);
         helper.sortArray(filteredTrainings, getColors, sortBy);
@@ -201,7 +204,9 @@
                 break;
                 */
             case "Review Completed":
-                component.set('v.fieldToSortBy', component.get('v.ReviewCompleted'));
+                //still need to get review status from database
+                //use component.get('v.ReviewCompleted') instead of null when complete
+                component.set('v.fieldToSortBy', null); 
                 break;
             case "Location":
                 component.set('v.fieldToSortBy', component.get('v.Locations'));
@@ -210,8 +215,7 @@
                 component.set('v.fieldToSortBy', component.get('v.Trainers'));
                 break;
             default:
-                // if it made it this far, then the user has selected choose one from
-                // Sort By, do nothing
+                component.set('v.fieldToSortBy',null);
         }
     },
     
@@ -311,16 +315,12 @@
     applyColors:function(component, event, helper) {
         var myChart = component.get('v.dasChart');
         var currTrainings = component.get('v.filteredTrainings');
-        var allTracks = [];
-        var allColors = [];
+        let colorUpdateMap = new Map();
         var colorElements = component.find('colors');
-        console.log('colorElements length is: ' + colorElements.length);
         for(let i=0; i<colorElements.length; i++) {
-            allTracks[i] = colorElements[i].get('v.id');
-            allColors[i] = colorElements[i].get('v.value');
+            colorUpdateMap.set(colorElements[i].get('v.id'),colorElements[i].get('v.value'));
         }
-        var newColors = helper.applyColors(allTracks, allColors, currTrainings);
-        component.set('v.DisplayColors', newColors);
+        component.set('v.DisplayColors', colorUpdateMap);
         helper.updateData(component);
     },
 });
