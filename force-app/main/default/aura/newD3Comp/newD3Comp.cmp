@@ -1,29 +1,121 @@
 <aura:component controller="GantController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,forceCommunity:availableForAllPageTypes,force:lightningQuickActionWithoutHeader" access="global">
-
-        <c:modal aura:id="modalComp"/>
-        <c:modal/>
+    
+    <c:modal aura:id="modalComp"/>
+    
     <!--This grabs the Chart.js library from the static resources, 
-		and runs the chart creation function when finished.-->
+  and runs the chart creation function when finished.-->
     <ltng:require scripts="{!$Resource.ChartJS}" afterScriptsLoaded="{!c.myAction}" />
     <!--These are variables being used to store data relevant to the chart.
-		It's how we  can maintain values being passed between js functions and apex functions as well. -->
-    <aura:attribute name="qTraining" type="List"/>
-    <aura:attribute name="tempList" type="List"/>
+  It's how we  can maintain values being passed between js functions and apex functions as well. -->
+    <aura:attribute name="allTrainings" type="List"/>
+    <aura:attribute name="filteredTrainings" type="List"/>
+    <aura:attribute name="selectedTrainings" type="List"/>
     <aura:attribute name="dasChart" type = "Object"/>
     <aura:attribute name="Tracks" type="Set"/>
     <aura:attribute name="StartDates" type="List"/>
     <aura:attribute name="Locations" type = "Set"/>
+    <aura:attribute name="ReviewCompleted" type="Set" default="['Review Completed', 'Review Not Completed']"/>
+    <aura:attribute name="Projects" type="Set"/>
+    <aura:attribute name="Trainers" type="Set"/>
     <aura:attribute name ="UserColors" type="List"/>
     <aura:attribute name = "DisplayColors" type = "List" />
+    <aura:attribute name="ChartStartFilter" type="String"/>
     <aura:attribute name="today" type="Date" default=""/>
-
+    
+    <!-- attributes for adding sorting functionality -->
+    <aura:attribute name="fieldToSortBy" type="Set"/>
+    <aura:attribute name="trackString" type="String" default="Track"/>
+    <aura:attribute name="projectString" type="String" default="Project"/>
+    <aura:attribute name="reviewCompleteString" type="String" 
+                    default="Review Complete"/>
+    <aura:attribute name="locationString" type="String" default="Location"/>
+    <aura:attribute name="trainerString" type="String" default="Trainer"/>
+    <aura:attribute name="sortByOptions" type="String[]"/>
+    <!-- init handler to load options for sortByOptions -->
+    <aura:handler name="init" value="{!this}" action="{!c.loadSortByOptions}"/>
+    <!-- maybe you want to add the ability to color by date later, but we felt that
+was best saved for a future sprint so all legacy code/functionality for filtering by 
+date throughout this component bundle other than choosing whether the bar lengths 
+reflect the duration of the project or the duration of the entire training have been
+ commented out
+    <aura:attribute name="dateString" type="String" default="Date"/>-->
+    
     <aura:registerEvent name="TableInitCompleteEvent" type="c:TableInitCompleteEvent"/>
-
     <aura:handler event="c:BatchInformationEvent" action="{!c.handleBatchInformationEvent}" />
     
-    
     <c:BatchAndProjectTables />
+
     <div class = "THIS">
+        <!--This div marks where all the chart manipulation sections can be found. -->
+        <div class="chartmanip" label="Chart Manipulations" >
+            
+            <!--Start the Filter section -->
+            <div  id="Filters">
+                <!--header-->
+                <header class="slds-modal__header">
+                    <h1 id="modal-heading-00" class="slds-modal__title slds-hyphenate">Bar Start Date</h1>
+                </header>
+                <lightning:select class="option-padding" name="chartSelect" label="Chart - Batch Start Date" value="{!v.ChartStartFilter}" onchange ="{!c.updateData}">
+                    <option value="projectStart">From Project Start Date</option>
+                    <option value="batchStart">From Batch Start Date</option>
+                </lightning:select>
+                
+                <!--header-->
+                <header class="slds-modal__header">
+                    <h1 id="modal-heading-01" class="slds-modal__title slds-hyphenate">Filter</h1>
+                </header>
+                <!--This is a selectbox that will hold the value for the Track filter -->
+                <lightning:select name="TrackFilter" label="Select a Track:" aura:id="TrackFilter" >
+                    <!--Iterate through all the tracks attribute, and add them to the select box -->
+                    <aura:iteration items="{!v.Tracks}" var="option">
+                        <option text="{!option}" value="{!option}"/>
+                    </aura:iteration>
+                </lightning:select>
+                <!--Another selectbox for the Location Filter -->
+                <lightning:select name="LocationFilter" label="Select a Location:" aura:id="LocationFilter" >
+                    <!--As before but iterate through the locations attribute instead -->
+                    <aura:iteration items="{!v.Locations}" var="option">
+                        <option text="{!option}" value="{!option}"/>
+                    </aura:iteration>
+                </lightning:select>
+                <!--Allow only batches that start after this date. Set automatically to today. -->                
+                <ui:inputDate aura:id="DateFilter" label="Select a Start Date" class="field" value="{!v.today}" displayDatePicker="true" />
+                <!--Press to run the runFilter function in the controller. -->
+                <button label="Run Filters" title="Run Filters" onclick="{!c.runFilter}" >Run Filters</button>
+            </div>
+            
+            <!--Beginning of the Sorting section -->
+            <div id="Sorting">
+                <!--Header -->
+                <header class="slds-modal__header">
+                    <h1 id="modal-heading-01" class="slds-modal__title slds-hyphenate">Sort</h1>
+                </header>
+                <!--Select what to sort by, and when it changes, run the runSort function in the controller. -->
+                <lightning:select aura:id="select" name="select" label="Sort By: "  onchange="{!c.runSort}">
+                    <option value="">choose one...</option>
+                    <aura:iteration items="{!v.sortByOptions}" var="option">
+                        <option value="{!option}" text="{!option}"/>
+                    </aura:iteration>
+                </lightning:select>
+            </div>
+            <!--Beginning of the Colors section -->
+            <div id="Colors">
+                <!--Header -->
+                <header class="slds-modal__header">
+                    <h1 id="modal-heading-01" class="slds-modal__title slds-hyphenate">Colors</h1>
+                </header>              
+                <!--Iterate through the Tracks attribute and for each track, add another color picker
+            w/ distinct ID's -->
+                <aura:iteration items="{!v.fieldToSortBy}" var="option" indexVar = "index">
+                    <aura:if isTrue="{! index != 0 }"> 
+                        {!option} Color:
+                        <lightning:input id="{!option}" type="color" name="color" value="#F26925" aura:id="colors" />
+                    </aura:if>
+                </aura:iteration>
+                <button label="Apply Colors" title="Apply Colors" onclick="{!c.applyColors}" >Apply Colors</button>
+            </div>
+            
+        </div>
         <!--Holds the Chart -->
         <div aura:id="chartIdThing" class="Chart">
             <div class="chartAreaWrapper">
@@ -32,6 +124,4 @@
             <c:ChartCalculation />
         </div>
     </div>
-       
-
 </aura:component>
