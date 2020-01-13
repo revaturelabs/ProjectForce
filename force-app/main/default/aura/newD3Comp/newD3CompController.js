@@ -205,7 +205,9 @@
                 break;
                 */
             case "Review Completed":
-                component.set('v.fieldToSortBy', component.get('v.ReviewCompleted'));
+                //still need to get review status from database
+                //use component.get('v.ReviewCompleted') instead of null when complete
+                component.set('v.fieldToSortBy', null); 
                 break;
             case "Location":
                 component.set('v.fieldToSortBy', component.get('v.Locations'));
@@ -214,8 +216,7 @@
                 component.set('v.fieldToSortBy', component.get('v.Trainers'));
                 break;
             default:
-                // if it made it this far, then the user has selected choose one from
-                // Sort By, do nothing
+                component.set('v.fieldToSortBy',null);
         }
     },
     
