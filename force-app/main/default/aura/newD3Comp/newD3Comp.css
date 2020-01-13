@@ -31,7 +31,13 @@
     float: right;
     width: 30%;
     margin-left:5%;
-    margin-right: 5%;}
+    margin-right: 5%;
+}
+.THIS #ColorsList{
+    overflow:auto;
+    max-height: 50vh;
+    display:block;
+}
 
 .THIS #Sorting {
     float: right;
