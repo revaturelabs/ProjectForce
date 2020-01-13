@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
-    <fullName>Must_have_project_start_date</fullName>
-    <active>true</active>
-    <description>A project start date must be set for reporting functionality</description>
-    <errorConditionFormula>ISNULL( ProjectStartDate__c )</errorConditionFormula>
-    <errorDisplayField>ProjectStartDate__c</errorDisplayField>
-    <errorMessage>Must set a project start date</errorMessage>
-</ValidationRule>

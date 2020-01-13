@@ -18,7 +18,7 @@
     <aura:attribute name="Projects" type="Set"/>
     <aura:attribute name="Trainers" type="Set"/>
     <aura:attribute name ="UserColors" type="List"/>
-    <aura:attribute name = "DisplayColors" type = "List" />
+    <aura:attribute name = "DisplayColors" type = "Map" />
     <aura:attribute name="ChartStartFilter" type="String"/>
     <aura:attribute name="today" type="Date" default=""/>
     
@@ -103,16 +103,19 @@ reflect the duration of the project or the duration of the entire training have 
                 <!--Header -->
                 <header class="slds-modal__header">
                     <h1 id="modal-heading-01" class="slds-modal__title slds-hyphenate">Colors</h1>
-                </header>              
-                <!--Iterate through the Tracks attribute and for each track, add another color picker
-            w/ distinct ID's -->
-                <aura:iteration items="{!v.fieldToSortBy}" var="option" indexVar = "index">
-                    <aura:if isTrue="{! index != 0 }"> 
-                        {!option} Color:
-                        <lightning:input id="{!option}" type="color" name="color" value="#F26925" aura:id="colors" />
-                    </aura:if>
-                </aura:iteration>
-                <button label="Apply Colors" title="Apply Colors" onclick="{!c.applyColors}" >Apply Colors</button>
+                </header>
+                <div id="ColorsList" >
+                    <!--Iterate through the Tracks attribute and for each track, add another color picker
+                		w/ distinct ID's -->
+                    <aura:iteration items="{!v.fieldToSortBy}" var="option" indexVar = "index">
+                        <aura:if isTrue="{! index != 0 }"> 
+                            {!option} Color:
+                            <lightning:input id="{!option}" type="color" name="color" value="#F26925" aura:id="colors" />
+                        </aura:if>
+                    </aura:iteration>
+                </div>
+               	<button label="Apply Colors" title="Apply Colors" onclick="{!c.applyColors}" >Apply Colors</button>
+
             </div>
             
         </div>

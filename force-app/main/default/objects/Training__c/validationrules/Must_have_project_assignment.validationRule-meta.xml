@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
-    <fullName>Must_have_project_assignment</fullName>
-    <active>true</active>
-    <errorConditionFormula>OR( ISNULL( Project__c ) , ISNULL( Project__r.Id ) )</errorConditionFormula>
-    <errorDisplayField>Project__c</errorDisplayField>
-    <errorMessage>Must have a valid project</errorMessage>
-</ValidationRule>
