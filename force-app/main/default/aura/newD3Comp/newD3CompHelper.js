@@ -2,6 +2,7 @@
     ////////////////////////////////////////////
     //    Gantt Chart Javascript Helper Class
     //    Created by: William Brown, Chao Chen, Auroiah Morgan, Geoffrey Murray
+    //    Modified by: Brady Achterberg, Ben Learn
     //    First Published: 9/24
     //    Purpose: To Provide abstracted functionality for the ProjectForce Gantt Chart.
     //    *********************Functions included:****************************
@@ -36,69 +37,27 @@
     //    If you have any questions, please email Geoffrey Murray @ geoffrey.murray.1995@gmail.com
     ////////////////////////////////////////////
     
-    //Bubble Sort based on Sort By Filter
-    sortArray: function(sortThis, sortColors, sortBy) {
-        //Bubble sort each item in the array
-        for (var currItem = 0; currItem < sortThis.length; currItem++) {
-            for (var j = 0; j < sortThis.length - 1; j++)
-                //compare the field on the SimpleTraining object with the category selected
-                switch (sortBy) {
-                    case "Track":
-                        if (JSON.stringify(sortThis[j].trackName) > JSON.stringify(
-                            sortThis[j + 1].trackName)) {
-                            // swap arr[j+1] and arr[i]
-                            var temp = sortThis[j];
-                            sortThis[j] = sortThis[j + 1];
-                            sortThis[j + 1] = temp;
-                            var tempColor = sortColors[j];
-                            sortColors[j] = sortColors[j + 1];
-                            sortColors[j + 1] = tempColor;
-                        }
-                        break;
-                    case "Project":
-                        if (JSON.stringify(sortThis[j].project) > JSON.stringify(
-                            sortThis[j + 1].project)) {
-                            // swap arr[j+1] and arr[i]
-                            var temp = sortThis[j];
-                            sortThis[j] = sortThis[j + 1];
-                            sortThis[j + 1] = temp;
-                            var tempColor = sortColors[j];
-                            sortColors[j] = sortColors[j + 1];
-                            sortColors[j + 1] = tempColor;
-                        }
-                        break;
-                    case "Date":
-                        if (JSON.stringify(sortThis[j].startDate) > JSON.stringify(
-                            sortThis[j + 1].startDate)) {
-                            // swap arr[j+1] and arr[i]
-                            var temp = sortThis[j];
-                            sortThis[j] = sortThis[j + 1];
-                            sortThis[j + 1] = temp;
-                            var tempColor = sortColors[j];
-                            sortColors[j] = sortColors[j + 1];
-                            sortColors[j + 1] = tempColor;
-                        }
-                        break;
-                    case "Trainer":
-                        if (JSON.stringify(sortThis[j].trainer) > JSON.stringify(
-                            sortThis[j + 1].trainer)) {
-                            // swap arr[j+1] and arr[i]
-                            var temp = sortThis[j];
-                            sortThis[j] = sortThis[j + 1];
-                            sortThis[j + 1] = temp;
-                            var tempColor = sortColors[j];
-                            sortColors[j] = sortColors[j + 1];
-                            sortColors[j + 1] = tempColor;
-                        }
-                        break;
+    // Bubble Sort based on a field (trackName, project, startDate, trainer) passed as a param
+    // Deprecated: The only function that calls it has no way of being fired
+    sortArray: function (array, colorArray, sortBy) 
+    {   //Bubble sort each item in the array
+        for (var i = 0; i < array.length; i++)
+            for (var j = 0; j < array.length - 1; j++)
+                // if literal value of field sortBy of array element j is greater than that of j+1
+                if ( JSON.stringify(array[j][sortBy]) > JSON.stringify(array[j + 1][sortBy] ) ) 
+                {   var temp = array[j];
+                    array[j] = array[j+1];
+                    array[j+1] = temp;
+                    var tempColor = colorArray[j];
+                    colorArray[j] = colorArray[j+1];
+                    colorArray[j+1] = tempColor;
                 }
-        }
-        return sortThis;
+        return array;
     },
     
     //creating the chart and passing in data
-    createChart: function(ctx, options, dataSet) {
-        //First, sort the data passed in according to the value in sortBy
+    /*createChart: function (ctx, options, dataSet) 
+    {   // First, sort the data passed in according to the value in sortBy
         // dataSet = this.sortArray(dataSet, sortBy);
         
         //Here we take the dataset and split it into several different arrays to make it easier to use.
@@ -106,41 +65,44 @@
         var tracks = [];
         var trainers = [];
         var projects = [];
-        var rooms = [];
-        for (let i = 0; i < dataSet.length; i++) {
+        // var rooms = [];
+        for (let i = 0; i < dataSet.length; i++) 
+        {   // Populate each array with respective fields of the dataset items
             startTimes[i] = dataSet[i].startDate;
             tracks[i] = dataSet[i].name;
             projects[i] = dataSet[i].project;
             trainers[i] = dataSet[i].trainer;
-            rooms[i] = dataSet[i].room; // not on Training__c pagelayout
+            // rooms[i] = dataSet[i].room; // not on Training__c pagelayout
         }
         
         // location, name, project, room, startDate, trackName, trainer, trainingId
         
-        //Once we have the startDates, we need it as an int.
-        var days = this.convertDate(startTimes);
+        // Once we have the startDates, we need them as ints.
+        var startTimesConverted = this.convertDate(startTimes);
         
         //currently no reason to believe the duration of a project will be longer than 3 weeks.
         var batchDuration = [];
-        var defaultDuration = 21;
-        for (var i = 0; i < days.length; i++){
-            batchDuration[i] = defaultDuration;
+        let projLength = 21;
+        
+        for (var i = 0; i < startTimesConverted.length; i++)
+        {   batchDuration[i] = projLength;
         }
         
-        //Setting the minimum date and maximum date displayed by the chart.
-        //This is based on the first and last dates in the data passed in.
-        var minDate = days[0];
-        var maxDate = days[0];
-        for (var i = 0; i < days.length - 1; i++) {
-            if (days[i] >= maxDate) {
-                maxDate = days[i];
-            }
-            if (days[i] <= minDate) {
-                minDate = days[i];
-            }
+        // Set the minimum date and maximum date displayed by the chart.
+        // This is based on the first and last dates in the data passed in.
+        var earliest = startTimesConverted[0];
+        var latest = startTimesConverted[0];
+        for (var i = 0; i < startTimesConverted.length - 1; i++) 
+        {   if (startTimesConverted[i] > latest) latest = startTimesConverted[i];
+            if (startTimesConverted[i] < earliest) earliest = startTimesConverted[i];
         }
+        latest += projLength;  // add the default batch duration
+        
+        // Set the keys in the options Javascript Object equal to the values just generated
+        options.scales.xAxes[0].ticks.max = latest;
+        options.scales.xAxes[0].ticks.min = earliest;
         return sortThis;
-    },
+    },*/
     
     //creating the chart and passing in data
     createChart: function(ctx, options, dataSet) {
@@ -169,7 +131,7 @@
         options.scales.xAxes[0].ticks.min = minMaxDates[0];
         options.scales.xAxes[0].offset = false;
         
-        //Create the labels that show up on the sides and when hovered over.
+        // Create the labels that show up on the sides and when hovered over.
         let tracksAndProjects = [];
         for (let i = 0; i < startTimes.length; i++) {
             var some = `${tracks[i]} - ${projects[i]} - ${trainers[i]}`;
@@ -208,9 +170,8 @@
         into the correct JSON Format, then adds it to the views v.tempList for 
         this.updateData() to populate the gantt chart with the v.tempList.
     */
-    addToChart: function(component, batchInfo) {
-        var projectsToAdd = batchInfo;
-        // Sweep clean the current Data on the gantt chart to avoid
+    addToChart : function (component, projectsToAdd) 
+    {   // Sweep clean the current Data on the gantt chart to avoid
         // duplicate population of previously selected projects.
         var currentData = [];
         
@@ -232,63 +193,53 @@
             };
             currentData.push(newData);
         }
-        //set temporary list of currently selected data
+        
+        // Populate the tempList controller with newly loaded project data
         component.set("v.tempList", currentData);
         this.updateData(component);
     },
     
-    //When a user selects a sort by filter, it will automatically sort the
-    //chart
-    updateData: function(component) {
-        //grabbing the attributes from the component that we will be
-        //either using or updating
+    // When a user selects a sort by filter, it will automatically sort the chart
+    updateData : function (component) 
+    {   // Get the batch length
+        let projLength = 21;
+        // Grabbing the attributes from the component that we will be either using or updating
         var chart = component.get("v.dasChart");
         var data = component.get("v.tempList");
         // var currColors = component.get('v.DisplayColors');
         
-        //declare arrays to hold new data being passed in
+        // Declare arrays to hold new data being passed in
         var startDates = [];
-        var holdBatchName = [];
-        var holdProject = [];
-        var holdLabels = [];
-        var holdTrainers = [];
+        var labels = [];
+        var durations = [];
+        var colors = [];
         // var holdColors = [];
-        var holdTest = [];
-        var holdTestColor = [];
         
-        let startDateSelect;
-        if(component.get("v.ChartStartFilter")=="projectStart")
-            for (let i=0;i<data.length;i++){
+        for (var i = 0; i < data.length; i++) 
+        {   colors[i] = data[i].color;
+        }
+        // set start dates to batch start date, or project start date if project filter is selected
+        if ( component.get("v.ChartStartFilter") == "projectStart" )
+            for (let i=0 ; i<data.length ; i++ ) 
                 startDates[i]=data[i].projectStartDate;
-            }
         else
-            for (let i=0;i<data.length;i++){
+            for ( let i=0 ; i<data.length ; i++ ) 
                 startDates[i]=data[i].startDate;
-            }
         
-        for (var i = 0; i < data.length; i++) {
-            holdBatchName[i] = data[i].name;
-            holdProject[i] = data[i].project;
-            holdTrainers[i] = data[i].trainer;
-            holdTestColor[i] = data[i].color;
-            let startDate = new Date(startDates[i]);
-            let endDate=new Date(data[i].endDate);
-            holdTest[i] = Math.ceil((endDate.getTime()-startDate.getTime()) / 86400000);
+        for (let i = 0; i < data.length; i++) 
+        {   var label = `${data[i].name} - ${data[i].project} - ${data[i].trainer}`;
+            labels[i] = label;
+            durations[i] = projLength;
         }
+        // set the color of the bars to user-selected color
+        component.set("v.UserColors", colors);
         
-        for (let i = 0; i < holdBatchName.length; i++) {
-            var some = `${holdBatchName[i]} - ${holdProject[i]} - ${holdTrainers[i]}`;
-            holdLabels[i] = some;
-            
-        }
-        //comment here
-        component.set("v.UserColors", holdTestColor);
-        
-        //assign new values to the chart properties
+        // Assign new values to the chart properties
         chart.data.datasets[0].data = this.convertDate(startDates);
-        chart.data.datasets[1].data = holdTest;
+        chart.data.datasets[1].data = durations;
         chart.data.datasets[1].backgroundColor = component.get("v.UserColors");
-        chart.data.labels = holdLabels;
+        chart.data.labels = labels;
+        // console.log(chart.controller.getDatasetMeta(0));
         
         //Once we have the startDates, we need it as an int.
         var minMaxDates = this.calcChartAxisLabels(startDates);
@@ -302,15 +253,14 @@
         chart.update();
     },
     
-    /*	convert date method used for converting the date into a integer because the chart only takes in integers as data and not actual date
-   */
+    /*	convert date method used for converting the date into an integer
+    */
     convertDate: function(data) {
         //declare necessary variables
         var arraySize = data.length;
         var d = [];
-        var dIntoInt = [];
         
-        //for all the data being passed in, take the string, and turn it into a number
+        // for all the data being passed in, take the string, and turn it into a number
         for (let currTI = 0; currTI < arraySize; currTI++) {
             //take the string and make it a date string readable by JS, then seperating it into month day and year
             var date = new Date(data[currTI]);
@@ -325,6 +275,130 @@
        * 	The chart only takes in integers as data, thus, the work around is taking the date and generate it into an integer
        * 	then in the x-axis tick, it'll do a callback with the integer value as the index of the array already set and return the value date.
        */
+        /*if (year >= currentYear && year <= currentYear + 1) 
+        {
+            //if this the date year is this current year
+            if (year == currentYear) {
+            /*	Checking the date year is a leap year; 366 days
+           * 	1-31 is jan 1-31, 32-60 is feb 1-29, etc.
+           * 	Takes the date and generate it into a integer within 366 days for leap year or 365 for normal year
+           
+            
+            if (year % 4 == 0) {
+                if (month == 1) {
+                    d[currTI] = day;
+                } else if (month == 2) {
+                    d[currTI] = day + 31;
+                } else if (month == 3) {
+                    d[currTI] = day + 31 + 29;
+                } else if (month == 4) {
+                    d[currTI] = day + 31 + 29 + 31;
+                } else if (month == 5) {
+                    d[currTI] = day + 31 + 29 + 31 + 30;
+                } else if (month == 6) {
+                    d[currTI] = day + 31 + 29 + 31 + 30 + 31;
+                } else if (month == 7) {
+                    d[currTI] = day + 31 + 29 + 31 + 30 + 31 + 30;
+                } else if (month == 8) {
+                    d[currTI] = day + 31 + 29 + 31 + 30 + 31 + 30 + 31;
+                } else if (month == 9) {
+                    d[currTI] = day + 31 + 29 + 31 + 30 + 31 + 30 + 31 + 31;
+                } else if (month == 10) {
+                    d[currTI] = day + 31 + 29 + 31 + 30 + 31 + 30 + 31 + 31 + 30;
+                } else if (month == 11) {
+                    d[currTI] = day + 31 + 29 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31;
+                } else if (month == 12) {
+                    d[currTI] =
+                        day + 31 + 29 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31 + 30;
+                }
+            } else {
+                if (month == 1) {
+                    d[currTI] = day;
+                } else if (month == 2) {
+                    d[currTI] = day + 31;
+                } else if (month == 3) {
+                    d[currTI] = day + 31 + 28;
+                } else if (month == 4) {
+                    d[currTI] = day + 31 + 28 + 31;
+                } else if (month == 5) {
+                    d[currTI] = day + 31 + 28 + 31 + 30;
+                } else if (month == 6) {
+                    d[currTI] = day + 31 + 28 + 31 + 30 + 31;
+                } else if (month == 7) {
+                    d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 30;
+                } else if (month == 8) {
+                    d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 30 + 31;
+                } else if (month == 9) {
+                    d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 30 + 31 + 31;
+                } else if (month == 10) {
+                    d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 30;
+                } else if (month == 11) {
+                    d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31;
+                } else if (month == 12) {
+                    d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31 + 30;
+                }
+            }
+        } else if (year == currentYear + 1) {
+            //checking if it's a leap year
+            if (year % 4 == 0) {
+                if (month == 1) {
+                    d[currTI] = day + 365;
+                } else if (month == 2) {
+                    d[currTI] = day + 31 + 365;
+                } else if (month == 3) {
+                    d[currTI] = day + 31 + 29 + 365;
+                } else if (month == 4) {
+                    d[currTI] = day + 31 + 29 + 31 + 365;
+                } else if (month == 5) {
+                    d[currTI] = day + 31 + 29 + 31 + 30 + 365;
+                } else if (month == 6) {
+                    d[currTI] = day + 31 + 29 + 31 + 30 + 31 + 365;
+                } else if (month == 7) {
+                    d[currTI] = day + 31 + 29 + 31 + 30 + 31 + 30 + 365;
+                } else if (month == 8) {
+                    d[currTI] = day + 31 + 29 + 31 + 30 + 31 + 30 + 31 + 365;
+                } else if (month == 9) {
+                    d[currTI] = day + 31 + 29 + 31 + 30 + 31 + 30 + 31 + 31 + 365;
+                } else if (month == 10) {
+                    d[currTI] =
+                        day + 31 + 29 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 365;
+                } else if (month == 11) {
+                    d[currTI] =
+                        day + 31 + 29 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31 + 365;
+                } else if (month == 12) {
+                    d[currTI] = day + 31 + 29 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31 + 
+                        30 + 365;
+                }
+            //checks if the previous year is a leap year, which means current data year cannot be a leap year.
+            } else {
+                if ((year - 1) % 4 == 0) {
+                    if (month == 1) {
+                        d[currTI] = day + 366;
+                    } else if (month == 2) {
+                        d[currTI] = day + 31 + 366;
+                    } else if (month == 3) {
+                        d[currTI] = day + 31 + 28 + 366;
+                    } else if (month == 4) {
+                        d[currTI] = day + 31 + 28 + 31 + 366;
+                    } else if (month == 5) {
+                        d[currTI] = day + 31 + 28 + 31 + 30 + 366;
+                    } else if (month == 6) {
+                        d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 366;
+                    } else if (month == 7) {
+                        d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 30 + 366;
+                    } else if (month == 8) {
+                        d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 30 + 31 + 366;
+                    } else if (month == 9) {
+                        d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 366;
+                    } else if (month == 10) {
+                        d[currTI] =
+                            day + 31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 366;
+                    } else if (month == 11) {
+                        d[currTI] =
+                            day + 31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31 + 366;
+                    } else if (month == 12) {
+                        d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31 + 
+                            30 + 366;*/
             if (year >= currentYear && year <= currentYear + 1) {
                 //if this the date year is this current year
                 if (year == currentYear) {
@@ -519,7 +593,7 @@
         
         //For each record, determine if it meets the Filter Criteria.
         for (var currData = 0; currData < allData.length; currData++) {
-            //**********************Filter Logic*****************
+            /**********************Filter Logic*****************/
             
             //If either selectbox had an actual value, the code enters this if statement
             if (selectedTrack != "All" || selectedLocation != "All") {
@@ -615,3 +689,53 @@
         return colorsApplied;
     }
 });
+
+// Leftover from sortArray
+//compare the field on the SimpleTraining object with the category selected
+                /*switch (sortBy)     // we could do away with this switch and just plop sortBy in as a member
+                {   case "Track":   // iirc in javascript the name of a member is also its string key
+                        if ( JSON.stringify(sortThis[j].trackName) > JSON.stringify(sortThis[j + 1].trackName) ) 
+                        {   var temp = sortThis[j];
+                            sortThis[j] = sortThis[j + 1];
+                            sortThis[j + 1] = temp;
+                            var tempColor = sortColors[j];
+                            sortColors[j] = sortColors[j + 1];
+                            sortColors[j + 1] = tempColor;
+                        }
+                        break;
+                    case "Project":
+                        if (JSON.stringify(sortThis[j].project) > JSON.stringify(
+                            sortThis[j + 1].project)) {
+                            // swap arr[j+1] and arr[i]
+                            var temp = sortThis[j];
+                            sortThis[j] = sortThis[j + 1];
+                            sortThis[j + 1] = temp;
+                            var tempColor = sortColors[j];
+                            sortColors[j] = sortColors[j + 1];
+                            sortColors[j + 1] = tempColor;
+                        }
+                        break;
+                    case "Date":
+                        if (JSON.stringify(sortThis[j].startDate) > JSON.stringify(
+                            sortThis[j + 1].startDate)) {
+                            // swap arr[j+1] and arr[i]
+                            var temp = sortThis[j];
+                            sortThis[j] = sortThis[j + 1];
+                            sortThis[j + 1] = temp;
+                            var tempColor = sortColors[j];
+                            sortColors[j] = sortColors[j + 1];
+                            sortColors[j + 1] = tempColor;
+                        }
+                        break;
+                    case "Trainer":
+                        if (JSON.stringify(sortThis[j].trainer) > JSON.stringify(
+                            sortThis[j + 1].trainer)) {
+                            // swap arr[j+1] and arr[i]
+                            var temp = sortThis[j];
+                            sortThis[j] = sortThis[j + 1];
+                            sortThis[j + 1] = temp;
+                            var tempColor = sortColors[j];
+                            sortColors[j] = sortColors[j + 1];
+                            sortColors[j + 1] = tempColor;
+                        }
+                        break;*/
