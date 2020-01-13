@@ -7,6 +7,27 @@ public with sharing class KanbanProjectTest {
     }
     
     @isTest
+    public static void testKanbanColumns ()
+    {   string project = [ SELECT Id FROM Project__c LIMIT 1 ].id;
+        List<KanbanColumn__c> expected = [	SELECT Id, Name, Label__c, Order__c
+            								FROM KanbanColumn__c
+                							WHERE Project__c =: project
+                                         	ORDER BY Order__c ASC
+        								 ];
+        List<KanbanColumn__c> actual = KanbanProjectApexClass.getKanbanColumns(project);
+        System.assertEquals(expected, actual);
+    }
+    
+    @isTest
+    public static void testOrderOptions ()
+    {	string project = [ SELECT Id FROM Project__c LIMIT 1 ].id;
+     	List<string> expected = new List<string> {'1', '2', '3'};
+     	List<string> actual = KanbanProjectApexClass.getOrderOptions(project);
+        System.assertEquals(expected, actual);
+    }
+}
+    /*
+    @isTest
     public static void testSaveBacklog() {
         // Query, change Stage and then Save one Backlog
         Backlog__c backlog = new Backlog__c();
@@ -36,7 +57,7 @@ public with sharing class KanbanProjectTest {
     
     @isTest
     public static void testAddBacklogs ()
-    {											// Test no labels
+    {										// Test no labels
         KanbanProjectApexClass.addNewBacklog(	'Doing', 'Get test coverage to 90%', 
                                              	null, null, null, 
                                              	null, null, null, null
@@ -52,6 +73,4 @@ public with sharing class KanbanProjectTest {
         KanbanProjectApexClass.addNewBacklog(	'Doing', 'Get test coverage to 90%', 
                                              	'Label1', 'Label2', 'Label3', 
                                              	null, null, null, null
-                                            );
-    }
-}
+                                            );*/
