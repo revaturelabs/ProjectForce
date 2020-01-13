@@ -186,7 +186,7 @@
         for (let i=0;i<filteredTrainings.length;i++)
             getColors[i]=filteredTrainings[i].color;
         
-        helper.sortArray(allTrainings, getColors, sortBy);
+        helper.sortArray(filteredTrainings, getColors, sortBy);
         helper.updateData(component);
         helper.sortArray(filteredTrainings, getColors, sortBy);
         
