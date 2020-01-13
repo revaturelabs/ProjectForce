@@ -206,7 +206,7 @@
         // Grabbing the attributes from the component that we will be either using or updating
         var chart = component.get("v.dasChart");
         var data = component.get("v.tempList");
-        // var currColors = component.get('v.DisplayColors');
+        var currColors = component.get('v.DisplayColors');
         
         // Declare arrays to hold new data being passed in
         var startDates = [];
@@ -227,12 +227,15 @@
                 startDates[i]=data[i].startDate;
         
         for (let i = 0; i < data.length; i++) 
-        {   var label = `${data[i].name} - ${data[i].project} - ${data[i].trainer}`;
+        {   
+            var label = `${data[i].name} - ${data[i].project} - ${data[i].trainer}`;
             labels[i] = label;
             durations[i] = projLength;
         }
         // set the color of the bars to user-selected color
         component.set("v.UserColors", colors);
+        console.log('color info below');
+        console.log(colors);
         
         // Assign new values to the chart properties
         chart.data.datasets[0].data = this.convertDate(startDates);
@@ -620,7 +623,6 @@
         
         //once the data has been selected, update the attributes on the page to stay current.
         component.set("v.tempList", correctData);
-        component.set("v.DisplayColors", correctColors);
         this.updateData(component);
         
         return correctData;
@@ -670,24 +672,6 @@
         maxDate += defaultDuration;
         return [minDate,maxDate,days];
     },
-    
-    applyColors: function(tracks, colors, allBatches) {
-        var colorsApplied = [];
-        var colorsAppliedCounter = 0;
-        for(let currBatch = 0; currBatch < allBatches.length; currBatch++) {
-            console.log('here is tracks.length: '+tracks.length);
-            for(let currTrack = 0; currTrack < tracks.length; currTrack++) {
-                console.log('trackName: '+JSON.stringify(allBatches[currBatch].trackName));
-                console.log('tracks[currTrack]: '+tracks[currTrack]);
-                if(JSON.stringify(allBatches[currBatch].trackName)==tracks[currTrack]){
-                    console.log('The if statement has been entered. The new color is: ' + colors[currTrack]);
-                    colorsApplied[colorsAppliedCounter] = colors[currTrack];
-                    colorsAppliedCounter++;  
-                }
-            }
-        }
-        return colorsApplied;
-    }
 });
 
 // Leftover from sortArray

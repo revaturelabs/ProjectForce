@@ -182,7 +182,11 @@
     runSort: function(component, event, helper) {
         var sortBy = component.find("select").get("v.value");
         var allTrainings = component.get("v.allTrainings");
-        var getColors = component.get('v.DisplayColors');
+        var getColors={};
+        var data=component.get('v.tempList');
+        for (let i=0;i<data.length;i++)
+            getColors[i]=data[i].color;
+        
         helper.sortArray(allTrainings, getColors, sortBy);
         helper.updateData(component);
         helper.sortArray(allTrainings, getColors, sortBy);
@@ -320,16 +324,13 @@
     applyColors:function(component, event, helper) {
         var myChart = component.get('v.dasChart');
         var currTrainings = component.get('v.tempList');
-        var allTracks = [];
-        var allColors = [];
+        let colorUpdateMap = new Map();
         var colorElements = component.find('colors');
         console.log('colorElements length is: ' + colorElements.length);
         for(let i=0; i<colorElements.length; i++) {
-            allTracks[i] = colorElements[i].get('v.id');
-            allColors[i] = colorElements[i].get('v.value');
+            colorUpdateMap.set(colorElements[i].get('v.id'),colorElements[i].get('v.value'));
         }
-        var newColors = helper.applyColors(allTracks, allColors, currTrainings);
-        component.set('v.DisplayColors', newColors);
+        component.set('v.DisplayColors', colorUpdateMap);
         helper.updateData(component);
     },
 });
