@@ -1,25 +1,42 @@
 ({
     doInit : function(component, event, helper) {
         // Retrieve records from server-side controller
-        var action = component.get('c.getBacklogs');
+        var action = component.get('c.getKanbanColumns');
         var project = component.get("v.project");
-        action.setParams({project: project });
+        action.setParams({'project': project });
         action.setCallback(this, function(response) {
             if (response.getState() === 'SUCCESS') {
                 // Retrieve accordion categories
                 let categories = [];
                 
                 response.getReturnValue().forEach(function(record) {
-                    if (record.Stage__c && categories.indexOf(record.Stage__c) === -1) {
-                        categories.push(record.Stage__c);
-                    } 
+                    //if (record.Label__c && categories.indexOf(record.Label__c) === -1) {
+                        categories.push(record.Label__c);
+//} 
                 });
+                component.set('v.categories', categories);
+/*
                 component.set('v.records', response.getReturnValue());
                 component.set('v.recordsBackup', response.getReturnValue());
                 component.set("v.showSaveCancelBtn",false);
+                */
             }
         });
-        $A.enqueueAction(action);        
+
+        var actionGetCards = component.get('c.getBacklogsProject');
+        actionGetCards.setParams({'projectId': project });
+        actionGetCards.setCallback(this, function(response2) {
+            if (response2.getState() === 'SUCCESS') {
+                //alert(response.getState());
+                component.set('v.records', response2.getReturnValue());
+                component.set('v.recordsBackup', response2.getReturnValue());
+                component.set("v.showSaveCancelBtn",false);
+            }
+        });
+
+        $A.enqueueAction(actionGetCards);         
+        $A.enqueueAction(action); 
+        
     },
     selectNew : function() {
         alert("new backlog modal goes here");
