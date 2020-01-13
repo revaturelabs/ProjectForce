@@ -253,310 +253,34 @@
         chart.update();
     },
     
-    /*	convert date method used for converting the date into an integer
-    */
+    //	convert date method used for converting the date into an integer
     convertDate: function(data) {
-        //declare necessary variables
-        var arraySize = data.length;
-        var d = [];
+        // sort so dates are arranged earliest date to latest date and declare 
+        // populate date variables, we're leveraging built-in JavaScript date methods
+        // to find the difference in days between the minimum date and every other
+        // date, but JavaScript doesn't know that these are dates (thinks they're 
+        // strings), so we have to declare new dates
+        data = data.sort();
         
-        // for all the data being passed in, take the string, and turn it into a number
-        for (let currTI = 0; currTI < arraySize; currTI++) {
-            //take the string and make it a date string readable by JS, then seperating it into month day and year
-            var date = new Date(data[currTI]);
-            var month = date.getMonth() + 1;
-            var day = date.getUTCDate();
-            var year = date.getUTCFullYear();
+        // we've arbitrarily decided that our chart should run from three months
+        // prior to six months after today's date, so set the date three months
+        // before today
+        var minDate = new Date();
+        minDate.setMonth(minDate.getMonth() - 3);
+       	var d = [];
+        var currentDate, dateDifference;
+        for(let i = 0; i < data.length; i++){
+            // populate variable for current iteration
+            currentDate = new Date(data[i]);
             
-            var currentDate = new Date();
-            var currentYear = currentDate.getUTCFullYear();
+			// find difference in dates
+			dateDifference = currentDate.getTime() - minDate.getTime();
             
-            /*	Checking the date year being passed in is within this year or next year; Don't want to show data that old or way far ahead.
-       * 	The chart only takes in integers as data, thus, the work around is taking the date and generate it into an integer
-       * 	then in the x-axis tick, it'll do a callback with the integer value as the index of the array already set and return the value date.
-       */
-        /*if (year >= currentYear && year <= currentYear + 1) 
-        {
-            //if this the date year is this current year
-            if (year == currentYear) {
-            /*	Checking the date year is a leap year; 366 days
-           * 	1-31 is jan 1-31, 32-60 is feb 1-29, etc.
-           * 	Takes the date and generate it into a integer within 366 days for leap year or 365 for normal year
-           
-            
-            if (year % 4 == 0) {
-                if (month == 1) {
-                    d[currTI] = day;
-                } else if (month == 2) {
-                    d[currTI] = day + 31;
-                } else if (month == 3) {
-                    d[currTI] = day + 31 + 29;
-                } else if (month == 4) {
-                    d[currTI] = day + 31 + 29 + 31;
-                } else if (month == 5) {
-                    d[currTI] = day + 31 + 29 + 31 + 30;
-                } else if (month == 6) {
-                    d[currTI] = day + 31 + 29 + 31 + 30 + 31;
-                } else if (month == 7) {
-                    d[currTI] = day + 31 + 29 + 31 + 30 + 31 + 30;
-                } else if (month == 8) {
-                    d[currTI] = day + 31 + 29 + 31 + 30 + 31 + 30 + 31;
-                } else if (month == 9) {
-                    d[currTI] = day + 31 + 29 + 31 + 30 + 31 + 30 + 31 + 31;
-                } else if (month == 10) {
-                    d[currTI] = day + 31 + 29 + 31 + 30 + 31 + 30 + 31 + 31 + 30;
-                } else if (month == 11) {
-                    d[currTI] = day + 31 + 29 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31;
-                } else if (month == 12) {
-                    d[currTI] =
-                        day + 31 + 29 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31 + 30;
-                }
-            } else {
-                if (month == 1) {
-                    d[currTI] = day;
-                } else if (month == 2) {
-                    d[currTI] = day + 31;
-                } else if (month == 3) {
-                    d[currTI] = day + 31 + 28;
-                } else if (month == 4) {
-                    d[currTI] = day + 31 + 28 + 31;
-                } else if (month == 5) {
-                    d[currTI] = day + 31 + 28 + 31 + 30;
-                } else if (month == 6) {
-                    d[currTI] = day + 31 + 28 + 31 + 30 + 31;
-                } else if (month == 7) {
-                    d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 30;
-                } else if (month == 8) {
-                    d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 30 + 31;
-                } else if (month == 9) {
-                    d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 30 + 31 + 31;
-                } else if (month == 10) {
-                    d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 30;
-                } else if (month == 11) {
-                    d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31;
-                } else if (month == 12) {
-                    d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31 + 30;
-                }
-            }
-        } else if (year == currentYear + 1) {
-            //checking if it's a leap year
-            if (year % 4 == 0) {
-                if (month == 1) {
-                    d[currTI] = day + 365;
-                } else if (month == 2) {
-                    d[currTI] = day + 31 + 365;
-                } else if (month == 3) {
-                    d[currTI] = day + 31 + 29 + 365;
-                } else if (month == 4) {
-                    d[currTI] = day + 31 + 29 + 31 + 365;
-                } else if (month == 5) {
-                    d[currTI] = day + 31 + 29 + 31 + 30 + 365;
-                } else if (month == 6) {
-                    d[currTI] = day + 31 + 29 + 31 + 30 + 31 + 365;
-                } else if (month == 7) {
-                    d[currTI] = day + 31 + 29 + 31 + 30 + 31 + 30 + 365;
-                } else if (month == 8) {
-                    d[currTI] = day + 31 + 29 + 31 + 30 + 31 + 30 + 31 + 365;
-                } else if (month == 9) {
-                    d[currTI] = day + 31 + 29 + 31 + 30 + 31 + 30 + 31 + 31 + 365;
-                } else if (month == 10) {
-                    d[currTI] =
-                        day + 31 + 29 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 365;
-                } else if (month == 11) {
-                    d[currTI] =
-                        day + 31 + 29 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31 + 365;
-                } else if (month == 12) {
-                    d[currTI] = day + 31 + 29 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31 + 
-                        30 + 365;
-                }
-            //checks if the previous year is a leap year, which means current data year cannot be a leap year.
-            } else {
-                if ((year - 1) % 4 == 0) {
-                    if (month == 1) {
-                        d[currTI] = day + 366;
-                    } else if (month == 2) {
-                        d[currTI] = day + 31 + 366;
-                    } else if (month == 3) {
-                        d[currTI] = day + 31 + 28 + 366;
-                    } else if (month == 4) {
-                        d[currTI] = day + 31 + 28 + 31 + 366;
-                    } else if (month == 5) {
-                        d[currTI] = day + 31 + 28 + 31 + 30 + 366;
-                    } else if (month == 6) {
-                        d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 366;
-                    } else if (month == 7) {
-                        d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 30 + 366;
-                    } else if (month == 8) {
-                        d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 30 + 31 + 366;
-                    } else if (month == 9) {
-                        d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 366;
-                    } else if (month == 10) {
-                        d[currTI] =
-                            day + 31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 366;
-                    } else if (month == 11) {
-                        d[currTI] =
-                            day + 31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31 + 366;
-                    } else if (month == 12) {
-                        d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31 + 
-                            30 + 366;*/
-            if (year >= currentYear && year <= currentYear + 1) {
-                //if this the date year is this current year
-                if (year == currentYear) {
-                    /*	Checking the date year is a leap year; 366 days
-           * 	1-31 is jan 1-31, 32-60 is feb 1-29, etc.
-           * 	Takes the date and generate it into a integer within 366 days for leap year or 365 for normal year
-           */
-                    
-                    if (year % 4 == 0) {
-                        if (month == 1) {
-                            d[currTI] = day;
-                        } else if (month == 2) {
-                            d[currTI] = day + 31;
-                        } else if (month == 3) {
-                            d[currTI] = day + 31 + 29;
-                        } else if (month == 4) {
-                            d[currTI] = day + 31 + 29 + 31;
-                        } else if (month == 5) {
-                            d[currTI] = day + 31 + 29 + 31 + 30;
-                        } else if (month == 6) {
-                            d[currTI] = day + 31 + 29 + 31 + 30 + 31;
-                        } else if (month == 7) {
-                            d[currTI] = day + 31 + 29 + 31 + 30 + 31 + 30;
-                        } else if (month == 8) {
-                            d[currTI] = day + 31 + 29 + 31 + 30 + 31 + 30 + 31;
-                        } else if (month == 9) {
-                            d[currTI] = day + 31 + 29 + 31 + 30 + 31 + 30 + 31 + 31;
-                        } else if (month == 10) {
-                            d[currTI] = day + 31 + 29 + 31 + 30 + 31 + 30 + 31 + 31 + 30;
-                        } else if (month == 11) {
-                            d[currTI] = day + 31 + 29 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31;
-                        } else if (month == 12) {
-                            d[currTI] =
-                                day + 31 + 29 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31 + 30;
-                        }
-                    } else {
-                        if (month == 1) {
-                            d[currTI] = day;
-                        } else if (month == 2) {
-                            d[currTI] = day + 31;
-                        } else if (month == 3) {
-                            d[currTI] = day + 31 + 28;
-                        } else if (month == 4) {
-                            d[currTI] = day + 31 + 28 + 31;
-                        } else if (month == 5) {
-                            d[currTI] = day + 31 + 28 + 31 + 30;
-                        } else if (month == 6) {
-                            d[currTI] = day + 31 + 28 + 31 + 30 + 31;
-                        } else if (month == 7) {
-                            d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 30;
-                        } else if (month == 8) {
-                            d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 30 + 31;
-                        } else if (month == 9) {
-                            d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 30 + 31 + 31;
-                        } else if (month == 10) {
-                            d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 30;
-                        } else if (month == 11) {
-                            d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31;
-                        } else if (month == 12) {
-                            d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31 + 30;
-                        }
-                    }
-                } else if (year == currentYear + 1) {
-                    //checking if it's a leap year
-                    if (year % 4 == 0) {
-                        if (month == 1) {
-                            d[currTI] = day + 365;
-                        } else if (month == 2) {
-                            d[currTI] = day + 31 + 365;
-                        } else if (month == 3) {
-                            d[currTI] = day + 31 + 29 + 365;
-                        } else if (month == 4) {
-                            d[currTI] = day + 31 + 29 + 31 + 365;
-                        } else if (month == 5) {
-                            d[currTI] = day + 31 + 29 + 31 + 30 + 365;
-                        } else if (month == 6) {
-                            d[currTI] = day + 31 + 29 + 31 + 30 + 31 + 365;
-                        } else if (month == 7) {
-                            d[currTI] = day + 31 + 29 + 31 + 30 + 31 + 30 + 365;
-                        } else if (month == 8) {
-                            d[currTI] = day + 31 + 29 + 31 + 30 + 31 + 30 + 31 + 365;
-                        } else if (month == 9) {
-                            d[currTI] = day + 31 + 29 + 31 + 30 + 31 + 30 + 31 + 31 + 365;
-                        } else if (month == 10) {
-                            d[currTI] =
-                                day + 31 + 29 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 365;
-                        } else if (month == 11) {
-                            d[currTI] =
-                                day + 31 + 29 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31 + 365;
-                        } else if (month == 12) {
-                            d[currTI] = day + 31 + 29 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31 + 
-                                30 + 365;
-                        }
-                        //checks if the previous year is a leap year, because if the previous year was a leap year then the current data year cannot be a leap year.
-                    } else {
-                        if ((year - 1) % 4 == 0) {
-                            if (month == 1) {
-                                d[currTI] = day + 366;
-                            } else if (month == 2) {
-                                d[currTI] = day + 31 + 366;
-                            } else if (month == 3) {
-                                d[currTI] = day + 31 + 28 + 366;
-                            } else if (month == 4) {
-                                d[currTI] = day + 31 + 28 + 31 + 366;
-                            } else if (month == 5) {
-                                d[currTI] = day + 31 + 28 + 31 + 30 + 366;
-                            } else if (month == 6) {
-                                d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 366;
-                            } else if (month == 7) {
-                                d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 30 + 366;
-                            } else if (month == 8) {
-                                d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 30 + 31 + 366;
-                            } else if (month == 9) {
-                                d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 366;
-                            } else if (month == 10) {
-                                d[currTI] =
-                                    day + 31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 366;
-                            } else if (month == 11) {
-                                d[currTI] =
-                                    day + 31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31 + 366;
-                            } else if (month == 12) {
-                                d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31 + 
-                                    30 + 366;
-                            }
-                        } else {
-                            if (month == 1) {
-                                d[currTI] = day + 365;
-                            } else if (month == 2) {
-                                d[currTI] = day + 31 + 365;
-                            } else if (month == 3) {
-                                d[currTI] = day + 31 + 28 + 365;
-                            } else if (month == 4) {
-                                d[currTI] = day + 31 + 28 + 31 + 365;
-                            } else if (month == 5) {
-                                d[currTI] = day + 31 + 28 + 31 + 30 + 365;
-                            } else if (month == 6) {
-                                d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 365;
-                            } else if (month == 7) {
-                                d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 30 + 365;
-                            } else if (month == 8) {
-                                d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 30 + 31 + 365;
-                            } else if (month == 9) {
-                                d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 365;
-                            } else if (month == 10) {
-                                d[currTI] =
-                                    day + 31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 365;
-                            } else if (month == 11) {
-                                d[currTI] =
-                                    day + 31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31 + 365;
-                            } else if (month == 12) {
-                                d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31 +
-                                    30 + 365;
-                            }
-                        }
-                    }
-                }
-            }
-            d[currTI]=d[currTI]-1;
+            // dateDifference is in milliseconds, so divide it by milliseconds in a 
+            // second (1000), seconds in an hour (3600), and hours in a day (24) to 
+            // get a difference in days, push that to the list
+            d.push(Math.floor(dateDifference / (1000 * 3600 * 24)));
+            //console.log(Math.floor(dateDifference / (1000 * 3600 * 24)));
         }
         return d;
     },
