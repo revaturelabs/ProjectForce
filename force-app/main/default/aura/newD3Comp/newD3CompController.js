@@ -326,7 +326,6 @@
         var currTrainings = component.get('v.tempList');
         let colorUpdateMap = new Map();
         var colorElements = component.find('colors');
-        console.log('colorElements length is: ' + colorElements.length);
         for(let i=0; i<colorElements.length; i++) {
             colorUpdateMap.set(colorElements[i].get('v.id'),colorElements[i].get('v.value'));
         }

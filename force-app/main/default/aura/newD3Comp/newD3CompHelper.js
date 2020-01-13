@@ -214,7 +214,7 @@
         var durations = [];
         var colors = [];
         // var holdColors = [];
-        
+        console.log(data);
         for (var i = 0; i < data.length; i++) 
         {   colors[i] = data[i].color;
         }
@@ -226,16 +226,44 @@
             for ( let i=0 ; i<data.length ; i++ ) 
                 startDates[i]=data[i].startDate;
         
+        //sets variable name for coloring
+        let colorByField=component.find("select").get("v.value");
+        switch (colorByField){
+            case "Track":
+                colorByField="trackName";
+                break; 
+            case "Project":
+                colorByField="project";
+                break;  
+                /*
+            case "Date":
+                break;
+                */
+            case "Review Completed":
+                colorByField=null; //need to fetch review status from database
+                break;
+            case "Location":
+                colorByField="location";
+                break;
+            case "Trainer":
+                colorByField="trainer";
+                break;
+            default:
+                colorByField=null;
+        }
+        
         for (let i = 0; i < data.length; i++) 
         {   
             var label = `${data[i].name} - ${data[i].project} - ${data[i].trainer}`;
             labels[i] = label;
             durations[i] = projLength;
+            if(colorByField && currColors){
+                
+                colors[i]=currColors.get(data[i][colorByField]);
+            }
         }
         // set the color of the bars to user-selected color
         component.set("v.UserColors", colors);
-        console.log('color info below');
-        console.log(colors);
         
         // Assign new values to the chart properties
         chart.data.datasets[0].data = this.convertDate(startDates);
