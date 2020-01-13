@@ -136,42 +136,28 @@ public class DataFactory
         }
         Insert TrainingList;
         
-        // Insert kanban column records
-        for ( integer i = 0 ; i < numOfRecords / 2 ; i++ )
-        {	columnList.add( new KanbanColumn__c
-                           		(	Name='Test',
-                                 	Label__c='To Do',
-                                 	Order__c='1',
-                                 	Project__c=ProjectList[i].Id
-                                ) 
-                          );
-            columnList.add( new KanbanColumn__c
-                           		(	Name='Test',
-                                 	Label__c='Doing',
-                                 	Order__c='2',
-                                 	Project__c=ProjectList[i].Id
-                                )
-                          );
-            columnList.add( new KanbanColumn__c
-                           		(	Name='Test',
-                                 	Label__c='Done',
-                                 	Order__c='1',
-                                 	Project__c=ProjectList[i].Id
-                                ) 
-                          );
-        }
-        insert columnList;
-        
-        // Get full list of Kanban columns in projects mapped to the column's name
         Map<String, List<KanbanColumn__c> > columnsByName = new Map<String, List<KanbanColumn__c> > ();
-        for ( String s : CNAMES )	// SOQL calls: always 3
-			columnsByName.put( s, [	SELECT Id, Project__c 
-                                   	FROM KanbanColumn__c 
-                                   	WHERE Name='Test' 
-                                   	AND Label__c=:s 
-                                  ] 
-                             );
+        for ( String s : CNAMES ) columnsByName.put(s, new List<KanbanColumn__c>() );
         
+        // Insert kanban column records
+       	// Loop through CNAMES, the list of labels for our sample kanban columns
+        for ( integer i = 0 ; i < CNAMES.size() ; i++ )	// DML statements: always 3
+        {	// Add a new list of columns indexed by current label
+            columnsByName.put( CNAMES[i], new List<KanbanColumn__c>() );
+            // Loop through all projects and add a column attached to that project to the list for this label
+            for ( integer j = 0 ; j < numOfRecords / 2 ; j++ )
+        	{	columnsByName.get(CNAMES[i]).add
+                	(	new KanbanColumn__c(	Name = 'Test',
+                                            	Label__c = CNAMES[i],
+                                            	Order__c = String.valueOf(i+1),
+                                            	Project__c = ProjectList[j].Id
+                                           )
+                	);
+            }
+            // Add the new list to the database
+            insert columnsByName.get(CNAMES[i]);
+        }
+
 		// Insert task records
         for ( integer i = 0 ; i < numOfRecords / 2 ; i++ )
         {	for ( integer j = 0 ; j < Math.mod(i+6, 10) + 1 ; j++ )
@@ -197,6 +183,19 @@ public class DataFactory
             }
         }
         insert backlogList;
+        
+        // Delete all tasks attached to our projects that don't have the name 'Test'
+        // They got inserted in some magical way and we don't have time to figure out how
+        List<String> allProjectIDs = new List<String>();
+        for (Project__c p : [ SELECT Id FROM Project__c ] )
+        {	allProjectIDs.add(p.Id);
+        }
+        List<KanbanColumn__c> colsToDelete = [ 	SELECT Id, Name, Project__c 
+                                            	FROM KanbanColumn__c 
+                                            	WHERE Project__c IN : allProjectIDs 
+                                            	AND Name !='Test'
+                                             ];
+        delete colsToDelete;
     }
     // Insert three tracks if you haven't already
     private static void createTracks()
@@ -220,12 +219,21 @@ public class DataFactory
     public static void deleteTestData ()
     {	// We only need to delete these five lists from the org
         // Everything else gets cascade deleted and will throw a DMLException if you try
-        List<Trainer__c> trainerList = [ SELECT id FROM Trainer__c WHERE Name LIKE 'Test Trainer %' ];
+        List<Trainer__c> trainerList = [ 	SELECT id 
+                                        	FROM Trainer__c 
+                                        	WHERE Name LIKE 'Test Trainer %' 
+                                       ];
         if (TrainerList.size() > 0 ) delete TrainerList; 
-        List<Backlog__c> backlogList = [ SELECT id FROM Backlog__c WHERE Story__c='Test' ];
+        List<Backlog__c> backlogList = [ 	SELECT id 
+                                        	FROM Backlog__c 
+                                        	WHERE Story__c='Test' 
+                                       ];
         if (BacklogList.size() > 0 ) delete BacklogList;
-        List<Training__c> trainingList = [ SELECT id FROM Training__c WHERE Name LIKE 'Test Training %' ];
-        if (trainingList.size() > 0 ) delete trainingList;	// sometimes leftover trainers with no assigned trainings exist
+        List<Training__c> trainingList = [ 	SELECT id 
+                                          	FROM Training__c 
+                                          	WHERE Name LIKE 'Test Training %' 
+                                         ];
+        if (trainingList.size() > 0 ) delete trainingList;
         // Get lists of the dummy tracks and locations in the org
         List<Track__c> trackList = new List<Track__c>();
         for ( String s : tnames ) // SOQL calls: always 3
@@ -237,3 +245,38 @@ public class DataFactory
         if (LocList.size() > 0 ) delete LocList;
     }
 }
+
+/*    columnList.add( new KanbanColumn__c
+                           		(	Name='Test',
+                                 	Label__c='To Do',
+                                 	Order__c='1',
+                                 	Project__c=ProjectList[i].Id
+                                ) 
+                          );
+            columnList.add( new KanbanColumn__c
+                           		(	Name='Test',
+                                 	Label__c='Doing',
+                                 	Order__c='2',
+                                 	Project__c=ProjectList[i].Id
+                                )
+                          );
+            columnList.add( new KanbanColumn__c
+                           		(	Name='Test',
+                                 	Label__c='Done',
+                                 	Order__c='3',
+                                 	Project__c=ProjectList[i].Id
+                                ) 
+                          );
+        }*/
+        // System.debug(columnList.size());
+        
+        // Get full list of Kanban columns in projects mapped to the column's name
+        //Map<String, List<KanbanColumn__c> > columnsByName = new Map<String, List<KanbanColumn__c> > ();
+        /*for ( String s : CNAMES )	// SOQL calls: always 3
+			columnsByName.put( s, [	SELECT Id, Name, Label__c, Project__c 
+                                   	FROM KanbanColumn__c 
+                                   	WHERE Name='Test' 
+                                   	AND Label__c=:s 
+                                  ] 
+                             );
+        */

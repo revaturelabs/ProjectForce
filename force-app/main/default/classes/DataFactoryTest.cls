@@ -26,8 +26,9 @@ public class DataFactoryTest
         System.assertEquals( 200, rooms.size() );
         System.assertEquals( 100, projects.size() );
         System.assertEquals( 200, trainings.size() );
-        System.assertEquals( 600, columns.size() );
+        System.assertEquals( 300, columns.size() );
         System.assert( backlogs.size() > 800 );
+        
         // Check that we can delete all records
         DataFactory.deleteTestData();
         tracks = [ SELECT Id FROM Track__c ];
