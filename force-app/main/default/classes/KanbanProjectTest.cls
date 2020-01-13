@@ -39,7 +39,19 @@ public with sharing class KanbanProjectTest {
                                   	AND Order__c =: order
                                  ];
      	System.assertEquals(expected, actual);
-     	// TODO: Test negative cases and throw exceptions
+     	// Negative case, add col to null project (throws DMLException presumably)
+     	Track__c salesforce = [ SELECT Id FROM Track__c WHERE Name = 'Salesforce' LIMIT 1 ];
+     	Project__c emptyProj = new Project__c( Name='ProjectForce', Track__c=salesforce.Id );
+     	KanbanColumn__c neg1 = KanbanProjectApexClass.addNewColumn(stage, emptyProj.Id, order);
+     	// Negative case, add col to project without cols
+     	insert emptyProj;
+     	KanbanColumn__c bad = KanbanProjectApexClass.addNewColumn(stage, emptyProj.id, order);
+    }
+    
+    @isTest
+    static void testRemoveCol ()
+    {
+        
     }
 }
     /*
