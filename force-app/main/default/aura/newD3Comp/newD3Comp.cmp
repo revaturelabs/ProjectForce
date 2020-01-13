@@ -13,13 +13,16 @@
     <aura:attribute name="Tracks" type="Set"/>
     <aura:attribute name="StartDates" type="List"/>
     <aura:attribute name="Locations" type = "Set"/>
+    <aura:attribute name="ReviewCompleted" type="Set" default="['Review Completed', 'Review Not Completed']"/>
+    <aura:attribute name="Projects" type="Set"/>
+    <aura:attribute name="Trainers" type="Set"/>
     <aura:attribute name ="UserColors" type="List"/>
     <aura:attribute name = "DisplayColors" type = "List" />
     <aura:attribute name="ChartStartFilter" type="String"/>
     <aura:attribute name="today" type="Date" default=""/>
     
     <!-- attributes for adding sorting functionality -->
-    <aura:attribute name="fieldToSortBy" type="Set" default="{!v.Tracks}"/>
+    <aura:attribute name="fieldToSortBy" type="Set"/>
     <aura:attribute name="trackString" type="String" default="Track"/>
     <aura:attribute name="projectString" type="String" default="Project"/>
     <aura:attribute name="reviewCompleteString" type="String" 
@@ -29,7 +32,6 @@
     <aura:attribute name="sortByOptions" type="String[]"/>
     <!-- init handler to load options for sortByOptions -->
     <aura:handler name="init" value="{!this}" action="{!c.loadSortByOptions}"/>
-    
     <!-- maybe you want to add the ability to color by date later, but we felt that
 was best saved for a future sprint so all legacy code/functionality for filtering by 
 date throughout this component bundle other than choosing whether the bar lengths 

@@ -190,26 +190,26 @@
         helper.sortArray(allTrainings, getColors, sortBy);
         
         // change options of what to color bars by
-        var fieldToSortBy = component.get('v.fieldToSortBy');
         switch(sortBy){
             case "Track":
-                break;
+                console.log('here');
+                component.set('v.fieldToSortBy', component.get('v.Tracks'));
+                break; 
             case "Project":
-                break;
-                
+                component.set('v.fieldToSortBy', component.get('v.Projects'));
+                break;  
                 /*
             case "Date":
                 break;
                 */
-                
-                //
             case "Review Completed":
+                component.set('v.fieldToSortBy', component.get('v.ReviewCompleted'));
                 break;
-                //
-                
             case "Location":
+                component.set('v.fieldToSortBy', component.get('v.Locations'));
                 break;
             case "Trainer":
+                component.set('v.fieldToSortBy', component.get('v.Trainers'));
                 break;
             default:
                 // if it made it this far, then the user has selected choose one from
