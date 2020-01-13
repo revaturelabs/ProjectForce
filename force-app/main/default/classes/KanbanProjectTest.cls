@@ -2,10 +2,59 @@
 public with sharing class KanbanProjectTest {
 
     @TestSetup
-    public static void testSetup() {
+    static void testSetup() {
         DataFactory.createTestData(200);
     }
     
+    @isTest
+    static void testKanbanColumns ()
+    {   string project = [ SELECT Id FROM Project__c LIMIT 1 ].id;
+        List<KanbanColumn__c> expected = [	SELECT Id, Name, Label__c, Order__c
+            								FROM KanbanColumn__c
+                							WHERE Project__c =: project
+                                         	ORDER BY Order__c ASC
+        								 ];
+        List<KanbanColumn__c> actual = KanbanProjectApexClass.getKanbanColumns(project);
+        System.assertEquals(expected, actual);
+    }
+    
+    @isTest
+    static void testOrderOptions ()
+    {	string project = [ SELECT Id FROM Project__c LIMIT 1 ].id;
+     	List<string> expected = new List<string> { '1', '2', '3', '4' };
+     	List<string> actual = KanbanProjectApexClass.getOrderOptions(project);
+        System.assertEquals(expected, actual);
+    }
+    
+    @isTest
+    static void testAddCol ()
+    {	string stage = 'Sprint Backlog';
+     	string project = [ SELECT Id FROM Project__c LIMIT 1 ].id;
+     	string order = '1';
+     	KanbanColumn__c expected = KanbanProjectApexClass.addNewColumn(stage, project, order);
+        KanbanColumn__c actual = [ 	SELECT Id, Label__c, Project__c, Order__c 
+                                  	FROM KanbanColumn__c 
+                                  	WHERE Label__c =: stage
+                                  	AND Project__c =: project
+                                  	AND Order__c =: order
+                                 ];
+     	System.assertEquals(expected, actual);
+     	// Negative case, add col to null project (throws DMLException presumably)
+     	Track__c salesforce = [ SELECT Id FROM Track__c WHERE Name = 'Salesforce' LIMIT 1 ];
+     	Project__c emptyProj = new Project__c( Name='ProjectForce', Track__c=salesforce.Id );
+     	KanbanColumn__c neg1 = KanbanProjectApexClass.addNewColumn(stage, emptyProj.Id, order);
+     	// Negative case, add col to project without cols
+     	insert emptyProj;
+     	KanbanColumn__c bad = KanbanProjectApexClass.addNewColumn(stage, emptyProj.id, order);
+    }
+    
+    @isTest
+    static void testRemoveCol ()
+    {
+        
+    }
+}
+    /*
     @isTest
     public static void testSaveBacklog() {
         // Query, change Stage and then Save one Backlog
@@ -36,7 +85,7 @@ public with sharing class KanbanProjectTest {
     
     @isTest
     public static void testAddBacklogs ()
-    {		/*									// Test no labels
+    {										// Test no labels
         KanbanProjectApexClass.addNewBacklog(	'Doing', 'Get test coverage to 90%', 
                                              	null, null, null, 
                                              	null, null, null, null
@@ -53,5 +102,3 @@ public with sharing class KanbanProjectTest {
                                              	'Label1', 'Label2', 'Label3', 
                                              	null, null, null, null
                                             );*/
-    }
-}
