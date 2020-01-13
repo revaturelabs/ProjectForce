@@ -22,7 +22,7 @@
     //		runFilter(component, event, helper)
     //    	|	takes values given in the Filter section and throws them into Filter function
     //
-    //    If you have any questions, please email Geoffrey Murray @ geoffrey.murray.1995@gmail.com
+    //    If you have any questions, please email Geoffrey Murray @ geoffrey.murray.1995@gmail.com or Ben Learn @ blearn5241@gmail.com
     ////////////////////////////////////////////
     loadSortByOptions : function(component, event, helper){
         // also setting values for sortByOptions
@@ -224,8 +224,6 @@
         var selectedDate = component.find("DateFilter").get("v.value");
         var newData = helper.filterData(selectedTrack, selectedLocation, selectedDate,
                                         myChart, filteredTrainings, component);
-        
-        //
         var a = component.get("c.applyColors");
         $A.enqueueAction(a);
         component.set("v.filteredTrainings", newData);

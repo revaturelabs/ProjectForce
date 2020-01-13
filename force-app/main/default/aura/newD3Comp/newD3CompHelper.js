@@ -34,7 +34,7 @@
     //    	|	Also, the colors array passed in is specifically the options selected in the colors section of
     //    	|	the component. NOT the colors already assigned to each SimpleTraining object.
     //
-    //    If you have any questions, please email Geoffrey Murray @ geoffrey.murray.1995@gmail.com
+    //    If you have any questions, please email Geoffrey Murray @ geoffrey.murray.1995@gmail.com or Ben Learn @ blearn5241@gmail.com
     ////////////////////////////////////////////
     
     // Bubble Sort based on a field (trackName, project, startDate, trainer) passed as a param
@@ -340,7 +340,7 @@
         //take the dates of the data and store them in an array
         var dataDates = [];
         for (let i = 0; i < allData.length; i++) {
-            dataDates[i] = JSON.stringify(allData[i].startDate);
+            dataDates[i] = allData[i].startDate;
         }
         
         //convert the arrays from arrays of strings into arrays of numbers
@@ -355,22 +355,19 @@
             if (selectedTrack != "All" || selectedLocation != "All") {
                 //If the current record has the correct name or location, and the project starts after the listed date,
                 //enter
-                if (JSON.stringify(allData[currData].trackName) == selectedTrack &&
-                    JSON.stringify(allData[currData].location) == selectedLocation) {
+                if ((allData[currData].trackName == selectedTrack) && (allData[currData].location == selectedLocation)) {
                     //Add the current record to the array to be set as the current data
                     correctData[correctDataCounter] = allData[currData];
                     correctDataCounter++;
-                } else if (JSON.stringify(allData[currData].trackName) == selectedTrack &&
-                           selectedLocation == "All") {
+                } else if ((allData[currData].trackName == selectedTrack) && (selectedLocation == "All")) {
                     correctData[correctDataCounter] = allData[currData];
                     correctDataCounter++;
-                } else if (selectedTrack == "All" && JSON.stringify(
-                    allData[currData].location) == selectedLocation) {
+                } else if ((selectedTrack == "All") && (allData[currData].location == selectedLocation)) {
                     correctData[correctDataCounter] = allData[currData];
                     correctDataCounter++;
                 }
             } else {
-                correctData = allData;
+                correctData = component.get('v.selectedTrainings');
             }
         }
         
