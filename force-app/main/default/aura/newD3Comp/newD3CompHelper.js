@@ -14,8 +14,8 @@
     //    	|	creates chart using barOptions, data, and colors, and puts it on the canvas
     //
     //    	updateData(component)
-    //    	|	find data in the tempList attribute and update the chart to display the data in tempList
-    //    	|	additionally, reapply colors, to ensure continuity.
+    //    	|	find data in the filteredTrainings attribute and update the chart to display the data in
+    //      |   filteredTrainings additionally, reapply colors, to ensure continuity.
     //
     //    	Array(Integers) = convertDate(array of strings)
     //    	|	converts given array into an array of integers for the x-axis
@@ -23,7 +23,7 @@
     //    	Array(SimpleTraining) = filterData(track string, Location string, Date string, chart, SimpleTraining array, component)
     //    	|	take selected filter values, and find any SimpleTraining objects which match either
     //    	|	the location or the track, and start after the date given. then store the data in
-    //    	|	tempList and run updateData to update the chart with the new tempList.
+    //    	|	filteredTrainings and run updateData to update the chart with the new filteredTrainings.
     //
     //    	setInitFilterValues(component, event)
     //    	|	set the initial values displayed and stored in the Filters, the SortBy, and the Color boxes
@@ -38,21 +38,58 @@
     ////////////////////////////////////////////
     
     // Bubble Sort based on a field (trackName, project, startDate, trainer) passed as a param
-    // Deprecated: The only function that calls it has no way of being fired
-    sortArray: function (array, colorArray, sortBy) 
-    {   //Bubble sort each item in the array
-        for (var i = 0; i < array.length; i++)
-            for (var j = 0; j < array.length - 1; j++)
-                // if literal value of field sortBy of array element j is greater than that of j+1
-                if ( JSON.stringify(array[j][sortBy]) > JSON.stringify(array[j + 1][sortBy] ) ) 
-                {   var temp = array[j];
-                    array[j] = array[j+1];
-                    array[j+1] = temp;
-                    var tempColor = colorArray[j];
-                    colorArray[j] = colorArray[j+1];
-                    colorArray[j+1] = tempColor;
+    sortArray: function (sortThis, sortColors, sortBy) {
+        //Bubble sort each item in the array
+        for (var i = 0; i < sortThis.length; i++)
+            for (var j = 0; j < sortThis.length - 1; j++)
+                //compare the field on the SimpleTraining object with the category selected
+                switch (sortBy) {
+                    case "Track":
+                        if (sortThis[j].trackName > sortThis[j + 1].trackName) {
+                            // swap arr[j+1] and arr[i]
+                            var temp = sortThis[j];
+                            sortThis[j] = sortThis[j + 1];
+                            sortThis[j + 1] = temp;
+                            var tempColor = sortColors[j];
+                            sortColors[j] = sortColors[j + 1];
+                            sortColors[j + 1] = tempColor;
+                        }
+                        break;
+                    case "Project":
+                        if (sortThis[j].project > sortThis[j + 1].project) {
+                            // swap arr[j+1] and arr[i]
+                            var temp = sortThis[j];
+                            sortThis[j] = sortThis[j + 1];
+                            sortThis[j + 1] = temp;
+                            var tempColor = sortColors[j];
+                            sortColors[j] = sortColors[j + 1];
+                            sortColors[j + 1] = tempColor;
+                        }
+                        break;
+                    case "Date":
+                        if (sortThis[j].startDate > sortThis[j + 1].startDate) {
+                            // swap arr[j+1] and arr[i]
+                            var temp = sortThis[j];
+                            sortThis[j] = sortThis[j + 1];
+                            sortThis[j + 1] = temp;
+                            var tempColor = sortColors[j];
+                            sortColors[j] = sortColors[j + 1];
+                            sortColors[j + 1] = tempColor;
+                        }
+                        break;
+                    case "Trainer":
+                        if (sortThis[j].trainer > sortThis[j + 1].trainer) {
+                            // swap arr[j+1] and arr[i]
+                            var temp = sortThis[j];
+                            sortThis[j] = sortThis[j + 1];
+                            sortThis[j + 1] = temp;
+                            var tempColor = sortColors[j];
+                            sortColors[j] = sortColors[j + 1];
+                            sortColors[j + 1] = tempColor;
+                        }
+                        break;
                 }
-        return array;
+        return sortThis;
     },
     
     //creating the chart and passing in data
@@ -167,8 +204,9 @@
     
     /*
         addToChart clears the current gantt chart, formats each selected project
-        into the correct JSON Format, then adds it to the views v.tempList for 
-        this.updateData() to populate the gantt chart with the v.tempList.
+        into the correct JSON Format, then adds it to the views v.selectedTrainings and 
+        v.filteredTrainings for 
+        this.updateData() to populate the gantt chart with the v.filteredTrainings.
     */
     addToChart : function (component, projectsToAdd) 
     {   // Sweep clean the current Data on the gantt chart to avoid
@@ -194,8 +232,9 @@
             currentData.push(newData);
         }
         
-        // Populate the tempList controller with newly loaded project data
-        component.set("v.tempList", currentData);
+        // Populate selectedTrainings and filteredTrainings with newly loaded project data
+        component.set("v.selectedTrainings", currentData);
+        component.set('v.filteredTrainings', currentData);
         this.updateData(component);
     },
     
@@ -205,7 +244,7 @@
         let projLength = 21;
         // Grabbing the attributes from the component that we will be either using or updating
         var chart = component.get("v.dasChart");
-        var data = component.get("v.tempList");
+        var data = component.get("v.filteredTrainings");
         var currColors = component.get('v.DisplayColors');
         
         // Declare arrays to hold new data being passed in
@@ -284,310 +323,34 @@
         chart.update();
     },
     
-    /*	convert date method used for converting the date into an integer
-    */
+    //	convert date method used for converting the date into an integer
     convertDate: function(data) {
-        //declare necessary variables
-        var arraySize = data.length;
-        var d = [];
+        // sort so dates are arranged earliest date to latest date and declare 
+        // populate date variables, we're leveraging built-in JavaScript date methods
+        // to find the difference in days between the minimum date and every other
+        // date, but JavaScript doesn't know that these are dates (thinks they're 
+        // strings), so we have to declare new dates
+        data = data.sort();
         
-        // for all the data being passed in, take the string, and turn it into a number
-        for (let currTI = 0; currTI < arraySize; currTI++) {
-            //take the string and make it a date string readable by JS, then seperating it into month day and year
-            var date = new Date(data[currTI]);
-            var month = date.getMonth() + 1;
-            var day = date.getUTCDate();
-            var year = date.getUTCFullYear();
+        // we've arbitrarily decided that our chart should run from three months
+        // prior to six months after today's date, so set the date three months
+        // before today
+        var minDate = new Date();
+        minDate.setMonth(minDate.getMonth() - 3);
+       	var d = [];
+        var currentDate, dateDifference;
+        for(let i = 0; i < data.length; i++){
+            // populate variable for current iteration
+            currentDate = new Date(data[i]);
             
-            var currentDate = new Date();
-            var currentYear = currentDate.getUTCFullYear();
+			// find difference in dates
+			dateDifference = currentDate.getTime() - minDate.getTime();
             
-            /*	Checking the date year being passed in is within this year or next year; Don't want to show data that old or way far ahead.
-       * 	The chart only takes in integers as data, thus, the work around is taking the date and generate it into an integer
-       * 	then in the x-axis tick, it'll do a callback with the integer value as the index of the array already set and return the value date.
-       */
-        /*if (year >= currentYear && year <= currentYear + 1) 
-        {
-            //if this the date year is this current year
-            if (year == currentYear) {
-            /*	Checking the date year is a leap year; 366 days
-           * 	1-31 is jan 1-31, 32-60 is feb 1-29, etc.
-           * 	Takes the date and generate it into a integer within 366 days for leap year or 365 for normal year
-           
-            
-            if (year % 4 == 0) {
-                if (month == 1) {
-                    d[currTI] = day;
-                } else if (month == 2) {
-                    d[currTI] = day + 31;
-                } else if (month == 3) {
-                    d[currTI] = day + 31 + 29;
-                } else if (month == 4) {
-                    d[currTI] = day + 31 + 29 + 31;
-                } else if (month == 5) {
-                    d[currTI] = day + 31 + 29 + 31 + 30;
-                } else if (month == 6) {
-                    d[currTI] = day + 31 + 29 + 31 + 30 + 31;
-                } else if (month == 7) {
-                    d[currTI] = day + 31 + 29 + 31 + 30 + 31 + 30;
-                } else if (month == 8) {
-                    d[currTI] = day + 31 + 29 + 31 + 30 + 31 + 30 + 31;
-                } else if (month == 9) {
-                    d[currTI] = day + 31 + 29 + 31 + 30 + 31 + 30 + 31 + 31;
-                } else if (month == 10) {
-                    d[currTI] = day + 31 + 29 + 31 + 30 + 31 + 30 + 31 + 31 + 30;
-                } else if (month == 11) {
-                    d[currTI] = day + 31 + 29 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31;
-                } else if (month == 12) {
-                    d[currTI] =
-                        day + 31 + 29 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31 + 30;
-                }
-            } else {
-                if (month == 1) {
-                    d[currTI] = day;
-                } else if (month == 2) {
-                    d[currTI] = day + 31;
-                } else if (month == 3) {
-                    d[currTI] = day + 31 + 28;
-                } else if (month == 4) {
-                    d[currTI] = day + 31 + 28 + 31;
-                } else if (month == 5) {
-                    d[currTI] = day + 31 + 28 + 31 + 30;
-                } else if (month == 6) {
-                    d[currTI] = day + 31 + 28 + 31 + 30 + 31;
-                } else if (month == 7) {
-                    d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 30;
-                } else if (month == 8) {
-                    d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 30 + 31;
-                } else if (month == 9) {
-                    d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 30 + 31 + 31;
-                } else if (month == 10) {
-                    d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 30;
-                } else if (month == 11) {
-                    d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31;
-                } else if (month == 12) {
-                    d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31 + 30;
-                }
-            }
-        } else if (year == currentYear + 1) {
-            //checking if it's a leap year
-            if (year % 4 == 0) {
-                if (month == 1) {
-                    d[currTI] = day + 365;
-                } else if (month == 2) {
-                    d[currTI] = day + 31 + 365;
-                } else if (month == 3) {
-                    d[currTI] = day + 31 + 29 + 365;
-                } else if (month == 4) {
-                    d[currTI] = day + 31 + 29 + 31 + 365;
-                } else if (month == 5) {
-                    d[currTI] = day + 31 + 29 + 31 + 30 + 365;
-                } else if (month == 6) {
-                    d[currTI] = day + 31 + 29 + 31 + 30 + 31 + 365;
-                } else if (month == 7) {
-                    d[currTI] = day + 31 + 29 + 31 + 30 + 31 + 30 + 365;
-                } else if (month == 8) {
-                    d[currTI] = day + 31 + 29 + 31 + 30 + 31 + 30 + 31 + 365;
-                } else if (month == 9) {
-                    d[currTI] = day + 31 + 29 + 31 + 30 + 31 + 30 + 31 + 31 + 365;
-                } else if (month == 10) {
-                    d[currTI] =
-                        day + 31 + 29 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 365;
-                } else if (month == 11) {
-                    d[currTI] =
-                        day + 31 + 29 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31 + 365;
-                } else if (month == 12) {
-                    d[currTI] = day + 31 + 29 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31 + 
-                        30 + 365;
-                }
-            //checks if the previous year is a leap year, which means current data year cannot be a leap year.
-            } else {
-                if ((year - 1) % 4 == 0) {
-                    if (month == 1) {
-                        d[currTI] = day + 366;
-                    } else if (month == 2) {
-                        d[currTI] = day + 31 + 366;
-                    } else if (month == 3) {
-                        d[currTI] = day + 31 + 28 + 366;
-                    } else if (month == 4) {
-                        d[currTI] = day + 31 + 28 + 31 + 366;
-                    } else if (month == 5) {
-                        d[currTI] = day + 31 + 28 + 31 + 30 + 366;
-                    } else if (month == 6) {
-                        d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 366;
-                    } else if (month == 7) {
-                        d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 30 + 366;
-                    } else if (month == 8) {
-                        d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 30 + 31 + 366;
-                    } else if (month == 9) {
-                        d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 366;
-                    } else if (month == 10) {
-                        d[currTI] =
-                            day + 31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 366;
-                    } else if (month == 11) {
-                        d[currTI] =
-                            day + 31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31 + 366;
-                    } else if (month == 12) {
-                        d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31 + 
-                            30 + 366;*/
-            if (year >= currentYear && year <= currentYear + 1) {
-                //if this the date year is this current year
-                if (year == currentYear) {
-                    /*	Checking the date year is a leap year; 366 days
-           * 	1-31 is jan 1-31, 32-60 is feb 1-29, etc.
-           * 	Takes the date and generate it into a integer within 366 days for leap year or 365 for normal year
-           */
-                    
-                    if (year % 4 == 0) {
-                        if (month == 1) {
-                            d[currTI] = day;
-                        } else if (month == 2) {
-                            d[currTI] = day + 31;
-                        } else if (month == 3) {
-                            d[currTI] = day + 31 + 29;
-                        } else if (month == 4) {
-                            d[currTI] = day + 31 + 29 + 31;
-                        } else if (month == 5) {
-                            d[currTI] = day + 31 + 29 + 31 + 30;
-                        } else if (month == 6) {
-                            d[currTI] = day + 31 + 29 + 31 + 30 + 31;
-                        } else if (month == 7) {
-                            d[currTI] = day + 31 + 29 + 31 + 30 + 31 + 30;
-                        } else if (month == 8) {
-                            d[currTI] = day + 31 + 29 + 31 + 30 + 31 + 30 + 31;
-                        } else if (month == 9) {
-                            d[currTI] = day + 31 + 29 + 31 + 30 + 31 + 30 + 31 + 31;
-                        } else if (month == 10) {
-                            d[currTI] = day + 31 + 29 + 31 + 30 + 31 + 30 + 31 + 31 + 30;
-                        } else if (month == 11) {
-                            d[currTI] = day + 31 + 29 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31;
-                        } else if (month == 12) {
-                            d[currTI] =
-                                day + 31 + 29 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31 + 30;
-                        }
-                    } else {
-                        if (month == 1) {
-                            d[currTI] = day;
-                        } else if (month == 2) {
-                            d[currTI] = day + 31;
-                        } else if (month == 3) {
-                            d[currTI] = day + 31 + 28;
-                        } else if (month == 4) {
-                            d[currTI] = day + 31 + 28 + 31;
-                        } else if (month == 5) {
-                            d[currTI] = day + 31 + 28 + 31 + 30;
-                        } else if (month == 6) {
-                            d[currTI] = day + 31 + 28 + 31 + 30 + 31;
-                        } else if (month == 7) {
-                            d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 30;
-                        } else if (month == 8) {
-                            d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 30 + 31;
-                        } else if (month == 9) {
-                            d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 30 + 31 + 31;
-                        } else if (month == 10) {
-                            d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 30;
-                        } else if (month == 11) {
-                            d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31;
-                        } else if (month == 12) {
-                            d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31 + 30;
-                        }
-                    }
-                } else if (year == currentYear + 1) {
-                    //checking if it's a leap year
-                    if (year % 4 == 0) {
-                        if (month == 1) {
-                            d[currTI] = day + 365;
-                        } else if (month == 2) {
-                            d[currTI] = day + 31 + 365;
-                        } else if (month == 3) {
-                            d[currTI] = day + 31 + 29 + 365;
-                        } else if (month == 4) {
-                            d[currTI] = day + 31 + 29 + 31 + 365;
-                        } else if (month == 5) {
-                            d[currTI] = day + 31 + 29 + 31 + 30 + 365;
-                        } else if (month == 6) {
-                            d[currTI] = day + 31 + 29 + 31 + 30 + 31 + 365;
-                        } else if (month == 7) {
-                            d[currTI] = day + 31 + 29 + 31 + 30 + 31 + 30 + 365;
-                        } else if (month == 8) {
-                            d[currTI] = day + 31 + 29 + 31 + 30 + 31 + 30 + 31 + 365;
-                        } else if (month == 9) {
-                            d[currTI] = day + 31 + 29 + 31 + 30 + 31 + 30 + 31 + 31 + 365;
-                        } else if (month == 10) {
-                            d[currTI] =
-                                day + 31 + 29 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 365;
-                        } else if (month == 11) {
-                            d[currTI] =
-                                day + 31 + 29 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31 + 365;
-                        } else if (month == 12) {
-                            d[currTI] = day + 31 + 29 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31 + 
-                                30 + 365;
-                        }
-                        //checks if the previous year is a leap year, because if the previous year was a leap year then the current data year cannot be a leap year.
-                    } else {
-                        if ((year - 1) % 4 == 0) {
-                            if (month == 1) {
-                                d[currTI] = day + 366;
-                            } else if (month == 2) {
-                                d[currTI] = day + 31 + 366;
-                            } else if (month == 3) {
-                                d[currTI] = day + 31 + 28 + 366;
-                            } else if (month == 4) {
-                                d[currTI] = day + 31 + 28 + 31 + 366;
-                            } else if (month == 5) {
-                                d[currTI] = day + 31 + 28 + 31 + 30 + 366;
-                            } else if (month == 6) {
-                                d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 366;
-                            } else if (month == 7) {
-                                d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 30 + 366;
-                            } else if (month == 8) {
-                                d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 30 + 31 + 366;
-                            } else if (month == 9) {
-                                d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 366;
-                            } else if (month == 10) {
-                                d[currTI] =
-                                    day + 31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 366;
-                            } else if (month == 11) {
-                                d[currTI] =
-                                    day + 31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31 + 366;
-                            } else if (month == 12) {
-                                d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31 + 
-                                    30 + 366;
-                            }
-                        } else {
-                            if (month == 1) {
-                                d[currTI] = day + 365;
-                            } else if (month == 2) {
-                                d[currTI] = day + 31 + 365;
-                            } else if (month == 3) {
-                                d[currTI] = day + 31 + 28 + 365;
-                            } else if (month == 4) {
-                                d[currTI] = day + 31 + 28 + 31 + 365;
-                            } else if (month == 5) {
-                                d[currTI] = day + 31 + 28 + 31 + 30 + 365;
-                            } else if (month == 6) {
-                                d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 365;
-                            } else if (month == 7) {
-                                d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 30 + 365;
-                            } else if (month == 8) {
-                                d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 30 + 31 + 365;
-                            } else if (month == 9) {
-                                d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 365;
-                            } else if (month == 10) {
-                                d[currTI] =
-                                    day + 31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 365;
-                            } else if (month == 11) {
-                                d[currTI] =
-                                    day + 31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31 + 365;
-                            } else if (month == 12) {
-                                d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31 +
-                                    30 + 365;
-                            }
-                        }
-                    }
-                }
-            }
-            d[currTI]=d[currTI]-1;
+            // dateDifference is in milliseconds, so divide it by milliseconds in a 
+            // second (1000), seconds in an hour (3600), and hours in a day (24) to 
+            // get a difference in days, push that to the list
+            d.push(Math.floor(dateDifference / (1000 * 3600 * 24)));
+            //console.log(Math.floor(dateDifference / (1000 * 3600 * 24)));
         }
         return d;
     },
@@ -650,7 +413,8 @@
         }
         
         //once the data has been selected, update the attributes on the page to stay current.
-        component.set("v.tempList", correctData);
+        component.set("v.filteredTrainings", correctData);
+        component.set("v.DisplayColors", correctColors);
         this.updateData(component);
         
         return correctData;
@@ -700,54 +464,22 @@
         maxDate += defaultDuration;
         return [minDate,maxDate,days];
     },
+    
+    applyColors: function(tracks, colors, allBatches) {
+        var colorsApplied = [];
+        var colorsAppliedCounter = 0;
+        for(let currBatch = 0; currBatch < allBatches.length; currBatch++) {
+            console.log('here is tracks.length: '+tracks.length);
+            for(let currTrack = 0; currTrack < tracks.length; currTrack++) {
+                console.log('trackName: '+JSON.stringify(allBatches[currBatch].trackName));
+                console.log('tracks[currTrack]: '+tracks[currTrack]);
+                if(JSON.stringify(allBatches[currBatch].trackName)==tracks[currTrack]){
+                    console.log('The if statement has been entered. The new color is: ' + colors[currTrack]);
+                    colorsApplied[colorsAppliedCounter] = colors[currTrack];
+                    colorsAppliedCounter++;  
+                }
+            }
+        }
+        return colorsApplied;
+    }
 });
-
-// Leftover from sortArray
-//compare the field on the SimpleTraining object with the category selected
-                /*switch (sortBy)     // we could do away with this switch and just plop sortBy in as a member
-                {   case "Track":   // iirc in javascript the name of a member is also its string key
-                        if ( JSON.stringify(sortThis[j].trackName) > JSON.stringify(sortThis[j + 1].trackName) ) 
-                        {   var temp = sortThis[j];
-                            sortThis[j] = sortThis[j + 1];
-                            sortThis[j + 1] = temp;
-                            var tempColor = sortColors[j];
-                            sortColors[j] = sortColors[j + 1];
-                            sortColors[j + 1] = tempColor;
-                        }
-                        break;
-                    case "Project":
-                        if (JSON.stringify(sortThis[j].project) > JSON.stringify(
-                            sortThis[j + 1].project)) {
-                            // swap arr[j+1] and arr[i]
-                            var temp = sortThis[j];
-                            sortThis[j] = sortThis[j + 1];
-                            sortThis[j + 1] = temp;
-                            var tempColor = sortColors[j];
-                            sortColors[j] = sortColors[j + 1];
-                            sortColors[j + 1] = tempColor;
-                        }
-                        break;
-                    case "Date":
-                        if (JSON.stringify(sortThis[j].startDate) > JSON.stringify(
-                            sortThis[j + 1].startDate)) {
-                            // swap arr[j+1] and arr[i]
-                            var temp = sortThis[j];
-                            sortThis[j] = sortThis[j + 1];
-                            sortThis[j + 1] = temp;
-                            var tempColor = sortColors[j];
-                            sortColors[j] = sortColors[j + 1];
-                            sortColors[j + 1] = tempColor;
-                        }
-                        break;
-                    case "Trainer":
-                        if (JSON.stringify(sortThis[j].trainer) > JSON.stringify(
-                            sortThis[j + 1].trainer)) {
-                            // swap arr[j+1] and arr[i]
-                            var temp = sortThis[j];
-                            sortThis[j] = sortThis[j + 1];
-                            sortThis[j + 1] = temp;
-                            var tempColor = sortColors[j];
-                            sortColors[j] = sortColors[j + 1];
-                            sortColors[j + 1] = tempColor;
-                        }
-                        break;*/

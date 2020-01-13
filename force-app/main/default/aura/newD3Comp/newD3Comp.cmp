@@ -9,7 +9,7 @@
   It's how we  can maintain values being passed between js functions and apex functions as well. -->
     <aura:attribute name="allTrainings" type="List"/>
     <aura:attribute name="filteredTrainings" type="List"/>
-    <aura:attribute name="tempList" type="List"/>
+    <aura:attribute name="selectedTrainings" type="List"/>
     <aura:attribute name="dasChart" type = "Object"/>
     <aura:attribute name="Tracks" type="Set"/>
     <aura:attribute name="StartDates" type="List"/>
