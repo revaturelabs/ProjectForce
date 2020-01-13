@@ -65,6 +65,5 @@ public without sharing class ChartCalculationController {
             }
         }
         return projectsAfterToday.size();
-        
     }
 }

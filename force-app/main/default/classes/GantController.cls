@@ -37,8 +37,9 @@ public with sharing class GantController {
             'Trainer__c', 
             'projectstartdate__c'
             };
-                // Obtain the field name/token map for the Expense object
-                Map<String,Schema.SObjectField> m = Schema.SObjectType.Training__c.fields.getMap();
+                
+		// Obtain the field name/token map for the Expense object
+		Map<String,Schema.SObjectField> m = Schema.SObjectType.Training__c.fields.getMap();
         
         for (String fieldToCheck : trainingAccessFields) {
             
@@ -48,8 +49,7 @@ public with sharing class GantController {
                 // Pass error to client
                 throw new System.NoAccessException();
             }
-        }
-        
+        }        
         //Simpletraining wrapper apex class
         List<SimpleTraining> simpleTrainings = new List<SimpleTraining>();
         
