@@ -24,18 +24,25 @@
     //
     //    If you have any questions, please email Geoffrey Murray @ geoffrey.murray.1995@gmail.com
     ////////////////////////////////////////////
+    loadSortByOptions : function(component, event, helper){
+        // also setting values for sortByOptions
+        let sortByOptions = component.get('v.sortByOptions');
+        sortByOptions.push(component.get('v.trackString'));
+        sortByOptions.push(component.get('v.projectString'));
+        sortByOptions.push(component.get('v.reviewCompleteString'));
+        sortByOptions.push(component.get('v.locationString'));
+        sortByOptions.push(component.get('v.trainerString'));
+        component.set('v.sortByOptions', sortByOptions);
+    },
+    
     myAction: function(component, event, helper) {
         // array to hold labels for x axis of chart, will contain all dates for the 
         // previous three months and next six months
         var xLabels = [];
-        var currentDate = new Date();
         var threeMonthsBefore = new Date();
         threeMonthsBefore.setMonth(threeMonthsBefore.getMonth() - 3);
         var sixMonthsAfter = new Date();
         sixMonthsAfter.setMonth(sixMonthsAfter.getMonth() + 6);
-        console.log(threeMonthsBefore);
-        console.log(currentDate);
-        console.log(sixMonthsAfter);
         
         // make arrays for the names of the months for pretty labels
         var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -50,7 +57,7 @@
         
         // iteration date
         var iterationDate = threeMonthsBefore;
-
+        
         // populate xlabels
         // it is important to note that the getMonth function in the Javascript Date
         // class is zero indexed (i.e. January is zero), but the getDate function is
@@ -58,143 +65,177 @@
         while(iterationDate < sixMonthsAfter){
             xLabels.push(monthNames[iterationDate.getMonth()] + " " + 
                          iterationDate.getDate() + " " + iterationDate.getFullYear());
-			iterationDate.setDate(iterationDate.getDate() + 1);
+            iterationDate.setDate(iterationDate.getDate() + 1);
         }
-      
-      //Once you click on the chart, you're able to modify and save/update the modifications
-      component.find("myChart").getElement().onclick = function(evt) {
-          var activePoints = component.get("v.dasChart").getElementsAtEvent(evt);
-          var activePoint = component.get("v.dasChart").getElementAtEvent(evt)[0]; //WIP
-          if (activePoints.length > 0) {
-              if (activePoint._datasetIndex === 1) {
-                  activePoint.hidden = true;
-                  var currIndex = activePoints[0]._index;
-                  var currSimpleTraining = component.get("v.tempList")[currIndex];
-                  var childCmp = component.find("modalComp");
-                  let location = currSimpleTraining.location;
-                  let track = currSimpleTraining.trackName;
-                  let projectStartDate = currSimpleTraining.startDate;
-                  childCmp.showModal(currSimpleTraining.trainingId, track, projectStartDate); 
-              }
-          }
-      };
-      
-      var myChartComponent = component.find("myChart").getElement();
-      //the charts options such as x-axis, y-axis, if hover/no hover
-      var barOptions_stacked = {hover: {animationDuration: 10,
-          onHover: function(e, elements) {
-              myChartComponent.style.cursor = e[0] ? "pointer" : "default";
-          }},
-
-          events: {events: ["onClick"]},
-          
-          animation: {onComplete: function() {
-              var ctx = this.chart.ctx;
-              var chartInstance = this.chart;
-              ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontFamily, "normal", Chart.defaults.global.defaultFontFamily);
-                                    ctx.textAlign = "left";
-                                    ctx.fillStyle = "black"; // label color
-                                    
-                                    this.data.datasets.forEach(function(dataset, i) {
-                                        var meta = chartInstance.controller.getDatasetMeta(i);
-                                        
-                                        meta.data.forEach(function(bar, index) {
-                                            // only fillText for the first bar, otherwise we get double label overflow
-                                            // Also hide the first bar so it cannot be hovered over and clicked.
-                                            if (bar._datasetIndex === 0) {
-                                                var model = dataset._meta[Object.keys(dataset._meta)[0]].data[index]._model;
-                                                var label = model.label;
-                                                // meta.hidden = true;
-                                                ctx.fillText(label, bar._model.x + 2, bar._model.y);
-                                            }
-                                        });
-                                    });
-                                }},
-                                
-                                scales: {series: [{data: [100, 200, 400]
-                                                  }],
-                                         
-                                         plotOptions: {bar: {
-                                             horizontal: true, dataLabels: {position: "top"}
-                                         }},
-                                         
-                                         dataLabels: {enabled: true, offsetX: -6, style: {colors: ["#FFFFFF"]}},
-                                         
-                                         xAxes: [{barPercentage: 0.4,
-                                                  ticks: {
-                                                      //beginAtZero: true,
-                                                      fontFamily: "'Futura', sans-serif", fontSize: 11,
-                                                      //does a call back to the array and returns the array index of the data(integer) inputed
-                                                      callback: function(value, index, values) {
-                                                          return xLabels[value];
-                                                      }},
-                                                  //x-axis label name
-                                                  scaleLabel: {display: true, labelString: "Month"},
-                                                  gridLines: {}, stacked: true}],
-                                         
-                                         yAxes: [{barThickness : 30,
-                                                  gridLines: {display: false, color: "#fff", 
-                                                              zeroLineColor: "#fff", zeroLineWidth: 0},
-                                                  ticks: {fontFamily: "'Futura', sans-serif", fontSize: 11,
-                                                          display: false},
-                                                  //y-axis label name
-                                                  scaleLabel: {display: false, labelString: "Batches"},
-                                                  stacked: true}]},
-                                
-                                legend: {display: false},
-                                tooltips: {enabled: false}};
-      
-      //calls the apex controller and runs the method getTrainings then saves the return of the method into getTracks
-      var getTracks = component.get("c.getTrainings");
-      //run a callback
-      getTracks.setCallback(this, function(response) {
-          //gets the response state; fail,success
-          var state = response.getState();
-          if (state === "SUCCESS") {
-              //place the response info somewhere safe :O
-              component.set("v.qTraining", response.getReturnValue());
-              // component.set("v.tempList", response.getReturnValue());
-              helper.setInitFilterValues(component, event);
-              //pass the results to the chart creator.
-              var ctx = component.find("myChart").getElement();
-              // var theseColors = component.get('v.UserColors');
-              // var theseSortBys = component.find('select').get('v.value');
-              // putting params on newlines for readability
-              var newChart = helper.createChart(ctx, barOptions_stacked, 
-                                                response.getReturnValue());
-              component.set("v.dasChart", newChart);
-              let completeEvent= $A.get("e.c:TableInitCompleteEvent");
-              completeEvent.setParams({"TableName":'chart'});
-              completeEvent.fire();
-          } else {
-              console.log("Failed with state: " + state);
-          }
-      });
-      $A.enqueueAction(getTracks);
-  },
+        
+        //Once you click on the chart, you're able to modify and save/update the modifications
+        component.find("myChart").getElement().onclick = function(evt) {
+            var activePoints = component.get("v.dasChart").getElementsAtEvent(evt);
+            var activePoint = component.get("v.dasChart").getElementAtEvent(evt)[0]; //WIP
+            if (activePoints.length > 0) {
+                if (activePoint._datasetIndex === 1) {
+                    activePoint.hidden = true;
+                    var currIndex = activePoints[0]._index;
+                    var currSimpleTraining = component.get("v.tempList")[currIndex];
+                    var childCmp = component.find("modalComp");
+                    let location = currSimpleTraining.location;
+                    let track = currSimpleTraining.trackName;
+                    let projectStartDate = currSimpleTraining.startDate;
+                    childCmp.showModal(currSimpleTraining.trainingId, track, projectStartDate); 
+                }
+            }
+        };
+        
+        var myChartComponent = component.find("myChart").getElement();
+        //the chart's options such as x-axis, y-axis, if hover/no hover
+        var barOptions_stacked = {hover: {animationDuration: 10,
+                                          onHover: function(e, elements) {
+                                              myChartComponent.style.cursor = e[0] ? "pointer" : "default";
+                                          }},
+                                  
+                                  events: {events: ["onClick"]},
+                                  
+                                  animation: {onComplete: function() {
+                                      var ctx = this.chart.ctx;
+                                      var chartInstance = this.chart;
+                                      ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontFamily, "normal", Chart.defaults.global.defaultFontFamily);
+                                      ctx.textAlign = "left";
+                                      ctx.fillStyle = "black"; // text color in bar label
+                                      this.data.datasets.forEach(function(dataset, i) {
+                                          var meta = chartInstance.controller.getDatasetMeta(i);
+                                          
+                                          meta.data.forEach(function(bar, index) {
+                                              // only fillText for the first bar, otherwise we get double label overflow
+                                              // Also hide the first bar so it cannot be hovered over and clicked.
+                                              if (bar._datasetIndex === 0) {
+                                              var model = dataset._meta[Object.keys(dataset._meta)[0]].data[index]._model;
+                                              var label = model.label;
+                                              // meta.hidden = true;
+                                              ctx.fillText(label, bar._model.x + 2, bar._model.y);
+                                              }
+                                          });
+                                      });
+                                  }},
+                                  
+                                  scales: {series: [{data: [100, 200, 400]
+                                                    }],
+                                           
+                                           plotOptions: {bar: {
+                                               horizontal: true, dataLabels: {position: "top"}
+                                           }},
+                                           
+                                           //dataLabels: {enabled: true, offsetX: -6, style: {colors: ["#FFFFFF"]}},
+                                           
+                                           xAxes: [{barPercentage: 0.4,
+                                                    ticks: {
+                                                        //beginAtZero: true,
+                                                        fontFamily: "'Futura', sans-serif", fontSize: 11,
+                                                        //does a call back to the array and returns the array index of the data(integer) inputed
+                                                        callback: function(value, index, values) {
+                                                            return xLabels[value];
+                                                        }},
+                                                    //x-axis label name
+                                                    scaleLabel: {display: true, labelString: "Month"},
+                                                    gridLines: {}, stacked: true}],
+                                           
+                                           yAxes: [{barThickness : 30,
+                                                    gridLines: {display: false, color: "#fff", 
+                                                                zeroLineColor: "#fff", zeroLineWidth: 0},
+                                                    ticks: {fontFamily: "'Futura', sans-serif", fontSize: 11,
+                                                            display: false},
+                                                    //y-axis label name
+                                                    scaleLabel: {display: false, labelString: "Batches"},
+                                                    stacked: true}]},
+                                  
+                                  legend: {display: false},
+                                  tooltips: {enabled: false}};
+        
+        //calls the apex controller and runs the method getTrainings then saves the return of the method into getTracks
+        var getTracks = component.get("c.getTrainings");
+        //run a callback
+        getTracks.setCallback(this, function(response) {
+            //gets the response state; fail, success
+            var state = response.getState();
+            if (state === "SUCCESS") {
+                
+                //place the response info somewhere safe :O
+                component.set("v.allTrainings", response.getReturnValue());
+                helper.setInitFilterValues(component, event);
+                
+                //pass the results to the chart creator.
+                var ctx = component.find("myChart").getElement();
+                // var theseColors = component.get('v.UserColors');
+                // var theseSortBys = component.find('select').get('v.value');
+                var newChart = helper.createChart(ctx, barOptions_stacked, 
+                                                  response.getReturnValue());
+                component.set("v.dasChart", newChart);
+                let completeEvent= $A.get("e.c:TableInitCompleteEvent");
+                completeEvent.setParams({"TableName":'chart'});
+                completeEvent.fire();
+            } else {
+                console.log("Failed with state: " + state);
+            }
+        });
+        $A.enqueueAction(getTracks);
+    },
     
     runSort: function(component, event, helper) {
         var sortBy = component.find("select").get("v.value");
-        var allTrainings = component.get("v.tempList");
+        var allTrainings = component.get("v.allTrainings");
         var getColors = component.get('v.DisplayColors');
         helper.sortArray(allTrainings, getColors, sortBy);
         helper.updateData(component);
-        helper.sortArray(allTrainings, getColors, sortBy); 
-        helper.updateData(component);   
+        helper.sortArray(allTrainings, getColors, sortBy);
+        
+        // change options of what to color bars by
+        switch(sortBy){
+            case "Track":
+                console.log('here');
+                component.set('v.fieldToSortBy', component.get('v.Tracks'));
+                break; 
+            case "Project":
+                component.set('v.fieldToSortBy', component.get('v.Projects'));
+                break;  
+                /*
+            case "Date":
+                break;
+                */
+            case "Review Completed":
+                component.set('v.fieldToSortBy', component.get('v.ReviewCompleted'));
+                break;
+            case "Location":
+                component.set('v.fieldToSortBy', component.get('v.Locations'));
+                break;
+            case "Trainer":
+                component.set('v.fieldToSortBy', component.get('v.Trainers'));
+                break;
+            default:
+                // if it made it this far, then the user has selected choose one from
+                // Sort By, do nothing
+        }
     },
     
     runFilter: function(component, event, helper) {
         //Grabbing Relevant data
-        var allTrainings = component.get("v.qTraining");
+        var allTrainings = component.get("v.allTrainings");
         var myChart = component.get("v.dasChart");
         var selectedTrack = component.find("TrackFilter").get("v.value");
         var selectedLocation = component.find("LocationFilter").get("v.value");
         var selectedDate = component.find("DateFilter").get("v.value");
         var newData = helper.filterData(selectedTrack, selectedLocation, selectedDate,
                                         myChart, allTrainings, component);
+        console.log(allTrainings);
+        console.log(myChart);
+        console.log(selectedTrack);
+        console.log(selectedLocation);
+        console.log(selectedDate);
+        console.log(newData);
+        console.log(component.get('v.qTraining'));
+        
+        //
         var a = component.get("c.applyColors");
         $A.enqueueAction(a);
-        component.set("v.tempList", newData);
+        component.set("v.filteredTrainings", newData);
     },
     
     
@@ -241,7 +282,7 @@
             let state = response.getState();
             if (state === "SUCCESS") {
                 let returnedList = response.getReturnValue();
-                component.set("v.qTraining", returnedList);
+                component.set("v.tempList", returnedList);
                 let displayList = component.get("v.tempList");
                 for (let currRecord = 0; currRecord < displayList.length; currRecord++) {
                     for (let currReturned = 0; currReturned < returnedList.length; 
@@ -274,5 +315,21 @@
     
     updateData : function(component,event,helper){
         helper.updateData(component);
-    }
+    },
+    
+    applyColors:function(component, event, helper) {
+        var myChart = component.get('v.dasChart');
+        var currTrainings = component.get('v.tempList');
+        var allTracks = [];
+        var allColors = [];
+        var colorElements = component.find('colors');
+        console.log('colorElements length is: ' + colorElements.length);
+        for(let i=0; i<colorElements.length; i++) {
+            allTracks[i] = colorElements[i].get('v.id');
+            allColors[i] = colorElements[i].get('v.value');
+        }
+        var newColors = helper.applyColors(allTracks, allColors, currTrainings);
+        component.set('v.DisplayColors', newColors);
+        helper.updateData(component);
+    },
 });
