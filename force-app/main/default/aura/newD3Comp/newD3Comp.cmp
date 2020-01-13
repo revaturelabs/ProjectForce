@@ -18,7 +18,7 @@
     <aura:attribute name="Projects" type="Set"/>
     <aura:attribute name="Trainers" type="Set"/>
     <aura:attribute name ="UserColors" type="List"/>
-    <aura:attribute name = "DisplayColors" type = "Map" />
+    <aura:attribute name = "DisplayColors" type = "List" />
     <aura:attribute name="ChartStartFilter" type="String"/>
     <aura:attribute name="today" type="Date" default=""/>
     
@@ -44,20 +44,22 @@ reflect the duration of the project or the duration of the entire training have 
     <aura:handler event="c:BatchInformationEvent" action="{!c.handleBatchInformationEvent}" />
     
     <c:BatchAndProjectTables />
-    <div class='slds-grid '>
-        <div class='slds-col slds-size_1-of-4 alignment picklist'>
-            <lightning:select class="option-padding" name="chartSelect" label="Chart - Batch Start Date" value="{!v.ChartStartFilter}" onchange ="{!c.updateData}">
-                <option value="projectStart">From project start date</option>
-                <option value="batchStart">From batch start date</option>
-            </lightning:select>
-        </div>
-    </div>
+
     <div class = "THIS">
         <!--This div marks where all the chart manipulation sections can be found. -->
         <div class="chartmanip" label="Chart Manipulations" >
             
             <!--Start the Filter section -->
             <div  id="Filters">
+                <!--header-->
+                <header class="slds-modal__header">
+                    <h1 id="modal-heading-00" class="slds-modal__title slds-hyphenate">Bar Start Date</h1>
+                </header>
+                <lightning:select class="option-padding" name="chartSelect" label="Chart - Batch Start Date" value="{!v.ChartStartFilter}" onchange ="{!c.updateData}">
+                    <option value="projectStart">From Project Start Date</option>
+                    <option value="batchStart">From Batch Start Date</option>
+                </lightning:select>
+                
                 <!--header-->
                 <header class="slds-modal__header">
                     <h1 id="modal-heading-01" class="slds-modal__title slds-hyphenate">Filter</h1>
@@ -104,14 +106,12 @@ reflect the duration of the project or the duration of the entire training have 
                 </header>              
                 <!--Iterate through the Tracks attribute and for each track, add another color picker
             w/ distinct ID's -->
-                <div id="ColorsList">
                 <aura:iteration items="{!v.fieldToSortBy}" var="option" indexVar = "index">
                     <aura:if isTrue="{! index != 0 }"> 
                         {!option} Color:
                         <lightning:input id="{!option}" type="color" name="color" value="#F26925" aura:id="colors" />
                     </aura:if>
                 </aura:iteration>
-                </div>
                 <button label="Apply Colors" title="Apply Colors" onclick="{!c.applyColors}" >Apply Colors</button>
             </div>
             
