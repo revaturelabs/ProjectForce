@@ -212,6 +212,8 @@
                 component.set('v.fieldToSortBy',null);
         }
         component.set('v.filteredTrainings',helper.sortArray(filteredTrainings, getColors, sortBy));
+        let a = component.get('c.applyColors');
+        $A.enqueueAction(a);
         helper.updateData(component);
     },
     
