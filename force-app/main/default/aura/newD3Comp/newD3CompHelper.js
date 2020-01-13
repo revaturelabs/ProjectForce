@@ -292,6 +292,7 @@
         
         //Once we have the startDates, we need it as an int.
         var minMaxDates = this.calcChartAxisLabels(startDates);
+        
         //Set the keys in the options Javascript Object equal to the values just generated
         chart.options.scales.xAxes[0].ticks.max = minMaxDates[1];
         chart.options.scales.xAxes[0].ticks.min = minMaxDates[0];
@@ -331,156 +332,156 @@
            * 	1-31 is jan 1-31, 32-60 is feb 1-29, etc.
            * 	Takes the date and generate it into a integer within 366 days for leap year or 365 for normal year
            */
-                
-                if (year % 4 == 0) {
-                    if (month == 1) {
-                        d[currTI] = day;
-                    } else if (month == 2) {
-                        d[currTI] = day + 31;
-                    } else if (month == 3) {
-                        d[currTI] = day + 31 + 29;
-                    } else if (month == 4) {
-                        d[currTI] = day + 31 + 29 + 31;
-                    } else if (month == 5) {
-                        d[currTI] = day + 31 + 29 + 31 + 30;
-                    } else if (month == 6) {
-                        d[currTI] = day + 31 + 29 + 31 + 30 + 31;
-                    } else if (month == 7) {
-                        d[currTI] = day + 31 + 29 + 31 + 30 + 31 + 30;
-                    } else if (month == 8) {
-                        d[currTI] = day + 31 + 29 + 31 + 30 + 31 + 30 + 31;
-                    } else if (month == 9) {
-                        d[currTI] = day + 31 + 29 + 31 + 30 + 31 + 30 + 31 + 31;
-                    } else if (month == 10) {
-                        d[currTI] = day + 31 + 29 + 31 + 30 + 31 + 30 + 31 + 31 + 30;
-                    } else if (month == 11) {
-                        d[currTI] = day + 31 + 29 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31;
-                    } else if (month == 12) {
-                        d[currTI] =
-                            day + 31 + 29 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31 + 30;
-                    }
-                } else {
-                    if (month == 1) {
-                        d[currTI] = day;
-                    } else if (month == 2) {
-                        d[currTI] = day + 31;
-                    } else if (month == 3) {
-                        d[currTI] = day + 31 + 28;
-                    } else if (month == 4) {
-                        d[currTI] = day + 31 + 28 + 31;
-                    } else if (month == 5) {
-                        d[currTI] = day + 31 + 28 + 31 + 30;
-                    } else if (month == 6) {
-                        d[currTI] = day + 31 + 28 + 31 + 30 + 31;
-                    } else if (month == 7) {
-                        d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 30;
-                    } else if (month == 8) {
-                        d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 30 + 31;
-                    } else if (month == 9) {
-                        d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 30 + 31 + 31;
-                    } else if (month == 10) {
-                        d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 30;
-                    } else if (month == 11) {
-                        d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31;
-                    } else if (month == 12) {
-                        d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31 + 30;
-                    }
-                }
-            } else if (year == currentYear + 1) {
-                //checking if it's a leap year
-                if (year % 4 == 0) {
-                    if (month == 1) {
-                        d[currTI] = day + 365;
-                    } else if (month == 2) {
-                        d[currTI] = day + 31 + 365;
-                    } else if (month == 3) {
-                        d[currTI] = day + 31 + 29 + 365;
-                    } else if (month == 4) {
-                        d[currTI] = day + 31 + 29 + 31 + 365;
-                    } else if (month == 5) {
-                        d[currTI] = day + 31 + 29 + 31 + 30 + 365;
-                    } else if (month == 6) {
-                        d[currTI] = day + 31 + 29 + 31 + 30 + 31 + 365;
-                    } else if (month == 7) {
-                        d[currTI] = day + 31 + 29 + 31 + 30 + 31 + 30 + 365;
-                    } else if (month == 8) {
-                        d[currTI] = day + 31 + 29 + 31 + 30 + 31 + 30 + 31 + 365;
-                    } else if (month == 9) {
-                        d[currTI] = day + 31 + 29 + 31 + 30 + 31 + 30 + 31 + 31 + 365;
-                    } else if (month == 10) {
-                        d[currTI] =
-                            day + 31 + 29 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 365;
-                    } else if (month == 11) {
-                        d[currTI] =
-                            day + 31 + 29 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31 + 365;
-                    } else if (month == 12) {
-                        d[currTI] = day + 31 + 29 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31 + 
-                            30 + 365;
-                    }
-                    //checks if the previous year is a leap year, because if the previous year was a leap year then the current data year cannot be a leap year.
-                } else {
-                    if ((year - 1) % 4 == 0) {
+                    
+                    if (year % 4 == 0) {
                         if (month == 1) {
-                            d[currTI] = day + 366;
+                            d[currTI] = day;
                         } else if (month == 2) {
-                            d[currTI] = day + 31 + 366;
+                            d[currTI] = day + 31;
                         } else if (month == 3) {
-                            d[currTI] = day + 31 + 28 + 366;
+                            d[currTI] = day + 31 + 29;
                         } else if (month == 4) {
-                            d[currTI] = day + 31 + 28 + 31 + 366;
+                            d[currTI] = day + 31 + 29 + 31;
                         } else if (month == 5) {
-                            d[currTI] = day + 31 + 28 + 31 + 30 + 366;
+                            d[currTI] = day + 31 + 29 + 31 + 30;
                         } else if (month == 6) {
-                            d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 366;
+                            d[currTI] = day + 31 + 29 + 31 + 30 + 31;
                         } else if (month == 7) {
-                            d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 30 + 366;
+                            d[currTI] = day + 31 + 29 + 31 + 30 + 31 + 30;
                         } else if (month == 8) {
-                            d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 30 + 31 + 366;
+                            d[currTI] = day + 31 + 29 + 31 + 30 + 31 + 30 + 31;
                         } else if (month == 9) {
-                            d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 366;
+                            d[currTI] = day + 31 + 29 + 31 + 30 + 31 + 30 + 31 + 31;
                         } else if (month == 10) {
-                            d[currTI] =
-                                day + 31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 366;
+                            d[currTI] = day + 31 + 29 + 31 + 30 + 31 + 30 + 31 + 31 + 30;
                         } else if (month == 11) {
-                            d[currTI] =
-                                day + 31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31 + 366;
+                            d[currTI] = day + 31 + 29 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31;
                         } else if (month == 12) {
-                            d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31 + 
-                                30 + 366;
+                            d[currTI] =
+                                day + 31 + 29 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31 + 30;
                         }
                     } else {
+                        if (month == 1) {
+                            d[currTI] = day;
+                        } else if (month == 2) {
+                            d[currTI] = day + 31;
+                        } else if (month == 3) {
+                            d[currTI] = day + 31 + 28;
+                        } else if (month == 4) {
+                            d[currTI] = day + 31 + 28 + 31;
+                        } else if (month == 5) {
+                            d[currTI] = day + 31 + 28 + 31 + 30;
+                        } else if (month == 6) {
+                            d[currTI] = day + 31 + 28 + 31 + 30 + 31;
+                        } else if (month == 7) {
+                            d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 30;
+                        } else if (month == 8) {
+                            d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 30 + 31;
+                        } else if (month == 9) {
+                            d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 30 + 31 + 31;
+                        } else if (month == 10) {
+                            d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 30;
+                        } else if (month == 11) {
+                            d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31;
+                        } else if (month == 12) {
+                            d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31 + 30;
+                        }
+                    }
+                } else if (year == currentYear + 1) {
+                    //checking if it's a leap year
+                    if (year % 4 == 0) {
                         if (month == 1) {
                             d[currTI] = day + 365;
                         } else if (month == 2) {
                             d[currTI] = day + 31 + 365;
                         } else if (month == 3) {
-                            d[currTI] = day + 31 + 28 + 365;
+                            d[currTI] = day + 31 + 29 + 365;
                         } else if (month == 4) {
-                            d[currTI] = day + 31 + 28 + 31 + 365;
+                            d[currTI] = day + 31 + 29 + 31 + 365;
                         } else if (month == 5) {
-                            d[currTI] = day + 31 + 28 + 31 + 30 + 365;
+                            d[currTI] = day + 31 + 29 + 31 + 30 + 365;
                         } else if (month == 6) {
-                            d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 365;
+                            d[currTI] = day + 31 + 29 + 31 + 30 + 31 + 365;
                         } else if (month == 7) {
-                            d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 30 + 365;
+                            d[currTI] = day + 31 + 29 + 31 + 30 + 31 + 30 + 365;
                         } else if (month == 8) {
-                            d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 30 + 31 + 365;
+                            d[currTI] = day + 31 + 29 + 31 + 30 + 31 + 30 + 31 + 365;
                         } else if (month == 9) {
-                            d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 365;
+                            d[currTI] = day + 31 + 29 + 31 + 30 + 31 + 30 + 31 + 31 + 365;
                         } else if (month == 10) {
                             d[currTI] =
-                                day + 31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 365;
+                                day + 31 + 29 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 365;
                         } else if (month == 11) {
                             d[currTI] =
-                                day + 31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31 + 365;
+                                day + 31 + 29 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31 + 365;
                         } else if (month == 12) {
-                            d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31 +
+                            d[currTI] = day + 31 + 29 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31 + 
                                 30 + 365;
+                        }
+                        //checks if the previous year is a leap year, because if the previous year was a leap year then the current data year cannot be a leap year.
+                    } else {
+                        if ((year - 1) % 4 == 0) {
+                            if (month == 1) {
+                                d[currTI] = day + 366;
+                            } else if (month == 2) {
+                                d[currTI] = day + 31 + 366;
+                            } else if (month == 3) {
+                                d[currTI] = day + 31 + 28 + 366;
+                            } else if (month == 4) {
+                                d[currTI] = day + 31 + 28 + 31 + 366;
+                            } else if (month == 5) {
+                                d[currTI] = day + 31 + 28 + 31 + 30 + 366;
+                            } else if (month == 6) {
+                                d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 366;
+                            } else if (month == 7) {
+                                d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 30 + 366;
+                            } else if (month == 8) {
+                                d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 30 + 31 + 366;
+                            } else if (month == 9) {
+                                d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 366;
+                            } else if (month == 10) {
+                                d[currTI] =
+                                    day + 31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 366;
+                            } else if (month == 11) {
+                                d[currTI] =
+                                    day + 31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31 + 366;
+                            } else if (month == 12) {
+                                d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31 + 
+                                    30 + 366;
+                            }
+                        } else {
+                            if (month == 1) {
+                                d[currTI] = day + 365;
+                            } else if (month == 2) {
+                                d[currTI] = day + 31 + 365;
+                            } else if (month == 3) {
+                                d[currTI] = day + 31 + 28 + 365;
+                            } else if (month == 4) {
+                                d[currTI] = day + 31 + 28 + 31 + 365;
+                            } else if (month == 5) {
+                                d[currTI] = day + 31 + 28 + 31 + 30 + 365;
+                            } else if (month == 6) {
+                                d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 365;
+                            } else if (month == 7) {
+                                d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 30 + 365;
+                            } else if (month == 8) {
+                                d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 30 + 31 + 365;
+                            } else if (month == 9) {
+                                d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 365;
+                            } else if (month == 10) {
+                                d[currTI] =
+                                    day + 31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 365;
+                            } else if (month == 11) {
+                                d[currTI] =
+                                    day + 31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31 + 365;
+                            } else if (month == 12) {
+                                d[currTI] = day + 31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31 +
+                                    30 + 365;
+                            }
                         }
                     }
                 }
             }
-        }
             d[currTI]=d[currTI]-1;
         }
         return d;
@@ -552,7 +553,7 @@
     },
     
     setInitFilterValues: function(component, event) {
-        var allTrainings = component.get("v.tempList");
+        var allTrainings = component.get("v.allTrainings");
         
         // Create lists for Track, Location, Project, and Trainer and set the appropriate aura attribute
         // in the component (note: we're mimicking the functionality of a set in our lists because setting
@@ -593,10 +594,24 @@
             }
         }
         maxDate += defaultDuration;
-        
-        console.log('min'+minDate);
-        console.log('max'+maxDate);
-        
-        return { minDate, maxDate,days};
-               }
-               });
+        return [minDate,maxDate,days];
+    },
+    
+    applyColors: function(tracks, colors, allBatches) {
+        var colorsApplied = [];
+        var colorsAppliedCounter = 0;
+        for(let currBatch = 0; currBatch < allBatches.length; currBatch++) {
+            console.log('here is tracks.length: '+tracks.length);
+            for(let currTrack = 0; currTrack < tracks.length; currTrack++) {
+                console.log('trackName: '+JSON.stringify(allBatches[currBatch].trackName));
+                console.log('tracks[currTrack]: '+tracks[currTrack]);
+                if(JSON.stringify(allBatches[currBatch].trackName)==tracks[currTrack]){
+                    console.log('The if statement has been entered. The new color is: ' + colors[currTrack]);
+                    colorsApplied[colorsAppliedCounter] = colors[currTrack];
+                    colorsAppliedCounter++;  
+                }
+            }
+        }
+        return colorsApplied;
+    }
+});

@@ -7,7 +7,8 @@
     <ltng:require scripts="{!$Resource.ChartJS}" afterScriptsLoaded="{!c.myAction}" />
     <!--These are variables being used to store data relevant to the chart.
   It's how we  can maintain values being passed between js functions and apex functions as well. -->
-    <aura:attribute name="qTraining" type="List"/>
+    <aura:attribute name="allTrainings" type="List"/>
+    <aura:attribute name="filteredTrainings" type="List"/>
     <aura:attribute name="tempList" type="List"/>
     <aura:attribute name="dasChart" type = "Object"/>
     <aura:attribute name="Tracks" type="Set"/>
@@ -54,6 +55,7 @@ reflect the duration of the project or the duration of the entire training have 
     <div class = "THIS">
         <!--This div marks where all the chart manipulation sections can be found. -->
         <div class="chartmanip" label="Chart Manipulations" >
+            
             <!--Start the Filter section -->
             <div  id="Filters">
                 <!--header-->
@@ -79,6 +81,7 @@ reflect the duration of the project or the duration of the entire training have 
                 <!--Press to run the runFilter function in the controller. -->
                 <button label="Run Filters" title="Run Filters" onclick="{!c.runFilter}" >Run Filters</button>
             </div>
+            
             <!--Beginning of the Sorting section -->
             <div id="Sorting">
                 <!--Header -->

@@ -101,19 +101,18 @@
                                       ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontFamily, "normal", Chart.defaults.global.defaultFontFamily);
                                       ctx.textAlign = "left";
                                       ctx.fillStyle = "black"; // text color in bar label
-                                      //console.log(this.data.datasets);
                                       this.data.datasets.forEach(function(dataset, i) {
                                           var meta = chartInstance.controller.getDatasetMeta(i);
                                           
                                           meta.data.forEach(function(bar, index) {
                                               // only fillText for the first bar, otherwise we get double label overflow
                                               // Also hide the first bar so it cannot be hovered over and clicked.
-                                              //if (bar._datasetIndex === 0) {
+                                              if (bar._datasetIndex === 0) {
                                               var model = dataset._meta[Object.keys(dataset._meta)[0]].data[index]._model;
-                                              // var label = model.label;
+                                              var label = model.label;
                                               // meta.hidden = true;
-                                              ctx.fillText('label', bar._model.x + 2, bar._model.y);
-                                              // }
+                                              ctx.fillText(label, bar._model.x + 2, bar._model.y);
+                                              }
                                           });
                                       });
                                   }},
@@ -160,8 +159,7 @@
             if (state === "SUCCESS") {
                 
                 //place the response info somewhere safe :O
-                component.set("v.tempList", response.getReturnValue());
-                // component.set("v.tempList", response.getReturnValue());
+                component.set("v.allTrainings", response.getReturnValue());
                 helper.setInitFilterValues(component, event);
                 
                 //pass the results to the chart creator.
@@ -183,7 +181,7 @@
     
     runSort: function(component, event, helper) {
         var sortBy = component.find("select").get("v.value");
-        var allTrainings = component.get("v.tempList");
+        var allTrainings = component.get("v.allTrainings");
         var getColors = component.get('v.DisplayColors');
         helper.sortArray(allTrainings, getColors, sortBy);
         helper.updateData(component);
@@ -219,16 +217,25 @@
     
     runFilter: function(component, event, helper) {
         //Grabbing Relevant data
-        var allTrainings = component.get("v.tempList");
+        var allTrainings = component.get("v.allTrainings");
         var myChart = component.get("v.dasChart");
         var selectedTrack = component.find("TrackFilter").get("v.value");
         var selectedLocation = component.find("LocationFilter").get("v.value");
         var selectedDate = component.find("DateFilter").get("v.value");
         var newData = helper.filterData(selectedTrack, selectedLocation, selectedDate,
                                         myChart, allTrainings, component);
+        console.log(allTrainings);
+        console.log(myChart);
+        console.log(selectedTrack);
+        console.log(selectedLocation);
+        console.log(selectedDate);
+        console.log(newData);
+        console.log(component.get('v.qTraining'));
+        
+        //
         var a = component.get("c.applyColors");
         $A.enqueueAction(a);
-        component.set("v.tempList", newData);
+        component.set("v.filteredTrainings", newData);
     },
     
     
@@ -310,22 +317,19 @@
         helper.updateData(component);
     },
     
-    applyColors:function(component, event, helper)
-    {
+    applyColors:function(component, event, helper) {
         var myChart = component.get('v.dasChart');
         var currTrainings = component.get('v.tempList');
         var allTracks = [];
         var allColors = [];
         var colorElements = component.find('colors');
         console.log('colorElements length is: ' + colorElements.length);
-        for(let i=0; i<colorElements.length; i++)
-        {
+        for(let i=0; i<colorElements.length; i++) {
             allTracks[i] = colorElements[i].get('v.id');
             allColors[i] = colorElements[i].get('v.value');
         }
         var newColors = helper.applyColors(allTracks, allColors, currTrainings);
         component.set('v.DisplayColors', newColors);
         helper.updateData(component);
-        
     },
 });
