@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Story__c</fullName>
+    <businessStatus>Active</businessStatus>
     <externalId>false</externalId>
     <label>Story</label>
     <required>false</required>
+    <securityClassification>Public</securityClassification>
     <trackTrending>false</trackTrending>
     <type>TextArea</type>
 </CustomField>

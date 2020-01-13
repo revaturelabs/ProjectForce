@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>autoId__c</fullName>
+    <description>index for kanbancolumn to order by in query</description>
+    <displayFormat>autoId-{0000}</displayFormat>
+    <externalId>false</externalId>
+    <label>autoId</label>
+    <trackTrending>false</trackTrending>
+    <type>AutoNumber</type>
+</CustomField>

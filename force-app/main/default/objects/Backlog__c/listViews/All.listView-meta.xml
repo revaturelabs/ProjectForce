@@ -4,7 +4,6 @@
     <columns>NAME</columns>
     <columns>Story__c</columns>
     <columns>Stage__c</columns>
-    <columns>Project__c</columns>
     <columns>DueDate__c</columns>
     <columns>NumberOfCardLabels__c</columns>
     <columns>CardLabel1__c</columns>

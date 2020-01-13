@@ -143,22 +143,22 @@
     <allowInChatterGroups>false</allowInChatterGroups>
     <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
     <deploymentStatus>Deployed</deploymentStatus>
-    <enableActivities>true</enableActivities>
+    <description>a column on the board</description>
+    <enableActivities>false</enableActivities>
     <enableBulkApi>true</enableBulkApi>
     <enableFeeds>false</enableFeeds>
     <enableHistory>false</enableHistory>
     <enableLicensing>false</enableLicensing>
-    <enableReports>true</enableReports>
-    <enableSearch>true</enableSearch>
+    <enableReports>false</enableReports>
+    <enableSearch>false</enableSearch>
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
-    <label>Backlog</label>
+    <label>KanbanColumn</label>
     <nameField>
-        <displayFormat>BK-{0000}</displayFormat>
-        <label>Backlog Name</label>
-        <type>AutoNumber</type>
+        <label>KanbanColumn Name</label>
+        <type>Text</type>
     </nameField>
-    <pluralLabel>Backlogs</pluralLabel>
+    <pluralLabel>KanbanColumns</pluralLabel>
     <searchLayouts/>
     <sharingModel>ControlledByParent</sharingModel>
     <visibility>Public</visibility>
