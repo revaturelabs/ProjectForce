@@ -3,6 +3,16 @@
     /* background-color: white; */
 }
 
+
+@font-face{
+font-family: futura;
+src: url(/resource/Futura);
+}
+@font-face{
+font-family: HeaderFutura;
+src: url(/resource/HeaderFutura);
+}
+
 .THIS.graph_container{
   display:block;
   width:600px;
