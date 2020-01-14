@@ -31,7 +31,13 @@
     float: right;
     width: 30%;
     margin-left:5%;
-    margin-right: 5%;}
+    margin-right: 5%;
+}
+.THIS #ColorsList{
+    overflow:auto;
+    max-height: 50vh;
+    display:block;
+}
 
 .THIS #Sorting {
     float: right;
@@ -72,4 +78,19 @@
 }
 .THIS .chartAreaWrapper {
     overflow: auto;
+}
+
+.THIS .alignment{
+    margin: 0px 25px 5px 25px;
+}
+.THIS .picklist{
+    border-bottom: 2px solid #474C55;
+    border-left: 2px solid #474C55;
+    border-right: 2px solid #474C55;
+    border-top: 10px solid #474C55; 
+    border-radius: 2.5%;
+    background-color: white;
+}
+.THIS .option-padding{
+    padding:0px 5px;
 }
