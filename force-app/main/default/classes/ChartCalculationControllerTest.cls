@@ -45,11 +45,11 @@ public with sharing class ChartCalculationControllerTest {
         list<training__c> TrainingList = new list<training__c> ();
         Training__c newTraining = new Training__c(name='Test Training 1', Trainer__c=trainerIdList[0].id, Track__c=TrainerTrackIdList[0].trackTrainer__c,
                                             Room__c=RoomIdList[0].id, Project__c=ProjectIDList[0].id, Batch_Number__c=1000, Start_Date__c = System.today()+1, 
-                                            BatchDuration__c=10);
+                                            BatchDuration__c=10, Color__c='#ff0000');
         TrainingList.add(newTraining);
         Training__c newTraining2 = new Training__c(name='Test Training 2', Trainer__c=trainerIdList[1].id, Track__c=TrainerTrackIdList[0].trackTrainer__c,
                                             Room__c=RoomIdList[1].id, Project__c=ProjectIDList[0].id, Batch_Number__c=1001, Start_Date__c = System.today()+1, 
-                                            BatchDuration__c=10);
+                                            BatchDuration__c=10, Color__c='#ff0000');
         TrainingList.add(newTraining2);
         insert TrainingList;
     }

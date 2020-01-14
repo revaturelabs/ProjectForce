@@ -210,7 +210,7 @@ public with sharing class KanbanProjectApexClass {
 
     // Update the Story of a card using the ID
     @AuraEnabled
-    public static void updateCard(String card, String story){
+    public static void updateCard(String card, String story) {
         Backlog__c backlog = new Backlog__c();
         try 
         {
