@@ -5,6 +5,7 @@ public with sharing class TableApexController {
         for(Integer i=1; i<queryFields.size(); i++){
             fields += ',' + queryFields[i];
         }
+
         String queryString = 'SELECT ' + fields + ' FROM ' + queryObject + ' WITH SECURITY_ENFORCED';
         return Database.query(queryString);
     }
