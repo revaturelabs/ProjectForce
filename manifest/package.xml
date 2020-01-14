@@ -42,6 +42,8 @@
     </types>
     <types>
         <members>BacklogAccordion</members>
+        <members>BacklogApp</members>
+        <members>BacklogInline</members>
         <members>BacklogTab</members>
         <members>BacklogInline</members>
         <members>BatchAndProjectTables</members>
@@ -55,12 +57,17 @@
         <members>KanbanColumn</members>
         <members>KanbanCardLabel</members>
         <members>modal</members>
+        <members>ModalCompletedEvent</members>
         <members>newD3App</members>
         <members>newD3Comp</members>
         <members>SaveInlineEditsEvent</members>
         <members>TableInitCompleteEvent</members>
         <members>TableItemSelectedEvent</members>
         <name>AuraDefinitionBundle</name>
+    </types>
+    <types>
+        <members>Training__c</members>
+        <name>Workflow</name>
     </types>
     <types>
         <members>ProjectForce</members>

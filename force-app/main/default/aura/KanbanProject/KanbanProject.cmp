@@ -19,6 +19,7 @@
 
     <!-- event handlers -->
     <aura:handler name="init" action="{!c.doInit}" value="{!this}"></aura:handler>
+    <!-- <aura:handler name="change" value="{!v.kanbanColumns}" action="{!c.doInit}"/> -->
     <aura:handler name="droppedOnColumn" event="c:droppedOnColumn" action="{!c.droppedHandler}"></aura:handler>
 
     <!-- Iterate through list of Related columns-->

@@ -25,6 +25,4 @@
             resizeColumnDisabled="true"
         />
     </div>
-
-    
 </aura:component>
