@@ -1,6 +1,5 @@
 public with sharing class KanbanProjectApexClass {
 
-    //Added by B.D. and F.W
     //get the kanban columns in the DB
     @AuraEnabled
     public static List<KanbanColumn__c> getKanbanColumns(String project) {
@@ -93,11 +92,6 @@ public with sharing class KanbanProjectApexClass {
             Integer DeletedOrderSpot = Integer.Valueof(kanban.Order__c);
             
             // Delete column if theres no label duplicates
-            // Add in error message 
-            /* if(kanban.size() > 0)
-            {
-                  
-            } */
             delete kanban;
 
             // Query all related Columns to reorder
@@ -119,32 +113,13 @@ public with sharing class KanbanProjectApexClass {
             System.debug(e.getMessage());
         }
     }
-    
-    @AuraEnabled
-    public static List<Backlog__c> getBacklogsProject(String projectId) {
-        return [
-            SELECT 
-                Id, Name, Story__c, NumberOfCardLabels__c,
-                CardLabel1__c, CardLabel1__r.Text__c, CardLabel1__r.Color__c, 
-                CardLabel2__c, CardLabel2__r.Text__c, CardLabel2__r.Color__c,
-                CardLabel3__c, CardLabel3__r.Text__c, CardLabel3__r.Color__c,
-                DateLogged__c, PullRequest__c, Stage__c, Project__c, Project__r.Name, 
-                StartDateTime__c, EndDateTime__c, DueDate__c, KanbanColumn__c 
-            FROM  Backlog__c
-            WHERE Project__c =: projectId
-        ];
-    }
 
     // Return list of Backlogs related to a Column
     @AuraEnabled
     public static List<Backlog__c> getBacklogs(String columnId) {
         return [
             SELECT 
-                Id, Name, Story__c, NumberOfCardLabels__c,
-                CardLabel1__c, CardLabel1__r.Text__c, CardLabel1__r.Color__c, 
-                CardLabel2__c, CardLabel2__r.Text__c, CardLabel2__r.Color__c,
-                CardLabel3__c, CardLabel3__r.Text__c, CardLabel3__r.Color__c,
-                DateLogged__c, PullRequest__c, Stage__c, Project__c, Project__r.Name, 
+                Id, Name, Story__c, DateLogged__c, PullRequest__c, 
                 StartDateTime__c, EndDateTime__c, DueDate__c, KanbanColumn__c 
             FROM  Backlog__c
             WHERE KanbanColumn__c =: columnId
@@ -153,109 +128,35 @@ public with sharing class KanbanProjectApexClass {
 
     @AuraEnabled
     public static Backlog__c saveBacklog(Backlog__c backlog) {
-        // Perform isUpdateable() checking first, then
+        // Update the backlog fields
         upsert backlog;
         return backlog;
     }
 
-    // Refactor String Names
+    // Save a list of Backlogs or cards
     @AuraEnabled
-    public static List<Backlog__c> addNewBacklog(String columnId, String story, String l1, String l2, String l3, String c1, String c2, String c3, String project, String stage) {
+    public static List <Backlog__c> saveBacklogs(List<Backlog__c> backlogs) {
+        update backlogs;
+        return backlogs;
+    }
 
+    // Add a new Backlog or Card to a related Column
+    @AuraEnabled
+    public static List<Backlog__c> addNewBacklog(String columnId, String story) {
         Backlog__c backlog = new Backlog__c();
         try {
-            
             backlog.KanbanColumn__c = columnId;
             backlog.Story__c = story;
-            //insert backlog;
+            insert backlog;
         } 
         catch(Exception e)
         {
             System.debug(e.getMessage());
         }
-        
-        if (l1 == null){
-            // System.debug('No Label');
-            
-            //backlog.Project__c = project;
-            insert backlog;         
-        }
-
-        else if (l2 == null){
-            // System.debug('One Label');
-            CardLabel__c cl1 =  new CardLabel__c();
-            cl1.Text__c = l1;
-            cl1.Color__c = c1;
-
-            insert cl1;
-
-            System.debug(cl1);
-
-            backlog.Story__c = story;
-            backlog.Stage__c = stage;
-            backlog.CardLabel1__c = cl1.Id;
-            //backlog.Project__c = project;
-
-            insert backlog;
-        }
-        else if (l3 == null){
-            // System.debug('Two Labels');
-
-            List<sObject> labels = new List<sObject>();
-
-            CardLabel__c cl1 =  new CardLabel__c();
-            cl1.Text__c = l1;
-            cl1.Color__c = c1;
-            labels.add(cl1);
-
-            CardLabel__c cl2 =  new CardLabel__c();
-            cl2.Text__c = l2;
-            cl2.Color__c = c2;
-            labels.add(cl2);
-
-            insert labels;
-
-            backlog.Story__c = story;
-            backlog.Stage__c = stage;
-            backlog.CardLabel1__c = cl1.Id;
-            backlog.CardLabel2__c = cl2.Id;
-            //backlog.Project__c = project;
-
-            insert backlog;
-        }
-        else {
-            // System.debug('Three Labels');
-            List<sObject> labels = new List<sObject>();
-
-            CardLabel__c cl1 =  new CardLabel__c();
-            cl1.Text__c = l1;
-            cl1.Color__c = c1;
-            labels.add(cl1);
-
-            CardLabel__c cl2 =  new CardLabel__c();
-            cl2.Text__c = l2;
-            cl2.Color__c = c2;
-            labels.add(cl2);
-
-            CardLabel__c cl3 =  new CardLabel__c();
-            cl3.Text__c = l3;
-            cl3.Color__c = c3;
-            labels.add(cl3);
-
-            insert labels;
-
-            backlog.Story__c = story;
-            backlog.Stage__c = stage;
-            backlog.CardLabel1__c = cl1.Id;
-            backlog.CardLabel2__c = cl2.Id;
-            backlog.CardLabel3__c = cl3.Id;
-            //backlog.Project__c = project;
-            insert backlog;
-        } 
         return getBacklogs(columnId);
     }
     
-    @AuraEnabled
+    /* @AuraEnabled
     public static List<String> getProjects(Id backlog){
         List<Project__c> rawProjects =[SELECT Name 
                                        FROM Project__c 
@@ -269,60 +170,53 @@ public with sharing class KanbanProjectApexClass {
             projects.add(p.Name);
         }
         return projects;
-    }
+    } */
 
-    @AuraEnabled
-    public static List <Backlog__c> saveBacklogs(List<Backlog__c> backlogs) {
-        update backlogs;
-        return backlogs;
-    }
-
+    // Get the project Id with the project name
     @AuraEnabled
     public static Id findProject(String name){
         Project__c project = [SELECT Id FROM Project__c WHERE Name =:name];
         return project.Id;
     } 
 
+    // Delete a backlog
     @AuraEnabled
-    public static /*List<Backlog__c>*/void removeCard(String card, String story){
-        Backlog__c obj;
-        //ID colId;
+    public static void removeCard(String cardId){
+        Backlog__c backlog = new Backlog__c();
         try 
         {
-            obj = [SELECT Id, Name, KanbanColumn__c FROM Backlog__c WHERE Id=:card AND Story__c=:story LIMIT 1];
-            //colId = obj.KanbanColumn__c;
-            delete obj;
-        } catch (Exception e) 
-        {
-            System.debug(e.getMessage());
-        }
-        //return getBacklogs(colId);
-    }
-
-    @AuraEnabled
-    public static void updateColumn(String stage, String title, String projectId){
-        KanbanColumn__c obj;
-        //ID colId;
-        try 
-        {
-            obj = [SELECT Id, Name FROM KanbanColumn__c WHERE Id=:stage AND Project__c=:projectId LIMIT 1];
-            obj.Label__c = title;
-            update obj;
+            backlog = [SELECT Id, Name, KanbanColumn__c FROM Backlog__c WHERE Id=:cardId LIMIT 1];
+            delete backlog;
         } catch (Exception e) 
         {
             System.debug(e.getMessage());
         }
     }
 
+    // Update Selected Column using the Column ID
+    @AuraEnabled
+    public static void updateColumn(String columnId, String title){
+        KanbanColumn__c column = new KanbanColumn__c();
+        try 
+        {
+            column = [SELECT Id, Name FROM KanbanColumn__c WHERE Id=:columnId LIMIT 1];
+            column.Label__c = title;
+            update column;
+        } catch (Exception e) 
+        {
+            System.debug(e.getMessage());
+        }
+    }
+
+    // Update the Story of a card using the ID
     @AuraEnabled
     public static void updateCard(String card, String story){
-        Backlog__c obj;
-        //ID colId;
+        Backlog__c backlog = new Backlog__c();
         try 
         {
-            obj = [SELECT Id, Name, KanbanColumn__c FROM Backlog__c WHERE Id=:card LIMIT 1];
-            obj.Story__c = story;
-            update obj;
+            backlog = [SELECT Id, Name, KanbanColumn__c FROM Backlog__c WHERE Id=:card LIMIT 1];
+            backlog.Story__c = story;
+            update backlog;
         } catch (Exception e) 
         {
             System.debug(e.getMessage());
