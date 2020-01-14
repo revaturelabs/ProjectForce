@@ -41,7 +41,7 @@
                 <field>BatchSize__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Edit</behavior>
+                <behavior>Required</behavior>
                 <field>BatchDuration__c</field>
             </layoutItems>
             <layoutItems>
