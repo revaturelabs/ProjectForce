@@ -408,7 +408,7 @@
 		var mainComponent = component.find("chartIdThing");
 		$A.util.addClass(modal, 'hideModal');
 		$A.util.removeClass(backdrop, 'slds-backdrop slds-backdrop_open');
-		mainComponent.location.reload();
+		//mainComponent.location.reload(); --useless?
 		return;
 	},
 

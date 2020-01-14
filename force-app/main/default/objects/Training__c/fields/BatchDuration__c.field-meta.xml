@@ -4,7 +4,7 @@
     <externalId>false</externalId>
     <label>BatchDuration</label>
     <precision>2</precision>
-    <required>false</required>
+    <required>true</required>
     <scale>0</scale>
     <trackHistory>false</trackHistory>
     <trackTrending>false</trackTrending>

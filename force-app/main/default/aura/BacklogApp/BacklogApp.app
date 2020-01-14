@@ -10,4 +10,6 @@
             </lightning:tab>
         </lightning:tabset>
     </div>
+	<!--The following component tag might go in between the FIRST <lightning:tab> tags-->
+	<!--<c:BacklogTab project="{!v.project}" aura:id="accordionView"/>-->
 </aura:application>
