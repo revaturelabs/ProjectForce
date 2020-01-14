@@ -60,7 +60,7 @@
 */
 .THIS .slds-modal__header {
    background: white;
-  
+  font-family: HeaderFutura;
    font-size: 2rem;
 }
 
@@ -71,6 +71,7 @@
 
 .THIS .header{
    color:black;
+    font-family: HeaderFutura;
 }
 
 .THIS .hidden  {
@@ -79,7 +80,7 @@
 
 .THIS .font{
    /* font-family: 'Times New Roman', Times, serif; */
-   font-family: sans-serif;
+   font-family: futura, sans-serif;
 }
 
 .THIS .buttonStyle{

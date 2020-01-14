@@ -158,14 +158,10 @@ public with sharing class KanbanProjectApexClass {
     
     /* @AuraEnabled
     public static List<String> getProjects(Id backlog){
-        List<Project__c> rawProjects =[SELECT Name 
-                                       FROM Project__c 
-                                       WHERE Id =:backlog];
+        List<Project__c> rawProjects =[SELECT Name FROM Project__c WHERE Id =:backlog];
         List<String> projects = new List<String>();
         projects.add(rawProjects[0].Name);
-        rawProjects =[SELECT Name 
-                      FROM Project__c 
-                      WHERE Id !=:backlog];
+        rawProjects =[SELECT Name FROM Project__c WHERE Id !=:backlog];
         for(Project__c p: rawProjects){
             projects.add(p.Name);
         }

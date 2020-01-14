@@ -97,6 +97,8 @@
                                   animation: {onComplete: function() {
                                       var ctx = this.chart.ctx;
                                       var chartInstance = this.chart;
+                                      Chart.defaults.global.defaultFontFamily = 'futura';
+                                      Chart.defaults.global.defaultFontSize = 14;
                                       ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontFamily, "normal", Chart.defaults.global.defaultFontFamily);
                                       ctx.textAlign = "left";
                                       ctx.fillStyle = "black"; // text color in bar label
@@ -128,7 +130,7 @@
                                            xAxes: [{barPercentage: 0.4,
                                                     ticks: {
                                                         //beginAtZero: true,
-                                                        fontFamily: "'Futura', sans-serif", fontSize: 11,
+                                                        fontFamily: "futura", fontSize: 11,
                                                         //does a call back to the array and returns the array index of the data(integer) inputed
                                                         callback: function(value, index, values) {
                                                             return xLabels[value];
@@ -140,7 +142,7 @@
                                            yAxes: [{barThickness : 30,
                                                     gridLines: {display: false, color: "#fff", 
                                                                 zeroLineColor: "#fff", zeroLineWidth: 0},
-                                                    ticks: {fontFamily: "'Futura', sans-serif", fontSize: 11,
+                                                    ticks: {fontFamily: "futura", fontSize: 11,
                                                             display: false},
                                                     //y-axis label name
                                                     scaleLabel: {display: false, labelString: "Batches"},

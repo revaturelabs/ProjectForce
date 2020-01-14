@@ -66,7 +66,6 @@ public class DataFactory
         }
         insert trainerList;
 
-
         // Insert Trainer Track Records
         // Add one for each trainer, dividing the trainers evenly among the tracks
         for( integer i = 0 ; i < numOfRecords ; i++ )
