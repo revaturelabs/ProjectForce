@@ -54,6 +54,7 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
+                <behavior>Required</behavior>
                 <field>Project__c</field>
             </layoutItems>
             <layoutItems>
@@ -66,6 +67,7 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
+                <behavior>Required</behavior>
                 <field>Room__c</field>
             </layoutItems>
         </layoutColumns>
