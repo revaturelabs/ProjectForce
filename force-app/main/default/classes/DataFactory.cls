@@ -114,7 +114,7 @@ public class DataFactory
         Insert TrainingList;
         
 		// Insert task records
-        for ( integer i = 0 ; i < numOfRecords / 2 ; i++ )
+        /*for ( integer i = 0 ; i < numOfRecords / 2 ; i++ )
         {	for ( integer j = 0 ; j < Math.mod(i+6, 10) + 1 ; j++ )
             {	backlogList.add	(	new Backlog__c
                                  	(	Project__c=ProjectList[i].Id, 
@@ -140,7 +140,7 @@ public class DataFactory
                 				);
             }
         }
-        insert backlogList;
+        insert backlogList;*/
     }
     private static void createTracks()
     {	trackList = new list<track__c>();

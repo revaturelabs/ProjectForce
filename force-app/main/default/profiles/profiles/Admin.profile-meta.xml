@@ -96,11 +96,6 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
-        <field>Backlog__c.PullRequest__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>true</editable>
         <field>Backlog__c.Stage__c</field>
         <readable>true</readable>
@@ -173,6 +168,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Training__c.Location__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Training__c.ProjectStartDate__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
