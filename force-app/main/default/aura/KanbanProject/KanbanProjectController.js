@@ -1,25 +1,9 @@
 ({
     doInit: function (component, event, helper) {
-        // store apex controller method to a variable
-        var action = component.get("c.getBacklogsProject");
-        action.setParams({ 'projectId' : component.get("v.project") });
-        action.setCallback(this, function (response) {
-            var state = response.getState();
-            if (state === "SUCCESS") {
-                component.set("v.backlogs", response.getReturnValue());
-            } else {
-                console.log("Failed with state: " + state);
-            }
-        });
-
-
-        var actionGetColumns = component.get("c.getKanbanColumns");
-
-        // store given project to a variable
-        // a kanban project controller shows the backlog of one project
-        // v.project is a required attribute
-
+        
         // Call Apex method to return Kanban Columns
+        // Set the List of Columns
+        var actionGetColumns = component.get("c.getKanbanColumns");
         actionGetColumns.setParams({ 'project' : component.get("v.project") });
         actionGetColumns.setCallback(this, function (response) {
             var state = response.getState();
@@ -33,7 +17,7 @@
         component.set('v.EndDate','10/10/2019');
         
         // Call Apex and get the list of Order Options
-        // Set v.kanbanOrder 
+        // Set v.kanbanOrder, the available spots in the Board 
         var getOrderAction = component.get("c.getOrderOptions");
         getOrderAction.setParams({ 'project' : component.get("v.project") });
         getOrderAction.setCallback(this, function (response) {
@@ -45,14 +29,12 @@
             }
         })
 
-        $A.enqueueAction(action);
         $A.enqueueAction(actionGetColumns);
         $A.enqueueAction(getOrderAction);
     },
 
-    /*
-    * Handles the event fired by a Kanban Column. A Kanban column fires this event whena card is dragged over it
-    */
+    /* 
+    //Handles the event fired by a Kanban Column. A Kanban column fires this event whena card is dragged over it
     droppedHandler: function (component, event, helper) {
         // get event parameters
         // the droppedOnColumn event has two attributes. 
@@ -132,28 +114,18 @@
         } else {
             console.log("Could not find this ", backlog);
         }
-    },
+    }, */
 
     // Model for adding a column
     openModel: function (component, event, helper) {
         // for Display Model,set the "isOpen" attribute to "true"
         helper.openModel(component);
-
-        var lab2 = component.find("label2");
-        console.log(lab2);
-
-        $A.util.addClass(lab2, 'toggle');
-        // component.get("label3").className = "slds-hidden";
-        // console.log(component.find("label2"));
-        
-        
     },
 
     // action for closing the add column model
     closeModel: function (component, event, helper) {
         // for Hide/Close Model,set the "isOpen" attribute to "Fasle"  
         helper.closeModel(component);
-
     },
 
     // Model for deleting a column

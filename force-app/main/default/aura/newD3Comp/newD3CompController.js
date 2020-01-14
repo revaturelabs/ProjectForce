@@ -29,7 +29,6 @@
         let sortByOptions = component.get('v.sortByOptions');
         sortByOptions.push(component.get('v.trackString'));
         sortByOptions.push(component.get('v.projectString'));
-        sortByOptions.push(component.get('v.reviewCompleteString'));
         sortByOptions.push(component.get('v.locationString'));
         sortByOptions.push(component.get('v.trainerString'));
         component.set('v.sortByOptions', sortByOptions);
@@ -184,12 +183,7 @@
         var filteredTrainings = component.get("v.filteredTrainings");
         var getColors={};
         for (let i=0;i<filteredTrainings.length;i++)
-            getColors[i]=filteredTrainings[i].color;
-        
-        helper.sortArray(filteredTrainings, getColors, sortBy);
-        helper.updateData(component);
-        helper.sortArray(filteredTrainings, getColors, sortBy);
-        
+            getColors[i]=filteredTrainings[i].color;        
         // change options of what to color bars by
         switch(sortBy){
             case "Track":
@@ -217,17 +211,21 @@
             default:
                 component.set('v.fieldToSortBy',null);
         }
+        component.set('v.filteredTrainings',helper.sortArray(filteredTrainings, getColors, sortBy));
+        let a = component.get('c.applyColors');
+        $A.enqueueAction(a);
+        helper.updateData(component);
     },
     
     runFilter: function(component, event, helper) {
         //Grabbing Relevant data
-        var filteredTrainings = component.get("v.filteredTrainings");
+        var selectedTrainings = component.get("v.selectedTrainings");
         var myChart = component.get("v.dasChart");
         var selectedTrack = component.find("TrackFilter").get("v.value");
         var selectedLocation = component.find("LocationFilter").get("v.value");
         var selectedDate = component.find("DateFilter").get("v.value");
         var newData = helper.filterData(selectedTrack, selectedLocation, selectedDate,
-                                        myChart, filteredTrainings, component);
+                                        myChart, selectedTrainings, component);
         var a = component.get("c.applyColors");
         $A.enqueueAction(a);
         component.set("v.filteredTrainings", newData);
