@@ -27,7 +27,7 @@
                 <field>Start_Date__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Required</behavior>
+                <behavior>Edit</behavior>
                 <field>ProjectStartDate__c</field>
             </layoutItems>
             <layoutItems>
@@ -41,7 +41,7 @@
                 <field>BatchSize__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Required</behavior>
+                <behavior>Edit</behavior>
                 <field>BatchDuration__c</field>
             </layoutItems>
             <layoutItems>
@@ -53,6 +53,7 @@
                 <field>Comments__c</field>
             </layoutItems>
             <layoutItems>
+                <behavior>Edit</behavior>
                 <behavior>Required</behavior>
                 <field>Project__c</field>
             </layoutItems>
@@ -65,6 +66,7 @@
                 <field>Location__c</field>
             </layoutItems>
             <layoutItems>
+                <behavior>Edit</behavior>
                 <behavior>Required</behavior>
                 <field>Room__c</field>
             </layoutItems>

@@ -1,3 +1,12 @@
 .THIS {
-    
+    font-family: futura;    
+}
+
+@font-face{
+font-family: futura;
+src: url(/resource/Futura);
+}
+@font-face{
+font-family: HeaderFutura;
+src: url(/resource/HeaderFutura);
 }
