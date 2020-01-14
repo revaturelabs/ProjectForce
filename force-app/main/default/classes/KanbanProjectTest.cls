@@ -28,7 +28,8 @@ public with sharing class KanbanProjectTest {
     
     @isTest
     static void testAddCol ()
-    {	string stage = 'Sprint Backlog';
+    {	
+        string stage = 'Sprint Backlog';
      	string project = [ SELECT Id FROM Project__c LIMIT 1 ].id;
      	string order = '1';
      	KanbanColumn__c expected = KanbanProjectApexClass.addNewColumn(stage, project, order);
@@ -46,32 +47,171 @@ public with sharing class KanbanProjectTest {
      	// Negative case, add col to project without cols
      	insert emptyProj;
      	KanbanColumn__c bad = KanbanProjectApexClass.addNewColumn(stage, emptyProj.id, order);
+        
+        // Test Update Column
+        stage = 'New Column Title';
+        KanbanProjectApexClass.updateColumn(expected.Id, stage);
+        KanbanColumn__c column = new KanbanColumn__c();
+        column = [ SELECT Id, Label__c, Project__c, Order__c 
+                                  	FROM KanbanColumn__c 
+                                  	WHERE Id=:expected.Id];
+        System.AssertEquals(stage, column.Label__c);
+        
+        // Test Update Column with non valid ID
+        try{
+            String columnID = 'Not a Valid ID';
+            KanbanProjectApexClass.updateColumn(columnID, stage);
+        }
+        catch (Exception e)
+        {
+            System.debug(e.getMessage());
+            System.assertEquals('List has no rows for assignment to SObject', e.getMessage());
+        }
     }
     
     @isTest
-    static void testRemoveCol ()
+    static void testRemoveCol()
     {
+        // Positive, Expected Delete COlumn
+        string project = [ SELECT Id FROM Project__c LIMIT 1 ].id;
+        String label = 'To Do';
+        KanbanProjectApexClass.removeColumn(label, project);
         
+        // Negative, Input a wrong label
+        label = 'Wrong label';
+        try{
+            KanbanProjectApexClass.removeColumn(label, project);
+        }
+        catch (Exception e)
+        {
+            System.debug(e.getMessage());
+            System.assertEquals('List has no rows for assignment to SObject', e.getMessage());
+        }
+        
+        // Testing Security would be nice
     }
-}
-    /*
+
+    @isTest
+    static void testgetBacklogs () {
+        // Positive, pass in a valid ID
+        string column = [ SELECT Id FROM KanbanColumn__c LIMIT 1 ].id;
+        List<Backlog__c> backlogs = new List<Backlog__c>();
+        backlogs = KanbanProjectApexClass.getBacklogs(column);
+       	System.debug(backlogs);
+        
+        // Negative, pass in nonvalid ID
+        try{
+            column = 'Not a Valid ID';
+            KanbanProjectApexClass.getBacklogs(column);
+        }
+        catch (Exception e)
+        {
+            System.debug(e.getMessage());
+            System.assertEquals('List has no rows for assignment to SObject', e.getMessage());
+        }
+    }
+    
     @isTest
     public static void testSaveBacklog() {
         // Query, change Stage and then Save one Backlog
+        string column = [ SELECT Id FROM KanbanColumn__c LIMIT 1 ].id;
         Backlog__c backlog = new Backlog__c();
-        backlog = [Select Id, Stage__c From Backlog__c Where Stage__c = 'Doing' Limit 1];
-        backlog.Stage__c = 'Done';
+        backlog.Story__c = 'Order 66';
+        backlog.KanbanColumn__c = column;
+        insert backlog;
+        //backlog.Stage__c = 'Done';
         KanbanProjectApexClass.saveBacklog(backlog); 
         
         // Query, change Stage, and then Save a List of Backlogs
         List<Backlog__c> backlogs = new List<Backlog__c>();
-        backlogs = [Select Id, Stage__c From Backlog__c Where Stage__c = 'Doing'];
-        for (backlog__c b : backlogs) {
-            b.Stage__c = 'Done';
+        for (Integer i=0; i>50;i++) {
+        	backlog.Story__c = 'Test' +i;
+        	backlog.KanbanColumn__c = column;
+            backlogs.add(backlog);
         }
+        insert backlogs;
         KanbanProjectApexClass.saveBacklogs(backlogs);
+        
+        
+        // Test Update Card
+        backlog.Story__c = 'Some Another Order';
+        KanbanProjectApexClass.updateCard(backlog.Id, backlog.Story__c);
+        
+        // Negative, pass in non valid ID
+        try{
+            String cardId = 'Not a Valid ID';
+            KanbanProjectApexClass.updateCard(cardId, backlog.Story__c);
+        }
+        catch (Exception e)
+        {
+            System.debug(e.getMessage());
+            System.assertEquals('List has no rows for assignment to SObject', e.getMessage());
+        }
     }
     
+    @isTest
+    public static void testaddNewBacklog() {
+        // Positive, pass in a valid ID
+        string column = [ SELECT Id FROM KanbanColumn__c LIMIT 1 ].id;
+        String Story = 'Order 66';
+        List<Backlog__c> backlogs = new List<Backlog__c>();
+        backlogs = KanbanProjectApexClass.addNewBacklog(column, story);
+        System.debug(backlogs);
+        
+        // Negative, pass in non valid ID
+        try{
+            column = 'Not a Valid ID';
+            KanbanProjectApexClass.addNewBacklog(column, story);
+        }
+        catch (Exception e)
+        {
+            System.debug(e.getMessage());
+            System.assertEquals('List has no rows for assignment to SObject', e.getMessage());
+        }
+    }
+    
+    @isTest
+    public static void testfindProject() {
+        // Positive, pass in a valid ID
+		Project__c project = new Project__c();
+        project = [ SELECT Id, Name FROM Project__c LIMIT 1 ];
+        String projectId = KanbanProjectApexClass.findProject(project.Name);
+        System.assertEquals(project.Id, projectId);
+        
+        // Negative. pass in a non valid ID
+        try{
+            projectId = 'Not a Valid ID';
+        	KanbanProjectApexClass.findProject(projectId);
+        }
+        catch (Exception e)
+        {
+            System.debug(e.getMessage());
+            System.assertEquals('List has no rows for assignment to SObject', e.getMessage());
+        }
+    }
+	@isTest
+    public static void testremoveCard() {
+        // Positive, pass in a valid ID
+        string column = [ SELECT Id FROM KanbanColumn__c LIMIT 1 ].id;
+        Backlog__c backlog = new Backlog__c();
+        backlog.Story__c = 'Order 66';
+        backlog.KanbanColumn__c = column;
+        insert backlog;
+        KanbanProjectApexClass.removeCard(backlog.Id);
+        
+        // Negative, pass in a non valid ID
+        try{
+            String backlogId = 'Not a Valid ID';
+        	KanbanProjectApexClass.removeCard(backlogId);
+        }
+        catch (Exception e)
+        {
+            System.debug(e.getMessage());
+            System.assertEquals('List has no rows for assignment to SObject', e.getMessage());
+        }
+    }
+}   
+/*
     @isTest
     public static void testgetBacklogs () 
     {   // Query for one project
