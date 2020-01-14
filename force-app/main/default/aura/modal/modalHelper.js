@@ -1,6 +1,4 @@
 ({
-
-
 	//Function for the trainer drop down
 	//sets the list of trainers by calling the server- side controller
 	trainer : function(component, event) {
@@ -90,7 +88,7 @@
 	$A.enqueueAction(action);
 },
 
-	//Funcation for the track drop down
+	//Function for the track drop down
 	//sets the list of tracks by calling the server- side controller
 	trackByID : function(component, event) {
 		
@@ -166,7 +164,7 @@
 	
 	$A.enqueueAction(action);
 	},
-	//Funcation for the project drop down
+	//Function for the project drop down
 	//sets the list of projects by calling the server- side controller	
 	project : function(component, event) {
 		
@@ -182,7 +180,6 @@
 		if(!selectedTrack)
 		{
 			selectedTrack = params.paramTrack;
-
 		}
 		
 		action.setParams({
@@ -190,26 +187,26 @@
             "startDateName": selectedDate
 		});
 		
-		action.setCallback(this, function(response){
-		
-		var state = response.getState();
-
-		let project= response.getReturnValue();
-		
-		
-		if(state === "SUCCESS"){
-			component.set("v.updateProjects", project);
-			
-			if(project.length !=0)
-			{
-				component.set("v.updateProject", project[0].Name);
-			}
-		}
-		else{
-			console.log("Failed with state: "+state);
-		}
-		
-	});
+        action.setCallback(this, function(response){
+            
+            var state = response.getState();
+            
+            let project= response.getReturnValue();
+            
+            
+            if(state === "SUCCESS"){
+                component.set("v.updateProjects", project);
+                
+                if(project.length !=0)
+                {
+                    component.set("v.updateProject", project[0].Name);
+                }
+            }
+            else{
+                console.log("Failed with state: "+state);
+            }
+            
+        });
 	
 	$A.enqueueAction(action);
 },
@@ -280,7 +277,6 @@
 				component.set("v.updateTrainer", batchInformation.Trainer__r.Name);
 				component.set("v.batchRoom", batchInformation.Room__r.Name);
 				component.set("v.batchLocation", batchInformation.Room__r.Location__r.Name);
-				component.set("v.batchComments",batchInformation.Comments__c);
 			}
 			else{
 				console.log("Failed with state: "+state);
@@ -289,7 +285,7 @@
 		$A.enqueueAction(action);
 	},
 
-	//Funcation for the project drop down
+	//Function for the project drop down
 	//sets the list of projects by calling the server- side controller	
 	listOfTrackProject : function(component, event) {
 		var action = component.get("c.getProject");
@@ -313,37 +309,95 @@
 		});
 		$A.enqueueAction(action);
 	},
-
+    //Task for 01/07/2020: Need to pass param to upadate ProjectComplete checkbox value and Review checkbox value into 2 new Apex Methods
 	saveModal : function(component, event) {
+        //verify Save Action by user is completed successfully, returns boolean
 		var action = component.get("c.Save");
-
-		//how many params do we need to pass
+		
+        //how many params do we need to pass
         action.setParams({
 			"trainingId": component.get("v.saveTrainingID"),
 			"newProjectName": component.get("v.updateProject"),
 			"newComment" : component.get("v.updateComment")
 		});
-
+        
 		action.setCallback(this, function(response){
 			var state = response.getState();
 			let saveComplete = response.getReturnValue();
 
 			if(state === "SUCCESS"){
-				if(saveComplete)
-				{
+				if(saveComplete){
 					this.hideModal(component,event);
 					this.successToast(component,event);
-				}
-
-				else
-				{
+				}else{
 					this.failToast(component,event);
-				}
+                }
 			}
 			else{
-				console.log("Failed with state: "+state);
+				console.log("Failed with state: "+ state);
 			}
 		});
+        
+        //use boolean value of checkbox to determine field status
+        var selectProjectCheckBox = component.get("v.updateProjectComplete");
+        var selectTrainingCheckBox = component.get("v.updateReview");
+        
+        //call Save Apex Method to updated checkbox status fields in Project__c and Training__c Objects, and get the user selected Record from Org
+        var updateCheckBoxRecord = component.get("c.updateCheckBoxStatusRecord");
+        var selectProjectRecord = component.get("c.getProject");
+        var selectTrainingReviewRecord = component.get("c.getBatch"); //get the training record the user selected
+        
+        //get the Project Record that the User Selected from Aura Component UI
+        selectProjectRecord.setCallback(this, function(response){
+            var state = response.getState();
+            let project= response.getReturnValue();
+            
+            
+            if(state === "SUCCESS"){
+                component.set("v.updateProjects", project);
+                if(project.length !=0){
+                    component.set("v.updateProject", project[0].ID);
+                }
+            }else{
+                console.log("Failed with state: "+state);
+            }
+            
+        });
+        
+        //get the Training Record the User Selected from Aura Component UI
+        selectTrainingReviewRecord.setCallback(this, function(response){
+			var state = response.getState();
+            let training= response.getReturnValue();
+            
+            
+            if(state === "SUCCESS"){
+                component.set("v.updateProjects", training); //this may need to be re-evaluated, "v.updateProjects may not have training ID"
+                if(training.length !=0){
+                    component.set("v.updateProject", training[0].ID);
+                }
+            }else{
+                console.log("Failed with state: "+state);
+            }
+        });
+        
+        /**need to reference the ID of Project Record that the User Selected from UI Menu Calendar and then assign the value of 'Checked'**/
+        if(selectProjectCheckBox === TRUE){
+           	component.set("v.projectStatus.ID", selectProjectRecord);
+            component.set("v.projectStatus.ProjectComplete__c", 'Checked');
+        }
+        if(selectTrainingCheckBox === TRUE){
+            component.set("v.trainingStatus.ID", selectTrainingReviewRecord);
+            component.set("v.trainingStatus.Review_Completed__c", 'Checked');
+        }
+        
+        //checkbox params to pass
+        updateCheckBoxRecord.setParams({
+			"projectStatusToUpdate": component.get("v.projectStatus"),
+            "reviewStatusToUpdate": component.get("v.trainingStatus")
+        });
+        updateCheckBoxRecord.setCallback(this, function(response){});  
+      	
+        $A.enqueueAction(updateCheckBoxRecord);
 		$A.enqueueAction(action);
 	},
 
@@ -362,7 +416,9 @@
 	showModal : function(component) {
 		var modal = component.find("modalSection");
 		var backdrop = component.find("backdrop");
+		console.log('Helper');
 		$A.util.removeClass(modal, 'hideModal');
+		console.log(`hideModal: ${$A.util.hasClass(modal, 'hideModal')}`);
 		$A.util.addClass(backdrop, 'slds-backdrop slds-backdrop_open');
 		return;
 	},

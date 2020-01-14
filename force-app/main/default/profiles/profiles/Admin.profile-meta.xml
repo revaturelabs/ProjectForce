@@ -52,21 +52,6 @@
     <custom>false</custom>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Backlog__c.CardLabel1__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Backlog__c.CardLabel2__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Backlog__c.CardLabel3__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>Backlog__c.DateLogged__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -82,17 +67,7 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Backlog__c.NumberOfCardLabels__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Backlog__c.Project__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Backlog__c.PullRequest__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -147,6 +122,16 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>KanbanColumn__c.autoId__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Project__c.Details__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Project__c.ProjectComplete__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -168,12 +153,12 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Training__c.End_Date__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Training__c.Location__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
