@@ -55,7 +55,7 @@ public without sharing class ModalController {
         return result.isSuccess();
     }
     
-    //New Apex Method in order to insert the checkbox status values into the Project__c and Training__c objects
+    //New Apex Method in order to update the checkbox status values inside the Project__c and Training__c objects
     @auraEnabled
     public static void updateCheckBoxStatusRecord(Project__c projectStatusToUpdate, Training__c reviewStatusToUpdate){
         UPDATE projectStatusToUpdate;

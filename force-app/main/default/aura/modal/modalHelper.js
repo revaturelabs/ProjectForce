@@ -126,7 +126,6 @@
 	//sets the list of rooms by calling the server- side controller
 	room : function(component, event) {
 		
-
 		var action = component.get("c.getRoom");
 		let params = event.getParam('arguments');
 		let selectedLocation = component.get("v.selectedLocation");
@@ -309,7 +308,7 @@
 		});
 		$A.enqueueAction(action);
 	},
-    //Task for 01/07/2020: Need to pass param to upadate ProjectComplete checkbox value and Review checkbox value into 2 new Apex Methods
+    //Task for 01/07/2020: Need to pass param to upadate ProjectComplete checkbox value and Review checkbox value into 1 new Apex Methods
 	saveModal : function(component, event) {
         //verify Save Action by user is completed successfully, returns boolean
 		var action = component.get("c.Save");
