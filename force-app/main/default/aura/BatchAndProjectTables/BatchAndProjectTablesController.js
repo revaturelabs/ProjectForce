@@ -33,7 +33,7 @@
         var updatedData = helper.getUpdatedData(component, event, tableAuraId); 
         helper.saveInlineEdits(component, helper, updatedData);
     },
-
+	
     /**
      * initalize the tables to have current projects selected by default
      * @param {} component 

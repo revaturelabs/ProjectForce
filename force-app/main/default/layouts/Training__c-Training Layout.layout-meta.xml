@@ -41,7 +41,7 @@
                 <field>BatchSize__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Edit</behavior>
+                <behavior>Required</behavior>
                 <field>BatchDuration__c</field>
             </layoutItems>
             <layoutItems>
@@ -53,7 +53,7 @@
                 <field>Comments__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Edit</behavior>
+                <behavior>Required</behavior>
                 <field>Project__c</field>
             </layoutItems>
             <layoutItems>
@@ -65,7 +65,7 @@
                 <field>Location__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Edit</behavior>
+                <behavior>Required</behavior>
                 <field>Room__c</field>
             </layoutItems>
         </layoutColumns>
@@ -91,10 +91,9 @@
         <style>TwoColumnsTopToBottom</style>
     </layoutSections>
     <layoutSections>
-        <customLabel>true</customLabel>
+        <customLabel>false</customLabel>
         <detailHeading>false</detailHeading>
         <editHeading>true</editHeading>
-        <label>Custom Links</label>
         <layoutColumns/>
         <layoutColumns/>
         <layoutColumns/>

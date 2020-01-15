@@ -35,7 +35,7 @@
 
     /**
      * get a list of the batch ids based on the selected projects
-     * @param {*} event 
+     * @param {*} event
      */
     getBatchIds : function(event){
         var batchIds = [];
@@ -131,6 +131,20 @@
         var dataToUpdate = [];
         var keys = Object.keys(newTableData[0]);
         
+        //See: <c:CreateDataTable aura:id="batch" ... /> inside BatchAndProjectTables.cmp Aura Component file
+        //check for correct range of Color__c field hexadecimal values inside the cObject Training__c, Keaton C. 01/05/2020
+        for(let i=0;i<modifiedElements.length;i++){
+			var colorValue = modifiedElements[i].Color__c;
+            dataToUpdate[i] = {};
+            //check for validity of hexadecimal string in colorValue
+            let test = RegExp('^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$');
+            if(test.test(colorValue)){
+                console.log('Hexadecimal Color: ' + colorValue);
+            }else{
+                console.log('Invalid Color, Setting Color to default value of Black, #FFFFFF');
+                dataToUpdate[i].Color__c = '#FFFFFF';
+            }
+        }
         for(let i=0;i<modifiedElements.length;i++){
             var rowNumber = modifiedElements[i].id.split('-')[1];
             dataToUpdate[i] = {};

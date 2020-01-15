@@ -1,6 +1,16 @@
 .THIS {
-    font-family: Futura;
+    font-family: futura;
     /* background-color: white; */
+}
+
+
+@font-face{
+font-family: futura;
+src: url(/resource/Futura);
+}
+@font-face{
+font-family: HeaderFutura;
+src: url(/resource/HeaderFutura);
 }
 
 .THIS.graph_container{
@@ -31,7 +41,13 @@
     float: right;
     width: 30%;
     margin-left:5%;
-    margin-right: 5%;}
+    margin-right: 5%;
+}
+.THIS #ColorsList{
+    overflow:auto;
+    max-height: 50vh;
+    display:block;
+}
 
 .THIS #Sorting {
     float: right;
@@ -43,7 +59,7 @@
 .THIS .slds-modal__header {
     color: #474C55;
     font-size: 1rem;
-    font-family: Sans-Serif;
+    font-family: HeaderFutura, Sans-Serif;
  }
 
 .THIS #Filters {
@@ -72,4 +88,19 @@
 }
 .THIS .chartAreaWrapper {
     overflow: auto;
+}
+
+.THIS .alignment{
+    margin: 0px 25px 5px 25px;
+}
+.THIS .picklist{
+    border-bottom: 2px solid #474C55;
+    border-left: 2px solid #474C55;
+    border-right: 2px solid #474C55;
+    border-top: 10px solid #474C55; 
+    border-radius: 2.5%;
+    background-color: white;
+}
+.THIS .option-padding{
+    padding:0px 5px;
 }

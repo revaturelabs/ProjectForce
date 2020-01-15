@@ -1,33 +1,44 @@
 <!--Project 3-->
 <!--Server side controller is set to ModalController-->
 <aura:component controller = "ModalController"
-                implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickActionWithoutHeader" access="global" >
+                implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,forceCommunity:availableForAllPageTypes,force:lightningQuickActionWithoutHeader" access="global" >
 
     <!--Allows the container component to call a method in this component-->
     <aura:method name="showModal" action="{!c.showModal}" access="PUBLIC">
-            <aura:attribute name="trainingID" type="String"/>
-            <aura:attribute name="paramTrack" type="String"/>
-            <aura:attribute name="paramProjectDate" type="Date"/>
+        <aura:attribute name="trainingID" type="String"/>
+        <aura:attribute name="paramTrack" type="String"/>
+        <aura:attribute name="paramProjectDate" type="Date"/>
     </aura:method>
     
     <!--Attribute of trainingId for saving-->
     <aura:attribute name="saveTrainingID" type="String"/>
-
-     <!--Attribute for the selected value-->
+    
+    <!--Attribute for the selected value-->
     <aura:attribute name="updateProject" type="String"/>
     <aura:attribute name="projectId" type="String"/>
     <aura:attribute name="pageReference" type="Object"/>
     <lightning:navigation aura:id="navService"/>
-  
+    
     <!--Attribute for list-->
     <aura:attribute name="batchProjectsList" type="String"/>
     
-     <!--Attribute for the selected value-->
+    <!--Attribute for the selected value-->
     <aura:attribute name="updateTrainer" type="String"/>  
-
+    
     <!-- Comments added in the modal are displayed above the input field -->
     <aura:attribute name="updateComment" type="String" />
-
+    
+ 	<!--Attributes for the selected boolean value inside the toggle-checkboxes for ProjectComplete in Project__c and Review in Training__c-->
+    <aura:attribute name="updateProjectComplete" type="Boolean" default="false" />
+	<aura:attribute name="updateReview" type="Boolean" default="false" />
+    
+    <!--Attributes for inserting the checkbox field values inside the Project__c and Training__c Objects-->
+    <aura:attribute name="projectStatus" type="Project__c" 
+                    default="{'cobjectType' : 'Project__c',
+                             'ProjectComplete__c' : 'Unchecked'}" />
+    <aura:attribute name="trainingStatus" type="Training__c" 
+                    default="{'cobjectType' : 'Training__c',
+                             'Review_Completed__c' : 'Unchecked'}" />
     
     <!-- Attributes for the entire Batch modal -->
     <aura:attribute name="batchNumber" type="String"/>
@@ -36,124 +47,136 @@
     <aura:attribute name="batchProjectDate" type="Date"/>
     <aura:attribute name="batchRoom" type="String"/>
     <aura:attribute name="batchLocation" type="String"/>
+    <aura:attribute name="batchComments" type="String"/>
 	
     <section aura:id = "modalSection" role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open hideModal slds-modal_small"> 
         <!--Changed font to default-->
         <div class="font">
             <div class="slds-modal__container " style="max-width:50rem; ">
-
-            <header class="slds-modal__header">
-                <div class ="header slds-box slds-box_small slds-modal__header">
-                    <h1 id="modal-heading-01" class="slds-modal__title slds-hyphenate">Batch {!v.batchNumber} - {!v.updateTrainer}</h1>
-                </div>
-            
-                <div class ="row">
-                    <div class="column">
-                        <div class="slds-size_3-of-4 slds-media_inline">
-                            <div class="slds-media slds-media_medium">
-                                <span class="slds-media__body">
-                                    <p>
-                                        <aura:text value="{!v.batchTrack}"/>
-                                    </p>
-                                </span>
-                            </div>
-                        </div>
+                
+                <header class="slds-modal__header">
+                    <div class ="header slds-box slds-box_small slds-modal__header">
+                        <h1 id="modal-heading-01" class="slds-modal__title slds-hyphenate">Batch {!v.batchNumber} - {!v.updateTrainer}</h1>
                     </div>
-
-                    <div class="column">
-                        <div class="slds-size_3-of-4 slds-media_inline">
-                            <div class="slds-media slds-media_medium">
-                                <div class="slds-media__figure">
-                                    <span class="slds-avatar slds-avatar_medium">
-                                        <img alt="Sf logo" src="{!$Resource.calenderLogo}" title="User avatar" />
+                    
+                    <div class ="row">
+                        <div class="column">
+                            <div class="slds-size_3-of-4 slds-media_inline">
+                                <div class="slds-media slds-media_medium">
+                                    <span class="slds-media__body">
+                                        <p>
+                                            <aura:text value="{!v.batchTrack}"/>
+                                        </p>
                                     </span>
                                 </div>
-                                <span class="slds-media__body">
-                                    <aura:text value="{!v.batchProjectDate}"/>
-                                </span>
+                            </div>
+                        </div>
+                        
+                        <div class="column">
+                            <div class="slds-size_3-of-4 slds-media_inline">
+                                <div class="slds-media slds-media_medium">
+                                    <div class="slds-media__figure">
+                                        <span class="slds-avatar slds-avatar_medium">
+                                            <img alt="Sf logo" src="{!$Resource.calenderLogo}" title="User avatar" />
+                                        </span>
+                                    </div>
+                                    <span class="slds-media__body">
+                                        <aura:text value="{!v.batchProjectDate}"/>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="column"><!--ProjectComplete field update from this toggle-checkbox-->
+                            <div class="slds-form-element"><!--Next Task For SAVE functionality 01/07/2020, Save value of 'Completed' Checkbox-->
+                                <label class="slds-checkbox_toggle slds-grid">
+                                    <input type="checkbox" name="checkbox-toggle-17" value="{!v.updateProjectComplete}" aria-describedby="checkbox-toggle-17" />
+                                    <span id="checkbox-toggle-17" class="slds-checkbox_faux_container" aria-live="assertive">
+                                        <span class="slds-checkbox_faux"></span>
+                                        <span class="slds-checkbox_on">Completed</span>
+                                        <span class="slds-checkbox_off">Not Complete</span>
+                                    </span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="column"><!--Review field update from this toggle-checkbox-->
+                            <div class="slds-form-element"><!--Next Task For SAVE functionality 01/09/2020, Save value of 'Reviewed' Checkbox-->
+                                <label class="slds-checkbox_toggle slds-grid">
+                                    <input type="checkbox" name="checkbox-toggle-17" value="{!v.updateReview}" aria-describedby="checkbox-toggle-17" />
+                                    <span id="checkbox-toggle-17" class="slds-checkbox_faux_container" aria-live="assertive">
+                                        <span class="slds-checkbox_faux"></span>
+                                        <span class="slds-checkbox_on">Reviewed</span>
+                                        <span class="slds-checkbox_off">Not Reviewed</span>
+                                    </span>
+                                </label>
                             </div>
                         </div>
                     </div>
-
-                    <div class="column">
-                        <div class="slds-form-element">
-                            <label class="slds-checkbox_toggle slds-grid">
-                                <input type="checkbox" name="checkbox-toggle-17" value="checkbox-toggle-17" aria-describedby="checkbox-toggle-17" />
-                                <span id="checkbox-toggle-17" class="slds-checkbox_faux_container" aria-live="assertive">
-                                    <span class="slds-checkbox_faux"></span>
-                                    <span class="slds-checkbox_on">Completed</span>
-                                    <span class="slds-checkbox_off">Not Complete</span>
+                </header>
+                
+                <span class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                    <div class ="row">
+                        <div class="column">
+                            <!--Project-->
+                            <div>
+                                <label style="font-size: 15px">Project: </label>
+                                <span class="slds-badge" id="projectBadge">
+                                    <lightning:button class="projectButton" variant="base" label="{!v.updateProject}" onclick="{!c.openDiv}"/>
                                 </span>
-                            </label>
+                                
+                                <!-- List of Projects-->
+                                <div style="display:none" id="locationDiv">
+                                    <lightning:select name="selProject" label="Project" aura:id="selProject" value="{!v.updateProject}"  onchange="{!c.getFilter}" >
+                                        <aura:iteration items="{!v.batchProjectsList}" var="project">
+                                            <option text="{!project.Name}" value="{!project.Name}" selected="{!project.selected}"/>
+                                        </aura:iteration>
+                                    </lightning:select>
+                                </div>
+                            </div>
+                            <br/>
+                            
+                            <!--Size-->
+                            <div>
+                                <label style="font-size: 15px">Size: </label>
+                                <aura:text value="{!v.batchSize}"/>
+                            </div>
+                            <br/>
+                            
+                            <!--Trainer-->
+                            <div>
+                                <label style="font-size: 15px">Trainer: </label>
+                                <span class="slds-badge" id="trainerBadge">
+                                    <aura:text value="{!v.updateTrainer}"/>
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <div class="column">
+                            <div>
+                                <label style="font-size: 15px">Room: </label>  
+                                <aura:text value="{!v.batchRoom}"/> 
+                            </div>
+                            <br/>
+                            <div>
+                                <label style="font-size: 15px">Location: </label> 
+                                <aura:text value="{!v.batchLocation}"/>  
+                            </div>
                         </div>
                     </div>
-                </div>
-            </header>
-
-        <span class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
-            <div class ="row">
-                <div class="column">
-                    <!--Project-->
-                    <div>
-                        <label style="font-size: 15px">Project: </label>
-                        <span class="slds-badge" id="projectBadge">
-                            <lightning:button class="projectButton" variant="base" label="{!v.updateProject}" onclick="{!c.openDiv}"/>
-                        </span>
-
-                        <!-- List of Projects-->
-                        <div style="display:none" id="locationDiv">
-                            <lightning:select name="selProject" label="Project" aura:id="selProject" value="{!v.updateProject}"  onchange="{!c.getFilter}" >
-                                <aura:iteration items="{!v.batchProjectsList}" var="project">
-                                    <option text="{!project.Name}" value="{!project.Name}" selected="{!project.selected}"/>
-                                </aura:iteration>
-                            </lightning:select>
+                </span>
+                
+                <span class="slds-modal__content slds-p-around_medium" id="modal-content-id-2">
+                    <!-- Comments -->
+                    <lightning:recordViewForm recordId="{!v.saveTrainingID}" objectApiName="Training__c">
+                        <div class="slds-form-element__control">
+                            <lightning:outputField fieldName="Comments__c" />
                         </div>
-                    </div>
-                    <br/>
-
-                    <!--Size-->
-                    <div>
-                        <label style="font-size: 15px">Size: </label>
-                        <aura:text value="{!v.batchSize}"/>
-                    </div>
-                    <br/>
-
-                    <!--Trainer-->
-                    <div>
-                        <label style="font-size: 15px">Trainer: </label>
-                        <span class="slds-badge" id="trainerBadge">
-                            <aura:text value="{!v.updateTrainer}"/>
-                        </span>
-                    </div>
-                </div>
-
-                <div class="column">
-                    <div>
-                        <label style="font-size: 15px">Room: </label>  
-                        <aura:text value="{!v.batchRoom}"/> 
-                    </div>
-                    <br/>
-                    <div>
-                        <label style="font-size: 15px">Location: </label> 
-                        <aura:text value="{!v.batchLocation}"/>  
-                    </div>
-                </div>
-            </div>
-        </span>
-
-          
-
-            <span class="slds-modal__content slds-p-around_medium" id="modal-content-id-2">
-            <!-- Comments -->
-            <lightning:recordViewForm recordId="{!v.saveTrainingID}" objectApiName="Training__c">
-                <div class="slds-form-element__control">
-                    <lightning:outputField fieldName="Comments__c" />
-                </div>
-            </lightning:recordViewForm>
-
-            <lightning:input name="TextBox" value="{!v.updateComment}"  />
-            </span>
-        
+                    </lightning:recordViewForm>
+                    
+                    <lightning:input name="TextBox" value="{!v.updateComment}"  />
+                </span>
+                
                 <!--</lightning:card>-->
                 <footer class="slds-modal__footer slds-modal__footer_directional">
                     <lightning:button class="slds-button_brand button" label="View Backlogs" onclick="{!c.openKanban}"/>

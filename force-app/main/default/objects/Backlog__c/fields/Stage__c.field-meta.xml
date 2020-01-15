@@ -3,28 +3,9 @@
     <fullName>Stage__c</fullName>
     <externalId>false</externalId>
     <label>Stage</label>
+    <length>80</length>
     <required>false</required>
     <trackTrending>false</trackTrending>
-    <type>Picklist</type>
-    <valueSet>
-        <restricted>true</restricted>
-        <valueSetDefinition>
-            <sorted>false</sorted>
-            <value>
-                <fullName>To Do</fullName>
-                <default>false</default>
-                <label>To Do</label>
-            </value>
-            <value>
-                <fullName>Doing</fullName>
-                <default>false</default>
-                <label>Doing</label>
-            </value>
-            <value>
-                <fullName>Done</fullName>
-                <default>false</default>
-                <label>Done</label>
-            </value>
-        </valueSetDefinition>
-    </valueSet>
+    <type>Text</type>
+    <unique>false</unique>
 </CustomField>

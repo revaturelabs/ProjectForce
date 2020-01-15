@@ -4,28 +4,20 @@
             // helper.room(component, event);
             // helper.trainer(component, event);
             // helper.project(component, event);
-            
-           
-
     },
     
     save : function(component, event, helper) {
-        
-
         let updateTrainer = component.get("v.updateTrainer");
         let updateProject = component.get("v.updateProject");
         let updateRoom = component.get("v.updateRoom");
   
-        if(updateTrainer && updateProject && updateRoom)
-        {
+        if(updateTrainer && updateProject && updateRoom){
             helper.saveModal(component, event);
             location.reload();
             helper.room(component, event);
             helper.trainer(component, event);
             helper.project(component, event);
-        }
-        else
-        {
+        }else{
             alert("Save Problem");
         }
     },
