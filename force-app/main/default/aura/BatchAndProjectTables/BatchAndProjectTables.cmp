@@ -2,9 +2,11 @@
     <aura:attribute name="tableHeight" type="String" default="300" />
     <aura:attribute name="selectedBatchIds" type="List" />
     <aura:attribute name="color" type="String" default="C307C3" />
+    <aura:attribute name='tableReadyStatus' type='Integer' default='0'/>
 
     <aura:handler name="TableItemSelectedEvent" event="c:TableItemSelectedEvent" action="{!c.handleItemSelectedEvent}" />
     <aura:handler name="saveInlineEdits" event="c:SaveInlineEditsEvent" action="{!c.handleSaveInlineEditsEvent}" />
+    <aura:handler event="c:TableInitCompleteEvent" action="{!c.initSelections}"/>
 
     <aura:registerEvent name="BatchInformationEvent" type="c:BatchInformationEvent" />
 
