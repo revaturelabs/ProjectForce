@@ -214,8 +214,8 @@
                 component.set('v.fieldToSortBy',null);
         }
         component.set('v.filteredTrainings',helper.sortArray(filteredTrainings, getColors, sortBy));
-        let a = component.get('c.applyColors');
-        $A.enqueueAction(a);
+        //let a = component.get('c.applyColors');
+        //$A.enqueueAction(a);
         helper.updateData(component);
     },
     
@@ -228,8 +228,6 @@
         var selectedDate = component.find("DateFilter").get("v.value");
         var newData = helper.filterData(selectedTrack, selectedLocation, selectedDate,
                                         myChart, selectedTrainings, component);
-        var a = component.get("c.applyColors");
-        $A.enqueueAction(a);
         component.set("v.filteredTrainings", newData);
     },
     

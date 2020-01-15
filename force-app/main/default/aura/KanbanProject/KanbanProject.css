@@ -51,7 +51,8 @@
 
 .THIS .slds-modal__header {
     background: white;
-font-family: HeaderFutura;
+    
+    font-family: HeaderFutura;
     font-size: 2rem;
 }
 
@@ -71,7 +72,7 @@ font-family: HeaderFutura;
 }
 
 .THIS .font {
-    /* font-family: 'Times New Roman', Times, serif; */
+    font-family: 'Times New Roman', Times, serif;
     font-family: futura, sans-serif;
 }
 

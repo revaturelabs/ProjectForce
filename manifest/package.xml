@@ -56,9 +56,7 @@
         <members>KanbanColumn</members>
         <members>KanbanCard</members>
         <members>KanbanColumn</members>
-        <members>KanbanCardLabel</members>
         <members>modal</members>
-        <members>ModalCompletedEvent</members>
         <members>newD3App</members>
         <members>newD3Comp</members>
         <members>SaveInlineEditsEvent</members>

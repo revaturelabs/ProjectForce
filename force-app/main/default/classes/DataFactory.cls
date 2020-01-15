@@ -165,7 +165,7 @@ public class DataFactory
         }
 
 		// Insert task records
-        for ( integer i = 0 ; i < numOfRecords / 2 ; i++ )
+        /*for ( integer i = 0 ; i < numOfRecords / 2 ; i++ )
         {	for ( integer j = 0 ; j < Math.mod(i+6, 10) + 1 ; j++ )
             {	backlogList.add	(	new Backlog__c
                                  	(	KanbanColumn__c=columnsByName.get('To Do')[i].id, 
@@ -188,7 +188,7 @@ public class DataFactory
                 				);
             }
         }
-        insert backlogList;
+        insert backlogList;*/
         
         // Delete all tasks attached to our projects that don't have the name 'Test'
         // They got inserted in some magical way and we don't have time to figure out how
