@@ -101,7 +101,7 @@
                                       Chart.defaults.global.defaultFontSize = 14;
                                       ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontFamily, "normal", Chart.defaults.global.defaultFontFamily);
                                       ctx.textAlign = "left";
-                                      ctx.fillStyle = "black"; // text color in bar label
+                                      ctx.fillStyle = "white"; // text color in bar label
                                       this.data.datasets.forEach(function(dataset, i) {
                                           var meta = chartInstance.controller.getDatasetMeta(i);
                                           

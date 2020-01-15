@@ -115,9 +115,16 @@ public class DataFactory
                                               ];
         
         // Insert Training Records
+        List<String> color=new List<String>{'','',''};
+        List<String> hexMap = new List<String>{'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
         for ( integer i = 0 ; i < numOfRecords ; i++ )
         {   // Assign the right project list based on the track for this trainer
             List<project__c> ProjectIDAssign = new list<project__c>();
+            for(integer j=0;j<3;j++){
+                Long randomColor=Math.roundToLong(Math.random()*100);
+                String randomColorHex= hexMap[(Integer)(randomColor/15)]+hexMap[(Integer)Math.mod(randomColor,15)];
+                color[j]=randomColorHex;
+            }
          	ProjectIDAssign = projectsByTrack.get(TrackTrainers[i].trackTrainer__r.name);
          	Training__c t = new Training__c
                 (	name='Test Training ' + i, 
@@ -126,9 +133,9 @@ public class DataFactory
                 	Room__c = RoomList[i].id, 
 					Project__c = ProjectIDAssign[Math.mod(i, ProjectIDAssign.size())].id, 
 					Batch_Number__c = 1000+i, 
-                 	Start_Date__c = system.today().addDays(5 + i), 
+                 	Start_Date__c = system.today().addDays(Integer.valueOf((Math.random()*30))), 
                     BatchDuration__c = 10, 
-                 	Color__c = '#F26925', 
+                 	Color__c = '#'+color[0]+color[1]+color[2], 
                  	BatchSize__c = 10 + Math.mod(i, 10)
                 );
             TrainingList.add(t);

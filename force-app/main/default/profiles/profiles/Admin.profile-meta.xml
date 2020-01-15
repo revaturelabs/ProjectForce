@@ -160,14 +160,14 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>Training__c.ProjectStartDate__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
-        <field>Training__c.ProjectStartDate__c</field>
-        <readable>true</readable>
+        <editable>false</editable>
+        <field>Training__c.Review_Completed__c</field>
+        <readable>false</readable>
     </fieldPermissions>
     <layoutAssignments>
         <layout>Backlog__c-Backlog Layout</layout>
